@@ -1,0 +1,42 @@
+[
+  {
+    "node": "behavior_design",
+    "model": "qwen/qwen3.7-max",
+    "run": 1,
+    "success": true,
+    "latency_ms": 74376,
+    "json_valid": true,
+    "repair_count": 0,
+    "sample": "{\"cards\":[{\"slot\":\"A\",\"name\":\"沈清\",\"desire\":\"查清将军府亏空的具体数额并拿到所有账本原件\",\"fear\":\"失去对数字和规则的掌控感，陷入无法量化的混乱\",\"misbelief\":\"只要账目绝对清晰、规则绝对公平，就能解决所有人际和权力问题\",\"boundary\":\"绝不在账本上伪造哪怕一笔数据来迎合权贵或保全自身\",\"tell\":\"算错或遇到不讲理的糊涂"
+  },
+  {
+    "node": "behavior_design",
+    "model": "qwen/qwen3.7-max",
+    "run": 2,
+    "success": true,
+    "latency_ms": 79819,
+    "json_valid": true,
+    "repair_count": 0,
+    "sample": "{\"cards\":[{\"slot\":\"A\",\"name\":\"沈清\",\"desire\":\"查清将军府亏空的真实账目，拿回属于嫡房的对牌钥匙\",\"fear\":\"失去对数字和规则的掌控感，陷入无法量化的混乱人情中\",\"misbelief\":\"只要账目算得绝对清楚、规则绝对公平，就能解决所有人心和利益的问题\",\"boundary\":\"绝不在账本上造假，哪怕是为了自保或换取更大的利益\",\"tell\":\"遇到"
+  },
+  {
+    "node": "behavior_design",
+    "model": "qwen/deepseek-v4-pro",
+    "run": 1,
+    "success": false,
+    "latency_ms": 229479,
+    "json_valid": false,
+    "repair_count": 0,
+    "error": "The read operation timed out"
+  },
+  {
+    "node": "behavior_design",
+    "model": "qwen/deepseek-v4-pro",
+    "run": 2,
+    "success": false,
+    "latency_ms": 241758,
+    "json_valid": false,
+    "repair_count": 0,
+    "error": "The read operation timed out"
+  }
+]

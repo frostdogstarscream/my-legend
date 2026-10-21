@@ -1,0 +1,27 @@
+name: story_player
+description: Offline editable pixel story performance for Flutter apps.
+version: 0.1.0
+publish_to: none
+environment:
+  sdk: '>=3.11.0 <4.0.0'
+  flutter: '>=3.41.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  flame: 1.38.2
+  characters: 1.4.1
+  crypto: 3.0.7
+  path_provider: 2.1.6
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+flutter:
+  assets:
+    - assets/basic_pixel/1.0.0/
+    - assets/fonts/OFL.txt
+    - assets/ASSET-LICENSES.md
+  fonts:
+    - family: StorySans
+      fonts:
+        - asset: assets/fonts/StorySansSC.ttf

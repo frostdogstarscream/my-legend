@@ -1,0 +1,103 @@
+{
+  "schema_version": "visual_request/1.0",
+  "request_id": "fixture-visual-prepare",
+  "target_profile": "web_basic_v1",
+  "presentation_profile": "standing_dialogue_v1",
+  "preview_skin": "basic",
+  "generation_mode": "reviewed",
+  "deliverable": "preview",
+  "context_confirmed": false,
+  "asset_pack_id": "basic_pixel",
+  "asset_pack_version": "1.0.0",
+  "script": {
+    "schema_version": "visual_script/1.0",
+    "document_id": "d_1d6512a845c67792fb20a86cdf223936",
+    "source_version_id": "v_87126582902b42814b278d22694513b2",
+    "revision": 1,
+    "title": "灯下的合作",
+    "excerpt": false,
+    "continuity_confirmed": false,
+    "constraints": {
+      "preserve_dialogue": true,
+      "allow_new_plot": false,
+      "locked_facts": [
+        "人物身份和台词保持来源版本。"
+      ],
+      "allow_narration_fallback": false,
+      "allow_visual_simplification": false
+    },
+    "characters": [
+      {
+        "role_id": "r_6e0e22405d7081a516f5e9f2302be7db",
+        "name": "林岚",
+        "description": "协议示例人物，外观为显式制作选择。",
+        "appearance": {
+          "template_type": "adult",
+          "color_key": "blue",
+          "accessory": "none"
+        },
+        "visual_requirements": []
+      },
+      {
+        "role_id": "r_e1b3f2224055cba18c54c40c7ef4f0e3",
+        "name": "周野",
+        "description": "协议示例人物，外观为显式制作选择。",
+        "appearance": {
+          "template_type": "adult",
+          "color_key": "green",
+          "accessory": "none"
+        },
+        "visual_requirements": []
+      }
+    ],
+    "scenes": [
+      {
+        "scene_id": "s_bc4dadbac1522b31fcaf45e26a45966e",
+        "name": "检查前",
+        "description": "室内商议检查。",
+        "background_type": "indoor",
+        "cast": [
+          "r_6e0e22405d7081a516f5e9f2302be7db",
+          "r_e1b3f2224055cba18c54c40c7ef4f0e3"
+        ],
+        "initial_cast": [
+          "r_6e0e22405d7081a516f5e9f2302be7db",
+          "r_e1b3f2224055cba18c54c40c7ef4f0e3"
+        ],
+        "blocks": [
+          {
+            "block_id": "b_12c4a99fc4284938fc608468634caaa6",
+            "type": "narration",
+            "text": "林岚把手电放在桌上。",
+            "source_ref": "source-map://map_d2d6a47f293f187c84e3be7df26d04fa/b_12c4a99fc4284938fc608468634caaa6"
+          },
+          {
+            "block_id": "b_6393e42ff59195212605231bafb3bf64",
+            "type": "dialogue",
+            "text": "先别急，我们一起检查。",
+            "source_ref": "source-map://map_d2d6a47f293f187c84e3be7df26d04fa/b_6393e42ff59195212605231bafb3bf64",
+            "role_id": "r_6e0e22405d7081a516f5e9f2302be7db",
+            "emotion": "neutral"
+          },
+          {
+            "block_id": "b_a7aa7b77d0f5ba8028b1d8e81d8524d3",
+            "type": "dialogue",
+            "text": "好，我来照亮这里。",
+            "source_ref": "source-map://map_d2d6a47f293f187c84e3be7df26d04fa/b_a7aa7b77d0f5ba8028b1d8e81d8524d3",
+            "role_id": "r_e1b3f2224055cba18c54c40c7ef4f0e3",
+            "emotion": "happy"
+          },
+          {
+            "block_id": "b_c499f6064e9cf9c8bbf3d03b9453f496",
+            "type": "action",
+            "role_id": "r_e1b3f2224055cba18c54c40c7ef4f0e3",
+            "text": "周野原地等待。",
+            "action": "wait",
+            "duration_ms": 500,
+            "source_ref": "source-map://map_d2d6a47f293f187c84e3be7df26d04fa/b_c499f6064e9cf9c8bbf3d03b9453f496"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "storygenerate"
+version = "0.3.0"
+description = "Schema-first AI story generation engine"
+requires-python = ">=3.10"
+dependencies = [
+  "langgraph>=1.0",
+  "langchain-core>=1.0",
+  "pydantic>=2.7",
+  "httpx>=0.27",
+]
+
+[project.optional-dependencies]
+database = [
+  "sqlalchemy>=2.0",
+  "alembic>=1.13",
+  "psycopg[binary]>=3.1",
+]
+test = [
+  "pytest>=8.0",
+]
+service = [
+  "storygenerate[database]",
+  "fastapi>=0.115,<1",
+  "uvicorn>=0.30,<1",
+]
+dev = [
+  "storygenerate[database,test,service]",
+]
+
+[tool.setuptools]
+package-dir = {"" = "4-引擎代码"}
+
+[tool.setuptools.packages.find]
+where = ["4-引擎代码"]
+include = ["drama_engine*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+pythonpath = ["4-引擎代码"]
+markers = [
+  "real_llm: requires a configured real model provider",
+  "postgres: requires a PostgreSQL test database",
+]

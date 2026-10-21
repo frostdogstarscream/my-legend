@@ -1,0 +1,94 @@
+{
+  "contract_version": "my-legend.audio-context/1.0",
+  "profile_id": "fixture-audio",
+  "profile_revision": "1",
+  "performance_mode": "preserve",
+  "missing_performance_policy": "block",
+  "default_instruction": "",
+  "voice_bindings": [
+    {
+      "identity_kind": "role",
+      "source_identity_id": "repairer",
+      "performer_id": "voice-linlan",
+      "provider_profile_id": "fixture-not-a-live-provider",
+      "model": "fixture-only",
+      "voice": "fixture-repairer",
+      "voice_asset_id": "fixture-voice-repairer",
+      "voice_asset_revision": "1",
+      "verification": "fixture",
+      "required_controls": [
+        "instructions"
+      ]
+    },
+    {
+      "identity_kind": "role",
+      "source_identity_id": "host",
+      "performer_id": "voice-zhouye",
+      "provider_profile_id": "fixture-not-a-live-provider",
+      "model": "fixture-only",
+      "voice": "fixture-host",
+      "voice_asset_id": "fixture-voice-host",
+      "voice_asset_revision": "1",
+      "verification": "fixture",
+      "required_controls": [
+        "instructions"
+      ]
+    },
+    {
+      "identity_kind": "narrator",
+      "source_identity_id": "narrator",
+      "performer_id": "narrator",
+      "provider_profile_id": "fixture-not-a-live-provider",
+      "model": "fixture-only",
+      "voice": "fixture-narrator",
+      "voice_asset_id": "fixture-voice-narrator",
+      "voice_asset_revision": "1",
+      "verification": "fixture",
+      "required_controls": [
+        "instructions"
+      ]
+    }
+  ],
+  "cue_routes": [
+    {
+      "source": {
+        "episode_id": "episode-1",
+        "scene_id": "scene-1",
+        "line_id": "line-1"
+      },
+      "route": "sfx",
+      "description": "木门轻轻合上一次。",
+      "media_ref": null,
+      "sound_requirements": {
+        "count": 1,
+        "origin": "source",
+        "target_material": "unspecified"
+      },
+      "timing_relations": []
+    },
+    {
+      "source": {
+        "episode_id": "episode-1",
+        "scene_id": "scene-1",
+        "line_id": "line-5"
+      },
+      "route": "visual_only",
+      "description": "",
+      "media_ref": null,
+      "sound_requirements": {},
+      "timing_relations": []
+    }
+  ],
+  "instruction_max_weight": 240,
+  "required_exact_controls": [],
+  "render_settings": {
+    "sample_rate": 48000,
+    "channels": "mono",
+    "gap_ms": 0,
+    "tail_ms": 0
+  },
+  "capability_profile": {
+    "ref": "fixture://context/capability_profile.json",
+    "sha256": "2679c380149c04ce0ce5d9cd50c846b8b55143a9525b81ddb84856130bcb0e38"
+  }
+}

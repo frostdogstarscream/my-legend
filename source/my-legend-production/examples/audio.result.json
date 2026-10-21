@@ -1,0 +1,19 @@
+{
+  "contract_version": "my-legend.adapter-result/1.0",
+  "adapter": "audio",
+  "request_id": "fixture-audio-prepare",
+  "request_fingerprint": "8fbc474b74823b191b9b6cdd4cf744b143703f82bae0003fc3b25a593bc1462e",
+  "state": "prepared",
+  "target": {
+    "ref": "fixture://audio.script.json",
+    "sha256": "61f23b170ea8bb5664d718387deea049d2af758b21abdec691cd4858168feffd"
+  },
+  "sidecar": {
+    "ref": "fixture://audio.sidecar.json",
+    "sha256": "cb7808c5c0baf364137c0ea956618e792e71e4638d9c539d553348ea94d46bb2"
+  },
+  "issues": [],
+  "workflow_state": "not_submitted",
+  "media_state": "not_generated",
+  "publication_state": "not_approved"
+}

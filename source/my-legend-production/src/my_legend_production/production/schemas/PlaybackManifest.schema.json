@@ -1,0 +1,223 @@
+{
+  "$defs": {
+    "ArtifactRef": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$",
+          "title": "Kind",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "source_version_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Source Version Id",
+          "type": "string"
+        },
+        "media_type": {
+          "default": "application/json",
+          "maxLength": 100,
+          "title": "Media Type",
+          "type": "string"
+        },
+        "size_bytes": {
+          "minimum": 1,
+          "title": "Size Bytes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "kind",
+        "sha256",
+        "source_version_id",
+        "size_bytes"
+      ],
+      "title": "ArtifactRef",
+      "type": "object"
+    },
+    "PlaybackEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "content_path": {
+          "title": "Content Path",
+          "type": "string"
+        }
+      },
+      "required": [
+        "artifact",
+        "content_path"
+      ],
+      "title": "PlaybackEntry",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "production_playback/1.0",
+      "default": "production_playback/1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "job_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_-]+$",
+      "title": "Job Id",
+      "type": "string"
+    },
+    "work_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Work Id",
+      "type": "string"
+    },
+    "source_version_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Source Version Id",
+      "type": "string"
+    },
+    "script": {
+      "$ref": "#/$defs/PlaybackEntry"
+    },
+    "audio": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/PlaybackEntry"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "timeline": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/PlaybackEntry"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "video": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/PlaybackEntry"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "poster": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/PlaybackEntry"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "sample_rate": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Sample Rate"
+    },
+    "total_frames": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Total Frames"
+    },
+    "duration_seconds": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Duration Seconds"
+    },
+    "visual_profile": {
+      "anyOf": [
+        {
+          "enum": [
+            "standing_performance/1",
+            "pixel_performance/1",
+            "basic_storyboard/1"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Visual Profile"
+    },
+    "human_review": {
+      "default": "pending",
+      "enum": [
+        "pending",
+        "not_required"
+      ],
+      "title": "Human Review",
+      "type": "string"
+    },
+    "publication": {
+      "const": "not_requested",
+      "default": "not_requested",
+      "title": "Publication",
+      "type": "string"
+    },
+    "delivery_warnings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Delivery Warnings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "job_id",
+    "work_id",
+    "source_version_id",
+    "script"
+  ],
+  "title": "PlaybackManifest",
+  "type": "object"
+}

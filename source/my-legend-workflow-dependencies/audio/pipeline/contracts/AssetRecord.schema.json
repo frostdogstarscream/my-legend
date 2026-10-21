@@ -1,0 +1,125 @@
+{
+  "$defs": {
+    "Point": {
+      "additionalProperties": false,
+      "properties": {
+        "frame": {
+          "minimum": 0,
+          "title": "Frame",
+          "type": "integer"
+        },
+        "kind": {
+          "default": "contact",
+          "title": "Kind",
+          "type": "string"
+        },
+        "method": {
+          "title": "Method",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "sample_rate": {
+          "default": 48000,
+          "exclusiveMinimum": 0,
+          "title": "Sample Rate",
+          "type": "integer"
+        },
+        "status": {
+          "default": "candidate",
+          "enum": [
+            "candidate",
+            "confirmed"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "frame",
+        "method"
+      ],
+      "title": "Point",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_revision": {
+      "title": "Artifact Revision",
+      "type": "string"
+    },
+    "asset_id": {
+      "title": "Asset Id",
+      "type": "string"
+    },
+    "block_id": {
+      "title": "Block Id",
+      "type": "string"
+    },
+    "duration_basis": {
+      "const": "measured",
+      "default": "measured",
+      "title": "Duration Basis",
+      "type": "string"
+    },
+    "generation": {
+      "additionalProperties": true,
+      "title": "Generation",
+      "type": "object"
+    },
+    "keypoints": {
+      "items": {
+        "$ref": "#/$defs/Point"
+      },
+      "title": "Keypoints",
+      "type": "array"
+    },
+    "processed": {
+      "additionalProperties": true,
+      "title": "Processed",
+      "type": "object"
+    },
+    "processing": {
+      "additionalProperties": true,
+      "title": "Processing",
+      "type": "object"
+    },
+    "raw": {
+      "additionalProperties": true,
+      "title": "Raw",
+      "type": "object"
+    },
+    "schema_version": {
+      "const": "lingban.asset/1",
+      "default": "lingban.asset/1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "semantic_review": {
+      "default": "pending",
+      "title": "Semantic Review",
+      "type": "string"
+    },
+    "task_id": {
+      "title": "Task Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "asset_id",
+    "artifact_revision",
+    "task_id",
+    "block_id",
+    "raw",
+    "processed",
+    "processing",
+    "keypoints",
+    "generation"
+  ],
+  "title": "AssetRecord",
+  "type": "object"
+}

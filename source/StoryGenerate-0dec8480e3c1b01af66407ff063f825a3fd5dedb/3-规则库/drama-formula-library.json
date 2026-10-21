@@ -1,0 +1,305 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "meta": {
+    "name": "drama-formula-library",
+    "version": "1.0.0",
+    "locale": "zh-CN",
+    "generated_at": "2026-09-11",
+    "description": "爆款短剧套路拆解库，面向 AI 广播剧生成引擎。含角色槽位、配方、节奏参数、钩子库、类型适配矩阵与校验规则。",
+    "sample_basis": {
+      "works_analyzed": 13,
+      "ai_generated": 6,
+      "live_action": 7,
+      "period": "2026-08 ~ 2026-09",
+      "source": "红果短剧热播榜 / DataEye 微短剧热力榜"
+    }
+  },
+
+  "character_slots": [
+    {
+      "id": "A",
+      "name": "载体角色",
+      "function": "观众代入位",
+      "required_attributes": ["一个不匹配的身份", "一个一句话说得清的目标"],
+      "examples": ["罪臣之女手握禁册", "六岁娃娃下山寻师兄", "月薪两百的儿媳"],
+      "audio_note": "必须有明确的 voice_label，配音选角第一依据"
+    },
+    {
+      "id": "B",
+      "name": "金手指",
+      "function": "能力或信息源",
+      "required_attributes": ["一句话可讲明", "观众产生『我上我也行』的代入", "禁止需要解封/做任务的复杂设定"],
+      "examples": ["万妖图录", "重生记忆", "现代知识落差", "五位顶级大佬师兄"],
+      "audio_note": "金手指的『启动』必须有固定音效动机，否则听众无法感知它被触发"
+    },
+    {
+      "id": "C",
+      "name": "护短群体",
+      "function": "情绪供给方，无条件认可主角",
+      "required_attributes": ["不制造冲突", "只提供温暖与爽感", "当前爆款的最大情绪价值增量"],
+      "examples": ["师兄团", "宠妻霸总", "罩着儿媳的婆婆", "醒悟的丈夫"],
+      "audio_note": "群体人数需压缩，超过 2 人时合并为同一音色家族或降级为背景声"
+    },
+    {
+      "id": "D",
+      "name": "私人化反派",
+      "function": "压力源",
+      "required_attributes": ["『欠揍』而非『该死』", "必须私人化：家人/亲戚/身边人", "禁止组织化或陌生化反派"],
+      "examples": ["偏心婆婆", "渣前夫", "茶艺表妹", "悔婚亲家"],
+      "audio_note": "反派必须有辨识度高的语气特征（如拖长尾音、习惯性反问）"
+    },
+    {
+      "id": "E",
+      "name": "对照组",
+      "function": "反衬主角成长幅度，承接打脸落点",
+      "required_attributes": ["平行命运者或曾经的施害者"],
+      "examples": ["被庇护的妹妹", "冒认救命恩人者"],
+      "audio_note": "可降级为旁白提及，不占独立音色"
+    }
+  ],
+
+  "character_card_fields": [
+    { "key": "slot", "type": "enum[A,B,C,D,E]", "required": true, "scope": "通用" },
+    { "key": "voice_label", "type": "string", "required": true, "scope": "通用", "description": "一句话性格标签" },
+    { "key": "voice_anchor", "type": "string", "required": true, "scope": "广播剧特需", "description": "可反复识别的听觉特征" },
+    { "key": "speech_rate", "type": "number", "required": true, "scope": "广播剧特需", "description": "语速倍率，驱动 TTS" },
+    { "key": "catchphrase", "type": "string", "required": false, "scope": "广播剧特需", "description": "口头禅，最廉价的角色标识" },
+    { "key": "sfx_signature", "type": "string", "required": true, "scope": "广播剧特需", "description": "角色专属音效动机" }
+  ],
+
+  "roster_recipes": [
+    {
+      "id": "R1",
+      "name": "大女主升级流",
+      "audio_fit": "low",
+      "A": "罪臣之女 / 被放逐者",
+      "B": "图录类：以妖血为墨、摹其形、夺其力",
+      "C": "旧部 / 宗门 / 镇魔卫",
+      "D": "妖魔入侵者 + 朝堂权谋方",
+      "E": "同门对照者",
+      "reference": "万妖图录传 第十二季",
+      "landing_note": "音频落地需大幅精简为『载体+金手指+1护短+1反派』"
+    },
+    {
+      "id": "R2",
+      "name": "萌宝团宠",
+      "audio_fit": "mid_high",
+      "A": "六岁娃娃",
+      "B": "软性金手指（好运+善良），实为隐藏战力",
+      "C": "多位失散兄长——全员顶级大佬，秒变护崽狂魔",
+      "D": "轻量化：路人刁难、宗门摩擦，几乎无虐点",
+      "E": "被救助的凡人",
+      "reference": "糯糯下山，师兄们都慌了 第一/二季",
+      "landing_note": "童声与成年男声的反差是核心资产，需优先锁定童声音色"
+    },
+    {
+      "id": "R3",
+      "name": "反差搞事业",
+      "audio_fit": "mid",
+      "A": "格格不入的穿越者",
+      "B": "信息差变现（古代统帅思维 / 贷款囤货 / 不识字自成一路）",
+      "C": "追随者 / 被庇护群体",
+      "D": "守旧派、既得利益者，冲突喜剧化",
+      "E": "原世界的失败自我",
+      "reference": "大将军扛楼养活百万大军 / 三天后穿越古代，我贷款搬空商城！ / 谁让这个文盲修仙的",
+      "landing_note": "保留情境喜剧对白，删除打斗段落"
+    },
+    {
+      "id": "R4",
+      "name": "家庭反击",
+      "audio_fit": "very_high",
+      "A": "被压榨的妻子 / 儿媳",
+      "B": "觉醒 + 实证（账目、证据、外部身份）",
+      "C": "醒悟的丈夫 / 站队的子女",
+      "D": "婆婆、丈夫、小姑——纯身边人，情绪浓度最高",
+      "E": "被偏袒的一方",
+      "reference": "亲家换锁我收回婚房 / 虎妈驾到，全家反骨仔乖乖立正 / 老公的工资，婆婆的账",
+      "landing_note": "首选赛道。全对白驱动，零视觉依赖"
+    },
+    {
+      "id": "R5",
+      "name": "破镜重圆治愈",
+      "audio_fit": "very_high",
+      "A": "受过伤的成年人",
+      "B": "对方不肯放手的坚持 / 重生带来的『提前知道』",
+      "C": "新的生活共同体（邻居、家中孩童）",
+      "D": "内化心结与旧误会 > 外部反派，以『拉扯』代替『对抗』",
+      "E": "曾经的选择",
+      "reference": "渐染 / 好雨知时节 / 破茧 / 他深情侵入",
+      "landing_note": "首选赛道。戏剧张力天然存在于台词"
+    }
+  ],
+
+  "episode_beat_sheet": {
+    "applicable_durations_sec": [90, 150, 180, 300],
+    "segments": [
+      {
+        "id": "S1",
+        "range": [0, 3],
+        "label": "黄金钩子",
+        "rule": "极限冲突，零铺垫。禁止介绍背景、交代身份。",
+        "audio_requirement": "首个声音必须是突发型听觉事件"
+      },
+      {
+        "id": "S2",
+        "range": [3, 10],
+        "label": "矛盾三要素",
+        "rule": "交代：谁 / 在哪 / 什么麻烦 / 想做什么。只让听众知道『现在发生了什么』。",
+        "audio_requirement": "四要素可全部由台词承载"
+      },
+      {
+        "id": "S3",
+        "range": [10, 30],
+        "label": "第一次反转/爽点",
+        "rule": "完成一次压抑→爆发的起伏，禁止持续压抑。",
+        "audio_requirement": "爆发点需配合音效或音乐断点"
+      },
+      {
+        "id": "S4",
+        "range": [30, 120],
+        "label": "中段推进",
+        "rule": "推进主线、加深人物矛盾、预埋结尾钩子。台词短、碎、锋利，禁止注水。",
+        "duration_scaling": { "90s": [30, 80], "150s": [30, 100], "180s": [30, 120], "300s": [30, 210] }
+      },
+      {
+        "id": "S5",
+        "range": [120, 170],
+        "label": "升级/二次反转",
+        "rule": "中型高潮。",
+        "duration_scaling": { "90s": [70, 85], "150s": [95, 140], "180s": [120, 170], "300s": [200, 285] }
+      },
+      {
+        "id": "S6",
+        "range": [170, 180],
+        "label": "强钩子",
+        "rule": "强度必须大于本集所有冲突。卡在情绪最高点戛然而止。",
+        "audio_requirement": "优先使用危机钩或反转钩"
+      }
+    ]
+  },
+
+  "series_arc_rules": [
+    { "id": "AR1", "range": "1-5集", "task": "铺世界观、立主角人设、抛主线大矛盾", "hard_rule": "第3集必须有一次小爆点" },
+    { "id": "AR2", "range": "中段", "task": "爽虐交替", "hard_rule": "每3集一次中等冲突/小反转" },
+    { "id": "AR3", "range": "中段", "task": "阶段性成就", "hard_rule": "每5集一次阶段性成就或大型高潮" },
+    { "id": "AR4", "range": "全剧", "task": "重大转折", "hard_rule": "每10集一次重大情节转折" },
+    { "id": "AR5", "range": "全剧", "task": "情绪极性控制", "hard_rule": "连续负面情绪不超过2集，且必须给出反击或反转缓冲" },
+    { "id": "AR6", "range": "临近结局", "task": "叠加连环反转，推出终极冲突", "hard_rule": "全剧情绪峰值落在此区间" },
+    { "id": "AR7", "range": "收官", "task": "完整结局 + 彩蛋伏笔", "hard_rule": "预留续集钩子（样本中6部已做到三季及以上，续季为当前最确定的盈利结构）" }
+  ],
+
+  "hook_types": [
+    {
+      "id": "H1",
+      "name": "直接冲突型",
+      "visual_usage": "当众掌掴、甩离婚协议、泼水、抓奸",
+      "emotion": "即时愤怒，零理解成本",
+      "audio_rewrite": "一记脆响 + 压低音量的台词；用『所有人同时安静』的静音替代『全场哗然』"
+    },
+    {
+      "id": "H2",
+      "name": "强悬念型",
+      "visual_usage": "掉落化验单、枪口对准主角",
+      "emotion": "信息缺口驱动好奇",
+      "audio_rewrite": "拆信封的纸张摩擦声 + 话语说到一半被掐断"
+    },
+    {
+      "id": "H3",
+      "name": "极致反差型",
+      "visual_usage": "婚礼现场撕破脸、豪门太太变弃妇",
+      "emotion": "落差感制造期待",
+      "audio_rewrite": "高扬的喜庆音乐被硬切——用音乐断点代替画面反转"
+    },
+    {
+      "id": "H4",
+      "name": "悬念钩",
+      "visual_usage": "身份疑问 + 黑屏留白",
+      "emotion": "『他是谁』的追问",
+      "audio_rewrite": "画外音叫出一个不该出现的名字，随即环境音全部消失"
+    },
+    {
+      "id": "H5",
+      "name": "危机钩",
+      "visual_usage": "尖刀落下、大门被撞开、倒计时",
+      "emotion": "生理性紧张",
+      "audio_rewrite": "音频形态下最强。渐近脚步、敲门、电话忙音，纯听觉即可建立压迫"
+    },
+    {
+      "id": "H6",
+      "name": "反转钩",
+      "visual_usage": "颠覆性台词 + 切黑",
+      "emotion": "认知重构",
+      "audio_rewrite": "天然适配，无需改造。广播剧最优钩子类型"
+    }
+  ],
+
+  "audio_visual_substitutes": {
+    "description": "凡依赖视觉呈现的表达，必须翻译为以下四类听觉事件。建议做成引擎的固定素材库，限制 LLM 只能从此选取。",
+    "categories": [
+      { "id": "AV1", "name": "突兀的声音", "items": ["脆响", "突发静音", "金属落地", "玻璃碎裂"] },
+      { "id": "AV2", "name": "被中断的台词", "items": ["说到一半掐断", "被抢白", "突然失声"] },
+      { "id": "AV3", "name": "音乐的情绪切换", "items": ["硬切", "渐弱至无", "主题动机变奏"] },
+      { "id": "AV4", "name": "环境音场改变", "items": ["混响拉大表示空旷", "背景音骤停表示危机", "室外噪声切入表示转场"] }
+    ],
+    "blacklist_keywords": ["眼神", "嘴角", "脸色", "撇了撇嘴", "屏幕", "照片内容", "低头看了看手机", "白了谁一眼"]
+  },
+
+  "genre_fit_matrix": [
+    { "genre_id": "G01", "name": "现实家庭冲突", "works": "亲家换锁 / 虎妈驾到 / 老公的工资婆婆的账", "emotion": "怒→爽→暖", "mechanism": "憋屈积累→反击打脸", "audio_fit": "very_high", "audio_fit_score": 95, "driver": "纯对白驱动" },
+    { "genre_id": "G02", "name": "成年人治愈爱情", "works": "渐染 / 好雨知时节", "emotion": "酸→暖", "mechanism": "细水长流、互相救赎", "audio_fit": "very_high", "audio_fit_score": 95, "driver": "无需视觉" },
+    { "genre_id": "G03", "name": "重生虐恋", "works": "他深情侵入", "emotion": "虐→甜→虐", "mechanism": "命运改写、极限拉扯", "audio_fit": "high", "audio_fit_score": 88, "driver": "靠台词张力" },
+    { "genre_id": "G04", "name": "宫斗复仇", "works": "妖妃在上", "emotion": "恨→爽", "mechanism": "步步为营、隐忍后爆发", "audio_fit": "high", "audio_fit_score": 88, "driver": "对话即权谋" },
+    { "genre_id": "G05", "name": "现实治愈/救赎", "works": "破茧", "emotion": "暖·沉重", "mechanism": "重建与和解", "audio_fit": "high", "audio_fit_score": 85, "driver": "情绪靠人声" },
+    { "genre_id": "G06", "name": "反差霸总×草根女", "works": "顾总他栽在屠户女手里了", "emotion": "甜→笑", "mechanism": "身份反差、双向救赎", "audio_fit": "mid_high", "audio_fit_score": 72, "driver": "需靠音色反差" },
+    { "genre_id": "G07", "name": "萌宝团宠", "works": "糯糯下山 第一/二季", "emotion": "暖→甜", "mechanism": "大佬护短、反差萌", "audio_fit": "mid_high", "audio_fit_score": 72, "driver": "童声是核心资产" },
+    { "genre_id": "G08", "name": "脑洞穿越搞事业", "works": "大将军扛楼 / 三天后穿越古代", "emotion": "爽→笑", "mechanism": "信息差变现、降维打击", "audio_fit": "mid", "audio_fit_score": 62, "driver": "情境喜感可保留" },
+    { "genre_id": "G09", "name": "反差修仙喜剧", "works": "谁让这个文盲修仙的", "emotion": "爽→笑", "mechanism": "认知反差、误打误撞取胜", "audio_fit": "low", "audio_fit_score": 45, "driver": "打斗占比过高" },
+    { "genre_id": "G10", "name": "国风玄幻升级流", "works": "万妖图录传 第十二季", "emotion": "热血·悲壮", "mechanism": "打怪升级、夺取能力", "audio_fit": "very_low", "audio_fit_score": 28, "driver": "依赖视觉奇观" }
+  ],
+
+  "audio_drama_constraints": {
+    "max_voiced_characters": 5,
+    "rationale": "听众无法靠脸认人，声音辨识度远比角色数量重要。超过 5 个需区分的有声角色即开始混淆。",
+    "principles": [
+      "简化、控制数量、突出主导性格标签",
+      "旁白须为冷静的第三人称，不掺情感波动、不偏向任何一方",
+      "音效承担『镜头』功能，是广播剧最重要的表现手段",
+      "每个场景至少 1 条环境音 + 1 条动作音",
+      "单句台词建议不超过 20 字，避免听觉疲劳"
+    ]
+  },
+
+  "validation_rules": [
+    { "id": "R01", "check": "开场 3 秒内存在听觉冲突事件", "assert": "首个音效或台词为突发型，且不含背景介绍", "severity": "error", "auto": true },
+    { "id": "R02", "check": "开场 10 秒内交代齐四要素", "assert": "who / where / problem / goal 全部出现", "severity": "error", "auto": true },
+    { "id": "R03", "check": "30 秒内完成第一次情绪释放", "assert": "存在一次 压→爆 转折", "severity": "error", "auto": true },
+    { "id": "R04", "check": "每 20–30 秒存在一个情绪节点", "assert": "节点间隔最大值 <= 30s", "severity": "warning", "auto": true },
+    { "id": "R05", "check": "结尾钩子强度大于本集所有冲突", "assert": "结尾属于六类钩子之一，且情绪峰值为全集最大值", "severity": "error", "auto": true },
+    { "id": "R06", "check": "单集只解决一个核心目标", "assert": "不存在多线并进", "severity": "warning", "auto": true },
+    { "id": "R07", "check": "负面情绪连续集数不超过 2", "assert": "跨集情绪极性统计，连续 negative <= 2", "severity": "error", "auto": true },
+    { "id": "R08", "check": "3 集一次中等冲突、5 集一次高潮", "assert": "全剧冲突强度分布符合 AR2 / AR3", "severity": "warning", "auto": true },
+    { "id": "R09", "check": "有声角色 <= 5 且字段完整", "assert": "角色数 <= 5 且每人含 voice_anchor", "severity": "error", "auto": true },
+    { "id": "R10", "check": "正文不存在纯视觉描写", "assert": "命中 audio_visual_substitutes.blacklist_keywords 为空", "severity": "error", "auto": true },
+    { "id": "R11", "check": "每个场景有音效锚点", "assert": "每 scene 至少 1 环境音 + 1 动作音", "severity": "warning", "auto": true },
+    { "id": "R12", "check": "台词长度上限", "assert": "单句 <= 20 字", "severity": "warning", "auto": true },
+    { "id": "R13", "check": "合规检查", "assert": "规避霸总强制爱、擦边内容、价值导向偏差", "severity": "error", "auto": false }
+  ],
+
+  "generation_pipeline": [
+    { "step": 1, "name": "选题", "action": "从 genre_fit_matrix 中筛选 audio_fit_score >= 70 的赛道", "output": "genre_id" },
+    { "step": 2, "name": "选配方", "action": "从 roster_recipes 择一并实例化 5 个槽位", "output": "recipe_id + 角色槽位表" },
+    { "step": 3, "name": "生成角色卡", "action": "按 character_card_fields 补齐 6 个字段", "output": "character_cards[]" },
+    { "step": 4, "name": "生成分集大纲", "action": "按 series_arc_rules 排布冲突强度", "output": "outline[]" },
+    { "step": 5, "name": "逐集生成节拍", "action": "按 episode_beat_sheet 填内容", "output": "episode_script[]" },
+    { "step": 6, "name": "音频化改写", "action": "视觉描写替换为 audio_visual_substitutes 中四类听觉事件", "output": "audio_ready_script[]" },
+    { "step": 7, "name": "自动校验", "action": "跑 validation_rules，未通过则回退至对应步骤", "output": "report" }
+  ],
+
+  "strategic_notes": [
+    "不要照抄榜单做『AI 玄幻漫剧的音频版』——打斗与视觉奇观是广播剧的劣势区。",
+    "优先做 audio_fit_score >= 85 的四类赛道：现实家庭冲突、成年人治愈爱情、重生虐情、宫斗复仇。",
+    "真人短剧的题材（对白驱动）比当前霸榜的 AI 玄幻漫剧更适合音频形态。",
+    "不要一次生成整本剧本——爆款是逐层精确的产物，一次性生成 80 集会摧毁开场钩子质量。",
+    "不要把角色数量当作内容量——宁可加音效，不要加角色。"
+  ]
+}

@@ -1,0 +1,473 @@
+"""从实现中导出工作流契约。
+
+为什么用导出而不是手写一份 spec 文档：手写的规范一定会漂移。
+规则库加了 K19、ROUTE_MAP 改了一条映射，谁记得同步改文档？
+这里的所有事实都来自代码与规则库本身，导出的 spec 天然与实现一致。
+
+    python -m drama_engine.spec_export --out workflow-spec.json
+"""
+from __future__ import annotations
+
+import argparse
+import json
+from pathlib import Path
+from typing import Any
+
+from . import __version__
+from .config import PROMPT_VERSION, RuleLibrary
+from .llm.router import MODEL_ROUTING
+from .validators.deterministic import ROUTE_MAP
+
+# 节点元信息。这是唯一需要人工维护的部分 —— 但它是描述，不是规则，
+# 改错了不会导致产品行为错误，因此风险远低于手写校验规则。
+NODE_META: dict[str, dict[str, Any]] = {
+    "s0_intake": {
+        "phase": "立项", "kind": "纯函数",
+        "purpose": "归一化用户输入，校验时长档位是否在节拍表支持范围内",
+        "llm": None, "outputs": ["brief"],
+    },
+    "s1_topic": {
+        "phase": "立项", "kind": "LLM",
+        "purpose": "选题：从音频适配矩阵中选赛道与配方",
+        "llm": "topic_select", "outputs": ["genre_id", "recipe_id", "outstanding_topic"],
+        "note": "低于适配阈值的赛道不拒绝，只产出咨询级告警 —— 静默改写用户命题是更糟的行为",
+    },
+    "s2_gadget": {
+        "phase": "立项", "kind": "LLM",
+        "purpose": "设计金手指：价值层级分工、张力曲线、非资源型约束、冲突层级上移",
+        "llm": "gadget_design", "outputs": ["gadget"],
+    },
+    "gate_gadget": {
+        "phase": "立项", "kind": "校验门",
+        "purpose": "金手指层校验。立项期第一道门",
+        "rules_tier1": ["K01", "K02", "K03", "K17", "K18"],
+        "rules_tier2": ["K16"],
+        "outputs": ["project_report", "outstanding_gadget"],
+    },
+    "repair_gadget": {
+        "phase": "立项", "kind": "LLM 修复",
+        "purpose": "回到金手指设定重做，而不是改写台词糊过去",
+        "llm": "repair_gadget", "max_attempts": 3,
+    },
+    "s3_cast": {
+        "phase": "立项", "kind": "LLM",
+        "purpose": "生成 5 张角色卡，控制有声角色数量并补齐听觉锚点",
+        "llm": "cast_design", "outputs": ["cast"],
+    },
+    "gate_cast": {
+        "phase": "立项", "kind": "校验门",
+        "purpose": "角色层校验。槽位、阵营、音色锚点都是声明式字段，确定性检查即可穷尽，无需语义裁判",
+        "rules_tier1": ["K12", "K13", "K14", "K15", "R09"],
+        "rules_tier2": [], "outputs": ["project_report", "outstanding_cast"],
+    },
+    "repair_cast": {
+        "phase": "立项", "kind": "LLM 修复",
+        "purpose": "优先合并角色；禁止用新增角色来解决问题（会立刻再次触发上限）",
+        "llm": "repair_cast", "max_attempts": 3,
+    },
+    "s3b_behavior": {
+        "phase": "立项", "kind": "LLM",
+        "purpose": "生成人物行为卡与关系边：把『性格形容词』换成『压力 × 选择 + 代价』，"
+                   "并给出关系的转折点与方向",
+        "llm": "behavior_design", "outputs": ["behavior"],
+        "note": "设计前提：形容词不可生成也不可校验，选择规律两者皆可。"
+                "代价是硬字段 —— 『代价是消耗体力』这类通用表述等于没写（CH04）",
+    },
+    "gate_behavior": {
+        "phase": "立项", "kind": "校验门",
+        "purpose": "人物层校验：选择条数与压力覆盖、代价非套话、违背自身利益的选择计数、"
+                   "错误信念、关系覆盖性与慢变量反转的转折点数量",
+        "rules_tier1": ["CH01", "CH02", "CH03", "CH04", "CH05", "CH06",
+                        "RL01", "RL02", "RL03", "RL04", "RL05"],
+        "rules_tier2": [], "outputs": ["project_report", "outstanding_behavior"],
+        "note": "CH05 是本层最重要的一条：全剧至少 2 条『违背自身利益』的选择、"
+                "载体角色至少 1 条。可计数，因此可校验 —— 魅力不能靠声明，要靠计数",
+    },
+    "repair_behavior": {
+        "phase": "立项", "kind": "LLM 修复",
+        "purpose": "回到行为卡重做。选择规律是立项级设定，绝不在单集里临时改",
+        "llm": "repair_behavior", "max_attempts": 3,
+    },
+    "s4_outline": {
+        "phase": "立项", "kind": "LLM",
+        "purpose": "生成分集大纲：四幕占比、降维循环步骤、副作用引用、金手指失效安排",
+        "llm": "outline", "outputs": ["outline"],
+    },
+    "gate_outline": {
+        "phase": "立项", "kind": "校验门",
+        "purpose": "结构层校验。立项期最后一道门，通过后底座冻结",
+        "rules_tier1": ["K04", "K05", "K06", "K07", "K09", "K11", "R07", "R08"],
+        "rules_tier2": ["R13"], "outputs": ["project_report", "outstanding_outline"],
+    },
+    "repair_outline": {
+        "phase": "立项", "kind": "LLM 修复",
+        "purpose": "修结构，影响面覆盖全部下游剧集",
+        "llm": "repair_outline", "max_attempts": 3,
+    },
+    "s5_ledger": {
+        "phase": "立项", "kind": "LLM",
+        "purpose": "建立事实账本：把倒计时、资源余量、认知边界、承诺、身份、持有物"
+                   "登记成可逐集核对的账目（含到期集与应收账集号）",
+        "llm": "fact_ledger", "outputs": ["ledger"],
+        "note": "账本是事实的**单一来源**：大纲里的承接字段由账本镜像回填，"
+                "不允许两处各写一份（同步点见 s5_ledger 的 _mirror_carried_facts）",
+    },
+    "gate_ledger": {
+        "phase": "立项", "kind": "校验门",
+        "purpose": "账本自洽性校验：编号唯一、到期集落在有效区间、应收账集号存在于大纲、"
+                   "认知边界的禁知者确实是有声角色、资源余量与金手指容量不矛盾",
+        "rules_tier1": ["FC01", "FC02", "FC03", "FC04", "FC05", "FC06"],
+        "rules_tier2": [], "outputs": ["project_report", "outstanding_ledger"],
+    },
+    "repair_ledger": {
+        "phase": "立项", "kind": "LLM 修复",
+        "purpose": "回到账本重记。绝不靠改台词掩盖账目矛盾 —— 那样只是把矛盾推到下游",
+        "llm": "repair_ledger", "max_attempts": 3,
+    },
+    "gate_bible": {
+        "phase": "立项", "kind": "人机闸门",
+        "purpose": "立项冻结确认。最值得人工看一眼的位置 —— 下游全部剧集都基于这里的结论",
+        "note": "默认直通；接入 UI 时用 interrupt() + Command(goto=...) 替换，图结构不变",
+        "outputs": ["approval"],
+    },
+    "gen_episode": {
+        "phase": "逐集", "kind": "并行 worker",
+        "purpose": "fan-out 的落点：调用已编译的逐集子图，把结果映射回主图状态",
+        "note": "Send 的 payload 精确等于子图输入契约，显式回答『这一集允许看见什么』",
+    },
+    "s7_series_validate": {
+        "phase": "全剧", "kind": "归约校验",
+        "purpose": "跨集一致性：连续负面情绪、保护者是否出场、副作用引用是否成立、实际开口角色数，"
+                   "以及只有全剧视角才看得见的连续性缺陷（账目从未被触及、关系终局没落点、"
+                   "有声角色从未做过选择、正文新增但账本未登记的事实）",
+        "rules_tier1": ["R07", "R09", "K06", "K13", "K14",
+                        "FC01", "FC02", "FC03", "FC04", "FC05", "FC06",
+                        "CH01", "CH05", "RL01", "RL02", "EV05"],
+        "note": "逐集并行化的必要代价。归因出受影响的集号范围，但不自动回炉 —— "
+                "全剧级缺陷的自动修复意味着重生成全部剧集，成本与收益不成比例",
+        "outputs": ["series_report", "final_report"],
+    },
+    "s8_assemble": {
+        "phase": "全剧", "kind": "纯函数",
+        "purpose": "装配终产物：扁平化脚本（可直接交 TTS）+ 双轨校验报告 + 成本记账",
+        "note": "区分 history（含已修复的违规历史）与 outstanding（最终残留），避免用过程冒充结论",
+        "outputs": ["final_report"],
+    },
+}
+
+# 逐集子图节点
+EPISODE_NODE_META: dict[str, dict[str, Any]] = {
+    "gen_beats": {
+        "kind": "LLM",
+        "purpose": "按节拍表生成整集剧本；时间边界由规则库强制回填，不采信模型的自由发挥",
+        "llm": "episode_beats",
+    },
+    "validate_ep": {
+        "kind": "校验门",
+        "purpose": "单集校验。Tier-1 有硬伤时短路，不付语义裁判费用。"
+                   "Tier-1 通过后，把本集的『应然清单』（claims）先做零成本静态预筛，"
+                   "再把升级项并入同一次语义裁判调用 —— 每集调用次数不因声明增多而上涨",
+        "rules_tier1": ["R01", "R02", "R03", "R04", "R05", "R06", "R10", "R11", "R12"],
+        "rules_tier2": ["K06", "K08", "R13", "+ 声明兑现（CH02/CH05/RL02/EV02/EV03/EV04/"
+                        "K09/K11/K18/FC01/FC02/FC03/FC04）"],
+        "note": "静态层只做两件事：丢弃不适用项（禁知者本集没开口 / 资源本集没用到）、"
+                "报告无歧义未兑现（声称有数字却全文无数字）。多报一个假阳性的代价是一次白跑的修复",
+    },
+    "repair_audio": {
+        "kind": "混合修复",
+        "purpose": "听觉化修复：确定性规范化（音效锚点、线索收敛）先走，只有视觉描写类才调模型定向改写",
+        "llm": "repair_audio（条件性：无残余目标时不调用）",
+    },
+    "repair_beat": {
+        "kind": "LLM 修复",
+        "purpose": "重写整集，但把违规清单原样回灌。最贵的一路，只在问题真属于结构/节拍时才走",
+        "llm": "repair_beat",
+    },
+    "repair_compliance": {
+        "kind": "LLM 修复（强制人工复核）",
+        "purpose": "合规修复。价值导向问题不能靠一次重写就认定解决",
+        "llm": "repair_compliance",
+    },
+}
+
+INTERFACES = [
+    {
+        "protocol": "LLMProvider",
+        "methods": ["complete", "complete_structured"],
+        "purpose": "大模型接入。complete_structured 是整个引擎的地基 —— 没有强类型输出就没有可执行的校验",
+        "mock": "MockLLMProvider（三种注入模式：结构缺陷 / 语义缺陷 / 干净）",
+        "production": "OpenAICompatProvider 覆盖 DeepSeek / 通义 / Kimi / GLM / OpenAI / 本地 vLLM；"
+                      "非兼容协议实现本 Protocol 即可",
+    },
+    {
+        "protocol": "TTSRenderer",
+        "methods": ["render_line", "render_episode"],
+        "purpose": "语音合成。返回「实测时长」用于回填节拍表做二次校验 —— "
+                   "字数估算在中文里失准（数字、专名、语气词音节数差异极大）",
+        "mock": "MockTTSRenderer（按字符数估算，刻意粗糙以暴露回填的必要性）",
+        "production": "接任意 TTS；关键是必须回填 measured_sec，否则 180 秒落位无法真正验证",
+    },
+    {
+        "protocol": "MarketRetriever",
+        "methods": ["hot_list"],
+        "purpose": "榜单与热点数据，供选题节点参考",
+        "mock": "MockMarketRetriever（内置离线榜单）",
+        "production": "接红果热播榜 / DataEye 热力榜。必须保留 source 与 collected_at —— "
+                      "不同来源热度口径不统一，混在一张表里比较会得出错误结论",
+    },
+    {
+        "protocol": "CopyrightGuard",
+        "methods": ["check"],
+        "purpose": "生成文本与参考作品的相似度检查，把版权风险前置到生成阶段",
+        "mock": "NoopCopyrightGuard",
+        "production": "向量检索 + n-gram 重合，或外部查重服务",
+    },
+    {
+        "protocol": "TelemetrySink",
+        "methods": ["record", "event"],
+        "purpose": "成本与质量埋点。生成几十集是长任务，没有成本画像就无法做预算控制",
+        "mock": "InMemoryTelemetry（含按节点聚合的 summary）",
+        "production": "接 OpenTelemetry / LangSmith / 自有监控",
+    },
+]
+
+
+def export_spec(lib: RuleLibrary, include_environment: bool = True) -> dict:
+    env: dict[str, Any] = {}
+    if include_environment:
+        try:
+            from importlib.metadata import version
+
+            import langgraph  # noqa: F401
+
+            env = {
+                "langgraph": version("langgraph"),
+                "langchain_core": version("langchain-core"),
+                "pydantic": version("pydantic"),
+                "python": ".".join(str(v) for v in __import__("sys").version_info[:3]),
+            }
+        except Exception:  # noqa: BLE001
+            env = {}
+
+    tier1_rules = sorted(
+        set(ROUTE_MAP) - {"K06", "K16", "K08", "R13"}
+    )
+    return {
+        "spec_version": "1.0.0",
+        "engine_version": __version__,
+        "generated_from": "drama_engine 源码 + 规则库（导出式规范，不手写，因此不会与实现漂移）",
+        "environment": env,
+        "rule_library": lib.manifest(),
+        "prompt_version": PROMPT_VERSION,
+        "topology": {
+            "shape": "立项段串行 → 逐集段并行 fan-out（Send）→ 归约",
+            "why_serial_intake": "金手指决定角色（护短群体会因为金手指过强而升级为权力保护者），"
+                                 "角色决定大纲。并行加速立项会产出自相矛盾的底座",
+            "why_parallel_episodes": "隔离是为了内容多样性：若每集都能看见前面所有集的文本，"
+                                     "模型会不自觉地复述前面的桥段，正是 K18 想拦的感官资产衰减",
+            "cost_of_parallelism": "跨集一致性需要 s7 归约校验兜底",
+            "why_gates_before_freeze": "校验放在『能修它的那一步』之后。金手指层级错了在第 2 个节点就拦住，"
+                                       "而不是等 20 集剧本生成完才发现 —— 位置选错，再好的规则库也是白写",
+        },
+        "state": {
+            "main": {
+                "brief": {"reducer": None, "note": "用户输入，归一化后只读"},
+                "genre_id / recipe_id / gadget / cast": {
+                    "reducer": None, "note": "立项底座，gate_bible 之后冻结只读"},
+                "behavior / ledger": {
+                    "reducer": None,
+                    "note": "人物行为卡（选择规律）+ 事实账本。与大纲同级冻结 —— "
+                            "选择规律与账目事实都是立项级设定，不允许在单集里临时改"},
+                "outline": {"reducer": None, "note": "立项底座，gate_bible 之后冻结只读"},
+                "episodes": {"reducer": "merge_episodes", "note": "并行写入，按集号归并排序"},
+                "findings": {"reducer": "operator.add", "note": "违规历史（含已修复），用于成本与质量分析"},
+                "outstanding_*": {"reducer": "立项门覆盖式 / 逐集累加",
+                                  "note": "最终残留违规。与 findings 分开是必须的 —— "
+                                          "用历史日志冒充交付质量会产生严重误报"},
+                "unclaimed": {"reducer": "operator.add",
+                              "note": "正文中出现、账本未登记的新事实。累加而非覆盖："
+                                      "它是全局视角的提取结果，任何一集提出来都不该被下一集冲掉"},
+                "budgets": {"reducer": "sum_dict", "note": "计数器必须求和：并行分支各报一份，覆盖语义会严重低估成本"},
+                "attempts": {"reducer": "merge_dict（取最新值）", "note": "轮次号，与计数器语义相反"},
+                "trace": {"reducer": "operator.add", "note": "执行轨迹"},
+            },
+            "episode_subgraph": {
+                "note": "子图状态刻意收窄，让『这一集能看见什么』成为显式契约",
+                "behavior / ledger": {"reducer": None,
+                                      "note": "只读切片来源；真正注入提示词的是"
+                                              "continuity.continuity_slice() 切出的本集相关部分，"
+                                              "而不是把前面所有集摊开"},
+                "claims": {"reducer": None,
+                           "note": "本集『应然清单』，由 dispatch 阶段确定性展开（零成本）。"
+                                   "它是证据评审的输入：声明与正文的差就是假反转/假信任/假因果/标签空转"},
+                "current": {"reducer": None,
+                            "note": "本轮校验结论。路由与修复提示词只看它 —— "
+                                    "若误用累加的 findings，上一轮的违规会永远拦住本轮，修复回路无法退出"},
+            },
+        },
+        "nodes": [
+            {"id": k, **v} for k, v in NODE_META.items()
+        ],
+        "episode_subgraph_nodes": [
+            {"id": k, **v} for k, v in EPISODE_NODE_META.items()
+        ],
+        "edges": _edges(),
+        "validation": {
+            "ladder": [
+                {"tier": 1, "name": "确定性扫描", "cost": "零 token / 毫秒级 / 结果可复现",
+                 "covers": tier1_rules},
+                {"tier": 2, "name": "语义裁判", "cost": "每轮一次模型调用",
+                 "covers": ["K06", "K08", "K16", "R13"],
+                 "note": "输出必须是固定形状并要求给出原文证据 —— 语义判定永远可能误判，"
+                         "留证据才能让人工复核只花几秒钟"},
+            ],
+            "short_circuit_policy": "Tier-1 发现 error 即短路，不调用语义裁判。"
+                                    "一集剧本如果开场 3 秒没有听觉钩子，"
+                                    "『它的第 5 步是不是副作用』这个问题根本不必问",
+            "repair_routing": ROUTE_MAP,
+            "severity_policy": "只有 error 触发自动修复；warning 记录但不自动改 —— "
+                               "warning 级规则在自动修复时容易误伤，交由人工或上一层提纲约束处理",
+            "not_yet_executable": [
+                {"rule": "K10", "reason": "『信息差笑点每集 ≤ 3 个』需要在生成时为笑点打标，"
+                                          "当前 Schema 未包含该字段"},
+                {"rule": "K07", "reason": "『结局完成升维』依赖对全剧主题的语义判断，"
+                                          "当前仅在第四幕存在性上做了确定性近似"},
+            ],
+        },
+        "repair_routing_priority": {
+            "episode_scope": ["repair_compliance", "repair_beat", "repair_audio"],
+            "note": "合规优先于一切；结构问题优先于音频问题。"
+                    "立项层规则的修复路线在逐集子图内没有对应节点时，降级为重写节拍",
+        },
+        "model_routing": {
+            "principle": "『用哪个模型』是节点的属性，不是全局配置 —— 杠杆率差异极大",
+            "tiers": {k: v["tier"] for k, v in MODEL_ROUTING.items()},
+            "detail": MODEL_ROUTING,
+            "rationale": "开场 3 秒钩子、二次反转、结尾强钩子直接决定完播率，用最强模型，"
+                         "一个 token 都不能省；中段推进与音频化改写结构固定、可校验，"
+                         "便宜模型足够，错了还有校验节点兜底",
+            "binding": "档位 → 具体模型名由部署配置决定（ModelTierMap），换模型不改代码",
+        },
+        "interfaces": INTERFACES,
+        "budget_control": {
+            "attempt_caps": {"gadget": 3, "cast": 3, "outline": 3, "episode": 2},
+            "degrade_policy": "超限即降级放行并打标，交人工复核。"
+                              "无限重试是最常见的生产事故来源 —— 模型在某条规则上反复失败时，"
+                              "正确做法是放行 + 标记，而不是烧光预算",
+            "cache_key": "hash(节点 × 提示词版本 × 公式库版本 × 穿越规则库版本 × 输入)。"
+                         "规则一变，旧缓存自动失效；这条设计避免了『改了规则但输出没变』的隐蔽 bug",
+        },
+        "extension_points": _extensions(),
+        "verification": {
+            "modes": [
+                {"flag": "（默认）", "injects": "无", "expects": "交付质量 error=0"},
+                {"flag": "--violations-demo", "injects": "结构缺陷 + 关闭修复回路",
+                 "expects": "Tier-1 命中 K/R/CH/RL/FC 五族 —— 证明人物层与账本层的"
+                            "确定性判据真的会被触发"},
+                {"flag": "--tier2-demo", "injects": "仅语义缺陷（Tier-1 全绿）",
+                 "expects": "Tier-2 命中 K06/fake_causality —— 证明语义裁判不是摆设"},
+                {"flag": "--evidence-demo", "injects": "结构全绿、账本合规，但正文不兑现声明",
+                 "expects": "命中全部 7 种伪证模式：label_only / fake_reversal / fake_trust / "
+                            "fake_causality / countdown_drift / knowledge_leak / resource_drift "
+                            "+ EV05 未登记伏笔。resource_drift 由账目余量（remaining）与正文耗尽"
+                            "标记的静态矛盾判定触发 —— 词表里声明的每一种模式都必须有能命中它的"
+                            "注入，否则它只是纸面判据。"
+                            "这是三条 demo 里最重要的一条 —— 它复现的正是「规则全过、戏不好看」",
+                 "note": "每条命中都必须带正文原文作为证据；兑现的声明也必须给证据 —— "
+                         "追问『你凭什么说它兑现了』比追问『为什么没兑现』更能拦住幻觉式通过"},
+            ],
+            "cost_invariance": "声明核对并入既有的单集语义裁判调用，逐集模型调用次数不随"
+                               "声明数量增长（实测：声明 4→9 条，每集 judge 调用仍为 1 次）",
+            "artifact": "run-*.json 含 validation.outstanding 与 validation.history 双轨统计；"
+                        "outstanding.fake_patterns 给出伪证模式分布（人物与剧情质量的体检表）",
+        },
+    }
+
+
+def _edges() -> list[dict]:
+    return [
+        {"from": "START", "to": "s0_intake"},
+        {"from": "s0_intake", "to": "s1_topic"},
+        {"from": "s1_topic", "to": "s2_gadget"},
+        {"from": "s2_gadget", "to": "gate_gadget"},
+        {"from": "gate_gadget", "to": "repair_gadget", "condition": "有 error 且未超重试上限",
+         "route_fn": "route_after_gadget"},
+        {"from": "repair_gadget", "to": "gate_gadget", "kind": "回环"},
+        {"from": "gate_gadget", "to": "s3_cast", "condition": "通过或已放弃修复"},
+        {"from": "s3_cast", "to": "gate_cast"},
+        {"from": "gate_cast", "to": "repair_cast", "condition": "有 error 且未超上限",
+         "route_fn": "route_after_cast"},
+        {"from": "repair_cast", "to": "gate_cast", "kind": "回环"},
+        {"from": "gate_cast", "to": "s3b_behavior", "condition": "通过或已放弃修复"},
+        {"from": "s3b_behavior", "to": "gate_behavior"},
+        {"from": "gate_behavior", "to": "repair_behavior", "condition": "有 error 且未超上限",
+         "route_fn": "route_after_behavior"},
+        {"from": "repair_behavior", "to": "gate_behavior", "kind": "回环"},
+        {"from": "gate_behavior", "to": "s4_outline", "condition": "通过或已放弃修复"},
+        {"from": "s4_outline", "to": "gate_outline"},
+        {"from": "gate_outline", "to": "repair_outline", "condition": "有 error 且未超上限",
+         "route_fn": "route_after_outline"},
+        {"from": "repair_outline", "to": "gate_outline", "kind": "回环"},
+        {"from": "gate_outline", "to": "s5_ledger", "condition": "通过或已放弃修复"},
+        {"from": "s5_ledger", "to": "gate_ledger"},
+        {"from": "gate_ledger", "to": "repair_ledger", "condition": "有 error 且未超上限",
+         "route_fn": "route_after_ledger"},
+        {"from": "repair_ledger", "to": "gate_ledger", "kind": "回环"},
+        {"from": "gate_ledger", "to": "gate_bible", "condition": "通过或已放弃修复"},
+        {"from": "gate_bible", "to": "gen_episode × N",
+         "kind": "并行 fan-out", "route_fn": "dispatch_episodes（返回 list[Send]）",
+         "note": "两个 gen_episode 之间无共享可变状态。派发时同时构建本集的"
+                 "『应然清单』（claims）：账目切片 + 行为卡切片 + 关系收束要求"},
+        {"from": "gen_episode", "to": "s7_series_validate", "kind": "归约", "note": "所有分支汇入"},
+        {"from": "s7_series_validate", "to": "s8_assemble"},
+        {"from": "s8_assemble", "to": "END"},
+    ]
+
+
+def _extensions() -> list[dict]:
+    return [
+        {"goal": "新增一条校验规则",
+         "steps": ["在规则库 JSON 中追加（K 类进 穿越剧引擎规则.json，R 类进 drama-formula-library.json，"
+                   "CH/RL/FC/EV 类进 人物与连续性规则.json）",
+                   "在 validators/deterministic.py 实现判定函数并加入 ROUTE_MAP 决定修复去向",
+                   "若需语义判定，在 validators/llm_judge.py 的 JUDGE_CRITERIA 补判据"],
+         "note": "不需要改图结构 —— 校验节点会自己读到新规则。"
+                 "规则库按 id 前缀分族，rule_by_id() 跨三库统一查询，加第四个库不会静默失效"},
+        {"goal": "接入一个新的大模型供应商",
+         "steps": ["OpenAI 兼容协议：只需配置 base_url 与 model 名（KNOWN_ENDPOINTS 已内置主流厂商）",
+                   "非兼容协议：实现 LLMProvider 两个方法，在 CLI/服务层装配进 Runtime"],
+         "note": "节点与图完全不感知厂商"},
+        {"goal": "新增一个外部能力（如音效库检索、配音演员档期系统）",
+         "steps": ["在 contracts.py 加一个 Protocol + Mock 实现",
+                   "在 Runtime 增加一个字段",
+                   "在相关 node 中通过 deps(config) 取用"],
+         "note": "三处小改动，不动编排"},
+        {"goal": "接入人工审核",
+         "steps": ["gate_bible 内的直通实现换成 interrupt() + Command(goto=...)",
+                   "在 checkpointer 上配置 thread_id，用 Command(resume=...) 恢复"],
+         "note": "这是本设计里唯一预留但未启用的图能力，因为它的启用取决于产品形态（是否有 UI）"},
+        {"goal": "牺牲隔换取更强的一致性（长剧场景）",
+         "steps": ["把 gen_episode 的子图调用改为『把子图直接注册为节点 + 显式 reducer』",
+                   "或在 dispatch 的 Send payload 里追加前若干集的摘要（注意这会引入 K18 的重复风险）"],
+         "note": "两种方案的成本与风险已在代码注释中留档"},
+    ]
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(prog="drama_engine.spec_export")
+    parser.add_argument("--workspace", default=None)
+    parser.add_argument("--out", default="workflow-spec.json")
+    args = parser.parse_args(argv)
+
+    lib = RuleLibrary.load(args.workspace)
+    spec = export_spec(lib)
+    Path(args.out).write_text(json.dumps(spec, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"已导出 {args.out}")
+    print(f"  节点 {len(spec['nodes'])} + 子图节点 {len(spec['episode_subgraph_nodes'])}"
+          f"｜边 {len(spec['edges'])}｜接口 {len(spec['interfaces'])}"
+          f"｜Tier1 规则 {len(spec['validation']['ladder'][0]['covers'])}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

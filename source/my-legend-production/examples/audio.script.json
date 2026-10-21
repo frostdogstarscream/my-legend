@@ -1,0 +1,139 @@
+{
+  "schema_version": "lingban.script/1",
+  "source_version_id": "v_87126582902b42814b278d22694513b2",
+  "artifact_revision": "r1",
+  "title": "灯下的合作",
+  "roles": [
+    {
+      "role_id": "r_6e0e22405d7081a516f5e9f2302be7db",
+      "name": "林岚",
+      "description": "协议示例身份。"
+    },
+    {
+      "role_id": "r_e1b3f2224055cba18c54c40c7ef4f0e3",
+      "name": "周野",
+      "description": "协议示例身份。"
+    },
+    {
+      "role_id": "r_15ffb5ba17fac7e2bcc74ab8110deba7",
+      "name": "旁白",
+      "description": "协议示例身份。"
+    }
+  ],
+  "scenes": [
+    {
+      "scene_id": "s_bc4dadbac1522b31fcaf45e26a45966e",
+      "description": "检查前；室内"
+    }
+  ],
+  "events": [
+    {
+      "block_id": "b_e188df92ee48c07b672daa0fc87f61c6",
+      "scene_id": "s_bc4dadbac1522b31fcaf45e26a45966e",
+      "kind": "sfx",
+      "role_id": null,
+      "text": "木门轻轻合上一次。",
+      "performance": {},
+      "sound": {
+        "constraints": {
+          "count": 1
+        },
+        "production_description": "木门轻轻合上一次。"
+      },
+      "media": {},
+      "timing": [],
+      "source_ref": {
+        "episode_id": "episode-1",
+        "scene_id": "scene-1",
+        "line_id": "line-1",
+        "story_version_id": "fixture-version-001"
+      }
+    },
+    {
+      "block_id": "b_12c4a99fc4284938fc608468634caaa6",
+      "scene_id": "s_bc4dadbac1522b31fcaf45e26a45966e",
+      "kind": "speech",
+      "role_id": "r_15ffb5ba17fac7e2bcc74ab8110deba7",
+      "text": "林岚把手电放在桌上。",
+      "performance": {
+        "instructions": "情绪：平静。平稳叙述，保持清楚。重音：手电。",
+        "source_kind": "narration",
+        "read_aloud": true,
+        "display": true,
+        "required_controls": [
+          "instructions"
+        ]
+      },
+      "sound": {},
+      "media": {},
+      "timing": [],
+      "source_ref": {
+        "episode_id": "episode-1",
+        "scene_id": "scene-1",
+        "line_id": "line-2",
+        "story_version_id": "fixture-version-001"
+      }
+    },
+    {
+      "block_id": "b_6393e42ff59195212605231bafb3bf64",
+      "scene_id": "s_bc4dadbac1522b31fcaf45e26a45966e",
+      "kind": "speech",
+      "role_id": "r_6e0e22405d7081a516f5e9f2302be7db",
+      "text": "先别急，我们一起检查。",
+      "performance": {
+        "instructions": "情绪：平静。克制而耐心地邀请对方合作。重音：一起。语句衔接处适当短暂停顿。",
+        "source_kind": "dialogue",
+        "read_aloud": true,
+        "display": true,
+        "required_controls": [
+          "instructions"
+        ]
+      },
+      "sound": {},
+      "media": {},
+      "timing": [],
+      "source_ref": {
+        "episode_id": "episode-1",
+        "scene_id": "scene-1",
+        "line_id": "line-3",
+        "story_version_id": "fixture-version-001"
+      }
+    },
+    {
+      "block_id": "b_a7aa7b77d0f5ba8028b1d8e81d8524d3",
+      "scene_id": "s_bc4dadbac1522b31fcaf45e26a45966e",
+      "kind": "speech",
+      "role_id": "r_e1b3f2224055cba18c54c40c7ef4f0e3",
+      "text": "好，我来照亮这里。",
+      "performance": {
+        "instructions": "情绪：愉快。轻声回应，自然积极。重音：好。",
+        "source_kind": "dialogue",
+        "read_aloud": true,
+        "display": true,
+        "required_controls": [
+          "instructions"
+        ]
+      },
+      "sound": {},
+      "media": {},
+      "timing": [],
+      "source_ref": {
+        "episode_id": "episode-1",
+        "scene_id": "scene-1",
+        "line_id": "line-4",
+        "story_version_id": "fixture-version-001"
+      }
+    }
+  ],
+  "source": {
+    "story_id": "fixture-story-001",
+    "story_version_id": "fixture-version-001",
+    "fixture_only": true
+  },
+  "boundaries": {
+    "allow_new_plot": false,
+    "preserve_dialogue": true
+  },
+  "issues": [],
+  "id_mapping": {}
+}

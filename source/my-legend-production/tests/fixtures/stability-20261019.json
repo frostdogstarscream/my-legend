@@ -1,0 +1,3639 @@
+{
+  "source": "stability-three-20261019-v1; original model arrangements and measured frame metadata only; no credentials or media",
+  "sa01": {
+    "plan": {
+      "channels": 1,
+      "delivery_sha256": "64b5dd5f9e3882947f7359f4f360efdf351e58b8b481c507f97c0f0f7fb97888",
+      "duck_attack_ms": 30,
+      "duck_gain_db": -9.0,
+      "duck_release_ms": 100,
+      "events": [
+        {
+          "identity_id": null,
+          "kind": "sfx",
+          "operations": [
+            {
+              "control_target": null,
+              "cue_text": "手在空挂钩上胡乱摸索的轻微碰撞声，夹杂指甲刮过木板的声响。",
+              "end": null,
+              "fade_out_ms": 0,
+              "gain_db": 0.0,
+              "mode": "one_shot",
+              "operation_id": "hookSearch",
+              "reason": "开场瞬态音效，表现寻找钥匙的慌乱。",
+              "start": {
+                "offset_ms": 0,
+                "operation_id": null,
+                "point": "start"
+              },
+              "stop_target": null,
+              "target_gain_db": null,
+              "transition_end": null
+            }
+          ],
+          "source": {
+            "episode_id": "ep-1-ef90d718",
+            "line_id": "ep1-s1-l1",
+            "scene_id": "ep1-scene1"
+          },
+          "text": "（强，近）手在空挂钩上胡乱摸索的轻微碰撞声，夹杂指甲刮过木板的声响。"
+        },
+        {
+          "identity_id": "legend-moyu",
+          "kind": "dialogue",
+          "operations": [
+            {
+              "control_target": null,
+              "cue_text": "钥匙呢？！挂钩上的钥匙怎么没了？",
+              "end": null,
+              "fade_out_ms": 0,
+              "gain_db": 0.0,
+              "mode": "speech",
+              "operation_id": "moyu1",
+              "reason": "墨羽焦急质问，黄金钩子开篇。",
+              "start": {
+                "offset_ms": 0,
+                "operation_id": "hookSearch",
+                "point": "end"
+              },
+              "stop_target": null,
+              "target_gain_db": null,
+              "transition_end": null
+            }
+          ],
+          "source": {
+            "episode_id": "ep-1-ef90d718",
+            "line_id": "ep1-s1-l2",
+            "scene_id": "ep1-scene1"
+          },
+          "text": "钥匙呢？！挂钩上的钥匙怎么没了？"
+        },
+        {
+          "identity_id": null,
+          "kind": "sfx",
+          "operations": [
+            {
+              "control_target": null,
+              "cue_text": "扳手被轻轻放在工具台上的声音，金属与桌面接触，发出一声克制的闷响。",
+              "end": null,
+              "fade_out_ms": 0,
+              "gain_db": 0.0,
+              "mode": "one_shot",
+              "operation_id": "wrenchSet",
+              "reason": "灵墨放下工具回应质问，金属闷响衬托其冷静。",
+              "start": {
+                "offset_ms": 0,
+                "operation_id": "moyu1",
+                "point": "end"
+              },
+              "stop_target": null,
+              "target_gain_db": null,
+              "transition_end": null
+            }
+          ],
+          "source": {
+            "episode_id": "ep-1-ef90d718",
+            "line_id": "ep1-s1-l3",
+            "scene_id": "ep1-scene1"
+          },
+          "text": "（中，近）扳手被轻轻放在工具台上的声音，金属与桌面接触，发出一声克制的闷响。"
+        },
+        {
+          "identity_id": "legend-moyu",
+          "kind": "dialogue",
+          "operations": [
+            {
+              "control_target": null,
+              "cue_text": "灵墨，是不是你刚才收工具的时候顺手拿走了？最后就你在这边！",
+              "end": null,
+              "fade_out_ms": 0,
+              "gain_db": 0.0,
+              "mode": "speech",
+              "operation_id": "moyu2",
+              "reason": "墨羽直接质问，将紧张感推到顶点。",
+              "start": {
+                "offset_ms": 0,
+                "operation_id": "wrenchSet",
+                "point": "end"
+              },
+              "stop_target": null,
+              "target_gain_db": null,
+              "transition_end": null
+            }
+          ],
+          "source": {
+            "episode_id": "ep-1-ef90d718",
+            "line_id": "ep1-s1-l4",
+            "scene_id": "ep1-scene1"
+          },
+          "text": "灵墨，是不是你刚才收工具的时候顺手拿走了？最后就你在这边！"
+        },
+        {
+          "identity_id": "legend-lingmo",
+          "kind": "dialogue",
+          "operations": [
+            {
+              "control_target": null,
+              "cue_text": "我没拿。别急，我们想想关门之前都干了什么，一件一件来。",
+              "end": null,
+              "fade_out_ms": 0,
+              "gain_db": 0.0,
+              "mode": "speech",
+              "operation_id": "lingmo1",
+              "reason": "灵墨平静否认，将冲突引向理性排查。",
+              "start": {
+                "offset_ms": 0,
+                "operation_id": "moyu2",
+                "point": "end"
+              },
+              "stop_target": null,
+              "target_gain_db": null,
+              "transition_end": null
+            }
+          ],
+          "source": {
+            "episode_id": "ep-1-ef90d718",
+            "line_id": "ep1-s1-l5",
+            "scene_id": "ep1-scene1"
+          },
+          "text": "我没拿。别急，我们想想关门之前都干了什么，一件一件来。"
+        },
+        {
+          "identity_id": "legend-moyu",
+          "kind": "dialogue",
+          "operations": [
+            {
+              "control_target": null,
+              "cue_text": "我最后擦了柜台，这我记得。",
+              "end": null,
+              "fade_out_ms": 0,
+              "gain_db": 0.0,
+              "mode": "speech",
+              "operation_id": "moyu3",
+              "reason": "墨羽开始配合排查，语气仍带急躁。",
+              "start": {
+                "offset_ms": 0,
+                "operation_id": "lingmo1",
+                "point": "end"
+              },
+              "stop_target": null,
+              "target_gain_db": null,
+              "transition_end": null
+            }
+          ],
+          "source": {
+            "episode_id": "ep-1-ef90d718",
+            "line_id": "ep1-s1-l6",
+            "scene_id": "ep1-scene1"
+          },
+          "text": "我最后擦了柜台，这我记得。"
+        },
+        {
+          "identity_id": "legend-lingmo",
+          "kind": "dialogue",
+          "operations": [
+            {
+              "control_target": null,
+              "cue_text": "你擦柜台的时候，我听见钥匙碰墙的叮当声了。说明那会儿它还在钩子上。",
+              "end": null,
+              "fade_out_ms": 0,
+              "gain_db": 0.0,
+              "mode": "speech",
+              "operation_id": "lingmo2",
+              "reason": "灵墨提供排除性的听觉线索，语气温和有逻辑。",
+              "start": {
+                "offset_ms": 0,
+                "operation_id": "moyu3",
+                "point": "end"
+              },
+              "stop_target": null,
+              "target_gain_db": null,
+              "transition_end": null
+            }
+          ],
+          "source": {
+            "episode_id": "ep-1-ef90d718",
+            "line_id": "ep1-s1-l7",
+            "scene_id": "ep1-scene1"
+          },
+          "text": "你擦柜台的时候，我听见钥匙碰墙的叮当声了。说明那会儿它还在钩子上。"
+        },
+        {
+          "identity_id": null,
+          "kind": "sfx",
+          "operations": [
+            {
+              "control_target": null,
+              "cue_text": "一声极短促的、金属碰撞墙壁的清脆叮当声",
+              "end": null,
+              "fade_out_ms": 0,
+              "gain_db": 0.0,
+              "mode": "one_shot",
+              "operation_id": "flashbackDing",
+              "reason": "配合灵墨的回忆闪回，证实钥匙当时在钩子上。",
+              "start": {
+                "offset_ms": 0,
+                "operation_id": "lingmo2",
+                "point": "end"
+              },
+              "stop_target": null,
+              "target_gain_db": null,
+              "transition_end": null
+            }
+          ],
+          "source": {
+            "episode_id": "ep-1-ef90d718",
+            "line_id": "ep1-s1-l8",
+            "scene_id": "ep1-scene1"
+          },
+          "text": "（弱）一声极短促的、金属碰撞墙壁的清脆叮当声，作为回忆的闪回音效。"
+        },
+        {
+          "identity_id": "legend-moyu",
+          "kind": "dialogue",
+          "operations": [
+            {
+              "control_target": null,
+              "cue_text": "……对，我当时也听见了。那擦完柜台之后呢？",
+              "end": null,
+              "fade_out_ms": 0,
+              "gain_db": 0.0,
+              "mode": "speech",
+              "operation_id": "moyu4",
+              "reason": "墨羽承认并追问，推动排查继续。",
+              "start": {
+                "offset_ms": 0,
+                "operation_id": "flashbackDing",
+                "point": "end"
+              },
+              "stop_target": null,
+              "target_gain_db": null,
+              "transition_end": null
+            }
+          ],
+          "source": {
+            "episode_id": "ep-1-ef90d718",
+            "line_id": "ep1-s1-l9",
+            "scene_id": "ep1-scene1"
+          },
+          "text": "……对，我当时也听见了。那擦完柜台之后呢？"
+        },
+        {
+          "identity_id": "legend-lingmo",
+          "kind": "dialogue",
+          "operations": [
+            {
+              "control_target": null,
+              "cue_text": "然后我扫了地。簸箕就放在门口，我全程没靠近挂钩那边。",
+              "end": null,
+              "fade_out_ms": 0,
+              "gain_db": 0.0,
+              "mode": "speech",
+              "operation_id": "lingmo3",
+              "reason": "灵墨陈述自己的行动轨迹，继续排查。",
+              "start": {
+                "offset_ms": 0,
+                "operation_id": "moyu4",
+                "point": "end"
+              },
+              "stop_target": null,
+              "target_gain_db": null,
+              "transition_end": null
+            }
+          ],
+          "source": {
+            "episode_id": "ep-1-ef90d718",
+            "line_id": "ep1-s2-l1",
+            "scene_id": "ep1-scene2"
+          },
+          "text": "然后我扫了地。簸箕就放在门口，我全程没靠近挂钩那边。"
+        },
+        {
+          "identity_id": "legend-moyu",
+          "kind": "dialogue",
+          "operations": [
+            {
+              "control_target": null,
+              "cue_text": "那钥匙还能自己长腿跑了？",
+              "end": null,
+              "fade_out_ms": 0,
+              "gain_db": 0.0,
+              "mode": "speech",
+              "operation_id": "moyu5",
+              "reason": "墨羽急躁反问，表现排查陷入瓶颈。",
+              "start": {
+                "offset_ms": 0,
+                "operation_id": "lingmo3",
+                "point": "end"
+              },
+              "stop_target": null,
+              "target_gain_db": null,
+              "transition_end": null
+            }
+          ],
+          "source": {
+            "episode_id": "ep-1-ef90d718",
+            "line_id": "ep1-s2-l2",
+            "scene_id": "ep1-scene2"
+          },
+          "text": "那钥匙还能自己长腿跑了？"
+        },
+        {
+          "identity_id": "legend-lingmo",
+          "kind": "dialogue",
+          "operations": [
+            {
+              "control_target": null,
+              "cue_text": "你扫完地之后，是不是去收了外面的招牌？",
+              "end": null,
+              "fade_out_ms": 0,
+              "gain_db": 0.0,
+              "mode": "speech",
+              "operation_id": "lingmo4",
+              "reason": "灵墨继续引导回忆，将线索指向墨羽自己。",
+              "start": {
+                "offset_ms": 0,
+                "operation_id": "moyu5",
+                "point": "end"
+              },
+              "stop_target": null,
+              "target_gain_db": null,
+              "transition_end": null
+            }
+          ],
+          "source": {
+            "episode_id": "ep-1-ef90d718",
+            "line_id": "ep1-s2-l3",
+            "scene_id": "ep1-scene2"
+          },
+          "text": "你扫完地之后，是不是去收了外面的招牌？"
+        },
+        {
+          "identity_id": "narrator",
+          "kind": "narration",
+          "operations": [
+            {
+              "control_target": null,
+              "cue_text": "墨羽愣了一下，开始努力回想。",
+              "end": null,
+              "fade_out_ms": 0,
+              "gain_db": 0.0,
+              "mode": "speech",
+              "operation_id": "narPause",
+              "reason": "旁白过渡，刻画墨羽转向深入回忆。",
+              "start": {
+                "offset_ms": 0,
+                "operation_id": "lingmo4",
+                "point": "end"
+              },
+              "stop_target": null,
+              "target_gain_db": null,
+              "transition_end": null
+            }
+          ],
+          "source": {
+            "episode_id": "ep-1-ef90d718",
+            "line_id": "ep1-s2-l4",
+            "scene_id": "ep1-scene2"
+          },
+          "text": "墨羽愣了一下，开始努力回想。"
+        },
+        {
+          "identity_id": "legend-moyu",
+          "kind": "dialogue",
+          "operations": [
+            {
+              "control_target": null,
+              "cue_text": "对……我去门口，觉得干活干热了，就把围裙解下来折了几下，搭在胳膊上，然后才出门搬的招牌。",
+              "end": null,
+              "fade_out_ms": 0,
+              "gain_db": 0.0,
+              "mode": "speech",
+              "operation_id": "moyu6",
+              "reason": "墨羽回忆关键动作，为发现钥匙埋下伏笔。",
+              "start": {
+                "offset_ms": 0,
+                "operation_id": "narPause",
+                "point": "end"
+              },
+              "stop_target": null,
+              "target_gain_db": null,
+              "transition_end": null
+            }
+          ],
+          "source": {
+            "episode_id": "ep-1-ef90d718",
+            "line_id": "ep1-s2-l5",
+            "scene_id": "ep1-scene2"
+          },
+          "text": "对……我去门口，觉得干活干热了，就把围裙解下来折了几下，搭在胳膊上，然后才出门搬的招牌。"
+        },
+        {
+          "identity_id": "legend-lingmo",
+          "kind": "dialogue",
+          "operations": [
+            {
+              "control_target": null,
+              "cue_text": "围裙呢？现在在哪？",
+              "end": null,
+              "fade_out_ms": 0,
+              "gain_db": 0.0,
+              "mode": "speech",
+              "operation_id": "lingmo5",
+              "reason": "灵墨直击核心，将注意力引向围裙。",
+              "start": {
+                "offset_ms": 0,
+                "operation_id": "moyu6",
+                "point": "end"
+              },
+              "stop_target": null,
+              "target_gain_db": null,
+              "transition_end": null
+            }
+          ],
+          "source": {
+            "episode_id": "ep-1-ef90d718",
+            "line_id": "ep1-s2-l6",
+            "scene_id": "ep1-scene2"
+          },
+          "text": "围裙呢？现在在哪？"
+        },
+        {
+          "identity_id": "narrator",
+          "kind": "narration",
+          "operations": [
+            {
+              "control_target": null,
+              "cue_text": "墨羽低下头，看向自己身上重新系好的围裙。她把手伸进口袋。",
+              "end": null,
+              "fade_out_ms": 0,
+              "gain_db": 0.0,
+              "mode": "speech",
+              "operation_id": "narReach",
+              "reason": "旁白动作描述，营造高潮前的悬念。",
+              "start": {
+                "offset_ms": 0,
+                "operation_id": "lingmo5",
+                "point": "end"
+              },
+              "stop_target": null,
+              "target_gain_db": null,
+              "transition_end": null
+            }
+          ],
+          "source": {
+            "episode_id": "ep-1-ef90d718",
+            "line_id": "ep1-s2-l7",
+            "scene_id": "ep1-scene2"
+          },
+          "text": "墨羽低下头，看向自己身上重新系好的围裙。她把手伸进口袋。"
+        },
+        {
+          "identity_id": null,
+          "kind": "sfx",
+          "operations": [
+            {
+              "control_target": null,
+              "cue_text": "手指在粗布口袋里摸索，随后碰到金属物件，发出一声清晰的、沉闷的撞击声。",
+              "end": null,
+              "fade_out_ms": 0,
+              "gain_db": 0.0,
+              "mode": "one_shot",
+              "operation_id": "pocketClink",
+              "reason": "钥匙被摸到的实锤音效，证实钥匙所在。",
+              "start": {
+                "offset_ms": 0,
+                "operation_id": "narReach",
+                "point": "end"
+              },
+              "stop_target": null,
+              "target_gain_db": null,
+              "transition_end": null
+            }
+          ],
+          "source": {
+            "episode_id": "ep-1-ef90d718",
+            "line_id": "ep1-s2-l8",
+            "scene_id": "ep1-scene2"
+          },
+          "text": "（中，特写）手指在粗布口袋里摸索，随后碰到金属物件，发出一声清晰的、沉闷的撞击声。"
+        },
+        {
+          "identity_id": "narrator",
+          "kind": "narration",
+          "operations": [
+            {
+              "control_target": null,
+              "cue_text": "墨羽缓缓掏出一把钥匙，正是修理铺的那一把。",
+              "end": null,
+              "fade_out_ms": 0,
+              "gain_db": 0.0,
+              "mode": "speech",
+              "operation_id": "narKeyFound",
+              "reason": "旁白宣告钥匙找到，尘埃落定。",
+              "start": {
+                "offset_ms": 0,
+                "operation_id": "pocketClink",
+                "point": "end"
+              },
+              "stop_target": null,
+              "target_gain_db": null,
+              "transition_end": null
+            }
+          ],
+          "source": {
+            "episode_id": "ep-1-ef90d718",
+            "line_id": "ep1-s3-l1",
+            "scene_id": "ep1-scene3"
+          },
+          "text": "墨羽缓缓掏出一把钥匙，正是修理铺的那一把。"
+        },
+        {
+          "identity_id": null,
+          "kind": "action",
+          "operations": [
+            {
+              "control_target": null,
+              "cue_text": "短暂的沉默。",
+              "end": null,
+              "fade_out_ms": 0,
+              "gain_db": 0.0,
+              "mode": "action_note",
+              "operation_id": "pauseBeat",
+              "reason": "情绪停顿，为道歉铺垫，不产生或操作声音。",
+              "start": {
+                "offset_ms": 0,
+                "operation_id": "narKeyFound",
+                "point": "end"
+              },
+              "stop_target": null,
+              "target_gain_db": null,
+              "transition_end": null
+            }
+          ],
+          "source": {
+            "episode_id": "ep-1-ef90d718",
+            "line_id": "ep1-s3-l2",
+            "scene_id": "ep1-scene3"
+          },
+          "text": "短暂的沉默。空气仿佛凝固了。"
+        },
+        {
+          "identity_id": "legend-moyu",
+          "kind": "dialogue",
+          "operations": [
+            {
+              "control_target": null,
+              "cue_text": "灵墨，是我错怪你了。钥匙……一直在我自己口袋里。",
+              "end": null,
+              "fade_out_ms": 0,
+              "gain_db": 0.0,
+              "mode": "speech",
+              "operation_id": "moyu7",
+              "reason": "墨羽诚恳道歉，完成角色情感转变。",
+              "start": {
+                "offset_ms": 1200,
+                "operation_id": "pauseBeat",
+                "point": "start"
+              },
+              "stop_target": null,
+              "target_gain_db": null,
+              "transition_end": null
+            }
+          ],
+          "source": {
+            "episode_id": "ep-1-ef90d718",
+            "line_id": "ep1-s3-l3",
+            "scene_id": "ep1-scene3"
+          },
+          "text": "灵墨，是我错怪你了。钥匙……一直在我自己口袋里。"
+        },
+        {
+          "identity_id": "legend-moyu",
+          "kind": "dialogue",
+          "operations": [
+            {
+              "control_target": null,
+              "cue_text": "我们在这儿钉个小钩子吧。以后钥匙只挂那儿，谁也别乱放。",
+              "end": null,
+              "fade_out_ms": 0,
+              "gain_db": 0.0,
+              "mode": "speech",
+              "operation_id": "moyu8",
+              "reason": "墨羽提出建设性方案，将误会导向温暖和解。",
+              "start": {
+                "offset_ms": 0,
+                "operation_id": "moyu7",
+                "point": "end"
+              },
+              "stop_target": null,
+              "target_gain_db": null,
+              "transition_end": null
+            }
+          ],
+          "source": {
+            "episode_id": "ep-1-ef90d718",
+            "line_id": "ep1-s3-l4",
+            "scene_id": "ep1-scene3"
+          },
+          "text": "我们在这儿钉个小钩子吧。以后钥匙只挂那儿，谁也别乱放。"
+        },
+        {
+          "identity_id": "legend-lingmo",
+          "kind": "dialogue",
+          "operations": [
+            {
+              "control_target": null,
+              "cue_text": "好，就听你的。",
+              "end": null,
+              "fade_out_ms": 0,
+              "gain_db": 0.0,
+              "mode": "speech",
+              "operation_id": "lingmo6",
+              "reason": "灵墨温和答应，达成和解。",
+              "start": {
+                "offset_ms": 0,
+                "operation_id": "moyu8",
+                "point": "end"
+              },
+              "stop_target": null,
+              "target_gain_db": null,
+              "transition_end": null
+            }
+          ],
+          "source": {
+            "episode_id": "ep-1-ef90d718",
+            "line_id": "ep1-s3-l5",
+            "scene_id": "ep1-scene3"
+          },
+          "text": "好，就听你的。"
+        },
+        {
+          "identity_id": null,
+          "kind": "sfx",
+          "operations": [
+            {
+              "control_target": null,
+              "cue_text": "钥匙被轻轻放在桌上，发出一声清脆悦耳的叮当声。",
+              "end": null,
+              "fade_out_ms": 0,
+              "gain_db": 0.0,
+              "mode": "one_shot",
+              "operation_id": "keyOnTable",
+              "reason": "清脆音效呼应和解情绪，收束钥匙线索。",
+              "start": {
+                "offset_ms": 0,
+                "operation_id": "lingmo6",
+                "point": "end"
+              },
+              "stop_target": null,
+              "target_gain_db": null,
+              "transition_end": null
+            }
+          ],
+          "source": {
+            "episode_id": "ep-1-ef90d718",
+            "line_id": "ep1-s3-l6",
+            "scene_id": "ep1-scene3"
+          },
+          "text": "（中，特写）钥匙被轻轻放在桌上，发出一声清脆悦耳的叮当声。"
+        },
+        {
+          "identity_id": null,
+          "kind": "sfx",
+          "operations": [
+            {
+              "control_target": null,
+              "cue_text": "如释重负的、轻松的笑声交织在一起。",
+              "end": {
+                "offset_ms": 55000,
+                "operation_id": null,
+                "point": "start"
+              },
+              "fade_out_ms": 800,
+              "gain_db": -4.5,
+              "mode": "background",
+              "operation_id": "bgLaugh",
+              "reason": "结尾背景笑声，营造温馨轻松的和解氛围。",
+              "start": {
+                "offset_ms": 0,
+                "operation_id": "keyOnTable",
+                "point": "end"
+              },
+              "stop_target": null,
+              "target_gain_db": null,
+              "transition_end": null
+            }
+          ],
+          "source": {
+            "episode_id": "ep-1-ef90d718",
+            "line_id": "ep1-s3-l7",
+            "scene_id": "ep1-scene3"
+          },
+          "text": "（弱，背景）两人如释重负的、轻松的笑声交织在一起。"
+        }
+      ],
+      "sample_rate": 48000,
+      "schema_version": "audio_arrangement/2.0",
+      "source_version_id": "56ef0650ae4e41d4b432ac8a4e09ed7d"
+    },
+    "operation_frames": {
+      "hookSearch": 142080,
+      "moyu1": 119040,
+      "wrenchSet": 71040,
+      "moyu2": 226560,
+      "lingmo1": 330240,
+      "moyu3": 115200,
+      "lingmo2": 345600,
+      "flashbackDing": 67200,
+      "moyu4": 253440,
+      "lingmo3": 326400,
+      "moyu5": 103680,
+      "lingmo4": 176640,
+      "narPause": 145920,
+      "moyu6": 380160,
+      "lingmo5": 96000,
+      "narReach": 480000,
+      "pocketClink": 96000,
+      "narKeyFound": 241920,
+      "moyu7": 245760,
+      "moyu8": 222720,
+      "lingmo6": 84480,
+      "keyOnTable": 71040,
+      "bgLaugh": 142080
+    }
+  },
+  "sa03": [
+    {
+      "schema_version": "audio_arrangement/2.0",
+      "source_version_id": "ba98e31aff0943bca52ba2bcfd91ac58",
+      "delivery_sha256": "dff5016ee2c4e74e18e8e8e1ca000faf8f7596f61fb760d1ba0d062e917790dd",
+      "events": [
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l1"
+          },
+          "kind": "sfx",
+          "text": "油灯燃烧，轻微的噼啪声",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "bg_oil_lamp",
+              "mode": "background",
+              "cue_text": "油灯燃烧，轻微的噼啪声",
+              "reason": "建立夜晚室内的基础环境声",
+              "start": {
+                "operation_id": null,
+                "point": "start",
+                "offset_ms": 0
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l2"
+          },
+          "kind": "narration",
+          "text": "夜里，墨羽和灵墨正坐在桌边轻声说着话。",
+          "identity_id": "narrator",
+          "operations": [
+            {
+              "operation_id": "narr_begin",
+              "mode": "speech",
+              "cue_text": "夜里，墨羽和灵墨正坐在桌边轻声说着话。",
+              "reason": "开场旁白，讲述故事起始情境",
+              "start": {
+                "operation_id": "bg_oil_lamp",
+                "point": "start",
+                "offset_ms": 500
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l3"
+          },
+          "kind": "dialogue",
+          "text": "明天要是天晴，咱们去林子里走走。",
+          "identity_id": "legend-moyu",
+          "operations": [
+            {
+              "operation_id": "moyu_01",
+              "mode": "speech",
+              "cue_text": "明天要是天晴，咱们去林子里走走。",
+              "reason": "墨羽以轻松语气与灵墨交谈",
+              "start": {
+                "operation_id": "narr_begin",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l4"
+          },
+          "kind": "dialogue",
+          "text": "好啊，上次那条路还没走完。",
+          "identity_id": "legend-lingmo",
+          "operations": [
+            {
+              "operation_id": "lingmo_01",
+              "mode": "speech",
+              "cue_text": "好啊，上次那条路还没走完。",
+              "reason": "灵墨轻快回应墨羽的提议",
+              "start": {
+                "operation_id": "moyu_01",
+                "point": "end",
+                "offset_ms": 100
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l5"
+          },
+          "kind": "sfx",
+          "text": "门外传来三声断续的敲击：咚——咚——咚",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_knock_01",
+              "mode": "one_shot",
+              "cue_text": "门外传来三声断续的敲击：咚——咚——咚",
+              "reason": "突然响起的敲击声，是剧情转折的起点",
+              "start": {
+                "operation_id": "lingmo_01",
+                "point": "end",
+                "offset_ms": 600
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l6"
+          },
+          "kind": "action",
+          "text": "两人同时噤声",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "act_silence",
+              "mode": "action_note",
+              "cue_text": "两人同时噤声",
+              "reason": "提示声优停止说话，表演出警觉的安静状态",
+              "start": {
+                "operation_id": "sfx_knock_01",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "end": null,
+              "gain_db": 0
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l7"
+          },
+          "kind": "sfx",
+          "text": "短暂的寂静，只有灯火的噼啪声",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "ctl_continue_lamp",
+              "mode": "continue_background",
+              "cue_text": "只有灯火的噼啪声",
+              "reason": "保留背景声，表现敲击声后的寂静",
+              "start": {
+                "operation_id": "act_silence",
+                "point": "start",
+                "offset_ms": 0
+              },
+              "control_target": "bg_oil_lamp",
+              "end": null,
+              "gain_db": 0
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l8"
+          },
+          "kind": "dialogue",
+          "text": "……你听到了吗？",
+          "identity_id": "legend-lingmo",
+          "operations": [
+            {
+              "operation_id": "lingmo_02",
+              "mode": "speech",
+              "cue_text": "……你听到了吗？",
+              "reason": "灵墨压低声音，带着紧张询问",
+              "start": {
+                "operation_id": "act_silence",
+                "point": "start",
+                "offset_ms": 2500
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l9"
+          },
+          "kind": "sfx",
+          "text": "敲击声再次响起，更加急促：咚，咚，咚",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_knock_02",
+              "mode": "one_shot",
+              "cue_text": "敲击声再次响起，更加急促：咚，咚，咚",
+              "reason": "第二次敲击，制造紧迫感",
+              "start": {
+                "operation_id": "lingmo_02",
+                "point": "end",
+                "offset_ms": 300
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l10"
+          },
+          "kind": "dialogue",
+          "text": "有人在敲门。会不会是……有人在外面求助？",
+          "identity_id": "legend-moyu",
+          "operations": [
+            {
+              "operation_id": "moyu_02",
+              "mode": "speech",
+              "cue_text": "有人在敲门。会不会是……有人在外面求助？",
+              "reason": "墨羽压低声音，担忧有人遇险",
+              "start": {
+                "operation_id": "sfx_knock_02",
+                "point": "end",
+                "offset_ms": 300
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l11"
+          },
+          "kind": "dialogue",
+          "text": "等一下。这声音……不太对。先别急。",
+          "identity_id": "legend-lingmo",
+          "operations": [
+            {
+              "operation_id": "lingmo_03",
+              "mode": "speech",
+              "cue_text": "等一下。这声音……不太对。先别急。",
+              "reason": "灵墨试图冷静分析声音，劝阻墨羽冲动",
+              "start": {
+                "operation_id": "moyu_02",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l12"
+          },
+          "kind": "sfx",
+          "text": "敲击声又响了一次，间隔变得更长",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_knock_03",
+              "mode": "one_shot",
+              "cue_text": "敲击声又响了一次，间隔变得更长",
+              "reason": "渐弱的敲击声，暗示房外可能风势变小或敲击即将停止",
+              "start": {
+                "operation_id": "lingmo_03",
+                "point": "end",
+                "offset_ms": 400
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l13"
+          },
+          "kind": "dialogue",
+          "text": "我去看看。你在后面帮我掌灯。",
+          "identity_id": "legend-moyu",
+          "operations": [
+            {
+              "operation_id": "moyu_03",
+              "mode": "speech",
+              "cue_text": "我去看看。你在后面帮我掌灯。",
+              "reason": "墨羽下定决心，布置行动",
+              "start": {
+                "operation_id": "sfx_knock_03",
+                "point": "end",
+                "offset_ms": 500
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l14"
+          },
+          "kind": "sfx",
+          "text": "墨羽提起桌上的油灯，金属提环发出轻微的摩擦声",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_lamp_handle",
+              "mode": "one_shot",
+              "cue_text": "墨羽提起桌上的油灯，金属提环发出轻微的摩擦声",
+              "reason": "表示拿起油灯，为转换场景做准备",
+              "start": {
+                "operation_id": "moyu_03",
+                "point": "start",
+                "offset_ms": 1500
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l15"
+          },
+          "kind": "dialogue",
+          "text": "一起。",
+          "identity_id": "legend-lingmo",
+          "operations": [
+            {
+              "operation_id": "lingmo_04",
+              "mode": "speech",
+              "cue_text": "一起。",
+              "reason": "灵墨简短有力地回应，共同行动",
+              "start": {
+                "operation_id": "sfx_lamp_handle",
+                "point": "end",
+                "offset_ms": 100
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l16"
+          },
+          "kind": "sfx",
+          "text": "木门吱呀一声被拉开，屋外的风声灌了进来",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_door_open",
+              "mode": "one_shot",
+              "cue_text": "木门吱呀一声被拉开",
+              "reason": "木门打开的声效，标示从屋内到屋外的转换",
+              "start": {
+                "operation_id": "lingmo_04",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "end": null
+            },
+            {
+              "operation_id": "bg_outdoor_wind",
+              "mode": "background",
+              "cue_text": "屋外的风声灌了进来",
+              "reason": "室外背景音效，表示进入屋外空间",
+              "start": {
+                "operation_id": "sfx_door_open",
+                "point": "start",
+                "offset_ms": 300
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l1"
+          },
+          "kind": "sfx",
+          "text": "风声持续，夹杂着断断续续的敲击声",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "ctl_continue_wind",
+              "mode": "continue_background",
+              "cue_text": "风声持续",
+              "reason": "承接上句，表现屋外环境音",
+              "start": {
+                "operation_id": "sfx_door_open",
+                "point": "start",
+                "offset_ms": 3500
+              },
+              "control_target": "bg_outdoor_wind",
+              "end": null,
+              "gain_db": 0
+            },
+            {
+              "operation_id": "sfx_outdoor_knock",
+              "mode": "one_shot",
+              "cue_text": "夹杂着断断续续的敲击声",
+              "reason": "风声背景下，敲击声依然存在",
+              "start": {
+                "operation_id": "ctl_continue_wind",
+                "point": "start",
+                "offset_ms": 500
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l2"
+          },
+          "kind": "narration",
+          "text": "两人走进夜色。墨羽举起油灯照向门框上方，灵墨紧跟在他身后。",
+          "identity_id": "narrator",
+          "operations": [
+            {
+              "operation_id": "narr_outdoor",
+              "mode": "speech",
+              "cue_text": "两人走进夜色。墨羽举起油灯照向门框上方，灵墨紧跟在他身后。",
+              "reason": "描述两人离开室内，仔细寻找声源",
+              "start": {
+                "operation_id": "sfx_outdoor_knock",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l3"
+          },
+          "kind": "sfx",
+          "text": "敲击声又响了一次，这次明显来自高处",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_knock_high",
+              "mode": "one_shot",
+              "cue_text": "敲击声又响了一次，这次明显来自高处",
+              "reason": "向上寻找的目光伴随敲击声，引导注意力转向门框上方",
+              "start": {
+                "operation_id": "narr_outdoor",
+                "point": "end",
+                "offset_ms": 300
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l4"
+          },
+          "kind": "dialogue",
+          "text": "等一下，你看上面。",
+          "identity_id": "legend-lingmo",
+          "operations": [
+            {
+              "operation_id": "lingmo_05",
+              "mode": "speech",
+              "cue_text": "等一下，你看上面。",
+              "reason": "灵墨率先发现声源所在",
+              "start": {
+                "operation_id": "sfx_knock_high",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l5"
+          },
+          "kind": "sfx",
+          "text": "灯光移动的声音，木头被风吹动撞击门框的闷响",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_light_move",
+              "mode": "one_shot",
+              "cue_text": "灯光移动的声音",
+              "reason": "动作音效，墨羽举灯照向木牌",
+              "start": {
+                "operation_id": "lingmo_05",
+                "point": "end",
+                "offset_ms": 300
+              },
+              "end": null
+            },
+            {
+              "operation_id": "sfx_wooden_bang",
+              "mode": "one_shot",
+              "cue_text": "木头被风吹动撞击门框的闷响",
+              "reason": "吹动木牌撞击门框的声源细节",
+              "start": {
+                "operation_id": "sfx_light_move",
+                "point": "start",
+                "offset_ms": 500
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l6"
+          },
+          "kind": "dialogue",
+          "text": "是木牌松了。风一吹就撞在门框上。",
+          "identity_id": "legend-lingmo",
+          "operations": [
+            {
+              "operation_id": "lingmo_06",
+              "mode": "speech",
+              "cue_text": "是木牌松了。风一吹就撞在门框上。",
+              "reason": "灵墨发现声源真相，释然解释",
+              "start": {
+                "operation_id": "sfx_wooden_bang",
+                "point": "end",
+                "offset_ms": 500
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l7"
+          },
+          "kind": "dialogue",
+          "text": "原来是它。我来按住。",
+          "identity_id": "legend-moyu",
+          "operations": [
+            {
+              "operation_id": "moyu_04",
+              "mode": "speech",
+              "cue_text": "原来是它。我来按住。",
+              "reason": "墨羽主动上前解除隐患",
+              "start": {
+                "operation_id": "lingmo_06",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l8"
+          },
+          "kind": "action",
+          "text": "墨羽伸手按住木牌，敲击声立刻停止",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "act_stop_wood_bang",
+              "mode": "action_note",
+              "cue_text": "墨羽伸手按住木牌，敲击声立刻停止",
+              "reason": "指示停止木牌撞击声，声音发生突变",
+              "start": {
+                "operation_id": "moyu_04",
+                "point": "end",
+                "offset_ms": 500
+              },
+              "end": null,
+              "gain_db": 0
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l9"
+          },
+          "kind": "dialogue",
+          "text": "这儿有块小木片，应该能楔紧。",
+          "identity_id": "legend-lingmo",
+          "operations": [
+            {
+              "operation_id": "lingmo_07",
+              "mode": "speech",
+              "cue_text": "这儿有块小木片，应该能楔紧。",
+              "reason": "灵墨提供解决方案",
+              "start": {
+                "operation_id": "act_stop_wood_bang",
+                "point": "start",
+                "offset_ms": 300
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l10"
+          },
+          "kind": "sfx",
+          "text": "木片被塞入缝隙，轻轻敲击几下将其楔紧",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_wedge",
+              "mode": "one_shot",
+              "cue_text": "木片被塞入缝隙，轻轻敲击几下将其楔紧",
+              "reason": "维修木牌的敲击声，质感与先前的敲门声不同",
+              "start": {
+                "operation_id": "lingmo_07",
+                "point": "end",
+                "offset_ms": 300
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l11"
+          },
+          "kind": "dialogue",
+          "text": "好了。",
+          "identity_id": "legend-moyu",
+          "operations": [
+            {
+              "operation_id": "moyu_05",
+              "mode": "speech",
+              "cue_text": "好了。",
+              "reason": "修好木牌后满意的回应",
+              "start": {
+                "operation_id": "sfx_wedge",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l12"
+          },
+          "kind": "sfx",
+          "text": "风声仍在，但敲击声没有再出现",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "ctl_remnant_wind",
+              "mode": "continue_background",
+              "cue_text": "风声仍在",
+              "reason": "表示场景仍在屋外，风声未停",
+              "start": {
+                "operation_id": "moyu_05",
+                "point": "end",
+                "offset_ms": 100
+              },
+              "control_target": "bg_outdoor_wind",
+              "end": null,
+              "gain_db": 0
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene3",
+            "line_id": "ep1-s3-l1"
+          },
+          "kind": "sfx",
+          "text": "两人的脚步声走近，木门关闭",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_footsteps",
+              "mode": "one_shot",
+              "cue_text": "两人的脚步声走近",
+              "reason": "两人返回屋内的脚步声",
+              "start": {
+                "operation_id": "ctl_remnant_wind",
+                "point": "start",
+                "offset_ms": 1000
+              },
+              "end": null
+            },
+            {
+              "operation_id": "sfx_door_close",
+              "mode": "one_shot",
+              "cue_text": "木门关闭",
+              "reason": "门关上，空间从室外返回室内",
+              "start": {
+                "operation_id": "sfx_footsteps",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "end": null
+            },
+            {
+              "operation_id": "stop_outdoor_wind",
+              "mode": "stop_sound",
+              "cue_text": "木门关闭",
+              "reason": "关门隔绝室外风声",
+              "start": {
+                "operation_id": "sfx_door_close",
+                "point": "start",
+                "offset_ms": 100
+              },
+              "stop_target": "bg_outdoor_wind"
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene3",
+            "line_id": "ep1-s3-l2"
+          },
+          "kind": "sfx",
+          "text": "油灯被放回桌上，发出轻响",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_lamp_place",
+              "mode": "one_shot",
+              "cue_text": "油灯被放回桌上，发出轻响",
+              "reason": "油灯放回，回复原始状态",
+              "start": {
+                "operation_id": "sfx_door_close",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene3",
+            "line_id": "ep1-s3-l3"
+          },
+          "kind": "narration",
+          "text": "墨羽把灯放回桌上。屋里又只剩下灯火的噼啪声。",
+          "identity_id": "narrator",
+          "operations": [
+            {
+              "operation_id": "narr_close",
+              "mode": "speech",
+              "cue_text": "墨羽把灯放回桌上。屋里又只剩下灯火的噼啪声。",
+              "reason": "事件结束，旁白回到屋内空间",
+              "start": {
+                "operation_id": "sfx_lamp_place",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene3",
+            "line_id": "ep1-s3-l4"
+          },
+          "kind": "dialogue",
+          "text": "虚惊一场。",
+          "identity_id": "legend-moyu",
+          "operations": [
+            {
+              "operation_id": "moyu_06",
+              "mode": "speech",
+              "cue_text": "虚惊一场。",
+              "reason": "释然的自嘲，用轻松语气收尾",
+              "start": {
+                "operation_id": "narr_close",
+                "point": "end",
+                "offset_ms": 300
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene3",
+            "line_id": "ep1-s3-l5"
+          },
+          "kind": "sfx",
+          "text": "灵墨轻轻笑了一声",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_light_laugh",
+              "mode": "one_shot",
+              "cue_text": "灵墨轻轻笑了一声",
+              "reason": "轻笑声呼应墨羽的释然",
+              "start": {
+                "operation_id": "moyu_06",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene3",
+            "line_id": "ep1-s3-l6"
+          },
+          "kind": "dialogue",
+          "text": "还好只是风。",
+          "identity_id": "legend-lingmo",
+          "operations": [
+            {
+              "operation_id": "lingmo_08",
+              "mode": "speech",
+              "cue_text": "还好只是风。",
+              "reason": "以柔和语调确认无事，温柔收尾",
+              "start": {
+                "operation_id": "sfx_light_laugh",
+                "point": "end",
+                "offset_ms": 100
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene3",
+            "line_id": "ep1-s3-l7"
+          },
+          "kind": "sfx",
+          "text": "油灯稳定地燃烧，发出细微的噼啪声",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "ctl_end_lamp",
+              "mode": "continue_background",
+              "cue_text": "油灯稳定地燃烧，发出细微的噼啪声",
+              "reason": "最后保持灯火背景声，完成夜晚氛围的收束",
+              "start": {
+                "operation_id": "lingmo_08",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "control_target": "bg_oil_lamp",
+              "end": null,
+              "gain_db": 0
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene3",
+            "line_id": "ep1-s3-l8"
+          },
+          "kind": "narration",
+          "text": "灯火映着两个人的脸，屋子里安静而温暖。",
+          "identity_id": "narrator",
+          "operations": [
+            {
+              "operation_id": "narr_end",
+              "mode": "speech",
+              "cue_text": "灯火映着两个人的脸，屋子里安静而温暖。",
+              "reason": "最终旁白，以温暖氛围结束本集",
+              "start": {
+                "operation_id": "ctl_end_lamp",
+                "point": "start",
+                "offset_ms": 1500
+              },
+              "end": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schema_version": "audio_arrangement/2.0",
+      "source_version_id": "ba98e31aff0943bca52ba2bcfd91ac58",
+      "delivery_sha256": "dff5016ee2c4e74e18e8e8e1ca000faf8f7596f61fb760d1ba0d062e917790dd",
+      "events": [
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l1"
+          },
+          "kind": "sfx",
+          "text": "油灯燃烧，轻微的噼啪声",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "bg_indoor_lamp",
+              "mode": "background",
+              "cue_text": "油灯燃烧，轻微的噼啪声",
+              "reason": "建立夜晚小屋的底噪氛围",
+              "start": {
+                "operation_id": null,
+                "point": "start",
+                "offset_ms": 0
+              },
+              "end": {
+                "operation_id": "close_stop_lamp",
+                "point": "start",
+                "offset_ms": 0
+              }
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l2"
+          },
+          "kind": "narration",
+          "text": "夜里，墨羽和灵墨正坐在桌边轻声说着话。",
+          "identity_id": "narrator",
+          "operations": [
+            {
+              "operation_id": "speech_narr_opening",
+              "mode": "speech",
+              "cue_text": "夜里，墨羽和灵墨正坐在桌边轻声说着话。",
+              "reason": "开场旁白，建立时间地点人物",
+              "start": {
+                "operation_id": "bg_indoor_lamp",
+                "point": "start",
+                "offset_ms": 600
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l3"
+          },
+          "kind": "dialogue",
+          "text": "明天要是天晴，咱们去林子里走走。",
+          "identity_id": "legend-moyu",
+          "operations": [
+            {
+              "operation_id": "speech_moyu_plan",
+              "mode": "speech",
+              "cue_text": "明天要是天晴，咱们去林子里走走。",
+              "reason": "墨羽轻松提议，展现角色轻松关系",
+              "start": {
+                "operation_id": "speech_narr_opening",
+                "point": "end",
+                "offset_ms": 300
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l4"
+          },
+          "kind": "dialogue",
+          "text": "好啊，上次那条路还没走完。",
+          "identity_id": "legend-lingmo",
+          "operations": [
+            {
+              "operation_id": "speech_lingmo_agree",
+              "mode": "speech",
+              "cue_text": "好啊，上次那条路还没走完。",
+              "reason": "灵墨愉快回应，氛围融洽",
+              "start": {
+                "operation_id": "speech_moyu_plan",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l5"
+          },
+          "kind": "sfx",
+          "text": "门外传来三声断续的敲击：咚——咚——咚",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_knock_first",
+              "mode": "one_shot",
+              "cue_text": "门外传来三声断续的敲击：咚——咚——咚",
+              "reason": "突发敲门声遇到剧情转折，打破原本平静",
+              "start": {
+                "operation_id": "speech_lingmo_agree",
+                "point": "end",
+                "offset_ms": 600
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l6"
+          },
+          "kind": "action",
+          "text": "两人同时噤声",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "action_silence_moment",
+              "mode": "action_note",
+              "cue_text": "两人同时噤声",
+              "reason": "表演提示，为警觉环境提供无对白的紧凑空白",
+              "start": {
+                "operation_id": "sfx_knock_first",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "end": null,
+              "gain_db": 0
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l7"
+          },
+          "kind": "sfx",
+          "text": "短暂的寂静，只有灯火的噼啪声",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "ctl_continue_lamp_silence",
+              "mode": "continue_background",
+              "cue_text": "只有灯火的噼啪声",
+              "reason": "保留灯火背景突出寂静感",
+              "start": {
+                "operation_id": "action_silence_moment",
+                "point": "start",
+                "offset_ms": 0
+              },
+              "control_target": "bg_indoor_lamp",
+              "end": null,
+              "gain_db": 0
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l8"
+          },
+          "kind": "dialogue",
+          "text": "……你听到了吗？",
+          "identity_id": "legend-lingmo",
+          "operations": [
+            {
+              "operation_id": "speech_lingmo_heard",
+              "mode": "speech",
+              "cue_text": "……你听到了吗？",
+              "reason": "压低声音询问同伴，制造紧张情绪",
+              "start": {
+                "operation_id": "action_silence_moment",
+                "point": "start",
+                "offset_ms": 3000
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l9"
+          },
+          "kind": "sfx",
+          "text": "敲击声再次响起，更加急促：咚，咚，咚",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_knock_second",
+              "mode": "one_shot",
+              "cue_text": "敲击声再次响起，更加急促：咚，咚，咚",
+              "reason": "第二次敲击声更急促，加强紧迫感",
+              "start": {
+                "operation_id": "speech_lingmo_heard",
+                "point": "end",
+                "offset_ms": 300
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l10"
+          },
+          "kind": "dialogue",
+          "text": "有人在敲门。会不会是……有人在外面求助？",
+          "identity_id": "legend-moyu",
+          "operations": [
+            {
+              "operation_id": "speech_moyu_worry",
+              "mode": "speech",
+              "cue_text": "有人在敲门。会不会是……有人在外面求助？",
+              "reason": "墨羽担忧地推测声源",
+              "start": {
+                "operation_id": "sfx_knock_second",
+                "point": "end",
+                "offset_ms": 300
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l11"
+          },
+          "kind": "dialogue",
+          "text": "等一下。这声音……不太对。先别急。",
+          "identity_id": "legend-lingmo",
+          "operations": [
+            {
+              "operation_id": "speech_lingmo_calm",
+              "mode": "speech",
+              "cue_text": "等一下。这声音……不太对。先别急。",
+              "reason": "灵墨冷静分析，提醒谨慎",
+              "start": {
+                "operation_id": "speech_moyu_worry",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l12"
+          },
+          "kind": "sfx",
+          "text": "敲击声又响了一次，间隔变得更长",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_knock_third",
+              "mode": "one_shot",
+              "cue_text": "敲击声又响了一次，间隔变得更长",
+              "reason": "最后单独的一次敲击声，间隔长，暗示声源变弱",
+              "start": {
+                "operation_id": "speech_lingmo_calm",
+                "point": "end",
+                "offset_ms": 400
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l13"
+          },
+          "kind": "dialogue",
+          "text": "我去看看。你在后面帮我掌灯。",
+          "identity_id": "legend-moyu",
+          "operations": [
+            {
+              "operation_id": "speech_moyu_action",
+              "mode": "speech",
+              "cue_text": "我去看看。你在后面帮我掌灯。",
+              "reason": "墨羽决定外出查看，部署计划",
+              "start": {
+                "operation_id": "sfx_knock_third",
+                "point": "end",
+                "offset_ms": 500
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l14"
+          },
+          "kind": "sfx",
+          "text": "墨羽提起桌上的油灯，金属提环发出轻微的摩擦声",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_pick_lamp",
+              "mode": "one_shot",
+              "cue_text": "墨羽提起桌上的油灯，金属提环发出轻微的摩擦声",
+              "reason": "拿起油灯的声响暗示起身和即将移步",
+              "start": {
+                "operation_id": "speech_moyu_action",
+                "point": "start",
+                "offset_ms": 2000
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l15"
+          },
+          "kind": "dialogue",
+          "text": "一起。",
+          "identity_id": "legend-lingmo",
+          "operations": [
+            {
+              "operation_id": "speech_lingmo_together",
+              "mode": "speech",
+              "cue_text": "一起。",
+              "reason": "灵墨简短坚定的回应，决定共同行动",
+              "start": {
+                "operation_id": "sfx_pick_lamp",
+                "point": "end",
+                "offset_ms": 100
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l16"
+          },
+          "kind": "sfx",
+          "text": "木门吱呀一声被拉开，屋外的风声灌了进来",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_door_open",
+              "mode": "one_shot",
+              "cue_text": "木门吱呀一声被拉开",
+              "reason": "开门音效，刻画离开房间的关键动作",
+              "start": {
+                "operation_id": "speech_lingmo_together",
+                "point": "end",
+                "offset_ms": 300
+              },
+              "end": null
+            },
+            {
+              "operation_id": "bg_outdoor_wind",
+              "mode": "background",
+              "cue_text": "屋外的风声灌了进来",
+              "reason": "建立屋外风声环境，说明场景变化",
+              "start": {
+                "operation_id": "sfx_door_open",
+                "point": "start",
+                "offset_ms": 400
+              },
+              "end": {
+                "operation_id": "sfx_door_close",
+                "point": "start",
+                "offset_ms": 200
+              }
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l1"
+          },
+          "kind": "sfx",
+          "text": "风声持续，夹杂着断断续续的敲击声",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "ctl_continue_outdoor_wind",
+              "mode": "continue_background",
+              "cue_text": "风声持续",
+              "reason": "维持屋外风声底噪",
+              "start": {
+                "operation_id": "sfx_door_open",
+                "point": "start",
+                "offset_ms": 2200
+              },
+              "control_target": "bg_outdoor_wind",
+              "end": null,
+              "gain_db": 0
+            },
+            {
+              "operation_id": "sfx_outdoor_knocking",
+              "mode": "one_shot",
+              "cue_text": "夹杂着断断续续的敲击声",
+              "reason": "风声中的敲击声说明问题仍在",
+              "start": {
+                "operation_id": "ctl_continue_outdoor_wind",
+                "point": "start",
+                "offset_ms": 500
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l2"
+          },
+          "kind": "narration",
+          "text": "两人走进夜色。墨羽举起油灯照向门框上方，灵墨紧跟在他身后。",
+          "identity_id": "narrator",
+          "operations": [
+            {
+              "operation_id": "speech_narr_search",
+              "mode": "speech",
+              "cue_text": "两人走进夜色。墨羽举起油灯照向门框上方，灵墨紧跟在他身后。",
+              "reason": "旁白描述两人走出屋外查看情况",
+              "start": {
+                "operation_id": "sfx_outdoor_knocking",
+                "point": "end",
+                "offset_ms": 300
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l3"
+          },
+          "kind": "sfx",
+          "text": "敲击声又响了一次，这次明显来自高处",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_knock_high",
+              "mode": "one_shot",
+              "cue_text": "敲击声又响了一次，这次明显来自高处",
+              "reason": "敲击声来自高处，引导听众跟随角色注意上方",
+              "start": {
+                "operation_id": "speech_narr_search",
+                "point": "end",
+                "offset_ms": 300
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l4"
+          },
+          "kind": "dialogue",
+          "text": "等一下，你看上面。",
+          "identity_id": "legend-lingmo",
+          "operations": [
+            {
+              "operation_id": "speech_lingmo_look",
+              "mode": "speech",
+              "cue_text": "等一下，你看上面。",
+              "reason": "灵墨发现声音来自高处提醒墨羽",
+              "start": {
+                "operation_id": "sfx_knock_high",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l5"
+          },
+          "kind": "sfx",
+          "text": "灯光移动的声音，木头被风吹动撞击门框的闷响",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_light_move",
+              "mode": "one_shot",
+              "cue_text": "灯光移动的声音",
+              "reason": "墨羽举起光源照向木牌时伴生的移动音效",
+              "start": {
+                "operation_id": "speech_lingmo_look",
+                "point": "end",
+                "offset_ms": 400
+              },
+              "end": null
+            },
+            {
+              "operation_id": "sfx_wooden_bang",
+              "mode": "one_shot",
+              "cue_text": "木头被风吹动撞击门框的闷响",
+              "reason": "还原木牌撞击门框的声音，使声源具象化",
+              "start": {
+                "operation_id": "sfx_light_move",
+                "point": "start",
+                "offset_ms": 500
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l6"
+          },
+          "kind": "dialogue",
+          "text": "是木牌松了。风一吹就撞在门框上。",
+          "identity_id": "legend-lingmo",
+          "operations": [
+            {
+              "operation_id": "speech_lingmo_discover",
+              "mode": "speech",
+              "cue_text": "是木牌松了。风一吹就撞在门框上。",
+              "reason": "灵墨找出声源，给出解释",
+              "start": {
+                "operation_id": "sfx_wooden_bang",
+                "point": "end",
+                "offset_ms": 500
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l7"
+          },
+          "kind": "dialogue",
+          "text": "原来是它。我来按住。",
+          "identity_id": "legend-moyu",
+          "operations": [
+            {
+              "operation_id": "speech_moyu_hold",
+              "mode": "speech",
+              "cue_text": "原来是它。我来按住。",
+              "reason": "墨羽恍然大悟并主动出手",
+              "start": {
+                "operation_id": "speech_lingmo_discover",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l8"
+          },
+          "kind": "action",
+          "text": "墨羽伸手按住木牌，敲击声立刻停止",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "action_hold_stop_knock",
+              "mode": "action_note",
+              "cue_text": "墨羽伸手按住木牌，敲击声立刻停止",
+              "reason": "动作提示，声音立即停止",
+              "start": {
+                "operation_id": "speech_moyu_hold",
+                "point": "end",
+                "offset_ms": 500
+              },
+              "end": null,
+              "gain_db": 0
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l9"
+          },
+          "kind": "dialogue",
+          "text": "这儿有块小木片，应该能楔紧。",
+          "identity_id": "legend-lingmo",
+          "operations": [
+            {
+              "operation_id": "speech_lingmo_wood",
+              "mode": "speech",
+              "cue_text": "这儿有块小木片，应该能楔紧。",
+              "reason": "灵墨找到临时解决办法",
+              "start": {
+                "operation_id": "action_hold_stop_knock",
+                "point": "start",
+                "offset_ms": 300
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l10"
+          },
+          "kind": "sfx",
+          "text": "木片被塞入缝隙，轻轻敲击几下将其楔紧",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_wedge_wood",
+              "mode": "one_shot",
+              "cue_text": "木片被塞入缝隙，轻轻敲击几下将其楔紧",
+              "reason": "修木牌的敲击声质感不同，说明故障被修复",
+              "start": {
+                "operation_id": "speech_lingmo_wood",
+                "point": "end",
+                "offset_ms": 300
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l11"
+          },
+          "kind": "dialogue",
+          "text": "好了。",
+          "identity_id": "legend-moyu",
+          "operations": [
+            {
+              "operation_id": "speech_moyu_done",
+              "mode": "speech",
+              "cue_text": "好了。",
+              "reason": "墨羽确认已修好木牌",
+              "start": {
+                "operation_id": "sfx_wedge_wood",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l12"
+          },
+          "kind": "sfx",
+          "text": "风声仍在，但敲击声没有再出现",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "ctl_keep_outdoor_wind",
+              "mode": "continue_background",
+              "cue_text": "风声仍在",
+              "reason": "风声仍存在，呼应原台词话意",
+              "start": {
+                "operation_id": "speech_moyu_done",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "control_target": "bg_outdoor_wind",
+              "end": null,
+              "gain_db": 0
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene3",
+            "line_id": "ep1-s3-l1"
+          },
+          "kind": "sfx",
+          "text": "两人的脚步声走近，木门关闭",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_footsteps",
+              "mode": "one_shot",
+              "cue_text": "两人的脚步声走近",
+              "reason": "二人走回室内伴随的脚步声",
+              "start": {
+                "operation_id": "ctl_keep_outdoor_wind",
+                "point": "start",
+                "offset_ms": 1500
+              },
+              "end": null
+            },
+            {
+              "operation_id": "sfx_door_close",
+              "mode": "one_shot",
+              "cue_text": "木门关闭",
+              "reason": "关门声营造空间置换",
+              "start": {
+                "operation_id": "sfx_footsteps",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "end": null
+            },
+            {
+              "operation_id": "stop_outdoor_wind",
+              "mode": "stop_sound",
+              "cue_text": "木门关闭",
+              "reason": "关门后不再有室外风声",
+              "start": {
+                "operation_id": "sfx_door_close",
+                "point": "start",
+                "offset_ms": 100
+              },
+              "stop_target": "bg_outdoor_wind",
+              "end": null,
+              "gain_db": 0
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene3",
+            "line_id": "ep1-s3-l2"
+          },
+          "kind": "sfx",
+          "text": "油灯被放回桌上，发出轻响",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_place_lamp",
+              "mode": "one_shot",
+              "cue_text": "油灯被放回桌上，发出轻响",
+              "reason": "将油灯放回原位的声音细节",
+              "start": {
+                "operation_id": "sfx_door_close",
+                "point": "end",
+                "offset_ms": 300
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene3",
+            "line_id": "ep1-s3-l3"
+          },
+          "kind": "narration",
+          "text": "墨羽把灯放回桌上。屋里又只剩下灯火的噼啪声。",
+          "identity_id": "narrator",
+          "operations": [
+            {
+              "operation_id": "speech_narr_return",
+              "mode": "speech",
+              "cue_text": "墨羽把灯放回桌上。屋里又只剩下灯火的噼啪声。",
+              "reason": "旁白回归室内安静氛围",
+              "start": {
+                "operation_id": "sfx_place_lamp",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene3",
+            "line_id": "ep1-s3-l4"
+          },
+          "kind": "dialogue",
+          "text": "虚惊一场。",
+          "identity_id": "legend-moyu",
+          "operations": [
+            {
+              "operation_id": "speech_moyu_relief",
+              "mode": "speech",
+              "cue_text": "虚惊一场。",
+              "reason": "墨羽如释重负的评论",
+              "start": {
+                "operation_id": "speech_narr_return",
+                "point": "end",
+                "offset_ms": 400
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene3",
+            "line_id": "ep1-s3-l5"
+          },
+          "kind": "sfx",
+          "text": "灵墨轻轻笑了一声",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_lingmo_laugh",
+              "mode": "one_shot",
+              "cue_text": "灵墨轻轻笑了一声",
+              "reason": "灵墨含笑放松，呼应温馨收尾",
+              "start": {
+                "operation_id": "speech_moyu_relief",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene3",
+            "line_id": "ep1-s3-l6"
+          },
+          "kind": "dialogue",
+          "text": "还好只是风。",
+          "identity_id": "legend-lingmo",
+          "operations": [
+            {
+              "operation_id": "speech_lingmo_ending",
+              "mode": "speech",
+              "cue_text": "还好只是风。",
+              "reason": "灵墨温柔点题结束事件",
+              "start": {
+                "operation_id": "sfx_lingmo_laugh",
+                "point": "end",
+                "offset_ms": 100
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene3",
+            "line_id": "ep1-s3-l7"
+          },
+          "kind": "sfx",
+          "text": "油灯稳定地燃烧，发出细微的噼啪声",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "ctl_inside_lamp_finale",
+              "mode": "continue_background",
+              "cue_text": "油灯稳定地燃烧，发出细微的噼啪声",
+              "reason": "收束环境音，保持灯火氛围",
+              "start": {
+                "operation_id": "speech_lingmo_ending",
+                "point": "end",
+                "offset_ms": 300
+              },
+              "control_target": "bg_indoor_lamp",
+              "end": null,
+              "gain_db": 0
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene3",
+            "line_id": "ep1-s3-l8"
+          },
+          "kind": "narration",
+          "text": "灯火映着两个人的脸，屋子里安静而温暖。",
+          "identity_id": "narrator",
+          "operations": [
+            {
+              "operation_id": "speech_narr_final",
+              "mode": "speech",
+              "cue_text": "灯火映着两个人的脸，屋子里安静而温暖。",
+              "reason": "片尾暖意旁白，徐徐收束全篇",
+              "start": {
+                "operation_id": "ctl_inside_lamp_finale",
+                "point": "start",
+                "offset_ms": 2000
+              },
+              "end": null
+            },
+            {
+              "operation_id": "close_stop_lamp",
+              "mode": "stop_sound",
+              "cue_text": "屋子里安静而温暖",
+              "reason": "结束演示的灯火背景音",
+              "start": {
+                "operation_id": "speech_narr_final",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "stop_target": "bg_indoor_lamp",
+              "end": null,
+              "gain_db": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schema_version": "audio_arrangement/2.0",
+      "source_version_id": "ba98e31aff0943bca52ba2bcfd91ac58",
+      "delivery_sha256": "dff5016ee2c4e74e18e8e8e1ca000faf8f7596f61fb760d1ba0d062e917790dd",
+      "events": [
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l1"
+          },
+          "kind": "sfx",
+          "text": "油灯燃烧，轻微的噼啪声",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "bg_indoor_lamp",
+              "mode": "background",
+              "cue_text": "油灯燃烧，轻微的噼啪声",
+              "reason": "建立屋内底噪，营造宁静夜晚氛围",
+              "start": {
+                "operation_id": null,
+                "point": "start",
+                "offset_ms": 0
+              },
+              "end": {
+                "operation_id": "close_stop_lamp",
+                "point": "start",
+                "offset_ms": 0
+              }
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l2"
+          },
+          "kind": "narration",
+          "text": "夜里，墨羽和灵墨正坐在桌边轻声说着话。",
+          "identity_id": "narrator",
+          "operations": [
+            {
+              "operation_id": "speech_narr_opening",
+              "mode": "speech",
+              "cue_text": "夜里，墨羽和灵墨正坐在桌边轻声说着话。",
+              "reason": "开场旁白，建立时间地点人物",
+              "start": {
+                "operation_id": "bg_indoor_lamp",
+                "point": "start",
+                "offset_ms": 600
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l3"
+          },
+          "kind": "dialogue",
+          "text": "明天要是天晴，咱们去林子里走走。",
+          "identity_id": "legend-moyu",
+          "operations": [
+            {
+              "operation_id": "speech_moyu_plan",
+              "mode": "speech",
+              "cue_text": "明天要是天晴，咱们去林子里走走。",
+              "reason": "墨羽轻松提议，展现角色轻松关系",
+              "start": {
+                "operation_id": "speech_narr_opening",
+                "point": "end",
+                "offset_ms": 300
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l4"
+          },
+          "kind": "dialogue",
+          "text": "好啊，上次那条路还没走完。",
+          "identity_id": "legend-lingmo",
+          "operations": [
+            {
+              "operation_id": "speech_lingmo_agree",
+              "mode": "speech",
+              "cue_text": "好啊，上次那条路还没走完。",
+              "reason": "灵墨愉快回应，氛围融洽",
+              "start": {
+                "operation_id": "speech_moyu_plan",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l5"
+          },
+          "kind": "sfx",
+          "text": "门外传来三声断续的敲击：咚——咚——咚",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_knock_first",
+              "mode": "one_shot",
+              "cue_text": "门外传来三声断续的敲击：咚——咚——咚",
+              "reason": "突发敲门声制造剧情转折，打破原本平静",
+              "start": {
+                "operation_id": "speech_lingmo_agree",
+                "point": "end",
+                "offset_ms": 600
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l6"
+          },
+          "kind": "action",
+          "text": "两人同时噤声",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "action_silence_moment",
+              "mode": "action_note",
+              "cue_text": "两人同时噤声",
+              "reason": "表演提示，为警觉环境提供无对白的紧凑空白",
+              "start": {
+                "operation_id": "sfx_knock_first",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "end": null,
+              "gain_db": 0
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l7"
+          },
+          "kind": "sfx",
+          "text": "短暂的寂静，只有灯火的噼啪声",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "ctl_continue_lamp_silence",
+              "mode": "continue_background",
+              "cue_text": "只有灯火的噼啪声",
+              "reason": "保留灯火背景以突出寂静感，串联前后紧张气氛",
+              "start": {
+                "operation_id": "action_silence_moment",
+                "point": "start",
+                "offset_ms": 0
+              },
+              "control_target": "bg_indoor_lamp",
+              "end": null,
+              "gain_db": 0
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l8"
+          },
+          "kind": "dialogue",
+          "text": "……你听到了吗？",
+          "identity_id": "legend-lingmo",
+          "operations": [
+            {
+              "operation_id": "speech_lingmo_heard",
+              "mode": "speech",
+              "cue_text": "……你听到了吗？",
+              "reason": "压低声音询问同伴，制造紧张情绪",
+              "start": {
+                "operation_id": "action_silence_moment",
+                "point": "start",
+                "offset_ms": 3000
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l9"
+          },
+          "kind": "sfx",
+          "text": "敲击声再次响起，更加急促：咚，咚，咚",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_knock_second",
+              "mode": "one_shot",
+              "cue_text": "敲击声再次响起，更加急促：咚，咚，咚",
+              "reason": "第二次敲击声更急促，加强戏剧推进感和追问的紧迫",
+              "start": {
+                "operation_id": "speech_lingmo_heard",
+                "point": "end",
+                "offset_ms": 300
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l10"
+          },
+          "kind": "dialogue",
+          "text": "有人在敲门。会不会是……有人在外面求助？",
+          "identity_id": "legend-moyu",
+          "operations": [
+            {
+              "operation_id": "speech_moyu_worry",
+              "mode": "speech",
+              "cue_text": "有人在敲门。会不会是……有人在外面求助？",
+              "reason": "墨羽担忧地推测声源，语调转为严肃",
+              "start": {
+                "operation_id": "sfx_knock_second",
+                "point": "end",
+                "offset_ms": 300
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l11"
+          },
+          "kind": "dialogue",
+          "text": "等一下。这声音……不太对。先别急。",
+          "identity_id": "legend-lingmo",
+          "operations": [
+            {
+              "operation_id": "speech_lingmo_calm",
+              "mode": "speech",
+              "cue_text": "等一下。这声音……不太对。先别急。",
+              "reason": "灵墨冷静分析并提醒谨慎，体现互补角色关系",
+              "start": {
+                "operation_id": "speech_moyu_worry",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l12"
+          },
+          "kind": "sfx",
+          "text": "敲击声又响了一次，间隔变得更长",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_knock_third",
+              "mode": "one_shot",
+              "cue_text": "敲击声又响了一次，间隔变得更长",
+              "reason": "最后单独的一次敲击声，间隔延长暗示声源无力持续",
+              "start": {
+                "operation_id": "speech_lingmo_calm",
+                "point": "end",
+                "offset_ms": 400
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l13"
+          },
+          "kind": "dialogue",
+          "text": "我去看看。你在后面帮我掌灯。",
+          "identity_id": "legend-moyu",
+          "operations": [
+            {
+              "operation_id": "speech_moyu_action",
+              "mode": "speech",
+              "cue_text": "我去看看。你在后面帮我掌灯。",
+              "reason": "墨羽果断决定外出查看并分配任务，驱动场景转换",
+              "start": {
+                "operation_id": "sfx_knock_third",
+                "point": "end",
+                "offset_ms": 500
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l14"
+          },
+          "kind": "sfx",
+          "text": "墨羽提起桌上的油灯，金属提环发出轻微的摩擦声",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_pick_lamp",
+              "mode": "one_shot",
+              "cue_text": "墨羽提起桌上的油灯，金属提环发出轻微的摩擦声",
+              "reason": "拿起油灯的声响暗示起身和即将动身，强化空间存在",
+              "start": {
+                "operation_id": "speech_moyu_action",
+                "point": "start",
+                "offset_ms": 2000
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l15"
+          },
+          "kind": "dialogue",
+          "text": "一起。",
+          "identity_id": "legend-lingmo",
+          "operations": [
+            {
+              "operation_id": "speech_lingmo_together",
+              "mode": "speech",
+              "cue_text": "一起。",
+              "reason": "灵墨简短坚定的回应，决定共同行动",
+              "start": {
+                "operation_id": "sfx_pick_lamp",
+                "point": "end",
+                "offset_ms": 100
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene1",
+            "line_id": "ep1-s1-l16"
+          },
+          "kind": "sfx",
+          "text": "木门吱呀一声被拉开，屋外的风声灌了进来",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_door_open",
+              "mode": "one_shot",
+              "cue_text": "木门吱呀一声被拉开",
+              "reason": "开门音效刻画离开房间的关键动作，连接内外环境",
+              "start": {
+                "operation_id": "speech_lingmo_together",
+                "point": "end",
+                "offset_ms": 300
+              },
+              "end": null
+            },
+            {
+              "operation_id": "bg_outdoor_wind",
+              "mode": "background",
+              "cue_text": "屋外的风声灌了进来",
+              "reason": "建立屋外持续风声环境，说明场景切换至户外",
+              "start": {
+                "operation_id": "sfx_door_open",
+                "point": "start",
+                "offset_ms": 400
+              },
+              "end": {
+                "operation_id": "sfx_door_close",
+                "point": "start",
+                "offset_ms": 200
+              }
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l1"
+          },
+          "kind": "sfx",
+          "text": "风声持续，夹杂着断断续续的敲击声",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "ctl_continue_outdoor_wind",
+              "mode": "continue_background",
+              "cue_text": "风声持续",
+              "reason": "保持屋外持续风声，延续场景真实感",
+              "start": {
+                "operation_id": "sfx_door_open",
+                "point": "start",
+                "offset_ms": 2200
+              },
+              "control_target": "bg_outdoor_wind",
+              "end": null,
+              "gain_db": 0
+            },
+            {
+              "operation_id": "sfx_outdoor_knocking",
+              "mode": "one_shot",
+              "cue_text": "夹杂着断断续续的敲击声",
+              "reason": "在持续风声中叠加敲击音效，表明声源尚未被发现",
+              "start": {
+                "operation_id": "ctl_continue_outdoor_wind",
+                "point": "start",
+                "offset_ms": 500
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l2"
+          },
+          "kind": "narration",
+          "text": "两人走进夜色。墨羽举起油灯照向门框上方，灵墨紧跟在他身后。",
+          "identity_id": "narrator",
+          "operations": [
+            {
+              "operation_id": "speech_narr_search",
+              "mode": "speech",
+              "cue_text": "两人走进夜色。墨羽举起油灯照向门框上方，灵墨紧跟在他身后。",
+              "reason": "旁白描述两人在户外搜寻声源的状态，引导注意焦点",
+              "start": {
+                "operation_id": "sfx_outdoor_knocking",
+                "point": "end",
+                "offset_ms": 300
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l3"
+          },
+          "kind": "sfx",
+          "text": "敲击声又响了一次，这次明显来自高处",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_knock_high",
+              "mode": "one_shot",
+              "cue_text": "敲击声又响了一次，这次明显来自高处",
+              "reason": "高处敲击声引导角色和听众注意门框上方，为发现真相铺路",
+              "start": {
+                "operation_id": "speech_narr_search",
+                "point": "end",
+                "offset_ms": 300
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l4"
+          },
+          "kind": "dialogue",
+          "text": "等一下，你看上面。",
+          "identity_id": "legend-lingmo",
+          "operations": [
+            {
+              "operation_id": "speech_lingmo_look",
+              "mode": "speech",
+              "cue_text": "等一下，你看上面。",
+              "reason": "灵墨发现声源位置并低声提醒墨羽",
+              "start": {
+                "operation_id": "sfx_knock_high",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l5"
+          },
+          "kind": "sfx",
+          "text": "灯光移动的声音，木头被风吹动撞击门框的闷响",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_light_move",
+              "mode": "one_shot",
+              "cue_text": "灯光移动的声音",
+              "reason": "模拟墨羽举起光源照向木牌时伴生的移动音效",
+              "start": {
+                "operation_id": "speech_lingmo_look",
+                "point": "end",
+                "offset_ms": 400
+              },
+              "end": null
+            },
+            {
+              "operation_id": "sfx_wooden_bang",
+              "mode": "one_shot",
+              "cue_text": "木头被风吹动撞击门框的闷响",
+              "reason": "还原木牌撞击门框特征声，使声源具体化",
+              "start": {
+                "operation_id": "sfx_light_move",
+                "point": "start",
+                "offset_ms": 500
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l6"
+          },
+          "kind": "dialogue",
+          "text": "是木牌松了。风一吹就撞在门框上。",
+          "identity_id": "legend-lingmo",
+          "operations": [
+            {
+              "operation_id": "speech_lingmo_discover",
+              "mode": "speech",
+              "cue_text": "是木牌松了。风一吹就撞在门框上。",
+              "reason": "灵墨发现声源并解释原因，解开悬念",
+              "start": {
+                "operation_id": "sfx_wooden_bang",
+                "point": "end",
+                "offset_ms": 500
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l7"
+          },
+          "kind": "dialogue",
+          "text": "原来是它。我来按住。",
+          "identity_id": "legend-moyu",
+          "operations": [
+            {
+              "operation_id": "speech_moyu_hold",
+              "mode": "speech",
+              "cue_text": "原来是它。我来按住。",
+              "reason": "墨羽恍然大悟并主动出手，准备解决问题",
+              "start": {
+                "operation_id": "speech_lingmo_discover",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l8"
+          },
+          "kind": "action",
+          "text": "墨羽伸手按住木牌，敲击声立刻停止",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "action_hold_stop_knock",
+              "mode": "action_note",
+              "cue_text": "墨羽伸手按住木牌，敲击声立刻停止",
+              "reason": "动作提示，示意敲击声立即停止，为修补环节留白",
+              "start": {
+                "operation_id": "speech_moyu_hold",
+                "point": "end",
+                "offset_ms": 500
+              },
+              "end": null,
+              "gain_db": 0
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l9"
+          },
+          "kind": "dialogue",
+          "text": "这儿有块小木片，应该能楔紧。",
+          "identity_id": "legend-lingmo",
+          "operations": [
+            {
+              "operation_id": "speech_lingmo_wood",
+              "mode": "speech",
+              "cue_text": "这儿有块小木片，应该能楔紧。",
+              "reason": "灵墨迅速找到补救材料，展现观察力与合作性",
+              "start": {
+                "operation_id": "action_hold_stop_knock",
+                "point": "start",
+                "offset_ms": 300
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l10"
+          },
+          "kind": "sfx",
+          "text": "木片被塞入缝隙，轻轻敲击几下将其楔紧",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_wedge_wood",
+              "mode": "one_shot",
+              "cue_text": "木片被塞入缝隙，轻轻敲击几下将其楔紧",
+              "reason": "修复时特有的敲击声，与之前扰动型敲击形成质感区分",
+              "start": {
+                "operation_id": "speech_lingmo_wood",
+                "point": "end",
+                "offset_ms": 300
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l11"
+          },
+          "kind": "dialogue",
+          "text": "好了。",
+          "identity_id": "legend-moyu",
+          "operations": [
+            {
+              "operation_id": "speech_moyu_done",
+              "mode": "speech",
+              "cue_text": "好了。",
+              "reason": "墨羽确认问题已解决，语气满意",
+              "start": {
+                "operation_id": "sfx_wedge_wood",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene2",
+            "line_id": "ep1-s2-l12"
+          },
+          "kind": "sfx",
+          "text": "风声仍在，但敲击声没有再出现",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "ctl_keep_outdoor_wind",
+              "mode": "continue_background",
+              "cue_text": "风声仍在",
+              "reason": "保持风声持续以衔接返回室内切换，证实敲击声消失",
+              "start": {
+                "operation_id": "speech_moyu_done",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "control_target": "bg_outdoor_wind",
+              "end": null,
+              "gain_db": 0
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene3",
+            "line_id": "ep1-s3-l1"
+          },
+          "kind": "sfx",
+          "text": "两人的脚步声走近，木门关闭",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_footsteps",
+              "mode": "one_shot",
+              "cue_text": "两人的脚步声走近",
+              "reason": "脚步声表现二人自屋外走向门口的过程",
+              "start": {
+                "operation_id": "ctl_keep_outdoor_wind",
+                "point": "start",
+                "offset_ms": 1500
+              },
+              "end": null
+            },
+            {
+              "operation_id": "sfx_door_close",
+              "mode": "one_shot",
+              "cue_text": "木门关闭",
+              "reason": "关门声宣告退场，场景即将切回室内",
+              "start": {
+                "operation_id": "sfx_footsteps",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "end": null
+            },
+            {
+              "operation_id": "stop_outdoor_wind",
+              "mode": "stop_sound",
+              "cue_text": "木门关闭",
+              "reason": "关门后室外风声不再传入，完成空间封闭",
+              "start": {
+                "operation_id": "sfx_door_close",
+                "point": "start",
+                "offset_ms": 100
+              },
+              "stop_target": "bg_outdoor_wind",
+              "end": null,
+              "gain_db": 0
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene3",
+            "line_id": "ep1-s3-l2"
+          },
+          "kind": "sfx",
+          "text": "油灯被放回桌上，发出轻响",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_place_lamp",
+              "mode": "one_shot",
+              "cue_text": "油灯被放回桌上，发出轻响",
+              "reason": "将油灯放回原位的声音细节，强化室内重置感",
+              "start": {
+                "operation_id": "sfx_door_close",
+                "point": "end",
+                "offset_ms": 300
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene3",
+            "line_id": "ep1-s3-l3"
+          },
+          "kind": "narration",
+          "text": "墨羽把灯放回桌上。屋里又只剩下灯火的噼啪声。",
+          "identity_id": "narrator",
+          "operations": [
+            {
+              "operation_id": "speech_narr_return",
+              "mode": "speech",
+              "cue_text": "墨羽把灯放回桌上。屋里又只剩下灯火的噼啪声。",
+              "reason": "旁白回到室内，呼应灯火背景，营造安全与宁静",
+              "start": {
+                "operation_id": "sfx_place_lamp",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene3",
+            "line_id": "ep1-s3-l4"
+          },
+          "kind": "dialogue",
+          "text": "虚惊一场。",
+          "identity_id": "legend-moyu",
+          "operations": [
+            {
+              "operation_id": "speech_moyu_relief",
+              "mode": "speech",
+              "cue_text": "虚惊一场。",
+              "reason": "墨羽如释重负的感叹，升华情绪转折",
+              "start": {
+                "operation_id": "speech_narr_return",
+                "point": "end",
+                "offset_ms": 400
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene3",
+            "line_id": "ep1-s3-l5"
+          },
+          "kind": "sfx",
+          "text": "灵墨轻轻笑了一声",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "sfx_lingmo_laugh",
+              "mode": "one_shot",
+              "cue_text": "灵墨轻轻笑了一声",
+              "reason": "轻笑释放剩余紧张感，为温馨结尾注入暖意",
+              "start": {
+                "operation_id": "speech_moyu_relief",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene3",
+            "line_id": "ep1-s3-l6"
+          },
+          "kind": "dialogue",
+          "text": "还好只是风。",
+          "identity_id": "legend-lingmo",
+          "operations": [
+            {
+              "operation_id": "speech_lingmo_ending",
+              "mode": "speech",
+              "cue_text": "还好只是风。",
+              "reason": "灵墨温柔点题并宽慰对方，收束事件情感弧线",
+              "start": {
+                "operation_id": "sfx_lingmo_laugh",
+                "point": "end",
+                "offset_ms": 100
+              },
+              "end": null
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene3",
+            "line_id": "ep1-s3-l7"
+          },
+          "kind": "sfx",
+          "text": "油灯稳定地燃烧，发出细微的噼啪声",
+          "identity_id": null,
+          "operations": [
+            {
+              "operation_id": "ctl_inside_lamp_finale",
+              "mode": "continue_background",
+              "cue_text": "油灯稳定地燃烧，发出细微的噼啪声",
+              "reason": "维持灯火氛围以平稳过渡到终场旁白",
+              "start": {
+                "operation_id": "speech_lingmo_ending",
+                "point": "end",
+                "offset_ms": 300
+              },
+              "control_target": "bg_indoor_lamp",
+              "end": null,
+              "gain_db": 0
+            }
+          ]
+        },
+        {
+          "source": {
+            "episode_id": "ep-1-60ba7d59",
+            "scene_id": "ep1-scene3",
+            "line_id": "ep1-s3-l8"
+          },
+          "kind": "narration",
+          "text": "灯火映着两个人的脸，屋子里安静而温暖。",
+          "identity_id": "narrator",
+          "operations": [
+            {
+              "operation_id": "speech_narr_final",
+              "mode": "speech",
+              "cue_text": "灯火映着两个人的脸，屋子里安静而温暖。",
+              "reason": "温暖旁白徐徐收束全篇，配合灯火氛围",
+              "start": {
+                "operation_id": "ctl_inside_lamp_finale",
+                "point": "start",
+                "offset_ms": 2000
+              },
+              "end": null
+            },
+            {
+              "operation_id": "close_stop_lamp",
+              "mode": "stop_sound",
+              "cue_text": "屋子里安静而温暖",
+              "reason": "在温暖旁白结束后停止灯火背景，全剧终结",
+              "start": {
+                "operation_id": "speech_narr_final",
+                "point": "end",
+                "offset_ms": 200
+              },
+              "stop_target": "bg_indoor_lamp",
+              "end": null,
+              "gain_db": 0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

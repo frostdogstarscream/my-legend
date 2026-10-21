@@ -1,0 +1,150 @@
+{
+  "$defs": {
+    "TimelineEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "sequence": {
+          "minimum": 1,
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "episode_id": {
+          "title": "Episode Id",
+          "type": "string"
+        },
+        "scene_id": {
+          "title": "Scene Id",
+          "type": "string"
+        },
+        "line_id": {
+          "title": "Line Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "dialogue",
+            "narration",
+            "sfx",
+            "action",
+            "music"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "identity_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Identity Id"
+        },
+        "start_frame": {
+          "minimum": 0,
+          "title": "Start Frame",
+          "type": "integer"
+        },
+        "end_frame": {
+          "minimum": 1,
+          "title": "End Frame",
+          "type": "integer"
+        },
+        "duration_basis": {
+          "enum": [
+            "measured_audio",
+            "planned_silent_hold",
+            "visual_estimate"
+          ],
+          "title": "Duration Basis",
+          "type": "string"
+        },
+        "source_audio_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Source Audio Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sequence",
+        "episode_id",
+        "scene_id",
+        "line_id",
+        "kind",
+        "text",
+        "start_frame",
+        "end_frame",
+        "duration_basis",
+        "source_audio_sha256"
+      ],
+      "title": "TimelineEvent",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "measured_timeline/1.0",
+      "default": "measured_timeline/1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_version_id": {
+      "title": "Source Version Id",
+      "type": "string"
+    },
+    "sample_rate": {
+      "maximum": 192000,
+      "minimum": 8000,
+      "title": "Sample Rate",
+      "type": "integer"
+    },
+    "channels": {
+      "maximum": 2,
+      "minimum": 1,
+      "title": "Channels",
+      "type": "integer"
+    },
+    "total_frames": {
+      "minimum": 1,
+      "title": "Total Frames",
+      "type": "integer"
+    },
+    "audio_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Audio Sha256",
+      "type": "string"
+    },
+    "events": {
+      "items": {
+        "$ref": "#/$defs/TimelineEvent"
+      },
+      "minItems": 1,
+      "title": "Events",
+      "type": "array"
+    },
+    "word_alignment": {
+      "const": "not_available",
+      "default": "not_available",
+      "title": "Word Alignment",
+      "type": "string"
+    }
+  },
+  "required": [
+    "source_version_id",
+    "sample_rate",
+    "channels",
+    "total_frames",
+    "audio_sha256",
+    "events"
+  ],
+  "title": "MeasuredTimeline",
+  "type": "object"
+}

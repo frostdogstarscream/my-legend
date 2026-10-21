@@ -1,0 +1,19 @@
+{
+  "contract_version": "my-legend.adapter-result/1.0",
+  "adapter": "visual",
+  "request_id": "fixture-visual-prepare",
+  "request_fingerprint": "d2d6a47f293f187c84e3be7df26d04fa0675195f5286ca1fafb16b4ddd48d112",
+  "state": "prepared",
+  "target": {
+    "ref": "fixture://visual.workflow-request.json",
+    "sha256": "2f3a83a8169c480c20ef4c60ec3fad3911c20b9afdc73510f19c27d69a552cb6"
+  },
+  "sidecar": {
+    "ref": "fixture://visual.sidecar.json",
+    "sha256": "47934cac498f5b1d14059a853c522f3be4f249dd3ef69e376dc76c8822b88937"
+  },
+  "issues": [],
+  "workflow_state": "not_submitted",
+  "media_state": "not_generated",
+  "publication_state": "not_approved"
+}

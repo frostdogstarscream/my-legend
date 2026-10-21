@@ -1,0 +1,21 @@
+{
+  "contract_version": "my-legend.capabilities/1.0",
+  "profile_id": "fixture-capabilities",
+  "revision": "1",
+  "fixture_only": true,
+  "provider_account_verified": false,
+  "verification_ref": null,
+  "controls": [
+    "instructions"
+  ],
+  "exact_controls": [],
+  "locked_performance_enrichment_validation": false,
+  "visual": {
+    "max_scenes": 2,
+    "max_events": 100,
+    "max_duration_ms": 90000,
+    "max_characters_basic": 6,
+    "max_scene_cast_basic": 4,
+    "max_characters_painted": 3
+  }
+}

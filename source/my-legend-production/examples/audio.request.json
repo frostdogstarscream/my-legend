@@ -1,0 +1,32 @@
+{
+  "contract_version": "my-legend.adapter-request/1.0",
+  "adapter": "audio",
+  "request_id": "fixture-audio-prepare",
+  "idempotency_key": "fixture-audio-prepare-1",
+  "mode": "prepare_only",
+  "source": {
+    "story_id": "fixture-story-001",
+    "story_version_id": "fixture-version-001",
+    "delivery": {
+      "ref": "fixture://source/story_delivery.json",
+      "sha256": "019b0cdafbf541cf3da5d307bcec2bcbf965c720933ddb839f52076d7c9e8cfd"
+    },
+    "render_manifest": {
+      "ref": "fixture://source/render_manifest.json",
+      "sha256": "7376a50ef1612846d989ebd510eea3dbe4e33f4bf392159c448e20c44fbffc24"
+    }
+  },
+  "scope": {
+    "scenes": [
+      {
+        "episode_id": "episode-1",
+        "scene_id": "scene-1"
+      }
+    ]
+  },
+  "context": {
+    "ref": "fixture://context/audio_context.json",
+    "sha256": "23d2aa6efb0a540afd0cee70b27989c6e00b3030a4e8f12cc144c3432de24d9b"
+  },
+  "joint_profile": "independent"
+}

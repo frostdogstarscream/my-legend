@@ -1,0 +1,23 @@
+{
+  "template_id": "SPY_MYSTERY_SERIALIZED",
+  "version": 1,
+  "name": "长篇谍战悬疑·前五分钟",
+  "supported_modes": ["serialized"],
+  "beats": [
+    {"key": "hook", "purpose": "开场危机与长期谜团的入口", "guidance": "第一分钟内建立迫在眉睫的选择"},
+    {"key": "first_clue", "purpose": "给出一个可追查但尚无解释的线索", "guidance": "线索要能在后续集数回收"},
+    {"key": "misdirection", "purpose": "可信的误导让人物选择错误方向", "guidance": "误导不能违反人物已知事实"},
+    {"key": "local_turn", "purpose": "前五分钟的小目标达成或失败", "guidance": "让片段有局部结果，不只是拖到悬念"},
+    {"key": "cliffhanger", "purpose": "揭示更大威胁或身份反转", "guidance": "不提前解答核心谜团，留下明确下一步行动"}
+  ],
+  "constraints": [
+    "前五分钟只交付长篇第一集的开场片段，不伪装成完整结局",
+    "清楚区分已证实事实、人物猜测和待解伏笔",
+    "不要出现现实机构的可操作间谍技术步骤"
+  ],
+  "recommended_characters": 3,
+  "tone_hints": ["谍战", "疑云", "层层反转"],
+  "defaults": {"target_duration_sec": 300, "content_form": "audio_drama"},
+  "ending_guidance": "cliffhanger",
+  "metadata": {"genre": "谍战", "language": "zh-CN", "content_rating": "teen"}
+}

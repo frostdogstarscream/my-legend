@@ -1,0 +1,21 @@
+{
+  "characters": [
+    {
+      "character_id": "linlan",
+      "expected_version": 0,
+      "canon": {"name": "林岚", "identity": "广播站维修员", "immutable_facts": ["林岚是广播站维修员，非记者"]},
+      "runtime_defaults": {"goal": "修复广播站", "dialogue_style": "简短具体，先确认再行动"},
+      "assets": {
+        "image": {"asset_id": "linlan-portrait", "revision": "1", "uri": "asset://characters/linlan/portrait"},
+        "voice": {"asset_id": "linlan-voice", "revision": "1", "performer_id": "voice-linlan"}
+      }
+    },
+    {
+      "character_id": "zhouye",
+      "expected_version": 0,
+      "canon": {"name": "周野", "identity": "社区广播主持人", "immutable_facts": ["周野是社区广播主持人，非维修员"]},
+      "runtime_defaults": {"goal": "恢复街坊广播", "dialogue_style": "热心、会自嘲"},
+      "assets": {"voice": {"asset_id": "zhouye-voice", "revision": "1", "performer_id": "voice-zhouye"}}
+    }
+  ]
+}

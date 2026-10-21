@@ -1,0 +1,96 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "artifact_revision": {
+      "title": "Artifact Revision",
+      "type": "string"
+    },
+    "assumptions": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Assumptions",
+      "type": "array"
+    },
+    "generation_record": {
+      "additionalProperties": true,
+      "title": "Generation Record",
+      "type": "object"
+    },
+    "lines": {
+      "additionalProperties": true,
+      "title": "Lines",
+      "type": "object"
+    },
+    "project": {
+      "additionalProperties": true,
+      "title": "Project",
+      "type": "object"
+    },
+    "roles": {
+      "additionalProperties": true,
+      "title": "Roles",
+      "type": "object"
+    },
+    "scenes": {
+      "additionalProperties": true,
+      "title": "Scenes",
+      "type": "object"
+    },
+    "schema_version": {
+      "const": "lingban.performance/1",
+      "default": "lingban.performance/1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "script_sha256": {
+      "title": "Script Sha256",
+      "type": "string"
+    },
+    "sounds": {
+      "additionalProperties": true,
+      "title": "Sounds",
+      "type": "object"
+    },
+    "source_version_id": {
+      "title": "Source Version Id",
+      "type": "string"
+    },
+    "template_version": {
+      "title": "Template Version",
+      "type": "string"
+    },
+    "timing_constraints": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Timing Constraints",
+      "type": "array"
+    },
+    "visual_semantics": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Visual Semantics",
+      "type": "array"
+    }
+  },
+  "required": [
+    "source_version_id",
+    "script_sha256",
+    "artifact_revision",
+    "template_version",
+    "project",
+    "roles",
+    "scenes",
+    "lines",
+    "sounds",
+    "visual_semantics",
+    "timing_constraints"
+  ],
+  "title": "PerformanceDocument",
+  "type": "object"
+}

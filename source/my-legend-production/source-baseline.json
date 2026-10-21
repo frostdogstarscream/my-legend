@@ -1,0 +1,78 @@
+{
+  "story_code_commit": "0dec8480e3c1b01af66407ff063f825a3fd5dedb",
+  "story_handoff_commit": "2ebe99ed631360e3622d8d7cc08a75829b77a29e",
+  "sources": [
+    {
+      "archive_kind": "audio",
+      "path": "pipeline/contracts/StandardScript.schema.json",
+      "sha256": "34d7a028e477e788a036c3966e1fd48b657f128254a63870d9361714fdd2e52f"
+    },
+    {
+      "archive_kind": "audio",
+      "path": "pipeline/src/lingban_pipeline/contracts.py",
+      "sha256": "3ec57f1e763d0070d40ac1dcd9bdcd2bc541c5650fe6b95049cdd4738326f731"
+    },
+    {
+      "archive_kind": "visual",
+      "path": "project/docs/schemas/visual-request-1.0.schema.json",
+      "sha256": "897242bc4a5592fced1a071cc0d8e8187d636b7aaa3db68f9a3daecd372f1608"
+    },
+    {
+      "archive_kind": "visual",
+      "path": "project/docs/schemas/visual-script-1.0.schema.json",
+      "sha256": "6cd8b47cbbb72a1aac5818729210ebb9b928c228c079716caef2e1ee4328278c"
+    },
+    {
+      "archive_kind": "visual",
+      "path": "project/app/visual_workflow/contracts.py",
+      "sha256": "b169bc3934644e3213409a4f42aec7302b9084368b6e244688d0e4be3449b227"
+    },
+    {
+      "archive_kind": "visual",
+      "path": "project/app/visual_workflow/script_models.py",
+      "sha256": "ef1c4d433d24230c1124bc83d04dcf88a824df52ab5f310c21efcd923d147e2d"
+    },
+    {
+      "archive_kind": "visual",
+      "path": "project/app/preview_integration/alignment.py",
+      "sha256": "25fb1c379346475e9c5f8b1ce2af5f792142b729dfd711e336c66fc91fa65cc9"
+    }
+  ],
+  "audio_zip_sha256": "bfc23808de731620eb472ea0a2465525ec440431e6c932343abed174a3059f41",
+  "visual_zip_sha256": "9008389c3bcbb565b555e89a964b9c53b1462382fe022eff81ff26549fe6299b",
+  "story_sources": [
+    {
+      "path": "4-引擎代码/drama_engine/workflow/schemas.py",
+      "git_blob_sha": "d6efd30b051c8ef5f8b0a050dbe827c6c885d2dc",
+      "ref": "0dec8480e3c1b01af66407ff063f825a3fd5dedb",
+      "url": "https://github.com/zblds-a/StoryGenerate/blob/0dec8480e3c1b01af66407ff063f825a3fd5dedb/4-%E5%BC%95%E6%93%8E%E4%BB%A3%E7%A0%81/drama_engine/workflow/schemas.py",
+      "utf8_sha256": "9c1a0f7cea46d966deaad52e89708df0115fed813fe403ab257d90b7f15e4536"
+    },
+    {
+      "path": "4-引擎代码/drama_engine/workflow/performance.py",
+      "git_blob_sha": "36c4382555d37fc49accab3b1dc6897de4786cc3",
+      "ref": "0dec8480e3c1b01af66407ff063f825a3fd5dedb",
+      "url": "https://github.com/zblds-a/StoryGenerate/blob/0dec8480e3c1b01af66407ff063f825a3fd5dedb/4-%E5%BC%95%E6%93%8E%E4%BB%A3%E7%A0%81/drama_engine/workflow/performance.py",
+      "utf8_sha256": "af9d7887de400ee6706fa193b5b4196510ba2e9b0e3b46ad00e1d67feeb64e33"
+    },
+    {
+      "path": "4-引擎代码/drama_engine/workflow/delivery.py",
+      "git_blob_sha": "38e560d06f3d14bc1dd3792c90663fa6ffe3eed8",
+      "ref": "0dec8480e3c1b01af66407ff063f825a3fd5dedb",
+      "url": "https://github.com/zblds-a/StoryGenerate/blob/0dec8480e3c1b01af66407ff063f825a3fd5dedb/4-%E5%BC%95%E6%93%8E%E4%BB%A3%E7%A0%81/drama_engine/workflow/delivery.py",
+      "utf8_sha256": "6fa1dda613cc842bfdc9f55acb427a57d6ad1246f55d1fbe096f6292de147352"
+    },
+    {
+      "path": "4-引擎代码/drama_engine/service/downstream.py",
+      "git_blob_sha": "ac1b6ccf6073314554fc4982c30244a465ff60af",
+      "ref": "0dec8480e3c1b01af66407ff063f825a3fd5dedb",
+      "url": "https://github.com/zblds-a/StoryGenerate/blob/0dec8480e3c1b01af66407ff063f825a3fd5dedb/4-%E5%BC%95%E6%93%8E%E4%BB%A3%E7%A0%81/drama_engine/service/downstream.py"
+    },
+    {
+      "path": "docs/handoff/contracts/openapi.json",
+      "git_blob_sha": "f1ee8cea464a1467153ab2abf4bbbd387b825a2a",
+      "ref": "0dec8480e3c1b01af66407ff063f825a3fd5dedb",
+      "url": "https://github.com/zblds-a/StoryGenerate/blob/0dec8480e3c1b01af66407ff063f825a3fd5dedb/docs/handoff/contracts/openapi.json"
+    }
+  ]
+}

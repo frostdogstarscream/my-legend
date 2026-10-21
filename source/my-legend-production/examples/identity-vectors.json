@@ -1,0 +1,55 @@
+{
+  "algorithm": "utf8-json-string-array-sha256-prefix32",
+  "vectors": [
+    {
+      "prefix": "v_",
+      "parts": [
+        "version",
+        "fixture-story-001",
+        "fixture-version-001"
+      ],
+      "expected": "v_87126582902b42814b278d22694513b2"
+    },
+    {
+      "prefix": "s_",
+      "parts": [
+        "scene",
+        "fixture-story-001",
+        "episode-1",
+        "scene-1"
+      ],
+      "expected": "s_bc4dadbac1522b31fcaf45e26a45966e"
+    },
+    {
+      "prefix": "b_",
+      "parts": [
+        "block",
+        "fixture-story-001",
+        "episode-1",
+        "scene-1",
+        "line-2"
+      ],
+      "expected": "b_12c4a99fc4284938fc608468634caaa6"
+    },
+    {
+      "prefix": "r_",
+      "parts": [
+        "role",
+        "fixture-story-001",
+        "narrator",
+        "narrator"
+      ],
+      "expected": "r_15ffb5ba17fac7e2bcc74ab8110deba7"
+    },
+    {
+      "prefix": "r_",
+      "parts": [
+        "role",
+        "中文故事",
+        "role",
+        "角色甲"
+      ],
+      "expected": "r_f4e5041bb45803144f5d9cbd7931d015"
+    }
+  ]
+}

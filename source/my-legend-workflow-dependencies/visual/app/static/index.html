@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>入戏 · 小说转舞台剧</title>
+  <link rel="stylesheet" href="/static/styles.css?v=2.2">
+  <link rel="stylesheet" href="/static/performance-table.css?v=2.2">
+  <link rel="stylesheet" href="/static/story-json.css?v=2.2">
+  <link rel="stylesheet" href="/static/model-settings.css?v=2.2">
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="/"><span>入</span><strong>入戏</strong></a>
+    <p class="slogan">让故事站上舞台，也走进玩具</p>
+    <div class="side-title"><span>最近项目</span><button id="refreshProjects" title="刷新">↻</button></div>
+    <nav id="projectList" aria-label="最近项目"><p class="muted">暂无项目</p></nav>
+    <div class="privacy"><small>本机工作台</small><strong>原文默认不用于训练</strong><p>API Key 只保存在本机配置文件，不进入项目数据库。</p></div>
+    <button class="ghost wide" id="openSettings">⚙ 配置大模型</button>
+  </aside>
+
+  <main>
+    <header class="hero">
+      <div><small>STORY TO STAGE · TPM 1.0</small><h1>把叙述，变成能演、能发声的戏</h1></div>
+      <span class="model-badge" id="modelBadge">读取配置中…</span>
+    </header>
+
+    <section class="card input-card">
+      <div class="section-head"><span class="number">01</span><div><h2>导入章节</h2><p>支持白话文、文言文与网络小说，最多 2 万字符</p></div><span id="counter">0 / 20,000</span></div>
+      <div class="input-mode" role="group" aria-label="输入方式"><button class="mode active" type="button" data-mode="text">粘贴文本 / TXT</button><button class="mode" type="button" data-mode="story-json">故事 JSON</button></div>
+      <div id="storyJsonPanel" class="story-json-panel hidden">
+        <label>故事生成 JSON<textarea id="storyJson" rows="7" placeholder="粘贴符合 story.v3 的故事生成 JSON，或从下方选择 .json 文件"></textarea></label>
+        <div class="file-row"><label class="file-button">选择 JSON<input id="storyJsonFile" type="file" accept="application/json,.json"></label><button class="ghost" id="previewStory" type="button">解析并预览故事</button></div>
+        <div id="storyPreview" class="story-preview hidden" aria-live="polite"></div>
+        <label id="storyWarningCheck" class="check hidden"><input id="acknowledgeWarnings" type="checkbox"> 我已了解上游故事的质量或降级警告，仍按当前内容生成。</label>
+      </div>
+      <div id="textInputPanel">
+      <div class="two-col"><label>作品名称<input id="title" placeholder="例如：三国演义"></label><label>章节名称<input id="chapterTitle" placeholder="例如：第三十八回 三顾茅庐"></label></div>
+      <label>小说或网文章节<textarea id="sourceText" rows="11" maxlength="20000" placeholder="粘贴章节内容，或选择 UTF-8 TXT 文件……"></textarea></label>
+      <div class="file-row"><label class="file-button">选择 TXT<input id="fileInput" type="file" accept=".txt,text/plain"></label><small>原文仅保存在本地项目数据库</small></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-head"><span class="number">02</span><div><h2>设定改编与表演</h2><p>新手可直接使用推荐值</p></div></div>
+      <div class="options-grid">
+        <label>目标时长<select id="duration"><option value="10">10 分钟</option><option value="5">5 分钟</option><option value="15">15 分钟</option></select></label>
+        <label>演员上限<select id="actorLimit"><option value="">系统推荐</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></label>
+        <label>表演风格<select id="style"><option value="balanced">均衡通用</option><option value="realistic">生活写实</option><option value="conflict">强冲突短剧</option><option value="suspense">悬疑压迫</option><option value="comedy">轻松喜剧</option></select></label>
+        <label>细节密度<select id="detail"><option value="rich">细腻丰富</option><option value="balanced">均衡</option><option value="concise">简洁</option></select></label>
+        <label>语言处理<select id="language"><option value="auto">自动判断</option><option value="modern">保持白话</option><option value="classical_to_modern">文言转舞台白话</option><option value="retain_classical">保留古典韵味</option></select></label>
+        <label>舞台条件<select id="stage"><option value="small_theatre">标准小剧场</option><option value="campus">校园舞台</option><option value="blackbox">极简黑匣子</option></select></label>
+      </div>
+      <label class="check"><input id="enableTpm" type="checkbox" checked> 同时生成 TPM 1.0 玩具发声表演协议（时间戳、语气、语调、动作）</label>
+      <button class="primary" id="generate">生成完整初稿 <span>→</span></button>
+      <div id="progress" class="progress hidden"><div class="spinner"></div><div><strong>正在编排剧本和玩具时间轴</strong><p>分析人物 → 组织冲突 → 丰富对白 → 标注表演 → 编译 TPM → 校验</p></div></div>
+    </section>
+
+    <section id="result" class="card hidden">
+      <div class="section-head"><span class="number">03</span><div><h2>舞台剧初稿</h2><p id="versionLabel">版本 1</p></div><div class="actions"><a id="exportTxt">导出 TXT</a><a id="exportDocx">导出 DOCX</a><a id="exportLines">导出剧本行</a><a id="exportTpm" class="accent">导出 TPM</a></div></div>
+      <section class="source-panel" aria-labelledby="sourceHeading">
+        <h3 id="sourceHeading">文章原文</h3>
+        <pre id="sourceOutput" class="source-output" tabindex="0" role="region" aria-label="文章原文，可滚动"></pre>
+      </section>
+      <section class="performance-panel" aria-labelledby="performanceHeading">
+        <h3 id="performanceHeading">表演明细表</h3>
+        <p id="performanceSummary" role="status"></p>
+        <p class="muted performance-help">起止时间从整场表演开始计算，格式为 分:秒.毫秒；强度为 0–100%，语速 1.00 倍为基准。估算时间不等于真实音频时长。</p>
+        <div class="performance-scroll" tabindex="0" role="region" aria-label="表演明细表，可横向滚动">
+          <table class="performance-table">
+            <caption>当前已保存版本的逐句表演参数（编辑剧本文本不会自动更新此表）</caption>
+            <thead><tr><th scope="col">序号</th><th scope="col">角色</th><th scope="col">台词</th><th scope="col">开始时间</th><th scope="col">结束时间</th><th scope="col">中文情绪</th><th scope="col">强度</th><th scope="col">语速</th><th scope="col">动作</th></tr></thead>
+            <tbody id="performanceRows"></tbody>
+          </table>
+        </div>
+      </section>
+      <div class="result-grid">
+        <textarea id="scriptOutput" rows="32"></textarea>
+        <aside class="report">
+          <div class="score"><span>初稿可用度</span><strong id="overallScore">--</strong></div>
+          <div id="scoreList"></div>
+          <h3>校验提示</h3><ul id="issueList"></ul>
+          <h3>改编说明</h3><ul id="notesList"></ul>
+          <h3>TPM 时间轴</h3><p id="tpmSummary" class="muted"></p>
+          <details><summary>查看协议 JSON</summary><pre id="tpmPreview"></pre></details>
+        </aside>
+      </div>
+      <div class="rewrite"><h3>局部重写</h3><div class="rewrite-row"><select id="rewriteMode"><option value="natural">对白更自然</option><option value="stronger_conflict">冲突更强</option><option value="subtext">增加潜台词</option><option value="actions">增加可表演动作</option><option value="shorter">压缩内容</option></select><button id="rewriteBtn" class="ghost">重写选中文本</button></div></div>
+    </section>
+  </main>
+
+  <dialog id="settingsDialog">
+    <form method="dialog" id="settingsForm">
+      <div class="dialog-head"><h2>配置大模型</h2><button value="cancel" aria-label="关闭">×</button></div>
+      <p class="muted">兼容 OpenAI、DeepSeek、Kimi、通义千问及 OpenAI 兼容接口。</p>
+      <label>服务商<select id="provider"></select></label>
+      <label>模型名称<input id="model"></label>
+      <label>API 地址<input id="baseUrl"></label>
+      <label>API Key<input id="apiKey" type="password" autocomplete="off" placeholder="仅保存在本机 .env"></label>
+      <label class="check"><input id="demoMode" type="checkbox"> 演示模式（不调用付费模型）</label>
+      <div id="connectionMessage" class="message"></div>
+      <div class="dialog-actions"><button type="button" class="ghost" id="testConnection">测试连接</button><button type="button" class="primary" id="saveSettings">保存配置</button></div>
+    </form>
+  </dialog>
+  <div id="toast" role="status"></div>
+  <script src="/static/performance-table.js?v=2.2"></script>
+  <script src="/static/app.js?v=2.2"></script>
+</body>
+</html>

@@ -1,0 +1,453 @@
+{
+  "$defs": {
+    "AudioEventRef": {
+      "additionalProperties": false,
+      "properties": {
+        "episode_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Episode Id",
+          "type": "string"
+        },
+        "scene_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Scene Id",
+          "type": "string"
+        },
+        "line_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Line Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "episode_id",
+        "scene_id",
+        "line_id"
+      ],
+      "title": "AudioEventRef",
+      "type": "object"
+    },
+    "AutomatedAudioEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "sequence": {
+          "minimum": 1,
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "episode_id": {
+          "title": "Episode Id",
+          "type": "string"
+        },
+        "scene_id": {
+          "title": "Scene Id",
+          "type": "string"
+        },
+        "line_id": {
+          "title": "Line Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "dialogue",
+            "narration",
+            "sfx",
+            "music"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "identity_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Identity Id"
+        },
+        "start_frame": {
+          "minimum": 0,
+          "title": "Start Frame",
+          "type": "integer"
+        },
+        "end_frame": {
+          "minimum": 1,
+          "title": "End Frame",
+          "type": "integer"
+        },
+        "duration_basis": {
+          "const": "measured_audio",
+          "title": "Duration Basis",
+          "type": "string"
+        },
+        "source_audio_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Source Audio Sha256",
+          "type": "string"
+        },
+        "render_role": {
+          "enum": [
+            "speech",
+            "one_shot",
+            "background"
+          ],
+          "title": "Render Role",
+          "type": "string"
+        },
+        "processing": {
+          "default": "unchanged",
+          "enum": [
+            "unchanged",
+            "looped_background",
+            "cropped_background",
+            "faded_background",
+            "looped_faded_background",
+            "cropped_faded_background",
+            "automated_background"
+          ],
+          "title": "Processing",
+          "type": "string"
+        },
+        "parent_audio_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent Audio Sha256"
+        }
+      },
+      "required": [
+        "sequence",
+        "episode_id",
+        "scene_id",
+        "line_id",
+        "kind",
+        "text",
+        "start_frame",
+        "end_frame",
+        "duration_basis",
+        "source_audio_sha256",
+        "render_role"
+      ],
+      "title": "AutomatedAudioEvent",
+      "type": "object"
+    },
+    "NonAudioMarker": {
+      "additionalProperties": false,
+      "properties": {
+        "sequence": {
+          "minimum": 1,
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "episode_id": {
+          "title": "Episode Id",
+          "type": "string"
+        },
+        "scene_id": {
+          "title": "Scene Id",
+          "type": "string"
+        },
+        "line_id": {
+          "title": "Line Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "action",
+          "title": "Kind",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "identity_id": {
+          "default": null,
+          "title": "Identity Id",
+          "type": "null"
+        },
+        "start_frame": {
+          "minimum": 0,
+          "title": "Start Frame",
+          "type": "integer"
+        },
+        "end_frame": {
+          "minimum": 0,
+          "title": "End Frame",
+          "type": "integer"
+        },
+        "duration_basis": {
+          "const": "non_audio_marker",
+          "title": "Duration Basis",
+          "type": "string"
+        },
+        "source_audio_sha256": {
+          "default": null,
+          "title": "Source Audio Sha256",
+          "type": "null"
+        },
+        "marker_type": {
+          "enum": [
+            "action_note",
+            "stop_sound"
+          ],
+          "title": "Marker Type",
+          "type": "string"
+        },
+        "target": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AudioEventRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "sequence",
+        "episode_id",
+        "scene_id",
+        "line_id",
+        "kind",
+        "text",
+        "start_frame",
+        "end_frame",
+        "duration_basis",
+        "marker_type"
+      ],
+      "title": "NonAudioMarker",
+      "type": "object"
+    },
+    "SoundControlMarker": {
+      "additionalProperties": false,
+      "properties": {
+        "sequence": {
+          "minimum": 1,
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "episode_id": {
+          "title": "Episode Id",
+          "type": "string"
+        },
+        "scene_id": {
+          "title": "Scene Id",
+          "type": "string"
+        },
+        "line_id": {
+          "title": "Line Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "sfx",
+            "music",
+            "action"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "identity_id": {
+          "default": null,
+          "title": "Identity Id",
+          "type": "null"
+        },
+        "start_frame": {
+          "minimum": 0,
+          "title": "Start Frame",
+          "type": "integer"
+        },
+        "end_frame": {
+          "minimum": 0,
+          "title": "End Frame",
+          "type": "integer"
+        },
+        "duration_basis": {
+          "const": "sound_control",
+          "title": "Duration Basis",
+          "type": "string"
+        },
+        "source_audio_sha256": {
+          "default": null,
+          "title": "Source Audio Sha256",
+          "type": "null"
+        },
+        "marker_type": {
+          "enum": [
+            "continue_background",
+            "change_background",
+            "stop_sound"
+          ],
+          "title": "Marker Type",
+          "type": "string"
+        },
+        "target": {
+          "$ref": "#/$defs/AudioEventRef"
+        },
+        "transition_end_frame": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Transition End Frame"
+        },
+        "from_gain_db": {
+          "anyOf": [
+            {
+              "maximum": 12,
+              "minimum": -60,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "From Gain Db"
+        },
+        "to_gain_db": {
+          "anyOf": [
+            {
+              "maximum": 12,
+              "minimum": -60,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "To Gain Db"
+        }
+      },
+      "required": [
+        "sequence",
+        "episode_id",
+        "scene_id",
+        "line_id",
+        "kind",
+        "text",
+        "start_frame",
+        "end_frame",
+        "duration_basis",
+        "marker_type",
+        "target"
+      ],
+      "title": "SoundControlMarker",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "measured_timeline/1.2",
+      "default": "measured_timeline/1.2",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_version_id": {
+      "title": "Source Version Id",
+      "type": "string"
+    },
+    "arrangement_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Arrangement Sha256",
+      "type": "string"
+    },
+    "sample_rate": {
+      "maximum": 192000,
+      "minimum": 8000,
+      "title": "Sample Rate",
+      "type": "integer"
+    },
+    "channels": {
+      "maximum": 2,
+      "minimum": 1,
+      "title": "Channels",
+      "type": "integer"
+    },
+    "total_frames": {
+      "minimum": 1,
+      "title": "Total Frames",
+      "type": "integer"
+    },
+    "audio_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Audio Sha256",
+      "type": "string"
+    },
+    "events": {
+      "items": {
+        "discriminator": {
+          "mapping": {
+            "measured_audio": "#/$defs/AutomatedAudioEvent",
+            "non_audio_marker": "#/$defs/NonAudioMarker",
+            "sound_control": "#/$defs/SoundControlMarker"
+          },
+          "propertyName": "duration_basis"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/$defs/AutomatedAudioEvent"
+          },
+          {
+            "$ref": "#/$defs/NonAudioMarker"
+          },
+          {
+            "$ref": "#/$defs/SoundControlMarker"
+          }
+        ]
+      },
+      "minItems": 1,
+      "title": "Events",
+      "type": "array"
+    },
+    "word_alignment": {
+      "const": "not_available",
+      "default": "not_available",
+      "title": "Word Alignment",
+      "type": "string"
+    }
+  },
+  "required": [
+    "source_version_id",
+    "arrangement_sha256",
+    "sample_rate",
+    "channels",
+    "total_frames",
+    "audio_sha256",
+    "events"
+  ],
+  "title": "ControlledTimeline",
+  "type": "object"
+}

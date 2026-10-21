@@ -1,0 +1,53 @@
+{
+  "created_at": "2026-10-15T02:56:10.799204+00:00",
+  "archive": "D:\\Chat\\WeChat\\xwechat_files\\wxid_94tv06uimfad22_1d98\\msg\\file\\2026-10\\Cosplay_视觉声音整合_v0.2_20261014.zip",
+  "archive_sha256": "9008389c3bcbb565b555e89a964b9c53b1462382fe022eff81ff26549fe6299b",
+  "zip_crc_passed": true,
+  "manifest_files_verified": 325,
+  "workflow_exists": true,
+  "workflow_factory": "build_graph(repository, checkpointer=None)",
+  "graph_nodes": [
+    "normalize",
+    "context_review",
+    "compile_plan",
+    "build_preview",
+    "preview_review",
+    "deliver"
+  ],
+  "compilation_chain": [
+    "compile_plan",
+    "compile_prepared",
+    "compile_document",
+    "mobile_bridge.dart",
+    "StoryDocument",
+    "StoryCompiler",
+    "SceneEvaluator"
+  ],
+  "semantic_model_placement": "Upstream structured input may bypass an additional model call; optional text semantic extraction remains a separate adaptation question.",
+  "planned_performance_extractor_present": false,
+  "reviewed_source_hashes": {
+    "project/app/visual_workflow/graph.py": "cb65f9e31ca9e74a5bd6153f27ec2a58aba627bebe46f21ea7b4a68f29d7406d",
+    "project/app/visual_workflow/input_pipeline.py": "541c382d405402f05635d6180ff808e48cdd5f2e5b57415badcce40ca562ebcf",
+    "project/app/visual_workflow/planner.py": "81b3207d8d9f9e3bea932c52c75201b679f8060ed98b89c677b2618b80e6b2e0",
+    "project/app/visual_workflow/mobile_bridge.dart": "cac86bb57c4b1cbac95690a895ad80c31fc267cec31923b27ac594428b854abd",
+    "project/app/visual_workflow/repository.py": "cd49cc4bf16715a10eaefb5b8810db8550b9794d96c1efd9b13d4b626edc9cb0",
+    "project/app/visual_workflow/review.py": "525ec3b9e8414f9ba74b4d98f699ce79853a552a6efeb42b9fffa6fca49f4e56",
+    "project/app/visual_workflow/editing.py": "a99dd0677ead3c54025b90c4996fba38015bdba306da3f4792ff47d8358fc087",
+    "project/docs/剧本视觉演绎-LangGraph子工作流设计.md": "49b255aefb70d649d832b5b80900617361135c5df1ba54515511b62903923d6a"
+  },
+  "document": "D:\\Code\\AIToy\\docs\\requirements\\my-legend\\AI创作与声画演绎工作流分析草案_v0.2_20261015.md",
+  "document_sha256": "f91755a4f781908e6892a78f4e8749f2695eb95b0a167240d7a934636f991d06",
+  "relative_links_checked": [
+    "AI视觉工作流复核证据_20261015.json",
+    "../../../source/fingertip-legend-app/src/services/api.ts",
+    "../../../source/fingertip-legend-app/src/types/domain.ts"
+  ],
+  "v0_1_document_preserved": true,
+  "scope": {
+    "app_code_changed": false,
+    "workflow_code_changed": false,
+    "workflow_run": false,
+    "generation_service_calls": 0,
+    "full_regression_run": false
+  }
+}

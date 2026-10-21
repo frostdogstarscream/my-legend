@@ -1,0 +1,101 @@
+{
+  "sample_rate": 48000,
+  "channels": 1,
+  "gap_ms": 180,
+  "budget_ms": null,
+  "context_window": 1,
+  "project": {
+    "genre": "由项目配置",
+    "era": "由项目配置",
+    "language": "普通话",
+    "performance": "自然对话，按照处境和意图呈现情绪发展、重音与停顿"
+  },
+  "scene_defaults": {},
+  "scene_overrides": {},
+  "role_voices": {},
+  "voice_catalog": [],
+  "tts": {
+    "adapter": "local",
+    "model": "qwen3-tts-flash-realtime",
+    "concurrency": 2,
+    "credential_env": "DASHSCOPE_API_KEY",
+    "controls": []
+  },
+  "sfx": {
+    "adapter": "local",
+    "model": "qwen-audio-3.1-tts-next",
+    "concurrency": 2,
+    "credential_env": "DASHSCOPE_API_KEY"
+  },
+  "text_model": {
+    "enabled": false,
+    "url": "https://api.deepseek.com/chat/completions",
+    "model": "deepseek-flash",
+    "credential_env": "DEEPSEEK_API_KEY",
+    "thinking": "disabled",
+    "temperature": 0.4,
+    "max_tokens": 16384
+  },
+  "processing": {
+    "trim_enabled": false,
+    "padding_ms": 20,
+    "silence_threshold_db": -65,
+    "gain_db": 0
+  },
+  "mix": {
+    "limit": true,
+    "peak_ceiling": 0.95,
+    "master_gain_db": 0,
+    "gains_db": {},
+    "kind_gains_db": {},
+    "duck": {
+      "enabled": false,
+      "kinds": [
+        "ambience",
+        "music"
+      ],
+      "gain_db": -9,
+      "attack_ms": 30,
+      "release_ms": 100,
+      "gain_by_render_db": {
+        "dialogue": -4.436974992,
+        "old_broadcast": -12.041199826
+      }
+    }
+  },
+  "visual": {
+    "enabled": false,
+    "delivery_mode": "audio"
+  },
+  "seed": 42,
+  "instruction_policy": {
+    "max_weight": 240,
+    "max_corrections": 2,
+    "recommended_han_range": [
+      50,
+      100
+    ]
+  },
+  "call_budget": {
+    "max_calls": 128,
+    "batch_max_calls": 64,
+    "max_by_kind": {
+      "text": 64,
+      "speech": 64,
+      "sfx": 32
+    },
+    "batch_max_by_kind": {
+      "text": 8
+    }
+  },
+  "processing_profiles": {
+    "old_broadcast": {
+      "bandpass_hz": [
+        300,
+        3400
+      ],
+      "normalize_peak_db": -3
+    }
+  },
+  "tail_ms": 0
+}

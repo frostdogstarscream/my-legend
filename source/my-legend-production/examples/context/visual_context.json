@@ -1,0 +1,88 @@
+{
+  "contract_version": "my-legend.visual-context/1.0",
+  "profile_id": "fixture-visual",
+  "profile_revision": "1",
+  "target_profile": "web_basic_v1",
+  "presentation_profile": "standing_dialogue_v1",
+  "preview_skin": "basic",
+  "generation_mode": "reviewed",
+  "deliverable": "preview",
+  "character_bindings": [
+    {
+      "source_role_id": "repairer",
+      "presence": "onstage",
+      "name": "林岚",
+      "description": "协议示例人物，外观为显式制作选择。",
+      "appearance": {
+        "template_type": "adult",
+        "color_key": "blue",
+        "accessory": "none"
+      },
+      "asset_revision": "basic_pixel/1.0.0"
+    },
+    {
+      "source_role_id": "host",
+      "presence": "onstage",
+      "name": "周野",
+      "description": "协议示例人物，外观为显式制作选择。",
+      "appearance": {
+        "template_type": "adult",
+        "color_key": "green",
+        "accessory": "none"
+      },
+      "asset_revision": "basic_pixel/1.0.0"
+    }
+  ],
+  "scene_bindings": [
+    {
+      "source": {
+        "episode_id": "episode-1",
+        "scene_id": "scene-1"
+      },
+      "background_type": "indoor",
+      "cast_source_role_ids": [
+        "repairer",
+        "host"
+      ],
+      "initial_cast_source_role_ids": [
+        "repairer",
+        "host"
+      ],
+      "continuity_group_id": "fixture-room",
+      "locked_facts": [
+        "人物身份和台词保持来源版本。"
+      ]
+    }
+  ],
+  "event_bindings": [
+    {
+      "source": {
+        "episode_id": "episode-1",
+        "scene_id": "scene-1",
+        "line_id": "line-5"
+      },
+      "action": "wait",
+      "actor_source_role_id": "host",
+      "target_source_role_id": null,
+      "target_anchor": null,
+      "direction": null,
+      "emotion": null,
+      "intensity": null,
+      "duration_ms": 500,
+      "provenance": "fixture"
+    }
+  ],
+  "sound_caption_policy": "audio_only",
+  "caption_sources": [],
+  "voice_only_policy": "block",
+  "emotion_map": {
+    "calm": "neutral",
+    "happy": "happy"
+  },
+  "context_confirmed": false,
+  "context_approval_ref": null,
+  "capability_profile": {
+    "ref": "fixture://context/capability_profile.json",
+    "sha256": "2679c380149c04ce0ce5d9cd50c846b8b55143a9525b81ddb84856130bcb0e38"
+  }
+}

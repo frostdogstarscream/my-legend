@@ -1,0 +1,26 @@
+{
+  "intent": "continue",
+  "request_id": "<continue-request-id>",
+  "idempotency_key": "<continue-idempotency-key>",
+  "user_instruction": "新增两集。第一新增集承接来源尚未完成的维修任务，完成带负载试音，发现音量不稳定并登记待校准；第二新增集承接该结果完成校准，最后真正敲三声铃回收报平安的约定。继承人物职业、雨水故障事实和信任合作关系。不要随意增加精确时刻。",
+  "creation_preferences": {
+    "target_episodes": 2,
+    "ending_preference": "closed"
+  },
+  "client_context": {
+    "operation_requirements": {
+      "bell": "结尾必须实际呈现已经发生的三声铃响（叮、叮、叮或明确三声铃声），不能仅是角色声称要敲或已敲。"
+    },
+    "evidence_kinds": {
+      "constraint:bell": [
+        "sfx",
+        "action",
+        "narration"
+      ]
+    }
+  },
+  "source_selector": {
+    "type": "by_id",
+    "story_version_id": "<source-story-version-id>"
+  }
+}

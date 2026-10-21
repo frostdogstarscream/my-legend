@@ -1,0 +1,727 @@
+{
+  "$defs": {
+    "AudioEventRef": {
+      "additionalProperties": false,
+      "properties": {
+        "episode_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Episode Id",
+          "type": "string"
+        },
+        "scene_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Scene Id",
+          "type": "string"
+        },
+        "line_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Line Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "episode_id",
+        "scene_id",
+        "line_id"
+      ],
+      "title": "AudioEventRef",
+      "type": "object"
+    },
+    "CompoundSourceEvent": {
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "not": {
+              "properties": {
+                "sound_intent": {
+                  "enum": [
+                    "control_only",
+                    "omitted_for_delivery"
+                  ]
+                }
+              },
+              "required": [
+                "sound_intent"
+              ]
+            },
+            "properties": {
+              "kind": {
+                "const": "dialogue"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "operations": {
+                "items": {
+                  "properties": {
+                    "mode": {
+                      "enum": [
+                        "speech"
+                      ]
+                    }
+                  }
+                },
+                "maxItems": 1,
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "not": {
+              "properties": {
+                "sound_intent": {
+                  "enum": [
+                    "control_only",
+                    "omitted_for_delivery"
+                  ]
+                }
+              },
+              "required": [
+                "sound_intent"
+              ]
+            },
+            "properties": {
+              "kind": {
+                "const": "narration"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "operations": {
+                "items": {
+                  "properties": {
+                    "mode": {
+                      "enum": [
+                        "speech"
+                      ]
+                    }
+                  }
+                },
+                "maxItems": 1,
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "not": {
+              "properties": {
+                "sound_intent": {
+                  "enum": [
+                    "control_only",
+                    "omitted_for_delivery"
+                  ]
+                }
+              },
+              "required": [
+                "sound_intent"
+              ]
+            },
+            "properties": {
+              "kind": {
+                "const": "sfx"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "operations": {
+                "items": {
+                  "properties": {
+                    "mode": {
+                      "enum": [
+                        "one_shot",
+                        "background",
+                        "continue_background",
+                        "change_background",
+                        "stop_sound"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "not": {
+              "properties": {
+                "sound_intent": {
+                  "enum": [
+                    "control_only",
+                    "omitted_for_delivery"
+                  ]
+                }
+              },
+              "required": [
+                "sound_intent"
+              ]
+            },
+            "properties": {
+              "kind": {
+                "const": "music"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "operations": {
+                "items": {
+                  "properties": {
+                    "mode": {
+                      "enum": [
+                        "one_shot",
+                        "background",
+                        "continue_background",
+                        "change_background",
+                        "stop_sound"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "not": {
+              "properties": {
+                "sound_intent": {
+                  "enum": [
+                    "control_only",
+                    "omitted_for_delivery"
+                  ]
+                }
+              },
+              "required": [
+                "sound_intent"
+              ]
+            },
+            "properties": {
+              "kind": {
+                "const": "action"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "operations": {
+                "items": {
+                  "properties": {
+                    "mode": {
+                      "enum": [
+                        "action_note",
+                        "stop_sound",
+                        "continue_background",
+                        "change_background"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/AudioEventRef"
+        },
+        "kind": {
+          "enum": [
+            "dialogue",
+            "narration",
+            "sfx",
+            "music",
+            "action"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "identity_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Identity Id"
+        },
+        "sound_intent": {
+          "anyOf": [
+            {
+              "enum": [
+                "control_only",
+                "omitted_for_delivery"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sound Intent"
+        },
+        "operations": {
+          "items": {
+            "$ref": "#/$defs/SoundOperation"
+          },
+          "maxItems": 16,
+          "minItems": 1,
+          "title": "Operations",
+          "type": "array"
+        }
+      },
+      "required": [
+        "source",
+        "kind",
+        "text",
+        "operations"
+      ],
+      "title": "CompoundSourceEvent",
+      "type": "object"
+    },
+    "OperationAnchor": {
+      "additionalProperties": false,
+      "properties": {
+        "operation_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Operation Id"
+        },
+        "point": {
+          "default": "start",
+          "enum": [
+            "start",
+            "end"
+          ],
+          "title": "Point",
+          "type": "string"
+        },
+        "offset_ms": {
+          "default": 0,
+          "maximum": 60000,
+          "minimum": -60000,
+          "title": "Offset Ms",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "operation_id"
+      ],
+      "title": "OperationAnchor",
+      "type": "object"
+    },
+    "SoundOperation": {
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "else": {
+            "properties": {
+              "end": {
+                "type": "null"
+              }
+            }
+          },
+          "if": {
+            "properties": {
+              "mode": {
+                "enum": [
+                  "background"
+                ]
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "end": {
+                "type": "object"
+              }
+            },
+            "required": [
+              "end"
+            ]
+          }
+        },
+        {
+          "else": {
+            "properties": {
+              "stop_target": {
+                "type": "null"
+              }
+            }
+          },
+          "if": {
+            "properties": {
+              "mode": {
+                "enum": [
+                  "stop_sound"
+                ]
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "stop_target": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "stop_target"
+            ]
+          }
+        },
+        {
+          "else": {
+            "properties": {
+              "control_target": {
+                "type": "null"
+              }
+            }
+          },
+          "if": {
+            "properties": {
+              "mode": {
+                "enum": [
+                  "continue_background",
+                  "change_background"
+                ]
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "control_target": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "control_target"
+            ]
+          }
+        },
+        {
+          "else": {
+            "properties": {
+              "transition_end": {
+                "type": "null"
+              },
+              "target_gain_db": {
+                "type": "null"
+              }
+            }
+          },
+          "if": {
+            "properties": {
+              "mode": {
+                "enum": [
+                  "change_background"
+                ]
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "transition_end": {
+                "type": "object"
+              },
+              "target_gain_db": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "transition_end",
+              "target_gain_db"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "not": {
+                  "const": "background"
+                }
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "fade_out_ms": {
+                "const": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "enum": [
+                  "action_note",
+                  "stop_sound",
+                  "continue_background",
+                  "change_background"
+                ]
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "gain_db": {
+                "const": 0
+              }
+            }
+          }
+        }
+      ],
+      "properties": {
+        "operation_id": {
+          "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$",
+          "title": "Operation Id",
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "speech",
+            "one_shot",
+            "background",
+            "action_note",
+            "stop_sound",
+            "continue_background",
+            "change_background"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "cue_text": {
+          "minLength": 1,
+          "title": "Cue Text",
+          "type": "string"
+        },
+        "reason": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "start": {
+          "$ref": "#/$defs/OperationAnchor"
+        },
+        "end": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/OperationAnchor"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "stop_target": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Stop Target"
+        },
+        "control_target": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Control Target"
+        },
+        "transition_end": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/OperationAnchor"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "target_gain_db": {
+          "anyOf": [
+            {
+              "maximum": 12,
+              "minimum": -60,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Gain Db"
+        },
+        "gain_db": {
+          "default": 0.0,
+          "maximum": 12,
+          "minimum": -60,
+          "title": "Gain Db",
+          "type": "number"
+        },
+        "fade_out_ms": {
+          "default": 0,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Fade Out Ms",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "operation_id",
+        "mode",
+        "cue_text",
+        "reason",
+        "start"
+      ],
+      "title": "SoundOperation",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "audio_arrangement/2.0",
+      "default": "audio_arrangement/2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_version_id": {
+      "minLength": 1,
+      "title": "Source Version Id",
+      "type": "string"
+    },
+    "delivery_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Delivery Sha256",
+      "type": "string"
+    },
+    "sample_rate": {
+      "const": 48000,
+      "default": 48000,
+      "title": "Sample Rate",
+      "type": "integer"
+    },
+    "channels": {
+      "const": 1,
+      "default": 1,
+      "title": "Channels",
+      "type": "integer"
+    },
+    "duck_gain_db": {
+      "default": -9.0,
+      "maximum": 0,
+      "minimum": -30,
+      "title": "Duck Gain Db",
+      "type": "number"
+    },
+    "duck_attack_ms": {
+      "default": 30,
+      "maximum": 1000,
+      "minimum": 0,
+      "title": "Duck Attack Ms",
+      "type": "integer"
+    },
+    "duck_release_ms": {
+      "default": 100,
+      "maximum": 2000,
+      "minimum": 0,
+      "title": "Duck Release Ms",
+      "type": "integer"
+    },
+    "events": {
+      "items": {
+        "$ref": "#/$defs/CompoundSourceEvent"
+      },
+      "maxItems": 1000,
+      "minItems": 1,
+      "title": "Events",
+      "type": "array"
+    }
+  },
+  "required": [
+    "source_version_id",
+    "delivery_sha256",
+    "events"
+  ],
+  "title": "CompoundArrangement",
+  "type": "object"
+}

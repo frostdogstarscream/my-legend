@@ -1,0 +1,49 @@
+@font-face { font-family: 'Legend Serif'; src: url('/static/fonts/legend-serif.ttf') format('truetype'); font-weight: 900; font-display: swap; }
+@font-face { font-family: 'Legend Brush'; src: url('/static/fonts/legend-brush.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Legend Sans'; src: url('/static/fonts/legend-sans.ttf') format('truetype'); font-weight: 400 900; font-display: swap; }
+:root, page {
+  --ink: #49311d;
+  --muted: #856143;
+  --paper: #fff0d7;
+  --warm: #cf502a;
+  --blue: #2563eb;
+  --status-inset: env(safe-area-inset-top, 0px);
+  --bottom-inset: env(safe-area-inset-bottom, 0px);
+  color: var(--ink);
+  font-family: 'Legend Sans', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: #fffbf2;
+  font-size: 26rpx;
+}
+/* APP uses the operating system status bar; the Figma device frame is not app content. */
+/* #ifdef APP-PLUS */
+page { --status-inset: var(--status-bar-height); }
+/* #endif */
+view, text, button, input, textarea, uni-view, uni-text, uni-button, uni-input, uni-textarea { box-sizing: border-box; }
+page button, uni-page-body uni-button { margin: 0; padding: 0; border: 0; font-size: inherit; line-height: inherit; background: transparent; color: inherit; border-radius: 0; }
+page button::after, uni-page-body uni-button::after { border: 0; }
+input, textarea, uni-input, uni-textarea { font-family: inherit; }
+image, uni-image { display: block; flex-shrink: 0; }
+/* #ifdef H5 */
+::-webkit-scrollbar { width: 0; height: 0; display: none; }
+/* #endif */
+.serif { font-family: 'Legend Serif', 'Noto Serif SC', 'Songti SC', 'STSong', serif; font-weight: 900; }
+.icon { width: 32rpx; height: 32rpx; }
+.primary-button { display: flex; align-items: center; justify-content: center; gap: 12rpx; min-height: 88rpx; border-radius: 999rpx; color: white; font-weight: 700; background: linear-gradient(105deg,#38bdf8,#2563eb 55%,#1d4ed8); box-shadow: 0 12rpx 26rpx #3b82f64d; }
+.primary-button[disabled] { opacity: .6; color: white; }
+.warm-button { background: #cf502a; color: #fff7ed; border-radius: 999rpx; padding: 22rpx 30rpx; font-weight: 700; text-align: center; }
+.muted { color: #856143; }
+.page-content { padding: 28rpx 32rpx calc(170rpx + var(--bottom-inset)); }
+.paper-panel { padding: 36rpx; border: 2rpx solid #edddc4; border-radius: 32rpx; background: rgba(255,253,248,.97); box-shadow: 0 12rpx 28rpx #49311d10; }
+.section-title { display: block; font-size: 42rpx; line-height: 1.4; margin-bottom: 20rpx; }
+.field-label { display: block; font-size: 26rpx; font-weight: 700; margin: 26rpx 0 14rpx; }
+.form-input { width: 100%; height: 84rpx; padding: 0 24rpx; border: 2rpx solid #e7d7c1; border-radius: 20rpx; background: #fffcf6; color: #49311d; font-size: 26rpx; }
+.form-textarea { width: 100%; min-height: 230rpx; padding: 24rpx; border: 2rpx solid #e7d7c1; border-radius: 20rpx; background: #fffcf6; font-size: 26rpx; line-height: 1.65; }
+.small-note { display: block; font-size: 22rpx; color: #887461; line-height: 1.7; }
+.state-panel { padding: 50rpx 28rpx; text-align: center; }
+.state-title { display: block; font-weight: 700; margin-bottom: 20rpx; }
+.state-panel button { margin: 24rpx auto 0; width: 230rpx; }
+.pill{display:inline-flex;align-items:center;padding:8rpx 18rpx;background:#fff0df;color:#9d4b2b;border-radius:999rpx;font-size:22rpx}.pill.violet{background:#f3ecff;color:#7955a4}.inline-actions{display:flex;gap:16rpx;flex-wrap:wrap}.outline-button{border:2rpx solid #dcbfa3;border-radius:999rpx;padding:20rpx 28rpx;color:#856143;text-align:center}.row-between{display:flex;align-items:center;justify-content:space-between;gap:20rpx}.copy{display:block;line-height:1.85;white-space:pre-wrap;overflow-wrap:anywhere}.error-copy{display:block;color:#b7432d;line-height:1.7;margin:20rpx 0}.spaced{margin-top:28rpx}.chip-list{display:flex;flex-wrap:wrap;gap:14rpx}.chip{border:2rpx solid #e5d4bf;border-radius:999rpx;padding:15rpx 23rpx;font-size:24rpx;color:#856143}.chip.selected{border-color:#cf502a;background:#fff0df;color:#b7432d;font-weight:700}.full-button{width:100%;margin-top:24rpx}.section-gap{margin-top:32rpx}.soft-label{display:block;font-size:23rpx;color:#997c62;margin:16rpx 0}.task-progress{height:12rpx;border-radius:99rpx;background:#ecdfcd;overflow:hidden}.task-progress>view{height:100%;background:#cf502a;border-radius:inherit;transition:width .3s}button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #9d4b2b;outline-offset:3px}
+@media (min-width: 461px) {
+  body { background: #1b1714; }
+  uni-page-body { max-width: 393px; margin: 0 auto; box-shadow: 0 0 60px #0006; }
+}

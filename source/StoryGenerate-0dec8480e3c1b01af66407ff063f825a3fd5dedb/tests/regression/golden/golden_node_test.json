@@ -1,0 +1,100 @@
+{
+  "phase": "0",
+  "model": "qwen/deepseek-v4-pro",
+  "base_url": "https://moma.cmecloud.cn/v1",
+  "timeout_sec": 300.0,
+  "rule_lib_versions": {
+    "formula_version": "1.0.0",
+    "timetravel_version": "1.2.0",
+    "continuity_version": "1.0.0",
+    "prompt_version": "p1.1.0",
+    "genres": 10,
+    "recipes": 5,
+    "r_rules": 13,
+    "k_rules": 18,
+    "ch_rules": 6,
+    "rl_rules": 5,
+    "fc_rules": 6,
+    "ev_rules": 6,
+    "max_voiced_characters": 5
+  },
+  "total": 8,
+  "passed": 7,
+  "failed": 1,
+  "results": [
+    {
+      "node": "topic_select",
+      "schema": "TopicChoice",
+      "status": "OK",
+      "latency_ms": 15666,
+      "tokens": {
+        "in": 0
+      },
+      "error": "",
+      "sample": "{\"genre_id\":\"G04\",\"recipe_id\":\"R4\",\"rationale\":\"整顿府库的戏剧张力集中于账目揭露时的台词对峙与情绪爆发，无需视觉辅助，纯音频即可传递步步为营的智斗爽感。\"}"
+    },
+    {
+      "node": "gadget_design",
+      "schema": "GadgetSpec",
+      "status": "OK",
+      "latency_ms": 52494,
+      "tokens": {},
+      "error": "",
+      "sample": "{\"assets\":[{\"id\":\"a1\",\"name\":\"无限复刻现代账本\",\"layer\":\"L1\",\"curve\":\"TC2\",\"capacity\":\"infinite\",\"activation\":\"手指触碰空白账册自动生成标准记账表格\",\"knowledge_track\":false,\"non_resource_constraint\":\"计算结果需核心掌权者采信并授权实施，否则仅停留在纸面"
+    },
+    {
+      "node": "cast_design",
+      "schema": "CastDraft",
+      "status": "OK",
+      "latency_ms": 47405,
+      "tokens": {},
+      "error": "",
+      "sample": "5 cards"
+    },
+    {
+      "node": "outline",
+      "schema": "OutlineDraft",
+      "status": "OK",
+      "latency_ms": 102409,
+      "tokens": {},
+      "error": "",
+      "sample": "3 entries"
+    },
+    {
+      "node": "behavior_design",
+      "schema": "BehaviorBible",
+      "status": "OK",
+      "latency_ms": 260513,
+      "tokens": {},
+      "error": "",
+      "sample": "3 cards, 2 relations"
+    },
+    {
+      "node": "fact_ledger",
+      "schema": "FactLedger",
+      "status": "OK",
+      "latency_ms": 40257,
+      "tokens": {},
+      "error": "",
+      "sample": "3 entries"
+    },
+    {
+      "node": "episode_beats",
+      "schema": "Episode",
+      "status": "FAIL",
+      "latency_ms": 345420,
+      "tokens": {},
+      "error": "LLM 调用失败（已重试 1 次）: Server disconnected without sending a response.",
+      "sample": ""
+    },
+    {
+      "node": "judge",
+      "schema": "JudgeResponse",
+      "status": "OK",
+      "latency_ms": 11572,
+      "tokens": {},
+      "error": "",
+      "sample": "1 verdicts"
+    }
+  ]
+}

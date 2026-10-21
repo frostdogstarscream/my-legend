@@ -1,0 +1,10 @@
+referenced_image_paths: ["C:/Users/83895/AppData/Local/Temp/codex-clipboard-41e0e99c-7ad0-4023-9c95-d960bb811414.png"]
+transparent_background: true
+
+prompt:
+Use case: identity-preserve / background-extraction.
+Asset type: transparent character portrait for a mobile story performance prototype.
+Input image: the supplied mobile screenshot is the character identity and costume reference. Only reconstruct the second character, the woman labeled 苏棠 (Su Tang), from the second role card and the center of the stage. Remove all screenshot/UI/background content.
+Primary request: a clean isolated faithful high-resolution half-body illustration of the SAME young adult Chinese woman. Preserve her recognizable youthful oval face, calm attentive serious expression, short chin-length black bob hair with side part and loose fringe, and the muted mustard/ochre-brown Republic-era jacket worn over a dark brown/black inner blouse. Match the reference facial proportions, hair silhouette, jacket collar/lapels, earthy vintage fabric and subdued costume colors. Natural realistic game illustration style with fine fabric details, restrained painterly edges and believable anatomy, matching the screenshot.
+Composition: front-facing with a subtle three-quarter angle consistent with the screenshot, complete top of head, both full shoulders and arms, chest to waist visible. Portrait 512 x 640 target, subject occupies about 85 percent of canvas height, with clear transparent margin around all hair, shoulder and waist edges. Single woman only, centered, no other person or object.
+Constraints: genuinely transparent RGBA background. No opaque matte, no faux checkerboard in pixels. No UI, labels, letters, frame, card, border, watermark, surrounding scene, background shadow, glow or halo. No hat, weapons, fantasy ornament, extra jewelry, modern fashion. Reconstruct this specific referenced character faithfully, do not redesign her. Do not include the male characters.

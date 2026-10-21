@@ -1,0 +1,23 @@
+{
+  "template_id": "SPY_MYSTERY_CLOSED",
+  "version": 1,
+  "name": "五分钟谍战悬疑·闭合版",
+  "supported_modes": ["mystery"],
+  "beats": [
+    {"key": "hook", "purpose": "危险任务与反常线索同时出现", "guidance": "第一分钟内让听众听到一处可复核的异常"},
+    {"key": "false_suspect", "purpose": "主角根据有限证据误判同伴", "guidance": "误判必须由真实线索支撑，不能靠隐瞒视角"},
+    {"key": "reversal", "purpose": "旧证据在新语境下反转含义", "guidance": "人物主动复查导致反转"},
+    {"key": "costly_choice", "purpose": "主角冒险保护真正目标", "guidance": "用行动而非旁白表现代价"},
+    {"key": "resolution", "purpose": "完成任务并揭示谜底", "guidance": "结局闭合，同时留下人物余韵"}
+  ],
+  "constraints": [
+    "所有关键情报都必须在揭晓前以声音或对白公平提供",
+    "不要出现现实机构的可操作间谍技术步骤",
+    "五分钟内完成主要冲突并说明卧底身份"
+  ],
+  "recommended_characters": 3,
+  "tone_hints": ["克制", "紧张", "悬疑"],
+  "defaults": {"target_duration_sec": 300, "target_episodes": 1, "content_form": "audio_drama", "default_recipe": "R6"},
+  "ending_guidance": "closed",
+  "metadata": {"genre": "谍战", "language": "zh-CN", "content_rating": "teen"}
+}

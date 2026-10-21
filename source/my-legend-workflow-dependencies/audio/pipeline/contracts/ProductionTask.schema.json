@@ -1,0 +1,81 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "adapter": {
+      "title": "Adapter",
+      "type": "string"
+    },
+    "artifact_revision": {
+      "title": "Artifact Revision",
+      "type": "string"
+    },
+    "block_id": {
+      "title": "Block Id",
+      "type": "string"
+    },
+    "candidate_version": {
+      "default": 1,
+      "minimum": 1,
+      "title": "Candidate Version",
+      "type": "integer"
+    },
+    "dependencies": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Dependencies",
+      "type": "array"
+    },
+    "input_sha256": {
+      "title": "Input Sha256",
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "speech",
+        "sfx",
+        "ambience",
+        "music"
+      ],
+      "title": "Kind",
+      "type": "string"
+    },
+    "payload": {
+      "additionalProperties": true,
+      "title": "Payload",
+      "type": "object"
+    },
+    "schema_version": {
+      "const": "lingban.task/1",
+      "default": "lingban.task/1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_version_id": {
+      "title": "Source Version Id",
+      "type": "string"
+    },
+    "status": {
+      "default": "planned",
+      "title": "Status",
+      "type": "string"
+    },
+    "task_id": {
+      "title": "Task Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "task_id",
+    "block_id",
+    "kind",
+    "source_version_id",
+    "artifact_revision",
+    "input_sha256",
+    "adapter",
+    "payload",
+    "dependencies"
+  ],
+  "title": "ProductionTask",
+  "type": "object"
+}

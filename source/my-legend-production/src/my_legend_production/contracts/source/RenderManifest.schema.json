@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/RenderManifest",
+  "$defs": {
+    "RenderManifest": {
+      "properties": {
+        "contract_version": {
+          "type": "string",
+          "const": "1.0",
+          "title": "Contract Version",
+          "default": "1.0"
+        },
+        "delivery_format_version": {
+          "type": "string",
+          "title": "Delivery Format Version"
+        },
+        "story_version_id": {
+          "type": "string",
+          "title": "Story Version Id"
+        },
+        "story_state": {
+          "type": "string",
+          "const": "SUCCEEDED",
+          "title": "Story State",
+          "default": "SUCCEEDED"
+        },
+        "audio_state": {
+          "type": "string",
+          "const": "NOT_SYNTHESIZED",
+          "title": "Audio State",
+          "default": "NOT_SYNTHESIZED"
+        },
+        "playback_state": {
+          "type": "string",
+          "const": "NOT_REPORTED",
+          "title": "Playback State",
+          "default": "NOT_REPORTED"
+        },
+        "role_map": {
+          "additionalProperties": true,
+          "type": "object",
+          "title": "Role Map"
+        },
+        "tasks": {
+          "items": {
+            "$ref": "#/$defs/RenderTask"
+          },
+          "type": "array",
+          "title": "Tasks"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "delivery_format_version",
+        "story_version_id",
+        "role_map",
+        "tasks"
+      ],
+      "title": "RenderManifest"
+    },
+    "RenderTask": {
+      "properties": {
+        "task_id": {
+          "type": "string",
+          "title": "Task Id"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1,
+          "title": "Sequence"
+        },
+        "episode_id": {
+          "type": "string",
+          "title": "Episode Id"
+        },
+        "episode_index": {
+          "type": "integer",
+          "title": "Episode Index"
+        },
+        "scene_id": {
+          "type": "string",
+          "title": "Scene Id"
+        },
+        "line_id": {
+          "type": "string",
+          "title": "Line Id"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "speech",
+            "cue"
+          ],
+          "title": "Kind"
+        },
+        "source_kind": {
+          "type": "string",
+          "enum": [
+            "dialogue",
+            "narration",
+            "sfx",
+            "music",
+            "action"
+          ],
+          "title": "Source Kind"
+        },
+        "speaker_role_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Speaker Role Id"
+        },
+        "narrator_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Narrator Id"
+        },
+        "performer_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Performer Id"
+        },
+        "text": {
+          "type": "string",
+          "title": "Text"
+        },
+        "performance": {
+          "additionalProperties": true,
+          "type": "object",
+          "title": "Performance"
+        },
+        "asset_refs": {
+          "additionalProperties": true,
+          "type": "object",
+          "title": "Asset Refs"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "task_id",
+        "sequence",
+        "episode_id",
+        "episode_index",
+        "scene_id",
+        "line_id",
+        "kind",
+        "source_kind",
+        "text",
+        "performance"
+      ],
+      "title": "RenderTask"
+    }
+  }
+}
+

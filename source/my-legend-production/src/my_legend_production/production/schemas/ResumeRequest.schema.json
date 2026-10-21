@@ -1,0 +1,20 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "expected_revision": {
+      "minimum": 1,
+      "title": "Expected Revision",
+      "type": "integer"
+    },
+    "resolution": {
+      "additionalProperties": true,
+      "title": "Resolution",
+      "type": "object"
+    }
+  },
+  "required": [
+    "expected_revision"
+  ],
+  "title": "ResumeRequest",
+  "type": "object"
+}

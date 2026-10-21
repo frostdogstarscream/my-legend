@@ -1,0 +1,186 @@
+{
+  "contract_version": "1.0",
+  "delivery_format_version": "1.0",
+  "story_version_id": "fixture-version-001",
+  "story_state": "SUCCEEDED",
+  "audio_state": "NOT_SYNTHESIZED",
+  "playback_state": "NOT_REPORTED",
+  "role_map": {
+    "repairer": {
+      "role_id": "repairer",
+      "performer_id": "voice-linlan",
+      "story_name": "林岚"
+    },
+    "host": {
+      "role_id": "host",
+      "performer_id": "voice-zhouye",
+      "story_name": "周野"
+    },
+    "narrator": {
+      "role_id": "narrator",
+      "performer_id": "narrator",
+      "story_name": "旁白"
+    }
+  },
+  "tasks": [
+    {
+      "task_id": "4dcc47616dbe9745bc4504655966422b613b75e7cf5e626d38f0974bb57d4b09",
+      "sequence": 1,
+      "episode_id": "episode-1",
+      "episode_index": 1,
+      "scene_id": "scene-1",
+      "line_id": "line-1",
+      "kind": "cue",
+      "source_kind": "sfx",
+      "speaker_role_id": null,
+      "narrator_id": null,
+      "performer_id": null,
+      "text": "木门轻轻合上一次。",
+      "performance": {
+        "emotion": null,
+        "tone_instruction": null,
+        "emphasis": [],
+        "speech_rate": 1.0,
+        "pitch": null,
+        "volume": null,
+        "pauses": [],
+        "delivery_note": null,
+        "audio_cue_ref": "door-close-once"
+      },
+      "asset_refs": {}
+    },
+    {
+      "task_id": "8af31638058840eac215083ad54f83ab1f52865a2d212db3e871b31853dd936a",
+      "sequence": 2,
+      "episode_id": "episode-1",
+      "episode_index": 1,
+      "scene_id": "scene-1",
+      "line_id": "line-2",
+      "kind": "speech",
+      "source_kind": "narration",
+      "speaker_role_id": null,
+      "narrator_id": "narrator",
+      "performer_id": "narrator",
+      "text": "林岚把手电放在桌上。",
+      "performance": {
+        "emotion": "calm",
+        "tone_instruction": "平稳叙述，保持清楚。",
+        "emphasis": [
+          {
+            "span_text": "手电",
+            "occurrence": 1,
+            "strength": "medium",
+            "start_char": 3,
+            "end_char": 5
+          }
+        ],
+        "speech_rate": 1.0,
+        "pitch": null,
+        "volume": null,
+        "pauses": [],
+        "delivery_note": null,
+        "audio_cue_ref": null
+      },
+      "asset_refs": {}
+    },
+    {
+      "task_id": "2fab028b6efa38b7d03808e9690f590f9de6f2d431599170e904ede97269a66f",
+      "sequence": 3,
+      "episode_id": "episode-1",
+      "episode_index": 1,
+      "scene_id": "scene-1",
+      "line_id": "line-3",
+      "kind": "speech",
+      "source_kind": "dialogue",
+      "speaker_role_id": "repairer",
+      "narrator_id": null,
+      "performer_id": "voice-linlan",
+      "text": "先别急，我们一起检查。",
+      "performance": {
+        "emotion": "calm",
+        "tone_instruction": "克制而耐心地邀请对方合作。",
+        "emphasis": [
+          {
+            "span_text": "一起",
+            "occurrence": 1,
+            "strength": "medium",
+            "start_char": 6,
+            "end_char": 8
+          }
+        ],
+        "speech_rate": 1.0,
+        "pitch": null,
+        "volume": null,
+        "pauses": [
+          {
+            "after_char": 4,
+            "duration_ms": 200
+          }
+        ],
+        "delivery_note": null,
+        "audio_cue_ref": null
+      },
+      "asset_refs": {}
+    },
+    {
+      "task_id": "09f7d1336c6364860ef6510cb3bb1b051d92fe54c34b6caeac2fa7b36130d27b",
+      "sequence": 4,
+      "episode_id": "episode-1",
+      "episode_index": 1,
+      "scene_id": "scene-1",
+      "line_id": "line-4",
+      "kind": "speech",
+      "source_kind": "dialogue",
+      "speaker_role_id": "host",
+      "narrator_id": null,
+      "performer_id": "voice-zhouye",
+      "text": "好，我来照亮这里。",
+      "performance": {
+        "emotion": "happy",
+        "tone_instruction": "轻声回应，自然积极。",
+        "emphasis": [
+          {
+            "span_text": "好",
+            "occurrence": 1,
+            "strength": "medium",
+            "start_char": 0,
+            "end_char": 1
+          }
+        ],
+        "speech_rate": 1.0,
+        "pitch": null,
+        "volume": null,
+        "pauses": [],
+        "delivery_note": null,
+        "audio_cue_ref": null
+      },
+      "asset_refs": {}
+    },
+    {
+      "task_id": "7b656cd7797ec924561328822667aa3d7626dcc7d1e44772a62fabf639470c1b",
+      "sequence": 5,
+      "episode_id": "episode-1",
+      "episode_index": 1,
+      "scene_id": "scene-1",
+      "line_id": "line-5",
+      "kind": "cue",
+      "source_kind": "action",
+      "speaker_role_id": null,
+      "narrator_id": null,
+      "performer_id": null,
+      "text": "周野原地等待。",
+      "performance": {
+        "emotion": null,
+        "tone_instruction": null,
+        "emphasis": [],
+        "speech_rate": 1.0,
+        "pitch": null,
+        "volume": null,
+        "pauses": [],
+        "delivery_note": null,
+        "audio_cue_ref": null
+      },
+      "asset_refs": {}
+    }
+  ]
+}

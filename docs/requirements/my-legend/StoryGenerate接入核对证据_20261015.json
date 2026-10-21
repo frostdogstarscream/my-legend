@@ -1,0 +1,250 @@
+{
+  "repository": "https://github.com/zblds-a/StoryGenerate",
+  "branch": "codex/storygenerate-handoff",
+  "reviewed_handoff_commit": "2ebe99ed631360e3622d8d7cc08a75829b77a29e",
+  "reviewed_code_commit": "0dec8480e3c1b01af66407ff063f825a3fd5dedb",
+  "handoff_diff_files": [
+    {
+      "path": "docs/handoff/HANDOVER.md",
+      "status": "added"
+    },
+    {
+      "path": "docs/handoff/README.md",
+      "status": "modified"
+    },
+    {
+      "path": "docs/handoff/contracts/security-check.json",
+      "status": "modified"
+    },
+    {
+      "path": "docs/handoff/contracts/verification.json",
+      "status": "modified"
+    }
+  ],
+  "reviewed_sources": [
+    {
+      "path": "docs/handoff/HANDOVER.md",
+      "ref": "2ebe99ed631360e3622d8d7cc08a75829b77a29e",
+      "git_blob_sha": "25fee8abd49539faeec6efc6d5498717bf7ce139",
+      "url": "https://github.com/zblds-a/StoryGenerate/blob/2ebe99ed631360e3622d8d7cc08a75829b77a29e/docs/handoff/HANDOVER.md",
+      "lines": 49
+    },
+    {
+      "path": "docs/handoff/00-overview.md",
+      "ref": "0dec8480e3c1b01af66407ff063f825a3fd5dedb",
+      "git_blob_sha": "b51536f4106ed0503387272af44f517ce505dbbd",
+      "url": "https://github.com/zblds-a/StoryGenerate/blob/0dec8480e3c1b01af66407ff063f825a3fd5dedb/docs/handoff/00-overview.md",
+      "lines": 31
+    },
+    {
+      "path": "docs/handoff/04-direction-change.md",
+      "ref": "0dec8480e3c1b01af66407ff063f825a3fd5dedb",
+      "git_blob_sha": "0dbb5577fe3309a4904ce6e23297948e669fae73",
+      "url": "https://github.com/zblds-a/StoryGenerate/blob/0dec8480e3c1b01af66407ff063f825a3fd5dedb/docs/handoff/04-direction-change.md",
+      "lines": 61
+    },
+    {
+      "path": "docs/handoff/06-quality-cost.md",
+      "ref": "0dec8480e3c1b01af66407ff063f825a3fd5dedb",
+      "git_blob_sha": "879fdc26ccf05be916fe34f7934712a8d49ea8e3",
+      "url": "https://github.com/zblds-a/StoryGenerate/blob/0dec8480e3c1b01af66407ff063f825a3fd5dedb/docs/handoff/06-quality-cost.md",
+      "lines": 106
+    },
+    {
+      "path": "docs/handoff/07-client-integration.md",
+      "ref": "0dec8480e3c1b01af66407ff063f825a3fd5dedb",
+      "git_blob_sha": "aa25009e65ba78075b0e51c53c66d7b18fe05a2e",
+      "url": "https://github.com/zblds-a/StoryGenerate/blob/0dec8480e3c1b01af66407ff063f825a3fd5dedb/docs/handoff/07-client-integration.md",
+      "lines": 64
+    },
+    {
+      "path": "docs/handoff/08-tts-integration.md",
+      "ref": "0dec8480e3c1b01af66407ff063f825a3fd5dedb",
+      "git_blob_sha": "c7395100a4a4dc5879d39a05c66958f5e9a56304",
+      "url": "https://github.com/zblds-a/StoryGenerate/blob/0dec8480e3c1b01af66407ff063f825a3fd5dedb/docs/handoff/08-tts-integration.md",
+      "lines": 42
+    },
+    {
+      "path": "docs/handoff/09-deployment.md",
+      "ref": "0dec8480e3c1b01af66407ff063f825a3fd5dedb",
+      "git_blob_sha": "4594f8c1148e6dcc42395c560ce74ce1b0caac65",
+      "url": "https://github.com/zblds-a/StoryGenerate/blob/0dec8480e3c1b01af66407ff063f825a3fd5dedb/docs/handoff/09-deployment.md",
+      "lines": 118
+    },
+    {
+      "path": "docs/handoff/10-acceptance.md",
+      "ref": "0dec8480e3c1b01af66407ff063f825a3fd5dedb",
+      "git_blob_sha": "4f655ce91097759fa7348b4e0c23316c65372a72",
+      "url": "https://github.com/zblds-a/StoryGenerate/blob/0dec8480e3c1b01af66407ff063f825a3fd5dedb/docs/handoff/10-acceptance.md",
+      "lines": 51
+    },
+    {
+      "path": "4-引擎代码/drama_engine/workflow/service.py",
+      "ref": "0dec8480e3c1b01af66407ff063f825a3fd5dedb",
+      "git_blob_sha": "46111caa66b2c3f6963a5d8edea8fc09982bb7c6",
+      "url": "https://github.com/zblds-a/StoryGenerate/blob/0dec8480e3c1b01af66407ff063f825a3fd5dedb/4-%E5%BC%95%E6%93%8E%E4%BB%A3%E7%A0%81/drama_engine/workflow/service.py",
+      "lines": 563
+    },
+    {
+      "path": "4-引擎代码/drama_engine/workflow/schemas.py",
+      "ref": "0dec8480e3c1b01af66407ff063f825a3fd5dedb",
+      "git_blob_sha": "d6efd30b051c8ef5f8b0a050dbe827c6c885d2dc",
+      "url": "https://github.com/zblds-a/StoryGenerate/blob/0dec8480e3c1b01af66407ff063f825a3fd5dedb/4-%E5%BC%95%E6%93%8E%E4%BB%A3%E7%A0%81/drama_engine/workflow/schemas.py",
+      "lines": 495
+    },
+    {
+      "path": "4-引擎代码/drama_engine/workflow/adapters.py",
+      "ref": "0dec8480e3c1b01af66407ff063f825a3fd5dedb",
+      "git_blob_sha": "5a00d63c83d2013f5cd676cb768574ada7068d6f",
+      "url": "https://github.com/zblds-a/StoryGenerate/blob/0dec8480e3c1b01af66407ff063f825a3fd5dedb/4-%E5%BC%95%E6%93%8E%E4%BB%A3%E7%A0%81/drama_engine/workflow/adapters.py",
+      "lines": 994
+    },
+    {
+      "path": "4-引擎代码/drama_engine/workflow/delivery.py",
+      "ref": "0dec8480e3c1b01af66407ff063f825a3fd5dedb",
+      "git_blob_sha": "38e560d06f3d14bc1dd3792c90663fa6ffe3eed8",
+      "url": "https://github.com/zblds-a/StoryGenerate/blob/0dec8480e3c1b01af66407ff063f825a3fd5dedb/4-%E5%BC%95%E6%93%8E%E4%BB%A3%E7%A0%81/drama_engine/workflow/delivery.py",
+      "lines": 439
+    },
+    {
+      "path": "4-引擎代码/drama_engine/service/api.py",
+      "ref": "0dec8480e3c1b01af66407ff063f825a3fd5dedb",
+      "git_blob_sha": "c01cb2529cf5cd915f8680c2488d3a09ce89e1cb",
+      "url": "https://github.com/zblds-a/StoryGenerate/blob/0dec8480e3c1b01af66407ff063f825a3fd5dedb/4-%E5%BC%95%E6%93%8E%E4%BB%A3%E7%A0%81/drama_engine/service/api.py",
+      "lines": 612
+    },
+    {
+      "path": "4-引擎代码/drama_engine/service/schemas.py",
+      "ref": "0dec8480e3c1b01af66407ff063f825a3fd5dedb",
+      "git_blob_sha": "cee0637bfb5fe87bfdd36330dae8c5cc7ea1272b",
+      "url": "https://github.com/zblds-a/StoryGenerate/blob/0dec8480e3c1b01af66407ff063f825a3fd5dedb/4-%E5%BC%95%E6%93%8E%E4%BB%A3%E7%A0%81/drama_engine/service/schemas.py",
+      "lines": 119
+    },
+    {
+      "path": "4-引擎代码/drama_engine/service/runtime.py",
+      "ref": "0dec8480e3c1b01af66407ff063f825a3fd5dedb",
+      "git_blob_sha": "805c2cb8f7cf21404213fd1650764fa28b0bc5ab",
+      "url": "https://github.com/zblds-a/StoryGenerate/blob/0dec8480e3c1b01af66407ff063f825a3fd5dedb/4-%E5%BC%95%E6%93%8E%E4%BB%A3%E7%A0%81/drama_engine/service/runtime.py",
+      "lines": 446
+    },
+    {
+      "path": "4-引擎代码/drama_engine/service/worker.py",
+      "ref": "0dec8480e3c1b01af66407ff063f825a3fd5dedb",
+      "git_blob_sha": "628a5aea56b1eaa11aad76f17f0f2ecf6e3f558a",
+      "url": "https://github.com/zblds-a/StoryGenerate/blob/0dec8480e3c1b01af66407ff063f825a3fd5dedb/4-%E5%BC%95%E6%93%8E%E4%BB%A3%E7%A0%81/drama_engine/service/worker.py",
+      "lines": 406
+    },
+    {
+      "path": "4-引擎代码/drama_engine/service/downstream.py",
+      "ref": "0dec8480e3c1b01af66407ff063f825a3fd5dedb",
+      "git_blob_sha": "ac1b6ccf6073314554fc4982c30244a465ff60af",
+      "url": "https://github.com/zblds-a/StoryGenerate/blob/0dec8480e3c1b01af66407ff063f825a3fd5dedb/4-%E5%BC%95%E6%93%8E%E4%BB%A3%E7%A0%81/drama_engine/service/downstream.py",
+      "lines": 138
+    },
+    {
+      "path": "pyproject.toml",
+      "ref": "0dec8480e3c1b01af66407ff063f825a3fd5dedb",
+      "git_blob_sha": "54c1e49fc47cc196168712fe38ee2a30f666c5ad",
+      "url": "https://github.com/zblds-a/StoryGenerate/blob/0dec8480e3c1b01af66407ff063f825a3fd5dedb/pyproject.toml",
+      "lines": 50
+    },
+    {
+      "path": "docs/handoff/examples/endpoint-success-examples.json",
+      "ref": "0dec8480e3c1b01af66407ff063f825a3fd5dedb",
+      "git_blob_sha": "e939619419ffda2c0bd8221d22edffc8d1499bc7",
+      "url": "https://github.com/zblds-a/StoryGenerate/blob/0dec8480e3c1b01af66407ff063f825a3fd5dedb/docs/handoff/examples/endpoint-success-examples.json",
+      "lines": 1010
+    },
+    {
+      "path": "docs/handoff/contracts/http-responses.json",
+      "ref": "0dec8480e3c1b01af66407ff063f825a3fd5dedb",
+      "git_blob_sha": "809294073ebba139f177e190a06904884ed5141f",
+      "url": "https://github.com/zblds-a/StoryGenerate/blob/0dec8480e3c1b01af66407ff063f825a3fd5dedb/docs/handoff/contracts/http-responses.json",
+      "lines": 3951
+    },
+    {
+      "path": "6-实测产物/phase11_live_20261015_v3/continue/export.json",
+      "ref": "0dec8480e3c1b01af66407ff063f825a3fd5dedb",
+      "git_blob_sha": "493fff2e9a1bac72acc0c53690b7eade80247510",
+      "url": "https://github.com/zblds-a/StoryGenerate/blob/0dec8480e3c1b01af66407ff063f825a3fd5dedb/6-%E5%AE%9E%E6%B5%8B%E4%BA%A7%E7%89%A9/phase11_live_20261015_v3/continue/export.json",
+      "lines": 3609
+    },
+    {
+      "path": "6-实测产物/phase11_live_20261015_v3/continue/render.json",
+      "ref": "0dec8480e3c1b01af66407ff063f825a3fd5dedb",
+      "git_blob_sha": "b2bf96b849734bb7f2047ec2e9469cd8ebc9223e",
+      "url": "https://github.com/zblds-a/StoryGenerate/blob/0dec8480e3c1b01af66407ff063f825a3fd5dedb/6-%E5%AE%9E%E6%B5%8B%E4%BA%A7%E7%89%A9/phase11_live_20261015_v3/continue/render.json",
+      "lines": 4098
+    }
+  ],
+  "sample": {
+    "story_version_id": "1cf88eb73f914da89b058679166830b6",
+    "story_state": "READY",
+    "audio_state": "NOT_SYNTHESIZED",
+    "playback_state": "NOT_REPORTED",
+    "episodes": [
+      {
+        "episode_id": "ep-1-4b27e608",
+        "index": 1,
+        "target_duration_sec": 120,
+        "scene_count": 3,
+        "line_count": 23
+      },
+      {
+        "episode_id": "ep-2-5badae51",
+        "index": 2,
+        "target_duration_sec": 120,
+        "scene_count": 3,
+        "line_count": 23
+      },
+      {
+        "episode_id": "ep-3-587cee72",
+        "index": 3,
+        "target_duration_sec": 120,
+        "scene_count": 3,
+        "line_count": 25
+      },
+      {
+        "episode_id": "ep-4-e1a80dbf",
+        "index": 4,
+        "target_duration_sec": 120,
+        "scene_count": 3,
+        "line_count": 23
+      }
+    ],
+    "manifest_task_count": 94,
+    "source_kind_counts": {
+      "sfx": 25,
+      "dialogue": 69
+    },
+    "checks": {
+      "same_source_version": true,
+      "sequential_manifest": true,
+      "unique_render_task_ids": true,
+      "task_source_references_match": true
+    }
+  },
+  "scope": {
+    "remote_mutations": false,
+    "source_code_changes": false,
+    "frontend_changes": false,
+    "service_started": false,
+    "database_connected": false,
+    "workflow_executed": false,
+    "generation_service_calls": 0,
+    "full_test_suite_rerun": false
+  },
+  "analysis_document": "AI创作与声画演绎工作流分析草案_v0.3_20261015.md",
+  "analysis_document_checks": {
+    "bytes": 39611,
+    "sha256": "9a9548e517daf559d494f0931c79c4dbd3a3e93218636d5546543888ea899d2d",
+    "main_sections": 16,
+    "local_links_checked": [
+      "AI视觉工作流复核证据_20261015.json",
+      "StoryGenerate接入核对证据_20261015.json",
+      "../../../source/fingertip-legend-app/src/services/api.ts",
+      "../../../source/fingertip-legend-app/src/types/domain.ts"
+    ],
+    "checked_at": "2026-10-15T03:04:52.384113+00:00"
+  }
+}

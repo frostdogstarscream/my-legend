@@ -1,0 +1,54 @@
+{
+  "name": "我的传说",
+  "appid": "",
+  "description": "我的传说 · 故事创作与演绎",
+  "versionName": "0.2.0",
+  "versionCode": "20",
+  "transformPx": false,
+  "vueVersion": "3",
+  "uniStatistics": {
+    "enable": false
+  },
+  "app-plus": {
+    "usingComponents": true,
+    "splashscreen": {
+      "alwaysShowBeforeRender": true,
+      "waiting": true,
+      "autoclose": true,
+      "delay": 0
+    },
+    "safearea": {
+      "background": "#fffbf2",
+      "bottom": {
+        "offset": "none"
+      }
+    },
+    "statusbar": {
+      "style": "light",
+      "background": "transparent"
+    },
+    "distribute": {
+      "android": {
+        "permissions": [
+          "<uses-permission android:name=\"android.permission.INTERNET\"/>"
+        ]
+      },
+      "ios": {}
+    }
+  },
+  "h5": {
+    "title": "我的传说",
+    "router": {
+      "mode": "hash"
+    }
+  },
+  "networkTimeout": {
+    "request": 15000,
+    "downloadFile": 60000,
+    "uploadFile": 60000
+  },
+  "mp-weixin": {
+    "appid": "",
+    "usingComponents": true
+  }
+}

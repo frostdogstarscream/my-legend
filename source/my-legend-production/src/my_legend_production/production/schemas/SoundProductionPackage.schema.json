@@ -1,0 +1,219 @@
+{
+  "$defs": {
+    "SoundControl": {
+      "additionalProperties": false,
+      "properties": {
+        "operation_id": {
+          "title": "Operation Id",
+          "type": "string"
+        },
+        "source": {
+          "additionalProperties": true,
+          "title": "Source",
+          "type": "object"
+        },
+        "cue_text": {
+          "title": "Cue Text",
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "action_note",
+            "stop_sound",
+            "continue_background",
+            "change_background"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "target_operation_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Target Operation Id"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "operation_id",
+        "source",
+        "cue_text",
+        "mode",
+        "target_operation_id",
+        "reason"
+      ],
+      "title": "SoundControl",
+      "type": "object"
+    },
+    "SoundTask": {
+      "additionalProperties": false,
+      "properties": {
+        "operation_id": {
+          "title": "Operation Id",
+          "type": "string"
+        },
+        "source": {
+          "additionalProperties": true,
+          "title": "Source",
+          "type": "object"
+        },
+        "cue_text": {
+          "title": "Cue Text",
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "one_shot",
+            "background"
+          ],
+          "title": "Mode",
+          "type": "string"
+        }
+      },
+      "required": [
+        "operation_id",
+        "source",
+        "cue_text",
+        "mode"
+      ],
+      "title": "SoundTask",
+      "type": "object"
+    },
+    "SpeechTask": {
+      "additionalProperties": false,
+      "properties": {
+        "operation_id": {
+          "title": "Operation Id",
+          "type": "string"
+        },
+        "source": {
+          "additionalProperties": true,
+          "title": "Source",
+          "type": "object"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "identity_id": {
+          "title": "Identity Id",
+          "type": "string"
+        },
+        "voice": {
+          "title": "Voice",
+          "type": "string"
+        },
+        "performance": {
+          "additionalProperties": true,
+          "title": "Performance",
+          "type": "object"
+        }
+      },
+      "required": [
+        "operation_id",
+        "source",
+        "text",
+        "identity_id",
+        "voice",
+        "performance"
+      ],
+      "title": "SpeechTask",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "sound_production_package/1.0",
+      "default": "sound_production_package/1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_version_id": {
+      "title": "Source Version Id",
+      "type": "string"
+    },
+    "delivery_sha256": {
+      "title": "Delivery Sha256",
+      "type": "string"
+    },
+    "manifest_sha256": {
+      "title": "Manifest Sha256",
+      "type": "string"
+    },
+    "arrangement_sha256": {
+      "title": "Arrangement Sha256",
+      "type": "string"
+    },
+    "review_sha256": {
+      "title": "Review Sha256",
+      "type": "string"
+    },
+    "classification_sha256": {
+      "title": "Classification Sha256",
+      "type": "string"
+    },
+    "voices": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Voices",
+      "type": "object"
+    },
+    "speech_tasks": {
+      "items": {
+        "$ref": "#/$defs/SpeechTask"
+      },
+      "title": "Speech Tasks",
+      "type": "array"
+    },
+    "sound_tasks": {
+      "items": {
+        "$ref": "#/$defs/SoundTask"
+      },
+      "title": "Sound Tasks",
+      "type": "array"
+    },
+    "controls": {
+      "items": {
+        "$ref": "#/$defs/SoundControl"
+      },
+      "title": "Controls",
+      "type": "array"
+    },
+    "human_listening": {
+      "const": "pending",
+      "default": "pending",
+      "title": "Human Listening",
+      "type": "string"
+    },
+    "timing_basis": {
+      "const": "resolve_after_real_media",
+      "default": "resolve_after_real_media",
+      "title": "Timing Basis",
+      "type": "string"
+    }
+  },
+  "required": [
+    "source_version_id",
+    "delivery_sha256",
+    "manifest_sha256",
+    "arrangement_sha256",
+    "review_sha256",
+    "classification_sha256",
+    "voices",
+    "speech_tasks",
+    "sound_tasks",
+    "controls"
+  ],
+  "title": "SoundProductionPackage",
+  "type": "object"
+}

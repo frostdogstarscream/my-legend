@@ -1,0 +1,180 @@
+{
+  "contract_version": "my-legend.adapter-map/1.0",
+  "adapter": "visual",
+  "mapping_id": "map_d2d6a47f293f187c84e3be7df26d04fa",
+  "request_fingerprint": "d2d6a47f293f187c84e3be7df26d04fa0675195f5286ca1fafb16b4ddd48d112",
+  "source": {
+    "story_id": "fixture-story-001",
+    "story_version_id": "fixture-version-001",
+    "delivery": {
+      "ref": "fixture://source/story_delivery.json",
+      "sha256": "019b0cdafbf541cf3da5d307bcec2bcbf965c720933ddb839f52076d7c9e8cfd"
+    },
+    "render_manifest": {
+      "ref": "fixture://source/render_manifest.json",
+      "sha256": "7376a50ef1612846d989ebd510eea3dbe4e33f4bf392159c448e20c44fbffc24"
+    }
+  },
+  "source_version_id": "v_87126582902b42814b278d22694513b2",
+  "coverage": [
+    {
+      "source": {
+        "episode_id": "episode-1",
+        "scene_id": "scene-1",
+        "line_id": "line-1"
+      },
+      "source_task_id": "4dcc47616dbe9745bc4504655966422b613b75e7cf5e626d38f0974bb57d4b09",
+      "source_kind": "sfx",
+      "text_sha256": "2aa0859807bc9ab5b9db71834ea7b76ae0cb372c539abd9c2a657ace19a1349a",
+      "target_block_ids": [],
+      "disposition": "routed_other",
+      "reason": "声音事件交给声音侧，不自动制造画面。"
+    },
+    {
+      "source": {
+        "episode_id": "episode-1",
+        "scene_id": "scene-1",
+        "line_id": "line-2"
+      },
+      "source_task_id": "8af31638058840eac215083ad54f83ab1f52865a2d212db3e871b31853dd936a",
+      "source_kind": "narration",
+      "text_sha256": "972144e1599abc3a1fb237e095697458481c67a6ffa1d51ea1fc26c627d93efd",
+      "target_block_ids": [
+        "b_12c4a99fc4284938fc608468634caaa6"
+      ],
+      "disposition": "mapped",
+      "reason": "保留来源并映射目标事件。"
+    },
+    {
+      "source": {
+        "episode_id": "episode-1",
+        "scene_id": "scene-1",
+        "line_id": "line-3"
+      },
+      "source_task_id": "2fab028b6efa38b7d03808e9690f590f9de6f2d431599170e904ede97269a66f",
+      "source_kind": "dialogue",
+      "text_sha256": "f5e43b30592c6e417dcba9b7c20aa79d96ead06309fa7142739e16a8afc475bc",
+      "target_block_ids": [
+        "b_6393e42ff59195212605231bafb3bf64"
+      ],
+      "disposition": "mapped",
+      "reason": "保留来源并映射目标事件。"
+    },
+    {
+      "source": {
+        "episode_id": "episode-1",
+        "scene_id": "scene-1",
+        "line_id": "line-4"
+      },
+      "source_task_id": "09f7d1336c6364860ef6510cb3bb1b051d92fe54c34b6caeac2fa7b36130d27b",
+      "source_kind": "dialogue",
+      "text_sha256": "602b5348fa533de46b8de90deda458c0103baa783b6cbd7a78c94875576468e4",
+      "target_block_ids": [
+        "b_a7aa7b77d0f5ba8028b1d8e81d8524d3"
+      ],
+      "disposition": "mapped",
+      "reason": "保留来源并映射目标事件。"
+    },
+    {
+      "source": {
+        "episode_id": "episode-1",
+        "scene_id": "scene-1",
+        "line_id": "line-5"
+      },
+      "source_task_id": "7b656cd7797ec924561328822667aa3d7626dcc7d1e44772a62fabf639470c1b",
+      "source_kind": "action",
+      "text_sha256": "6d1d11cf3fc641c7298970b0114f2281f97f9d79f453bd6004ad05a822ba2777",
+      "target_block_ids": [
+        "b_c499f6064e9cf9c8bbf3d03b9453f496"
+      ],
+      "disposition": "mapped",
+      "reason": "保留来源并映射目标事件。"
+    }
+  ],
+  "roles": [
+    {
+      "identity_kind": "role",
+      "source_identity_id": "repairer",
+      "target_role_id": "r_6e0e22405d7081a516f5e9f2302be7db",
+      "performer_id": "voice-linlan"
+    },
+    {
+      "identity_kind": "role",
+      "source_identity_id": "host",
+      "target_role_id": "r_e1b3f2224055cba18c54c40c7ef4f0e3",
+      "performer_id": "voice-zhouye"
+    },
+    {
+      "identity_kind": "narrator",
+      "source_identity_id": "narrator",
+      "target_role_id": "r_15ffb5ba17fac7e2bcc74ab8110deba7",
+      "performer_id": "narrator"
+    }
+  ],
+  "field_handling": [
+    {
+      "source_path": "episodes[].scenes[].utterances[].text",
+      "target_path": "script.scenes[].blocks[].text",
+      "handling": "copied",
+      "reason": "逐字保留；未映射行在 coverage 路由到另一支线。"
+    },
+    {
+      "source_path": "episodes[].scenes[].utterances[].emotion",
+      "target_path": "script.scenes[].blocks[].emotion",
+      "handling": "mapped",
+      "reason": "声音为情绪指令提示；视觉仅对白采用显式映射，旁白情绪不进入视觉事件。"
+    },
+    {
+      "source_path": "episodes[].scenes[].utterances[].tone_instruction",
+      "target_path": "",
+      "handling": "metadata_only",
+      "reason": "音频保留语气意图；视觉没有语气参数，原值留在源快照。"
+    },
+    {
+      "source_path": "episodes[].scenes[].utterances[].emphasis",
+      "target_path": "",
+      "handling": "metadata_only",
+      "reason": "重音不是精确音频控制；视觉无对应参数，原定位留在源快照。"
+    },
+    {
+      "source_path": "episodes[].scenes[].utterances[].pauses",
+      "target_path": "",
+      "handling": "metadata_only",
+      "reason": "声音只传一般停顿提示，视觉不伪造字符级时间轴。"
+    },
+    {
+      "source_path": "episodes[].scenes[].utterances[].speech_rate",
+      "target_path": "",
+      "handling": "metadata_only",
+      "reason": "示例为默认 1.0，不宣称已执行逐句数值控制。"
+    },
+    {
+      "source_path": "episodes[].scenes[].utterances[].pitch",
+      "target_path": "",
+      "handling": "not_applicable",
+      "reason": "示例源值为空。"
+    },
+    {
+      "source_path": "episodes[].scenes[].utterances[].volume",
+      "target_path": "",
+      "handling": "not_applicable",
+      "reason": "示例源值为空。"
+    },
+    {
+      "source_path": "episodes[].scenes[].utterances[].delivery_note",
+      "target_path": "",
+      "handling": "not_applicable",
+      "reason": "示例源值为空。"
+    }
+  ],
+  "compatibility": {
+    "workflow_input": "structural_valid",
+    "joint_profile": "independent",
+    "joint_status": "not_requested",
+    "reason_codes": [
+      "JOINT_EVENT_SET_MISMATCH",
+      "JOINT_NARRATION_IDENTITY_UNSUPPORTED"
+    ]
+  },
+  "issues": []
+}

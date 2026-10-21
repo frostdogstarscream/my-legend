@@ -1,0 +1,25 @@
+==============================================================================
+① 干净路径（带修复回路）—— 预期 error=0
+  [OK] 家庭冲突   ep=4   dur=90   error=0 warning=1 claims→judge=16
+  [OK] 家庭冲突   ep=4   dur=300  error=0 warning=1 claims→judge=16
+  [OK] 家庭冲突   ep=6   dur=180  error=0 warning=1 claims→judge=20
+  [OK] 家庭冲突   ep=8   dur=180  error=0 warning=1 claims→judge=24
+  [OK] 家庭冲突   ep=10  dur=90   error=0 warning=1 claims→judge=28
+  [OK] 家庭冲突   ep=10  dur=300  error=0 warning=1 claims→judge=28
+  [OK] 穿越搞事业  ep=4   dur=90   error=0 warning=1 claims→judge=16
+  [OK] 穿越搞事业  ep=4   dur=300  error=0 warning=1 claims→judge=16
+  [OK] 穿越搞事业  ep=6   dur=180  error=0 warning=1 claims→judge=20
+  [OK] 穿越搞事业  ep=8   dur=180  error=0 warning=1 claims→judge=24
+  [OK] 穿越搞事业  ep=10  dur=90   error=0 warning=1 claims→judge=28
+  [OK] 穿越搞事业  ep=10  dur=300  error=0 warning=1 claims→judge=28
+------------------------------------------------------------------------------
+② 对照一 --violations-demo —— 预期 Tier-1 命中 K/R/CH/RL/FC 五族
+  [OK] tier1=46 族=['CH', 'FC', 'K', 'R', 'RL', 'S']
+------------------------------------------------------------------------------
+③ 对照二 --tier2-demo —— 预期 K06 / fake_causality 命中
+  [OK] K06=2 patterns=['fake_causality']
+------------------------------------------------------------------------------
+④ 对照三 --evidence-demo —— 预期命中全部 7 种伪证模式（带正文证据）
+  [OK] countdown_drift×2 fake_causality×2 fake_reversal×4 fake_trust×3 knowledge_leak×6 label_only×16 resource_drift×6
+==============================================================================
+回归门通过：干净路径 error=0，三条对照全部命中预期，7 种伪证模式全覆盖。

@@ -1,0 +1,42 @@
+[
+  {
+    "node": "outline",
+    "model": "qwen/qwen3.7-max",
+    "run": 1,
+    "success": true,
+    "latency_ms": 41426,
+    "json_valid": true,
+    "repair_count": 0,
+    "sample": "{\"entries\":[{\"episode\":1,\"title\":\"坏账与新生\",\"act\":1,\"core_goal\":\"完成现代社畜过劳死的情绪释放，穿越至将军府并利用记账能力查清府内亏空，获得老管家信任。\",\"conflict_intensity\":4,\"polarity\":\"positive\",\"loop_step\":null,\"side_effect_of\":null,\"deployme"
+  },
+  {
+    "node": "outline",
+    "model": "qwen/qwen3.7-max",
+    "run": 2,
+    "success": true,
+    "latency_ms": 31676,
+    "json_valid": true,
+    "repair_count": 0,
+    "sample": "{\"entries\":[{\"episode\":1,\"title\":\"猝死与烂账\",\"act\":1,\"core_goal\":\"摆脱现代社畜牛马生活，穿越后接手将军府烂摊子\",\"conflict_intensity\":4,\"polarity\":\"negative\",\"loop_step\":null,\"side_effect_of\":null,\"deployment\":null,\"gadget_fail"
+  },
+  {
+    "node": "outline",
+    "model": "qwen/deepseek-v4-pro",
+    "run": 1,
+    "success": true,
+    "latency_ms": 93368,
+    "json_valid": true,
+    "repair_count": 0,
+    "sample": "{\"entries\":[{\"episode\":1,\"title\":\"落水嫡女算死账\",\"act\":2,\"core_goal\":\"利用现代记账能力查出庄子账目贪污，赢得老管家初步信任\",\"conflict_intensity\":6,\"polarity\":\"neutral\",\"loop_step\":null,\"side_effect_of\":null,\"deployment\":null,\"gadget"
+  },
+  {
+    "node": "outline",
+    "model": "qwen/deepseek-v4-pro",
+    "run": 2,
+    "success": true,
+    "latency_ms": 81495,
+    "json_valid": true,
+    "repair_count": 0,
+    "sample": "{\"entries\":[{\"episode\":1,\"title\":\"格子间的亡魂，将军府的账房\",\"act\":2,\"core_goal\":\"利用现代记账能力在将军府濒临抄家的账目危机中站稳脚跟，赢得老管家初步信任。\",\"conflict_intensity\":5,\"polarity\":\"positive\",\"loop_step\":null,\"side_effect_of\":null,\"deploy"
+  }
+]

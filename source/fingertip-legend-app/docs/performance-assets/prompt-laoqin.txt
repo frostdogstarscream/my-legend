@@ -1,0 +1,11 @@
+referenced_image_paths: ["C:/Users/83895/AppData/Local/Temp/codex-clipboard-41e0e99c-7ad0-4023-9c95-d960bb811414.png"]
+transparent_background: true
+
+prompt:
+Use case: identity-preserve / background-extraction.
+Asset type: transparent half-body character asset for a mobile story performance prototype.
+Reference image: the supplied screenshot is the identity, clothes and art style reference. Reconstruct ONLY the elderly man named 老秦 (Lao Qin), visible in the third role card, on the right side of the stage, and in the current dialogue portrait. Remove all screenshot/UI/background elements.
+Subject: the SAME elderly Chinese man, mature lined face, grey hair swept back with a loose side part, short grey moustache and beard, calm somewhat stern thoughtful expression, facing forward with a slight three-quarter turn similar to the reference. Preserve the reference face proportions, age, greying hair silhouette, and subdued weathered clothing. He wears the old long brown coat / vintage brown overcoat and light beige collared shirt seen in the reference, in period-appropriate Republic-era clothes. Natural realistic game illustration with restrained painterly edges and detailed worn cloth texture. Do not turn him into a wizard or redesign the outfit.
+Composition: vertical portrait, desired 512 x 640 proportions (4:5). Complete top of head, both shoulders and torso through the full waist, centered. Subject about 85 percent of canvas height; reserve a clear transparent margin above hair, beside arms and below the waist. Include no legs. All outline edges clean and completely visible, with no shoulder clipping or waist clipping at the image border. Single elderly man only.
+Backdrop: genuinely transparent RGBA, no opaque matte, no checkerboard pattern in the image pixels.
+Avoid: background, scene, UI, text, labels, watermarks, card, frame, border, halo, glow, backdrop shadows, hats, weapons, extra objects, additional people, modern clothing. Reconstruct this specific elderly man faithfully.

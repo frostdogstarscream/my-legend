@@ -1,0 +1,341 @@
+{
+  "$defs": {
+    "Event": {
+      "additionalProperties": false,
+      "properties": {
+        "block_id": {
+          "title": "Block Id",
+          "type": "string"
+        },
+        "duration_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Duration Ms"
+        },
+        "keypoints": {
+          "items": {
+            "$ref": "#/$defs/Point"
+          },
+          "title": "Keypoints",
+          "type": "array"
+        },
+        "kind": {
+          "enum": [
+            "speech",
+            "sfx",
+            "ambience",
+            "music",
+            "pause",
+            "action",
+            "transition"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "lineage": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Lineage",
+          "type": "array"
+        },
+        "media": {
+          "additionalProperties": true,
+          "title": "Media",
+          "type": "object"
+        },
+        "performance": {
+          "additionalProperties": true,
+          "title": "Performance",
+          "type": "object"
+        },
+        "role_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Role Id"
+        },
+        "scene_id": {
+          "title": "Scene Id",
+          "type": "string"
+        },
+        "sound": {
+          "additionalProperties": true,
+          "title": "Sound",
+          "type": "object"
+        },
+        "source_ref": {
+          "additionalProperties": true,
+          "title": "Source Ref",
+          "type": "object"
+        },
+        "target": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target"
+        },
+        "text": {
+          "default": "",
+          "title": "Text",
+          "type": "string"
+        },
+        "timing": {
+          "items": {
+            "$ref": "#/$defs/Relation"
+          },
+          "title": "Timing",
+          "type": "array"
+        }
+      },
+      "required": [
+        "block_id",
+        "scene_id",
+        "kind"
+      ],
+      "title": "Event",
+      "type": "object"
+    },
+    "Point": {
+      "additionalProperties": false,
+      "properties": {
+        "frame": {
+          "minimum": 0,
+          "title": "Frame",
+          "type": "integer"
+        },
+        "kind": {
+          "default": "contact",
+          "title": "Kind",
+          "type": "string"
+        },
+        "method": {
+          "title": "Method",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "sample_rate": {
+          "default": 48000,
+          "exclusiveMinimum": 0,
+          "title": "Sample Rate",
+          "type": "integer"
+        },
+        "status": {
+          "default": "candidate",
+          "enum": [
+            "candidate",
+            "confirmed"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "frame",
+        "method"
+      ],
+      "title": "Point",
+      "type": "object"
+    },
+    "Relation": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Anchor"
+        },
+        "anchor_point": {
+          "default": "end",
+          "title": "Anchor Point",
+          "type": "string"
+        },
+        "mode": {
+          "default": "equal",
+          "enum": [
+            "equal",
+            "after"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "offset_ms": {
+          "default": 0,
+          "title": "Offset Ms",
+          "type": "number"
+        },
+        "provenance": {
+          "default": "explicit",
+          "title": "Provenance",
+          "type": "string"
+        },
+        "self_point": {
+          "default": "start",
+          "title": "Self Point",
+          "type": "string"
+        }
+      },
+      "title": "Relation",
+      "type": "object"
+    },
+    "Role": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "default": "",
+          "title": "Description",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "role_id": {
+          "title": "Role Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role_id",
+        "name"
+      ],
+      "title": "Role",
+      "type": "object"
+    },
+    "Scene": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "default": "",
+          "title": "Description",
+          "type": "string"
+        },
+        "performance": {
+          "additionalProperties": true,
+          "title": "Performance",
+          "type": "object"
+        },
+        "scene_id": {
+          "title": "Scene Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "scene_id"
+      ],
+      "title": "Scene",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_revision": {
+      "default": "r1",
+      "title": "Artifact Revision",
+      "type": "string"
+    },
+    "boundaries": {
+      "additionalProperties": true,
+      "title": "Boundaries",
+      "type": "object"
+    },
+    "events": {
+      "items": {
+        "$ref": "#/$defs/Event"
+      },
+      "title": "Events",
+      "type": "array"
+    },
+    "id_mapping": {
+      "additionalProperties": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "title": "Id Mapping",
+      "type": "object"
+    },
+    "issues": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Issues",
+      "type": "array"
+    },
+    "roles": {
+      "items": {
+        "$ref": "#/$defs/Role"
+      },
+      "title": "Roles",
+      "type": "array"
+    },
+    "scenes": {
+      "items": {
+        "$ref": "#/$defs/Scene"
+      },
+      "title": "Scenes",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "lingban.script/1",
+      "default": "lingban.script/1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source": {
+      "additionalProperties": true,
+      "title": "Source",
+      "type": "object"
+    },
+    "source_version_id": {
+      "title": "Source Version Id",
+      "type": "string"
+    },
+    "title": {
+      "title": "Title",
+      "type": "string"
+    }
+  },
+  "required": [
+    "source_version_id",
+    "title",
+    "roles",
+    "scenes",
+    "events"
+  ],
+  "title": "StandardScript",
+  "type": "object"
+}

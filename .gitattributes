@@ -1,0 +1,12 @@
+* text=auto
+*.sh text eol=lf
+*.py text eol=lf
+*.ps1 text eol=crlf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.ttf binary
+*.woff2 binary
+# Preserve byte hashes of the pinned workflow source snapshot.
+source/my-legend-workflow-dependencies/** -text

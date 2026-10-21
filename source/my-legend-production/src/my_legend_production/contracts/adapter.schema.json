@@ -1,0 +1,1429 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "Artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ref": {
+          "type": "string",
+          "pattern": "^(artifact|fixture)://[^\\s]+$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "ref",
+        "sha256"
+      ]
+    },
+    "SceneRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "episode_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scene_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "episode_id",
+        "scene_id"
+      ]
+    },
+    "Locator": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "episode_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scene_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "line_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "episode_id",
+        "scene_id",
+        "line_id"
+      ]
+    },
+    "Source": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "story_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "story_version_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "delivery": {
+          "$ref": "#/$defs/Artifact"
+        },
+        "render_manifest": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Artifact"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "story_id",
+        "story_version_id",
+        "delivery",
+        "render_manifest"
+      ]
+    },
+    "Scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "scenes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SceneRef"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "scenes"
+      ]
+    },
+    "Issue": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]+$"
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "blocking",
+            "warning"
+          ]
+        },
+        "scope": {
+          "type": "string",
+          "enum": [
+            "source",
+            "audio",
+            "visual",
+            "joint"
+          ]
+        },
+        "source_path": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1
+        },
+        "remedy": {
+          "type": "string",
+          "minLength": 1
+        },
+        "retryable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "severity",
+        "scope",
+        "source_path",
+        "message",
+        "remedy",
+        "retryable"
+      ]
+    },
+    "Request": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "type": "string",
+          "enum": [
+            "my-legend.adapter-request/1.0"
+          ]
+        },
+        "adapter": {
+          "type": "string",
+          "enum": [
+            "audio",
+            "visual"
+          ]
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,64}$"
+        },
+        "idempotency_key": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "prepare_only"
+          ]
+        },
+        "source": {
+          "$ref": "#/$defs/Source"
+        },
+        "scope": {
+          "$ref": "#/$defs/Scope"
+        },
+        "context": {
+          "$ref": "#/$defs/Artifact"
+        },
+        "joint_profile": {
+          "type": "string",
+          "enum": [
+            "independent",
+            "joint_v02"
+          ]
+        }
+      },
+      "required": [
+        "contract_version",
+        "adapter",
+        "request_id",
+        "idempotency_key",
+        "mode",
+        "source",
+        "scope",
+        "context",
+        "joint_profile"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "adapter": {
+                "const": "audio"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "source": {
+                "properties": {
+                  "render_manifest": {
+                    "$ref": "#/$defs/Artifact"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "VoiceBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "identity_kind": {
+          "type": "string",
+          "enum": [
+            "role",
+            "narrator"
+          ]
+        },
+        "source_identity_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "performer_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "provider_profile_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1
+        },
+        "voice": {
+          "type": "string",
+          "minLength": 1
+        },
+        "voice_asset_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "voice_asset_revision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "verification": {
+          "type": "string",
+          "enum": [
+            "fixture",
+            "configured",
+            "verified"
+          ]
+        },
+        "required_controls": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "instructions"
+            ]
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "identity_kind",
+        "source_identity_id",
+        "performer_id",
+        "provider_profile_id",
+        "model",
+        "voice",
+        "voice_asset_id",
+        "voice_asset_revision",
+        "verification",
+        "required_controls"
+      ]
+    },
+    "CueRoute": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/Locator"
+        },
+        "route": {
+          "type": "string",
+          "enum": [
+            "sfx",
+            "ambience",
+            "music",
+            "visual_only",
+            "audio_marker",
+            "sound_control"
+          ]
+        },
+        "description": {
+          "type": "string"
+        },
+        "media_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Artifact"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sound_requirements": {
+          "type": "object"
+        },
+        "timing_relations": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "source",
+        "route",
+        "description",
+        "media_ref",
+        "sound_requirements",
+        "timing_relations"
+      ]
+    },
+    "AudioContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "type": "string",
+          "enum": [
+            "my-legend.audio-context/1.0"
+          ]
+        },
+        "profile_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "profile_revision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "performance_mode": {
+          "type": "string",
+          "enum": [
+            "preserve",
+            "enrich"
+          ]
+        },
+        "missing_performance_policy": {
+          "type": "string",
+          "enum": [
+            "block",
+            "profile_default"
+          ]
+        },
+        "default_instruction": {
+          "type": "string"
+        },
+        "voice_bindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/VoiceBinding"
+          },
+          "minItems": 1
+        },
+        "cue_routes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CueRoute"
+          },
+          "minItems": 0
+        },
+        "instruction_max_weight": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "required_exact_controls": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "emphasis_occurrence",
+              "character_pause",
+              "speech_rate",
+              "pitch",
+              "volume"
+            ]
+          },
+          "minItems": 0
+        },
+        "render_settings": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sample_rate": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "channels": {
+              "type": "string",
+              "enum": [
+                "mono",
+                "stereo"
+              ]
+            },
+            "gap_ms": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "tail_ms": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "sample_rate",
+            "channels",
+            "gap_ms",
+            "tail_ms"
+          ]
+        },
+        "capability_profile": {
+          "$ref": "#/$defs/Artifact"
+        }
+      },
+      "required": [
+        "contract_version",
+        "profile_id",
+        "profile_revision",
+        "performance_mode",
+        "missing_performance_policy",
+        "default_instruction",
+        "voice_bindings",
+        "cue_routes",
+        "instruction_max_weight",
+        "required_exact_controls",
+        "render_settings",
+        "capability_profile"
+      ]
+    },
+    "Appearance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "template_type": {
+          "type": "string",
+          "enum": [
+            "adult",
+            "elder",
+            "child",
+            "animal"
+          ]
+        },
+        "color_key": {
+          "type": "string",
+          "enum": [
+            "blue",
+            "green",
+            "red",
+            "brown"
+          ]
+        },
+        "accessory": {
+          "type": "string",
+          "enum": [
+            "none",
+            "hat",
+            "beard"
+          ]
+        }
+      },
+      "required": [
+        "template_type",
+        "color_key",
+        "accessory"
+      ]
+    },
+    "VisualCharacter": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source_role_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "presence": {
+          "type": "string",
+          "enum": [
+            "onstage",
+            "voice_only"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "appearance": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Appearance"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "asset_revision": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "source_role_id",
+        "presence",
+        "name",
+        "description",
+        "appearance",
+        "asset_revision"
+      ]
+    },
+    "VisualScene": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/SceneRef"
+        },
+        "background_type": {
+          "type": "string",
+          "enum": [
+            "indoor",
+            "courtyard",
+            "outdoor"
+          ]
+        },
+        "cast_source_role_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "initial_cast_source_role_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "continuity_group_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "locked_facts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "source",
+        "background_type",
+        "cast_source_role_ids",
+        "initial_cast_source_role_ids",
+        "continuity_group_id",
+        "locked_facts"
+      ]
+    },
+    "VisualEventBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/Locator"
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "enter",
+            "exit",
+            "move",
+            "face",
+            "wait",
+            "nod",
+            "shake_head",
+            "react"
+          ]
+        },
+        "actor_source_role_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target_source_role_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "target_anchor": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "slot_1",
+                "slot_2",
+                "slot_3",
+                "slot_4",
+                "entry",
+                "exit"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "direction": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "down",
+                "left",
+                "right",
+                "up"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "emotion": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "neutral",
+                "happy",
+                "sad",
+                "angry",
+                "surprised",
+                "serious"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "intensity": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "duration_ms": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 90000
+        },
+        "provenance": {
+          "type": "string",
+          "enum": [
+            "provided",
+            "model_candidate",
+            "fixture"
+          ]
+        }
+      },
+      "required": [
+        "source",
+        "action",
+        "actor_source_role_id",
+        "target_source_role_id",
+        "target_anchor",
+        "direction",
+        "emotion",
+        "intensity",
+        "duration_ms",
+        "provenance"
+      ]
+    },
+    "VisualContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "type": "string",
+          "enum": [
+            "my-legend.visual-context/1.0"
+          ]
+        },
+        "profile_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "profile_revision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target_profile": {
+          "type": "string",
+          "enum": [
+            "web_basic_v1",
+            "mobile_current_v2"
+          ]
+        },
+        "presentation_profile": {
+          "type": "string",
+          "enum": [
+            "legacy_basic",
+            "standing_dialogue_v1"
+          ]
+        },
+        "preview_skin": {
+          "type": "string",
+          "enum": [
+            "basic",
+            "fogport_v1",
+            "fogport_v2",
+            "fogport_painted_v1"
+          ]
+        },
+        "generation_mode": {
+          "type": "string",
+          "enum": [
+            "reviewed",
+            "automatic"
+          ]
+        },
+        "deliverable": {
+          "type": "string",
+          "enum": [
+            "preview",
+            "runtime_package"
+          ]
+        },
+        "character_bindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/VisualCharacter"
+          },
+          "minItems": 1
+        },
+        "scene_bindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/VisualScene"
+          },
+          "minItems": 1
+        },
+        "event_bindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/VisualEventBinding"
+          },
+          "minItems": 0
+        },
+        "sound_caption_policy": {
+          "type": "string",
+          "enum": [
+            "audio_only",
+            "explicit_caption"
+          ]
+        },
+        "caption_sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Locator"
+          },
+          "minItems": 0
+        },
+        "voice_only_policy": {
+          "type": "string",
+          "enum": [
+            "block",
+            "explicit_caption"
+          ]
+        },
+        "emotion_map": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "enum": [
+              "neutral",
+              "happy",
+              "sad",
+              "angry",
+              "surprised",
+              "serious"
+            ]
+          }
+        },
+        "context_confirmed": {
+          "type": "boolean"
+        },
+        "context_approval_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Artifact"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "capability_profile": {
+          "$ref": "#/$defs/Artifact"
+        }
+      },
+      "required": [
+        "contract_version",
+        "profile_id",
+        "profile_revision",
+        "target_profile",
+        "presentation_profile",
+        "preview_skin",
+        "generation_mode",
+        "deliverable",
+        "character_bindings",
+        "scene_bindings",
+        "event_bindings",
+        "sound_caption_policy",
+        "caption_sources",
+        "voice_only_policy",
+        "emotion_map",
+        "context_confirmed",
+        "context_approval_ref",
+        "capability_profile"
+      ]
+    },
+    "Coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/Locator"
+        },
+        "source_task_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_kind": {
+          "type": "string",
+          "enum": [
+            "dialogue",
+            "narration",
+            "sfx",
+            "music",
+            "action"
+          ]
+        },
+        "text_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "target_block_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{1,64}$"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "disposition": {
+          "type": "string",
+          "enum": [
+            "mapped",
+            "routed_other",
+            "blocked"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "source",
+        "source_task_id",
+        "source_kind",
+        "text_sha256",
+        "target_block_ids",
+        "disposition",
+        "reason"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "disposition": {
+                "const": "mapped"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "target_block_ids": {
+                "minItems": 1
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "target_block_ids": {
+                "maxItems": 0
+              }
+            }
+          }
+        }
+      ]
+    },
+    "RoleMap": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "identity_kind": {
+          "type": "string",
+          "enum": [
+            "role",
+            "narrator"
+          ]
+        },
+        "source_identity_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target_role_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,64}$"
+        },
+        "performer_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "identity_kind",
+        "source_identity_id",
+        "target_role_id",
+        "performer_id"
+      ]
+    },
+    "FieldHandling": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target_path": {
+          "type": "string"
+        },
+        "handling": {
+          "type": "string",
+          "enum": [
+            "copied",
+            "mapped",
+            "hint",
+            "unsupported",
+            "metadata_only",
+            "not_applicable"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "source_path",
+        "target_path",
+        "handling",
+        "reason"
+      ]
+    },
+    "Compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "workflow_input": {
+          "type": "string",
+          "enum": [
+            "structural_valid",
+            "blocked"
+          ]
+        },
+        "joint_profile": {
+          "type": "string",
+          "enum": [
+            "independent",
+            "joint_v02"
+          ]
+        },
+        "joint_status": {
+          "type": "string",
+          "enum": [
+            "not_requested",
+            "blocked",
+            "requires_runtime_check"
+          ]
+        },
+        "reason_codes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "workflow_input",
+        "joint_profile",
+        "joint_status",
+        "reason_codes"
+      ]
+    },
+    "Sidecar": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "type": "string",
+          "enum": [
+            "my-legend.adapter-map/1.0"
+          ]
+        },
+        "adapter": {
+          "type": "string",
+          "enum": [
+            "audio",
+            "visual"
+          ]
+        },
+        "mapping_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,64}$"
+        },
+        "request_fingerprint": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "source": {
+          "$ref": "#/$defs/Source"
+        },
+        "source_version_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,64}$"
+        },
+        "coverage": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Coverage"
+          },
+          "minItems": 1
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RoleMap"
+          },
+          "minItems": 0
+        },
+        "field_handling": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FieldHandling"
+          },
+          "minItems": 0
+        },
+        "compatibility": {
+          "$ref": "#/$defs/Compatibility"
+        },
+        "issues": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Issue"
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "contract_version",
+        "adapter",
+        "mapping_id",
+        "request_fingerprint",
+        "source",
+        "source_version_id",
+        "coverage",
+        "roles",
+        "field_handling",
+        "compatibility",
+        "issues"
+      ]
+    },
+    "Result": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "type": "string",
+          "enum": [
+            "my-legend.adapter-result/1.0"
+          ]
+        },
+        "adapter": {
+          "type": "string",
+          "enum": [
+            "audio",
+            "visual"
+          ]
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,64}$"
+        },
+        "request_fingerprint": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "prepared",
+            "needs_context",
+            "blocked"
+          ]
+        },
+        "target": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Artifact"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sidecar": {
+          "$ref": "#/$defs/Artifact"
+        },
+        "issues": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Issue"
+          },
+          "minItems": 0
+        },
+        "workflow_state": {
+          "type": "string",
+          "enum": [
+            "not_submitted"
+          ]
+        },
+        "media_state": {
+          "type": "string",
+          "enum": [
+            "not_generated"
+          ]
+        },
+        "publication_state": {
+          "type": "string",
+          "enum": [
+            "not_approved"
+          ]
+        }
+      },
+      "required": [
+        "contract_version",
+        "adapter",
+        "request_id",
+        "request_fingerprint",
+        "state",
+        "target",
+        "sidecar",
+        "issues",
+        "workflow_state",
+        "media_state",
+        "publication_state"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "prepared"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "target": {
+                "$ref": "#/$defs/Artifact"
+              },
+              "issues": {
+                "items": {
+                  "properties": {
+                    "severity": {
+                      "const": "warning"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "target": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "CapabilityProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "type": "string",
+          "enum": [
+            "my-legend.capabilities/1.0"
+          ]
+        },
+        "profile_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "fixture_only": {
+          "type": "boolean"
+        },
+        "provider_account_verified": {
+          "type": "boolean"
+        },
+        "verification_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Artifact"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "controls": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "instructions"
+            ]
+          },
+          "minItems": 0
+        },
+        "exact_controls": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "emphasis_occurrence",
+              "character_pause",
+              "speech_rate",
+              "pitch",
+              "volume"
+            ]
+          },
+          "minItems": 0
+        },
+        "locked_performance_enrichment_validation": {
+          "type": "boolean"
+        },
+        "visual": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "max_scenes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "max_events": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "max_duration_ms": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "max_characters_basic": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "max_scene_cast_basic": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "max_characters_painted": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "max_scenes",
+            "max_events",
+            "max_duration_ms",
+            "max_characters_basic",
+            "max_scene_cast_basic",
+            "max_characters_painted"
+          ]
+        }
+      },
+      "required": [
+        "contract_version",
+        "profile_id",
+        "revision",
+        "fixture_only",
+        "provider_account_verified",
+        "verification_ref",
+        "controls",
+        "exact_controls",
+        "locked_performance_enrichment_validation",
+        "visual"
+      ]
+    }
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/Request"
+    },
+    {
+      "$ref": "#/$defs/AudioContext"
+    },
+    {
+      "$ref": "#/$defs/VisualContext"
+    },
+    {
+      "$ref": "#/$defs/Sidecar"
+    },
+    {
+      "$ref": "#/$defs/Result"
+    },
+    {
+      "$ref": "#/$defs/CapabilityProfile"
+    }
+  ]
+}

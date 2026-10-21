@@ -1,0 +1,369 @@
+{
+  "$defs": {
+    "ActionBinding": {
+      "additionalProperties": false,
+      "properties": {
+        "line_id": {
+          "title": "Line Id",
+          "type": "string"
+        },
+        "actor_role_ids": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Actor Role Ids",
+          "type": "array"
+        },
+        "action": {
+          "minLength": 1,
+          "title": "Action",
+          "type": "string"
+        },
+        "target_role_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Role Id"
+        },
+        "target_anchor": {
+          "anyOf": [
+            {
+              "enum": [
+                "slot_1",
+                "slot_2",
+                "slot_3",
+                "slot_4",
+                "entry",
+                "exit"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Anchor"
+        },
+        "direction": {
+          "anyOf": [
+            {
+              "enum": [
+                "down",
+                "left",
+                "right",
+                "up"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Direction"
+        },
+        "emotion": {
+          "anyOf": [
+            {
+              "enum": [
+                "neutral",
+                "happy",
+                "sad",
+                "angry",
+                "surprised",
+                "serious"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Emotion"
+        },
+        "intensity": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Intensity"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/SourceEvidence"
+          },
+          "minItems": 1,
+          "title": "Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "line_id",
+        "actor_role_ids",
+        "action",
+        "evidence"
+      ],
+      "title": "ActionBinding",
+      "type": "object"
+    },
+    "AppearanceBinding": {
+      "additionalProperties": false,
+      "properties": {
+        "role_id": {
+          "title": "Role Id",
+          "type": "string"
+        },
+        "template_type": {
+          "enum": [
+            "adult",
+            "elder",
+            "child",
+            "animal"
+          ],
+          "title": "Template Type",
+          "type": "string"
+        },
+        "color_key": {
+          "enum": [
+            "blue",
+            "green",
+            "red",
+            "brown"
+          ],
+          "title": "Color Key",
+          "type": "string"
+        },
+        "accessory": {
+          "enum": [
+            "none",
+            "hat",
+            "beard"
+          ],
+          "title": "Accessory",
+          "type": "string"
+        },
+        "origin": {
+          "enum": [
+            "character_profile",
+            "production_choice"
+          ],
+          "title": "Origin",
+          "type": "string"
+        },
+        "reason": {
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role_id",
+        "template_type",
+        "color_key",
+        "accessory",
+        "origin",
+        "reason"
+      ],
+      "title": "AppearanceBinding",
+      "type": "object"
+    },
+    "SceneBinding": {
+      "additionalProperties": false,
+      "properties": {
+        "episode_id": {
+          "title": "Episode Id",
+          "type": "string"
+        },
+        "scene_id": {
+          "title": "Scene Id",
+          "type": "string"
+        },
+        "source_location": {
+          "title": "Source Location",
+          "type": "string"
+        },
+        "background_type": {
+          "enum": [
+            "indoor",
+            "courtyard",
+            "outdoor"
+          ],
+          "title": "Background Type",
+          "type": "string"
+        },
+        "background_reason": {
+          "minLength": 1,
+          "title": "Background Reason",
+          "type": "string"
+        },
+        "cast": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 4,
+          "minItems": 1,
+          "title": "Cast",
+          "type": "array"
+        },
+        "initial_cast": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Initial Cast",
+          "type": "array"
+        },
+        "presence_evidence": {
+          "items": {
+            "$ref": "#/$defs/SourceEvidence"
+          },
+          "minItems": 1,
+          "title": "Presence Evidence",
+          "type": "array"
+        },
+        "voice_only_role_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Voice Only Role Ids",
+          "type": "array"
+        },
+        "continuity_group_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Continuity Group Id"
+        },
+        "actions": {
+          "items": {
+            "$ref": "#/$defs/ActionBinding"
+          },
+          "title": "Actions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "episode_id",
+        "scene_id",
+        "source_location",
+        "background_type",
+        "background_reason",
+        "cast",
+        "initial_cast",
+        "presence_evidence",
+        "actions"
+      ],
+      "title": "SceneBinding",
+      "type": "object"
+    },
+    "SourceEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "episode_id": {
+          "title": "Episode Id",
+          "type": "string"
+        },
+        "scene_id": {
+          "title": "Scene Id",
+          "type": "string"
+        },
+        "line_id": {
+          "title": "Line Id",
+          "type": "string"
+        },
+        "quote": {
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        }
+      },
+      "required": [
+        "episode_id",
+        "scene_id",
+        "line_id",
+        "quote"
+      ],
+      "title": "SourceEvidence",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "production_visual_context/1.0",
+      "default": "production_visual_context/1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_version_id": {
+      "title": "Source Version Id",
+      "type": "string"
+    },
+    "asset_pack": {
+      "const": "basic_pixel/1.0.0",
+      "default": "basic_pixel/1.0.0",
+      "title": "Asset Pack",
+      "type": "string"
+    },
+    "asset_catalog_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Asset Catalog Sha256",
+      "type": "string"
+    },
+    "appearances": {
+      "items": {
+        "$ref": "#/$defs/AppearanceBinding"
+      },
+      "maxItems": 6,
+      "minItems": 1,
+      "title": "Appearances",
+      "type": "array"
+    },
+    "scenes": {
+      "items": {
+        "$ref": "#/$defs/SceneBinding"
+      },
+      "minItems": 1,
+      "title": "Scenes",
+      "type": "array"
+    },
+    "human_review": {
+      "default": "pending",
+      "enum": [
+        "pending",
+        "not_required"
+      ],
+      "title": "Human Review",
+      "type": "string"
+    }
+  },
+  "required": [
+    "source_version_id",
+    "asset_catalog_sha256",
+    "appearances",
+    "scenes"
+  ],
+  "title": "VisualContext",
+  "type": "object"
+}

@@ -1,0 +1,38 @@
+{
+  "name": "my-legend-app",
+  "version": "0.2.0",
+  "private": true,
+  "description": "我的传说 uni-app 前端交互原型",
+  "scripts": {
+    "dev:h5": "uni --host 127.0.0.1 --port 5193",
+    "dev:app": "uni -p app",
+    "build:h5": "uni build",
+    "build:app": "uni build -p app",
+    "type-check": "vue-tsc --noEmit",
+    "test": "vitest run",
+    "check:assets": "node scripts/check-assets.mjs",
+    "dev:mp-weixin": "uni -p mp-weixin",
+    "build:mp-weixin": "uni build -p mp-weixin"
+  },
+  "dependencies": {
+    "@dcloudio/uni-app": "3.0.0-5020420260813003",
+    "@dcloudio/uni-app-plus": "3.0.0-5020420260813003",
+    "@dcloudio/uni-components": "3.0.0-5020420260813003",
+    "@dcloudio/uni-h5": "3.0.0-5020420260813003",
+    "@dcloudio/uni-mp-weixin": "3.0.0-5020420260813003",
+    "vue": "3.4.21",
+    "vue-i18n": "9.14.5"
+  },
+  "devDependencies": {
+    "@dcloudio/types": "3.4.31",
+    "@dcloudio/uni-cli-shared": "3.0.0-5020420260813003",
+    "@dcloudio/uni-stacktracey": "3.0.0-5020420260813003",
+    "@dcloudio/vite-plugin-uni": "3.0.0-5020420260813003",
+    "@vue/runtime-core": "3.4.21",
+    "sass": "1.77.8",
+    "typescript": "5.7.3",
+    "vite": "5.2.8",
+    "vitest": "2.1.9",
+    "vue-tsc": "2.2.12"
+  }
+}

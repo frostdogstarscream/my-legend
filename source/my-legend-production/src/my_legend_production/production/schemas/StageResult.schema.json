@@ -1,0 +1,131 @@
+{
+  "$defs": {
+    "ArtifactRef": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$",
+          "title": "Kind",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "source_version_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Source Version Id",
+          "type": "string"
+        },
+        "media_type": {
+          "default": "application/json",
+          "maxLength": 100,
+          "title": "Media Type",
+          "type": "string"
+        },
+        "size_bytes": {
+          "minimum": 1,
+          "title": "Size Bytes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "kind",
+        "sha256",
+        "source_version_id",
+        "size_bytes"
+      ],
+      "title": "ArtifactRef",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "stage_result/1.0",
+      "default": "stage_result/1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "running",
+        "succeeded",
+        "failed",
+        "needs_input"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "checkpoint": {
+      "additionalProperties": true,
+      "title": "Checkpoint",
+      "type": "object"
+    },
+    "artifacts": {
+      "items": {
+        "$ref": "#/$defs/ArtifactRef"
+      },
+      "title": "Artifacts",
+      "type": "array"
+    },
+    "source_version_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Version Id"
+    },
+    "error_code": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Z][A-Z0-9_]{0,79}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Error Code"
+    },
+    "technical_quality": {
+      "default": "not_checked",
+      "enum": [
+        "not_checked",
+        "passed",
+        "failed"
+      ],
+      "title": "Technical Quality",
+      "type": "string"
+    },
+    "human_review": {
+      "default": "not_required",
+      "enum": [
+        "pending",
+        "not_required"
+      ],
+      "title": "Human Review",
+      "type": "string"
+    },
+    "poll_after_seconds": {
+      "default": 1,
+      "maximum": 60,
+      "minimum": 0,
+      "title": "Poll After Seconds",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "status"
+  ],
+  "title": "StageResult",
+  "type": "object"
+}

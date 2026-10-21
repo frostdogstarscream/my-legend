@@ -1,0 +1,118 @@
+{
+  "$defs": {
+    "AudioEventRef": {
+      "additionalProperties": false,
+      "properties": {
+        "episode_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Episode Id",
+          "type": "string"
+        },
+        "scene_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Scene Id",
+          "type": "string"
+        },
+        "line_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Line Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "episode_id",
+        "scene_id",
+        "line_id"
+      ],
+      "title": "AudioEventRef",
+      "type": "object"
+    },
+    "SoundReviewCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/AudioEventRef"
+        },
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "passed": {
+          "title": "Passed",
+          "type": "boolean"
+        },
+        "issues": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Issues",
+          "type": "array"
+        },
+        "advisories": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Advisories",
+          "type": "array"
+        }
+      },
+      "required": [
+        "source",
+        "text",
+        "passed",
+        "issues",
+        "advisories"
+      ],
+      "title": "SoundReviewCheck",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "audio_arrangement_review/1.0",
+      "default": "audio_arrangement_review/1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_version_id": {
+      "title": "Source Version Id",
+      "type": "string"
+    },
+    "delivery_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Delivery Sha256",
+      "type": "string"
+    },
+    "arrangement_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Arrangement Sha256",
+      "type": "string"
+    },
+    "passed": {
+      "title": "Passed",
+      "type": "boolean"
+    },
+    "checks": {
+      "items": {
+        "$ref": "#/$defs/SoundReviewCheck"
+      },
+      "minItems": 1,
+      "title": "Checks",
+      "type": "array"
+    }
+  },
+  "required": [
+    "source_version_id",
+    "delivery_sha256",
+    "arrangement_sha256",
+    "passed",
+    "checks"
+  ],
+  "title": "SoundArrangementReview",
+  "type": "object"
+}

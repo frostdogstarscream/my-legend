@@ -1,0 +1,48 @@
+{
+  "schema": "phase11_live_5f51401450e4",
+  "restored_database": "phase11_restore_389893f77ea7",
+  "backup_format": "pg_dump custom",
+  "source": {
+    "counts": {
+      "character_templates": 2,
+      "character_profile_revisions": 0,
+      "story_plans": 4,
+      "story_plan_revisions": 5,
+      "story_jobs": 4,
+      "story_versions": 4,
+      "service_plan_tasks": 5
+    },
+    "row_hashes": {
+      "character_templates": "7a97ad053cc09b08beca23152fc3d2a396421444deca0dfd4e7971e41351a49a",
+      "character_profile_revisions": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "story_plans": "6e1671bf88cd103ca0dcd8be829501776062f1ef6bf34ca3294f1b619833a03c",
+      "story_plan_revisions": "485c4127808c99821eefe9a14a9cef9a87ef013666b8cf12955da7eb63f48391",
+      "story_jobs": "3a46cead792f4f6be78fb2f52621319005682537aa539930ae071b50abb440e6",
+      "story_versions": "7ce2ee108d0427c7749ffa18389f10d5b36c183d1d901ac562c366f6731b7531",
+      "service_plan_tasks": "2e30b5c0016a5922444bc511d91e677004a19d3c51732b8cba3a355540952276"
+    }
+  },
+  "restored": {
+    "counts": {
+      "character_templates": 2,
+      "character_profile_revisions": 0,
+      "story_plans": 4,
+      "story_plan_revisions": 5,
+      "story_jobs": 4,
+      "story_versions": 4,
+      "service_plan_tasks": 5
+    },
+    "row_hashes": {
+      "character_templates": "7a97ad053cc09b08beca23152fc3d2a396421444deca0dfd4e7971e41351a49a",
+      "character_profile_revisions": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "story_plans": "6e1671bf88cd103ca0dcd8be829501776062f1ef6bf34ca3294f1b619833a03c",
+      "story_plan_revisions": "485c4127808c99821eefe9a14a9cef9a87ef013666b8cf12955da7eb63f48391",
+      "story_jobs": "3a46cead792f4f6be78fb2f52621319005682537aa539930ae071b50abb440e6",
+      "story_versions": "7ce2ee108d0427c7749ffa18389f10d5b36c183d1d901ac562c366f6731b7531",
+      "service_plan_tasks": "2e30b5c0016a5922444bc511d91e677004a19d3c51732b8cba3a355540952276"
+    }
+  },
+  "passed": true,
+  "retained_in_container": true,
+  "credentials_in_artifacts": false
+}

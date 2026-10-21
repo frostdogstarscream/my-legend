@@ -1,0 +1,1292 @@
+{
+  "method": "global physical call_id dedup per phase; raw capture comparison for Phase11; reasoning already inside output; no new model calls",
+  "phase10": {
+    "all_history": {
+      "calls": 801,
+      "input": 10390368,
+      "output": 3646159,
+      "reasoning_in_output": 2790252,
+      "cache_read": 400256,
+      "cache_write": 0,
+      "cache_read_calls": 96,
+      "estimated_input": 0,
+      "unknown_usage_calls": 6,
+      "model_seconds": 34832.524
+    },
+    "batches": [
+      {
+        "batch": "operations_preflight_20261014",
+        "usage": {
+          "calls": 2,
+          "input": 338,
+          "output": 583,
+          "reasoning_in_output": 556,
+          "cache_read": 0,
+          "cache_write": 0,
+          "cache_read_calls": 0,
+          "estimated_input": 0,
+          "unknown_usage_calls": 0,
+          "model_seconds": 11.914
+        },
+        "executed_attempts": 0,
+        "failed_attempts": 0,
+        "manifest_wall_seconds": null
+      },
+      {
+        "batch": "operations_timeline_negative_20261014",
+        "usage": {
+          "calls": 1,
+          "input": 37516,
+          "output": 3071,
+          "reasoning_in_output": 2480,
+          "cache_read": 0,
+          "cache_write": 0,
+          "cache_read_calls": 0,
+          "estimated_input": 0,
+          "unknown_usage_calls": 0,
+          "model_seconds": 28.922
+        },
+        "executed_attempts": 0,
+        "failed_attempts": 0,
+        "manifest_wall_seconds": null
+      },
+      {
+        "batch": "operations_timeline_negative_v2_20261014",
+        "usage": {
+          "calls": 1,
+          "input": 37689,
+          "output": 3887,
+          "reasoning_in_output": 2909,
+          "cache_read": 0,
+          "cache_write": 0,
+          "cache_read_calls": 0,
+          "estimated_input": 0,
+          "unknown_usage_calls": 0,
+          "model_seconds": 33.757
+        },
+        "executed_attempts": 0,
+        "failed_attempts": 0,
+        "manifest_wall_seconds": null
+      },
+      {
+        "batch": "operations_timeline_negative_v3_20261014",
+        "usage": {
+          "calls": 1,
+          "input": 38912,
+          "output": 5092,
+          "reasoning_in_output": 4021,
+          "cache_read": 0,
+          "cache_write": 0,
+          "cache_read_calls": 0,
+          "estimated_input": 0,
+          "unknown_usage_calls": 0,
+          "model_seconds": 47.415
+        },
+        "executed_attempts": 0,
+        "failed_attempts": 0,
+        "manifest_wall_seconds": null
+      },
+      {
+        "batch": "operations_live_v1_20261014",
+        "usage": {
+          "calls": 33,
+          "input": 159675,
+          "output": 161207,
+          "reasoning_in_output": 123526,
+          "cache_read": 9216,
+          "cache_write": 0,
+          "cache_read_calls": 4,
+          "estimated_input": 0,
+          "unknown_usage_calls": 1,
+          "model_seconds": 1547.155
+        },
+        "executed_attempts": 3,
+        "failed_attempts": 3,
+        "manifest_wall_seconds": null
+      },
+      {
+        "batch": "operations_live_v2_20261014",
+        "usage": {
+          "calls": 75,
+          "input": 881173,
+          "output": 351113,
+          "reasoning_in_output": 266411,
+          "cache_read": 33408,
+          "cache_write": 0,
+          "cache_read_calls": 12,
+          "estimated_input": 0,
+          "unknown_usage_calls": 0,
+          "model_seconds": 3315.107
+        },
+        "executed_attempts": 10,
+        "failed_attempts": 6,
+        "manifest_wall_seconds": null
+      },
+      {
+        "batch": "operations_live_v3_20261014",
+        "usage": {
+          "calls": 45,
+          "input": 474276,
+          "output": 207986,
+          "reasoning_in_output": 156144,
+          "cache_read": 25344,
+          "cache_write": 0,
+          "cache_read_calls": 9,
+          "estimated_input": 0,
+          "unknown_usage_calls": 0,
+          "model_seconds": 2042.276
+        },
+        "executed_attempts": 8,
+        "failed_attempts": 3,
+        "manifest_wall_seconds": null
+      },
+      {
+        "batch": "operations_live_v4_20261014",
+        "usage": {
+          "calls": 156,
+          "input": 2114340,
+          "output": 718303,
+          "reasoning_in_output": 555010,
+          "cache_read": 116608,
+          "cache_write": 0,
+          "cache_read_calls": 17,
+          "estimated_input": 0,
+          "unknown_usage_calls": 5,
+          "model_seconds": 7763.877
+        },
+        "executed_attempts": 19,
+        "failed_attempts": 4,
+        "manifest_wall_seconds": null
+      },
+      {
+        "batch": "operations_live_v5_20261014",
+        "usage": {
+          "calls": 103,
+          "input": 1333129,
+          "output": 471402,
+          "reasoning_in_output": 358733,
+          "cache_read": 34560,
+          "cache_write": 0,
+          "cache_read_calls": 13,
+          "estimated_input": 0,
+          "unknown_usage_calls": 0,
+          "model_seconds": 4293.209
+        },
+        "executed_attempts": 15,
+        "failed_attempts": 5,
+        "manifest_wall_seconds": null
+      },
+      {
+        "batch": "operations_live_v6_20261014",
+        "usage": {
+          "calls": 135,
+          "input": 1868871,
+          "output": 602923,
+          "reasoning_in_output": 460894,
+          "cache_read": 67968,
+          "cache_write": 0,
+          "cache_read_calls": 14,
+          "estimated_input": 0,
+          "unknown_usage_calls": 0,
+          "model_seconds": 5551.29
+        },
+        "executed_attempts": 17,
+        "failed_attempts": 3,
+        "manifest_wall_seconds": 2344.406
+      },
+      {
+        "batch": "operations_live_v7_20261014",
+        "usage": {
+          "calls": 84,
+          "input": 1011245,
+          "output": 373650,
+          "reasoning_in_output": 285441,
+          "cache_read": 35712,
+          "cache_write": 0,
+          "cache_read_calls": 12,
+          "estimated_input": 0,
+          "unknown_usage_calls": 0,
+          "model_seconds": 3536.91
+        },
+        "executed_attempts": 11,
+        "failed_attempts": 3,
+        "manifest_wall_seconds": 1344.034095
+      },
+      {
+        "batch": "operations_live_v8_20261014",
+        "usage": {
+          "calls": 165,
+          "input": 2433204,
+          "output": 746942,
+          "reasoning_in_output": 574127,
+          "cache_read": 77440,
+          "cache_write": 0,
+          "cache_read_calls": 15,
+          "estimated_input": 0,
+          "unknown_usage_calls": 0,
+          "model_seconds": 6660.692
+        },
+        "executed_attempts": 20,
+        "failed_attempts": 2,
+        "manifest_wall_seconds": 2765.915779
+      }
+    ],
+    "latest_cases": [
+      {
+        "case": "round_1_continue",
+        "status": "passed",
+        "source": "6-实测产物/operations_live_v8_20261014/round_1_continue/result.json",
+        "usage": {
+          "calls": 11,
+          "input": 136620,
+          "output": 50641,
+          "reasoning_in_output": 39939,
+          "cache_read": 9216,
+          "cache_write": 0,
+          "cache_read_calls": 3,
+          "estimated_input": 0,
+          "unknown_usage_calls": 0,
+          "model_seconds": 468.363
+        },
+        "wall_seconds": 469.312,
+        "failure": null
+      },
+      {
+        "case": "round_1_create",
+        "status": "passed",
+        "source": "6-实测产物/operations_live_v8_20261014/round_1_create/result.json",
+        "usage": {
+          "calls": 10,
+          "input": 55046,
+          "output": 52676,
+          "reasoning_in_output": 40303,
+          "cache_read": 9216,
+          "cache_write": 0,
+          "cache_read_calls": 3,
+          "estimated_input": 0,
+          "unknown_usage_calls": 0,
+          "model_seconds": 496.064
+        },
+        "wall_seconds": 497.203,
+        "failure": null
+      },
+      {
+        "case": "round_1_remix",
+        "status": "passed",
+        "source": "6-实测产物/operations_live_v8_20261014/round_1_remix/result.json",
+        "usage": {
+          "calls": 10,
+          "input": 178748,
+          "output": 49143,
+          "reasoning_in_output": 38296,
+          "cache_read": 0,
+          "cache_write": 0,
+          "cache_read_calls": 0,
+          "estimated_input": 0,
+          "unknown_usage_calls": 0,
+          "model_seconds": 412.711
+        },
+        "wall_seconds": 414.234,
+        "failure": null
+      },
+      {
+        "case": "round_1_revise",
+        "status": "passed",
+        "source": "6-实测产物/operations_live_v8_20261014/round_1_revise/result.json",
+        "usage": {
+          "calls": 4,
+          "input": 86968,
+          "output": 11945,
+          "reasoning_in_output": 9076,
+          "cache_read": 0,
+          "cache_write": 0,
+          "cache_read_calls": 0,
+          "estimated_input": 0,
+          "unknown_usage_calls": 0,
+          "model_seconds": 106.727
+        },
+        "wall_seconds": 107.844,
+        "failure": null
+      },
+      {
+        "case": "round_2_continue",
+        "status": "passed",
+        "source": "6-实测产物/operations_live_v8_20261014/round_2_continue/result.json",
+        "usage": {
+          "calls": 10,
+          "input": 143009,
+          "output": 49081,
+          "reasoning_in_output": 38109,
+          "cache_read": 0,
+          "cache_write": 0,
+          "cache_read_calls": 0,
+          "estimated_input": 0,
+          "unknown_usage_calls": 0,
+          "model_seconds": 455.651
+        },
+        "wall_seconds": 456.422,
+        "failure": null
+      },
+      {
+        "case": "round_2_create",
+        "status": "passed",
+        "source": "6-实测产物/operations_live_v8_20261014/round_2_create/result.json",
+        "usage": {
+          "calls": 10,
+          "input": 55100,
+          "output": 48555,
+          "reasoning_in_output": 36570,
+          "cache_read": 2304,
+          "cache_write": 0,
+          "cache_read_calls": 1,
+          "estimated_input": 0,
+          "unknown_usage_calls": 0,
+          "model_seconds": 460.617
+        },
+        "wall_seconds": 462.062,
+        "failure": null
+      },
+      {
+        "case": "round_2_remix",
+        "status": "passed",
+        "source": "6-实测产物/operations_live_v8_20261014/round_2_remix/result.json",
+        "usage": {
+          "calls": 10,
+          "input": 187833,
+          "output": 45199,
+          "reasoning_in_output": 35448,
+          "cache_read": 0,
+          "cache_write": 0,
+          "cache_read_calls": 0,
+          "estimated_input": 0,
+          "unknown_usage_calls": 0,
+          "model_seconds": 396.161
+        },
+        "wall_seconds": 397.391,
+        "failure": null
+      },
+      {
+        "case": "round_2_revise",
+        "status": "passed",
+        "source": "6-实测产物/operations_live_v8_20261014/round_2_revise/result.json",
+        "usage": {
+          "calls": 4,
+          "input": 88789,
+          "output": 10191,
+          "reasoning_in_output": 7457,
+          "cache_read": 0,
+          "cache_write": 0,
+          "cache_read_calls": 0,
+          "estimated_input": 0,
+          "unknown_usage_calls": 0,
+          "model_seconds": 88.437
+        },
+        "wall_seconds": 89.282,
+        "failure": null
+      },
+      {
+        "case": "round_3_continue",
+        "status": "passed",
+        "source": "6-实测产物/operations_live_v8_20261014/round_3_continue/result.json",
+        "usage": {
+          "calls": 10,
+          "input": 143577,
+          "output": 49931,
+          "reasoning_in_output": 39131,
+          "cache_read": 6912,
+          "cache_write": 0,
+          "cache_read_calls": 2,
+          "estimated_input": 0,
+          "unknown_usage_calls": 0,
+          "model_seconds": 457.601
+        },
+        "wall_seconds": 458.39,
+        "failure": null
+      },
+      {
+        "case": "round_3_create",
+        "status": "passed",
+        "source": "6-实测产物/operations_live_v8_20261014/round_3_create/result.json",
+        "usage": {
+          "calls": 10,
+          "input": 56630,
+          "output": 46165,
+          "reasoning_in_output": 34146,
+          "cache_read": 9216,
+          "cache_write": 0,
+          "cache_read_calls": 3,
+          "estimated_input": 0,
+          "unknown_usage_calls": 0,
+          "model_seconds": 454.977
+        },
+        "wall_seconds": 456.109,
+        "failure": null
+      },
+      {
+        "case": "round_3_remix",
+        "status": "passed",
+        "source": "6-实测产物/operations_live_v8_20261014/round_3_remix/result.json",
+        "usage": {
+          "calls": 10,
+          "input": 182769,
+          "output": 47068,
+          "reasoning_in_output": 37308,
+          "cache_read": 0,
+          "cache_write": 0,
+          "cache_read_calls": 0,
+          "estimated_input": 0,
+          "unknown_usage_calls": 0,
+          "model_seconds": 410.305
+        },
+        "wall_seconds": 411.61,
+        "failure": null
+      },
+      {
+        "case": "round_3_revise",
+        "status": "passed",
+        "source": "6-实测产物/operations_live_v8_20261014/round_3_revise/result.json",
+        "usage": {
+          "calls": 4,
+          "input": 91556,
+          "output": 14233,
+          "reasoning_in_output": 10752,
+          "cache_read": 0,
+          "cache_write": 0,
+          "cache_read_calls": 0,
+          "estimated_input": 0,
+          "unknown_usage_calls": 0,
+          "model_seconds": 117.106
+        },
+        "wall_seconds": 118.016,
+        "failure": null
+      },
+      {
+        "case": "special_arc",
+        "status": "passed",
+        "source": "6-实测产物/operations_live_v8_20261014/special_arc/result.json",
+        "usage": {
+          "calls": 10,
+          "input": 142797,
+          "output": 50189,
+          "reasoning_in_output": 37227,
+          "cache_read": 0,
+          "cache_write": 0,
+          "cache_read_calls": 0,
+          "estimated_input": 0,
+          "unknown_usage_calls": 0,
+          "model_seconds": 434.29
+        },
+        "wall_seconds": 435.422,
+        "failure": null
+      },
+      {
+        "case": "special_continue_again",
+        "status": "passed",
+        "source": "6-实测产物/operations_live_v8_20261014/special_continue_again/result.json",
+        "usage": {
+          "calls": 6,
+          "input": 147129,
+          "output": 26672,
+          "reasoning_in_output": 19652,
+          "cache_read": 0,
+          "cache_write": 0,
+          "cache_read_calls": 0,
+          "estimated_input": 0,
+          "unknown_usage_calls": 0,
+          "model_seconds": 235.531
+        },
+        "wall_seconds": 236.562,
+        "failure": null
+      },
+      {
+        "case": "special_ending",
+        "status": "passed",
+        "source": "6-实测产物/operations_live_v8_20261014/special_ending/result.json",
+        "usage": {
+          "calls": 4,
+          "input": 75267,
+          "output": 15563,
+          "reasoning_in_output": 11969,
+          "cache_read": 0,
+          "cache_write": 0,
+          "cache_read_calls": 0,
+          "estimated_input": 0,
+          "unknown_usage_calls": 0,
+          "model_seconds": 146.936
+        },
+        "wall_seconds": 147.812,
+        "failure": null
+      },
+      {
+        "case": "special_episode",
+        "status": "passed",
+        "source": "6-实测产物/operations_live_v8_20261014/special_episode/result.json",
+        "usage": {
+          "calls": 6,
+          "input": 116657,
+          "output": 27762,
+          "reasoning_in_output": 20660,
+          "cache_read": 0,
+          "cache_write": 0,
+          "cache_read_calls": 0,
+          "estimated_input": 0,
+          "unknown_usage_calls": 0,
+          "model_seconds": 229.437
+        },
+        "wall_seconds": 230.593,
+        "failure": null
+      },
+      {
+        "case": "special_line",
+        "status": "passed",
+        "source": "6-实测产物/operations_live_v8_20261014/special_line/result.json",
+        "usage": {
+          "calls": 4,
+          "input": 86709,
+          "output": 13221,
+          "reasoning_in_output": 10636,
+          "cache_read": 0,
+          "cache_write": 0,
+          "cache_read_calls": 0,
+          "estimated_input": 0,
+          "unknown_usage_calls": 0,
+          "model_seconds": 115.866
+        },
+        "wall_seconds": 117.406,
+        "failure": null
+      },
+      {
+        "case": "special_whole_story",
+        "status": "passed",
+        "source": "6-实测产物/operations_live_v8_20261014/special_whole_story/result.json",
+        "usage": {
+          "calls": 10,
+          "input": 143577,
+          "output": 51615,
+          "reasoning_in_output": 39081,
+          "cache_read": 5760,
+          "cache_write": 0,
+          "cache_read_calls": 2,
+          "estimated_input": 0,
+          "unknown_usage_calls": 0,
+          "model_seconds": 445.175
+        },
+        "wall_seconds": 446.313,
+        "failure": null
+      },
+      {
+        "case": "round_1_remix_attempt1",
+        "status": "failed",
+        "source": "6-实测产物/operations_live_v8_20261014/attempts/round_1_remix_attempt1/result.json",
+        "usage": {
+          "calls": 10,
+          "input": 177853,
+          "output": 45082,
+          "reasoning_in_output": 35074,
+          "cache_read": 0,
+          "cache_write": 0,
+          "cache_read_calls": 0,
+          "estimated_input": 0,
+          "unknown_usage_calls": 0,
+          "model_seconds": 382.188
+        },
+        "wall_seconds": 383.219,
+        "failure": "PERFORMANCE_OR_STORY_VALIDATION_FAILED: executor_validation, continuity; continuity_passed=false: 第2集中存在明显的时间线矛盾。ep2-s2-l1周野称“可是明天就要关停了”，表明当前距离关停还有一天；但在随后的正式播音中（ep2-s3-l2），周野却道歉称“昨天的故障”，若故障发生在昨天，则今天已是关停日，与前文“明天关停”冲突。若当前仍是关停前一天，则故障应为“今天/刚才”发生，而非“昨天”。; OPERATION_REQUIREMENTS_NOT_PROVEN"
+      },
+      {
+        "case": "round_1_remix_attempt2",
+        "status": "failed",
+        "source": "6-实测产物/operations_live_v8_20261014/attempts/round_1_remix_attempt2/result.json",
+        "usage": {
+          "calls": 10,
+          "input": 136232,
+          "output": 41725,
+          "reasoning_in_output": 33030,
+          "cache_read": 34816,
+          "cache_write": 0,
+          "cache_read_calls": 1,
+          "estimated_input": 0,
+          "unknown_usage_calls": 0,
+          "model_seconds": 340.886
+        },
+        "wall_seconds": 342.109,
+        "failure": "Relative fault date remains ungrounded: ep1 investigation/closure tomorrow vs ep2 apology for yesterday without explaining when the unplugging occurred. Artifact review requests an explicit same-evening timeline; automated pass is not final acceptance."
+      }
+    ],
+    "all_by_stage": {
+      "episode_writer": {
+        "calls": 160,
+        "input": 3525808,
+        "output": 792610,
+        "reasoning_in_output": 552515,
+        "cache_read": 184576,
+        "cache_write": 0,
+        "cache_read_calls": 67,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 8084.465
+      },
+      "judge": {
+        "calls": 35,
+        "input": 980424,
+        "output": 133012,
+        "reasoning_in_output": 108117,
+        "cache_read": 0,
+        "cache_write": 0,
+        "cache_read_calls": 0,
+        "estimated_input": 0,
+        "unknown_usage_calls": 2,
+        "model_seconds": 1362.033
+      },
+      "outline": {
+        "calls": 113,
+        "input": 2817571,
+        "output": 422803,
+        "reasoning_in_output": 259607,
+        "cache_read": 215680,
+        "cache_write": 0,
+        "cache_read_calls": 29,
+        "estimated_input": 0,
+        "unknown_usage_calls": 2,
+        "model_seconds": 5558.574
+      },
+      "performance_annotation": {
+        "calls": 433,
+        "input": 935595,
+        "output": 2102146,
+        "reasoning_in_output": 1732968,
+        "cache_read": 0,
+        "cache_write": 0,
+        "cache_read_calls": 0,
+        "estimated_input": 0,
+        "unknown_usage_calls": 2,
+        "model_seconds": 18133.014
+      },
+      "storycraft_operation_judge": {
+        "calls": 60,
+        "input": 2130970,
+        "output": 195588,
+        "reasoning_in_output": 137045,
+        "cache_read": 0,
+        "cache_write": 0,
+        "cache_read_calls": 0,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 1694.438
+      }
+    },
+    "all_by_model": {
+      "qwen3.6-flash": {
+        "calls": 464,
+        "input": 1916019,
+        "output": 2235158,
+        "reasoning_in_output": 1841085,
+        "cache_read": 0,
+        "cache_write": 0,
+        "cache_read_calls": 0,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 18681.457
+      },
+      "qwen3.7-max": {
+        "calls": 331,
+        "input": 8474349,
+        "output": 1411001,
+        "reasoning_in_output": 949167,
+        "cache_read": 400256,
+        "cache_write": 0,
+        "cache_read_calls": 96,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 14880.016
+      },
+      "unknown": {
+        "calls": 6,
+        "input": 0,
+        "output": 0,
+        "reasoning_in_output": 0,
+        "cache_read": 0,
+        "cache_write": 0,
+        "cache_read_calls": 0,
+        "estimated_input": 0,
+        "unknown_usage_calls": 6,
+        "model_seconds": 1271.051
+      }
+    },
+    "latest_by_operation": {
+      "continue": {
+        "calls": 37,
+        "input": 570335,
+        "output": 176325,
+        "reasoning_in_output": 136831,
+        "cache_read": 16128,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 1617.146
+      },
+      "create": {
+        "calls": 30,
+        "input": 166776,
+        "output": 147396,
+        "reasoning_in_output": 111019,
+        "cache_read": 20736,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 1411.658
+      },
+      "remix": {
+        "calls": 50,
+        "input": 863435,
+        "output": 228217,
+        "reasoning_in_output": 179156,
+        "cache_read": 34816,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 1942.251
+      },
+      "revise": {
+        "calls": 46,
+        "input": 832320,
+        "output": 194719,
+        "reasoning_in_output": 146858,
+        "cache_read": 5760,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 1683.974
+      }
+    },
+    "latest_by_round": {
+      "round_1": {
+        "calls": 55,
+        "input": 771467,
+        "output": 251212,
+        "reasoning_in_output": 195718,
+        "cache_read": 53248,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 2206.939
+      },
+      "round_2": {
+        "calls": 34,
+        "input": 474731,
+        "output": 153026,
+        "reasoning_in_output": 117584,
+        "cache_read": 2304,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 1400.866
+      },
+      "round_3": {
+        "calls": 34,
+        "input": 474532,
+        "output": 157397,
+        "reasoning_in_output": 121337,
+        "cache_read": 16128,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 1439.989
+      }
+    },
+    "latest_by_stage": {
+      "outline": {
+        "calls": 20,
+        "input": 594389,
+        "output": 84073,
+        "reasoning_in_output": 53761,
+        "cache_read": 21888,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 939.702
+      },
+      "performance_annotation": {
+        "calls": 92,
+        "input": 198892,
+        "output": 438799,
+        "reasoning_in_output": 363781,
+        "cache_read": 0,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 3665.708
+      },
+      "episode_writer": {
+        "calls": 33,
+        "input": 880374,
+        "output": 158683,
+        "reasoning_in_output": 111871,
+        "cache_read": 55552,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 1496.018
+      },
+      "storycraft_operation_judge": {
+        "calls": 20,
+        "input": 759549,
+        "output": 65387,
+        "reasoning_in_output": 44714,
+        "cache_read": 0,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 559.264
+      }
+    },
+    "potential_inflight_unknown_nodes": 9
+  },
+  "phase11": {
+    "total": {
+      "calls": 75,
+      "input": 958925,
+      "output": 358242,
+      "reasoning_in_output": 272226,
+      "cache_read": 102016,
+      "cache_write": 0,
+      "cache_read_calls": 7,
+      "estimated_input": 0,
+      "unknown_usage_calls": 0,
+      "model_seconds": 2929.927
+    },
+    "by_operation": {
+      "continue": {
+        "calls": 10,
+        "input": 157696,
+        "output": 50956,
+        "reasoning_in_output": 38160,
+        "cache_read": 0,
+        "cache_write": 0,
+        "cache_read_calls": 0,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 419.309
+      },
+      "create": {
+        "calls": 31,
+        "input": 178634,
+        "output": 159382,
+        "reasoning_in_output": 120919,
+        "cache_read": 14976,
+        "cache_write": 0,
+        "cache_read_calls": 5,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 1368.273
+      },
+      "remix": {
+        "calls": 30,
+        "input": 525181,
+        "output": 133183,
+        "reasoning_in_output": 102374,
+        "cache_read": 87040,
+        "cache_write": 0,
+        "cache_read_calls": 2,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 1027.792
+      },
+      "revise": {
+        "calls": 4,
+        "input": 97414,
+        "output": 14721,
+        "reasoning_in_output": 10773,
+        "cache_read": 0,
+        "cache_write": 0,
+        "cache_read_calls": 0,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 114.553
+      }
+    },
+    "by_phase": {
+      "generation": {
+        "calls": 68,
+        "input": 812565,
+        "output": 327122,
+        "reasoning_in_output": 253438,
+        "cache_read": 92800,
+        "cache_write": 0,
+        "cache_read_calls": 5,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 2604.636
+      },
+      "plan": {
+        "calls": 5,
+        "input": 132405,
+        "output": 23891,
+        "reasoning_in_output": 15130,
+        "cache_read": 0,
+        "cache_write": 0,
+        "cache_read_calls": 0,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 258.151
+      },
+      "plan_revision": {
+        "calls": 2,
+        "input": 13955,
+        "output": 7229,
+        "reasoning_in_output": 3658,
+        "cache_read": 9216,
+        "cache_write": 0,
+        "cache_read_calls": 2,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 67.14
+      }
+    },
+    "by_stage": {
+      "episode_writer": {
+        "calls": 15,
+        "input": 424423,
+        "output": 86246,
+        "reasoning_in_output": 59886,
+        "cache_read": 92800,
+        "cache_write": 0,
+        "cache_read_calls": 5,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 780.909
+      },
+      "outline": {
+        "calls": 7,
+        "input": 146360,
+        "output": 31120,
+        "reasoning_in_output": 18788,
+        "cache_read": 9216,
+        "cache_write": 0,
+        "cache_read_calls": 2,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 325.291
+      },
+      "performance_annotation": {
+        "calls": 45,
+        "input": 100738,
+        "output": 214056,
+        "reasoning_in_output": 174996,
+        "cache_read": 0,
+        "cache_write": 0,
+        "cache_read_calls": 0,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 1606.705
+      },
+      "storycraft_operation_judge": {
+        "calls": 8,
+        "input": 287404,
+        "output": 26820,
+        "reasoning_in_output": 18556,
+        "cache_read": 0,
+        "cache_write": 0,
+        "cache_read_calls": 0,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 217.022
+      }
+    },
+    "by_model": {
+      "qwen3.6-flash": {
+        "calls": 45,
+        "input": 100738,
+        "output": 214056,
+        "reasoning_in_output": 174996,
+        "cache_read": 0,
+        "cache_write": 0,
+        "cache_read_calls": 0,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 1606.705
+      },
+      "qwen3.7-max": {
+        "calls": 30,
+        "input": 858187,
+        "output": 144186,
+        "reasoning_in_output": 97230,
+        "cache_read": 102016,
+        "cache_write": 0,
+        "cache_read_calls": 7,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 1323.222
+      }
+    },
+    "by_resource": {
+      "3fddba14a0e44ecd8cbaa48b7261bd5b": {
+        "calls": 18,
+        "input": 105248,
+        "output": 96419,
+        "reasoning_in_output": 75070,
+        "cache_read": 5760,
+        "cache_write": 0,
+        "cache_read_calls": 3,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 799.902
+      },
+      "570bc7eaccc7473280dbc1c7c73600f3": {
+        "calls": 1,
+        "input": 40888,
+        "output": 4629,
+        "reasoning_in_output": 3135,
+        "cache_read": 0,
+        "cache_write": 0,
+        "cache_read_calls": 0,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 32.209
+      },
+      "66fc4e5236004ba1a5ca7c229ca74f83": {
+        "calls": 1,
+        "input": 50514,
+        "output": 5313,
+        "reasoning_in_output": 3336,
+        "cache_read": 0,
+        "cache_write": 0,
+        "cache_read_calls": 0,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 51.528
+      },
+      "670b3218304c4c48aa70f48cfb9bcec7": {
+        "calls": 1,
+        "input": 7153,
+        "output": 3673,
+        "reasoning_in_output": 1734,
+        "cache_read": 4608,
+        "cache_write": 0,
+        "cache_read_calls": 1,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 34.675
+      },
+      "8656080dfda94702957cd807a9a173ef": {
+        "calls": 9,
+        "input": 127299,
+        "output": 45781,
+        "reasoning_in_output": 34977,
+        "cache_read": 0,
+        "cache_write": 0,
+        "cache_read_calls": 0,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 356.778
+      },
+      "b0071d0a88c743aba1300f7f40c983a6": {
+        "calls": 29,
+        "input": 474667,
+        "output": 127870,
+        "reasoning_in_output": 99038,
+        "cache_read": 87040,
+        "cache_write": 0,
+        "cache_read_calls": 2,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 976.264
+      },
+      "b8d09a1f2fae4c708fc082b2f83022be": {
+        "calls": 3,
+        "input": 56526,
+        "output": 10092,
+        "reasoning_in_output": 7638,
+        "cache_read": 0,
+        "cache_write": 0,
+        "cache_read_calls": 0,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 82.344
+      },
+      "d310c389def54b2684ee5d938d653a57": {
+        "calls": 1,
+        "input": 30397,
+        "output": 5175,
+        "reasoning_in_output": 3183,
+        "cache_read": 0,
+        "cache_write": 0,
+        "cache_read_calls": 0,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 62.531
+      },
+      "d78d503a027b476e8e971001a685a9f9": {
+        "calls": 9,
+        "input": 48825,
+        "output": 46960,
+        "reasoning_in_output": 36715,
+        "cache_read": 0,
+        "cache_write": 0,
+        "cache_read_calls": 0,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 389.348
+      },
+      "e0e18942dd9f47ef972dba6c62771dbb": {
+        "calls": 1,
+        "input": 5303,
+        "output": 4239,
+        "reasoning_in_output": 2766,
+        "cache_read": 0,
+        "cache_write": 0,
+        "cache_read_calls": 0,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 52.978
+      },
+      "e4a7bb5b13ac42dcb8f59dda35e9c3da": {
+        "calls": 1,
+        "input": 5303,
+        "output": 4535,
+        "reasoning_in_output": 2710,
+        "cache_read": 0,
+        "cache_write": 0,
+        "cache_read_calls": 0,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 58.905
+      },
+      "ebd78ad4efd94410a0b149d8f4c01c60": {
+        "calls": 1,
+        "input": 6802,
+        "output": 3556,
+        "reasoning_in_output": 1924,
+        "cache_read": 4608,
+        "cache_write": 0,
+        "cache_read_calls": 1,
+        "estimated_input": 0,
+        "unknown_usage_calls": 0,
+        "model_seconds": 32.465
+      }
+    },
+    "generation_failures": [
+      {
+        "operation": "create",
+        "job_id": "3fddba14a0e44ecd8cbaa48b7261bd5b",
+        "error_code": "WORKFLOW_GENERATION_FAILED",
+        "error_message": "PERFORMANCE_OR_STORY_VALIDATION_FAILED: executor_validation, continuity; TIMELINE_CLOCK_CLAIMS_MISSING: [('ep1-s3-l3', '02:05')]; OPERATION_REQUIREMENTS_NOT_PROVEN",
+        "call_ids": [
+          "2c3332c0a01443308ac55e63ce2e6028",
+          "0d4edbb328da488294f8c196ea46ac02",
+          "2cf5492f0da444f494685ae37f75daac",
+          "da3ce16cb166402d9d0feedbf50bee46",
+          "37408bbb0119466db895e3d706571c18",
+          "b8172dc161544b088d0e2f73f4d58b79",
+          "f2cc09b0fc9749d7aa1e8d132d9022b2",
+          "e0cfef77b34b41f58d872a4ac677625a",
+          "c0187a3f2ac64393949522088780cbe7"
+        ],
+        "evidence": "6-实测产物\\phase11_live_20261015_v3\\create\\generation_attempt1.json"
+      },
+      {
+        "operation": "remix",
+        "job_id": "b0071d0a88c743aba1300f7f40c983a6",
+        "error_code": "WORKFLOW_GENERATION_FAILED",
+        "error_message": "PERFORMANCE_OR_STORY_VALIDATION_FAILED: executor_validation, continuity; TIMELINE_UNGROUNDED_CLAIM: ep1-s1-l5; OPERATION_REQUIREMENTS_NOT_PROVEN",
+        "call_ids": [
+          "ca7c94177b64415dbbf5a1ef760d4e55",
+          "31d6a4e6d53c448dbf74394b68b944bc",
+          "eb0311e6d9004dbc8d98d8fc38c6d214",
+          "0544f241947a4c2e8ddb9bb8e4c87c1d",
+          "0b8263350a234d84be07d0e99a03de26",
+          "32291e576ce04a2e813ea090a2115a07",
+          "dc6614e06149498498f9cf57db9c7c47",
+          "6b02174ff8df4092a22128a4775821e0",
+          "2e57d03ca36344f2be0e99e7d00d9b30",
+          "0d719fe35a704390b36ece49d914c2cd"
+        ],
+        "evidence": "6-实测产物\\phase11_live_20261015_v3\\remix\\generation_attempt1.json"
+      },
+      {
+        "operation": "remix",
+        "job_id": "b0071d0a88c743aba1300f7f40c983a6",
+        "error_code": "WORKFLOW_GENERATION_FAILED",
+        "error_message": "PERFORMANCE_OR_STORY_VALIDATION_FAILED: executor_validation, continuity; TIMELINE_UNGROUNDED_CLAIM: ep1-s1-l5; OPERATION_REQUIREMENTS_NOT_PROVEN",
+        "call_ids": [
+          "635309a087c64c6490bd509b98d48136",
+          "381a81ca738548fa9a25db6ca2bd2a60",
+          "f207d3c32f944732ace041d9e7a6fd76",
+          "4f07ea3140f94e51a25747892383483a",
+          "da1f63617a4a42dd95083d0c47708b23",
+          "a3b8be24fe3d469881ce13f4493cdf67",
+          "4ebc884eb48f42549706cb08feb95ff6",
+          "e3807d10873b42dd9a5d98eede92cbcc",
+          "8439267137444d168801fdecec9b08bf"
+        ],
+        "evidence": "6-实测产物\\phase11_live_20261015_v3\\remix\\generation_attempt2.json"
+      }
+    ],
+    "resource_wall_seconds": {
+      "d78d503a027b476e8e971001a685a9f9": {
+        "completed_at": "2026-10-14T16:11:12.428450+00:00",
+        "wall_seconds": 391.163,
+        "operation": "create",
+        "phase": "generation"
+      },
+      "e0e18942dd9f47ef972dba6c62771dbb": {
+        "completed_at": "2026-10-14T16:04:06.130071+00:00",
+        "wall_seconds": 53.638,
+        "operation": "create",
+        "phase": "plan"
+      },
+      "ebd78ad4efd94410a0b149d8f4c01c60": {
+        "completed_at": "2026-10-14T16:04:40.051874+00:00",
+        "wall_seconds": 32.837,
+        "operation": "create",
+        "phase": "plan_revision"
+      },
+      "8656080dfda94702957cd807a9a173ef": {
+        "completed_at": "2026-10-14T16:38:34.654623+00:00",
+        "wall_seconds": 358.588,
+        "operation": "continue",
+        "phase": "generation"
+      },
+      "d310c389def54b2684ee5d938d653a57": {
+        "completed_at": "2026-10-14T16:32:34.750518+00:00",
+        "wall_seconds": 62.957,
+        "operation": "continue",
+        "phase": "plan"
+      },
+      "3fddba14a0e44ecd8cbaa48b7261bd5b": {
+        "completed_at": "2026-10-14T16:29:07.088686+00:00",
+        "wall_seconds": 804.21,
+        "operation": "create",
+        "phase": "generation"
+      },
+      "e4a7bb5b13ac42dcb8f59dda35e9c3da": {
+        "completed_at": "2026-10-14T16:15:03.997468+00:00",
+        "wall_seconds": 59.33,
+        "operation": "create",
+        "phase": "plan"
+      },
+      "670b3218304c4c48aa70f48cfb9bcec7": {
+        "completed_at": "2026-10-14T16:15:40.248781+00:00",
+        "wall_seconds": 35.163,
+        "operation": "create",
+        "phase": "plan_revision"
+      },
+      "b0071d0a88c743aba1300f7f40c983a6": {
+        "completed_at": "2026-10-14T17:03:20.420793+00:00",
+        "wall_seconds": 983.046,
+        "operation": "remix",
+        "phase": "generation"
+      },
+      "66fc4e5236004ba1a5ca7c229ca74f83": {
+        "completed_at": "2026-10-14T16:39:27.752768+00:00",
+        "wall_seconds": 51.983,
+        "operation": "remix",
+        "phase": "plan"
+      },
+      "b8d09a1f2fae4c708fc082b2f83022be": {
+        "completed_at": "2026-10-14T16:31:29.673792+00:00",
+        "wall_seconds": 83.2,
+        "operation": "revise",
+        "phase": "generation"
+      },
+      "570bc7eaccc7473280dbc1c7c73600f3": {
+        "completed_at": "2026-10-14T16:30:04.181234+00:00",
+        "wall_seconds": 32.947,
+        "operation": "revise",
+        "phase": "plan"
+      }
+    },
+    "wall_seconds_all_invocations": 3056.125,
+    "raw_capture_call_ids_match": true
+  },
+  "pricing": "No supplier invoice or current rates available. No currency cost claimed."
+}

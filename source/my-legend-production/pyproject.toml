@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "my-legend-production"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = ["jsonschema>=4.19,<5"]
+
+[project.optional-dependencies]
+story = ["fastapi>=0.115,<1", "uvicorn>=0.30,<1", "httpx>=0.27,<1"]
+production = ["fastapi>=0.115,<1", "uvicorn>=0.30,<1", "httpx>=0.27,<1", "psycopg[binary]>=3.3,<4", "pydantic>=2.14,<3"]
+
+[project.scripts]
+my-legend = "my_legend_production.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+my_legend_production = ["contracts/*.json", "contracts/source/*.json", "contracts/target/*.json"]
+"my_legend_production.production" = ["migrations/*.sql", "schemas/*.json", "*.dart"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+

@@ -1,0 +1,1005 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/StoryDelivery",
+  "$defs": {
+    "CharacterPortrayal": {
+      "properties": {
+        "role_id": {
+          "type": "string",
+          "minLength": 1,
+          "title": "Role Id"
+        },
+        "story_name": {
+          "type": "string",
+          "minLength": 1,
+          "title": "Story Name"
+        },
+        "external_goal": {
+          "type": "string",
+          "minLength": 1,
+          "title": "External Goal"
+        },
+        "emotional_avoidance": {
+          "type": "string",
+          "minLength": 1,
+          "title": "Emotional Avoidance"
+        },
+        "speech_style": {
+          "type": "string",
+          "minLength": 1,
+          "title": "Speech Style"
+        },
+        "relationship_stance": {
+          "type": "string",
+          "minLength": 1,
+          "title": "Relationship Stance"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "role_id",
+        "story_name",
+        "external_goal",
+        "emotional_avoidance",
+        "speech_style",
+        "relationship_stance"
+      ],
+      "title": "CharacterPortrayal",
+      "description": "An approved, story-local portrayal; it never edits a toy's Canon."
+    },
+    "CharacterSnapshot": {
+      "properties": {
+        "character_id": {
+          "type": "string",
+          "title": "Character Id"
+        },
+        "canon_revision": {
+          "type": "integer",
+          "title": "Canon Revision",
+          "default": 1
+        },
+        "profile_revision": {
+          "type": "integer",
+          "title": "Profile Revision",
+          "default": 1
+        },
+        "canon": {
+          "additionalProperties": true,
+          "type": "object",
+          "title": "Canon"
+        },
+        "profile": {
+          "additionalProperties": true,
+          "type": "object",
+          "title": "Profile"
+        },
+        "role_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Role Id"
+        },
+        "performer_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Performer Id"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "character_id"
+      ],
+      "title": "CharacterSnapshot"
+    },
+    "Emotion": {
+      "type": "string",
+      "enum": [
+        "neutral",
+        "calm",
+        "happy",
+        "excited",
+        "sad",
+        "worried",
+        "angry",
+        "surprised",
+        "fearful",
+        "reassuring",
+        "serious",
+        "playful",
+        "mysterious",
+        "tender"
+      ],
+      "title": "Emotion"
+    },
+    "EmphasisSpan": {
+      "properties": {
+        "span_text": {
+          "type": "string",
+          "minLength": 1,
+          "title": "Span Text"
+        },
+        "occurrence": {
+          "type": "integer",
+          "minimum": 1,
+          "title": "Occurrence",
+          "default": 1
+        },
+        "start_char": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Start Char"
+        },
+        "end_char": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "End Char"
+        },
+        "strength": {
+          "type": "string",
+          "enum": [
+            "medium",
+            "strong"
+          ],
+          "title": "Strength",
+          "default": "medium"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "span_text"
+      ],
+      "title": "EmphasisSpan"
+    },
+    "EpisodeDelivery": {
+      "properties": {
+        "episode_id": {
+          "type": "string",
+          "title": "Episode Id"
+        },
+        "index": {
+          "type": "integer",
+          "title": "Index"
+        },
+        "title": {
+          "type": "string",
+          "title": "Title"
+        },
+        "synopsis": {
+          "type": "string",
+          "title": "Synopsis",
+          "default": ""
+        },
+        "duration_target_sec": {
+          "type": "integer",
+          "title": "Duration Target Sec"
+        },
+        "duration_estimate_sec": {
+          "type": "integer",
+          "title": "Duration Estimate Sec",
+          "default": 0
+        },
+        "scenes": {
+          "items": {
+            "$ref": "#/$defs/SceneDelivery"
+          },
+          "type": "array",
+          "title": "Scenes"
+        },
+        "episode_summary": {
+          "type": "string",
+          "title": "Episode Summary",
+          "default": ""
+        },
+        "ending_hook": {
+          "type": "string",
+          "title": "Ending Hook",
+          "default": ""
+        },
+        "fact_delta": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "type": "array",
+          "title": "Fact Delta"
+        },
+        "relationship_delta": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "type": "array",
+          "title": "Relationship Delta"
+        },
+        "new_open_threads": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "New Open Threads"
+        },
+        "closed_threads": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Closed Threads"
+        },
+        "validation_status": {
+          "type": "string",
+          "enum": [
+            "PENDING",
+            "PASSED",
+            "FAILED"
+          ],
+          "title": "Validation Status",
+          "default": "PENDING"
+        },
+        "ready_for_playback": {
+          "type": "boolean",
+          "title": "Ready For Playback",
+          "default": false
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "episode_id",
+        "index",
+        "title",
+        "duration_target_sec"
+      ],
+      "title": "EpisodeDelivery"
+    },
+    "EpisodeOutline": {
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 1,
+          "title": "Index"
+        },
+        "title": {
+          "type": "string",
+          "title": "Title"
+        },
+        "core_goal": {
+          "type": "string",
+          "title": "Core Goal"
+        },
+        "major_beats": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "minItems": 1,
+          "title": "Major Beats"
+        },
+        "ending": {
+          "type": "string",
+          "title": "Ending"
+        },
+        "target_duration_sec": {
+          "type": "integer",
+          "title": "Target Duration Sec"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "index",
+        "title",
+        "core_goal",
+        "major_beats",
+        "ending",
+        "target_duration_sec"
+      ],
+      "title": "EpisodeOutline"
+    },
+    "FictionalVoiceRole": {
+      "properties": {
+        "role_id": {
+          "type": "string",
+          "minLength": 1,
+          "title": "Role Id"
+        },
+        "story_name": {
+          "type": "string",
+          "minLength": 1,
+          "title": "Story Name"
+        },
+        "performer_id": {
+          "type": "string",
+          "minLength": 1,
+          "title": "Performer Id"
+        },
+        "medium": {
+          "type": "string",
+          "enum": [
+            "live",
+            "recording",
+            "telephone",
+            "broadcast"
+          ],
+          "title": "Medium"
+        },
+        "dramatic_purpose": {
+          "type": "string",
+          "minLength": 1,
+          "title": "Dramatic Purpose"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "role_id",
+        "story_name",
+        "performer_id",
+        "medium",
+        "dramatic_purpose"
+      ],
+      "title": "FictionalVoiceRole",
+      "description": "A non-toy voice proposed in the Plan, then frozen at approval."
+    },
+    "MysteryCausalProof": {
+      "properties": {
+        "actual_event_timeline": {
+          "type": "string",
+          "minLength": 8,
+          "title": "Actual Event Timeline"
+        },
+        "witnessed_event": {
+          "type": "string",
+          "minLength": 8,
+          "title": "Witnessed Event"
+        },
+        "actor_opportunity": {
+          "type": "string",
+          "minLength": 8,
+          "title": "Actor Opportunity"
+        },
+        "audible_trace_before_reveal": {
+          "type": "string",
+          "minLength": 8,
+          "title": "Audible Trace Before Reveal"
+        },
+        "onstage_verification": {
+          "type": "string",
+          "minLength": 8,
+          "title": "Onstage Verification"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "actual_event_timeline",
+        "witnessed_event",
+        "actor_opportunity",
+        "audible_trace_before_reveal",
+        "onstage_verification"
+      ],
+      "title": "MysteryCausalProof",
+      "description": "Approved explanation of an apparent impossibility, not a literary score."
+    },
+    "PauseCue": {
+      "properties": {
+        "after_char": {
+          "type": "integer",
+          "minimum": 0,
+          "title": "After Char"
+        },
+        "duration_ms": {
+          "type": "integer",
+          "maximum": 5000,
+          "minimum": 0,
+          "title": "Duration Ms"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "after_char",
+        "duration_ms"
+      ],
+      "title": "PauseCue"
+    },
+    "PerformanceValidationReport": {
+      "properties": {
+        "validation_status": {
+          "type": "string",
+          "enum": [
+            "PASSED",
+            "FAILED"
+          ],
+          "title": "Validation Status"
+        },
+        "spoken_line_count": {
+          "type": "integer",
+          "title": "Spoken Line Count",
+          "default": 0
+        },
+        "emotion_coverage": {
+          "type": "number",
+          "title": "Emotion Coverage",
+          "default": 0
+        },
+        "tone_coverage": {
+          "type": "number",
+          "title": "Tone Coverage",
+          "default": 0
+        },
+        "emphasis_coverage": {
+          "type": "number",
+          "title": "Emphasis Coverage",
+          "default": 0
+        },
+        "emphasis_span_validity": {
+          "type": "number",
+          "title": "Emphasis Span Validity",
+          "default": 0
+        },
+        "continuity_passed": {
+          "type": "boolean",
+          "title": "Continuity Passed",
+          "default": true
+        },
+        "outline_alignment_passed": {
+          "type": "boolean",
+          "title": "Outline Alignment Passed",
+          "default": true
+        },
+        "content_rating_passed": {
+          "type": "boolean",
+          "title": "Content Rating Passed",
+          "default": true
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Warnings"
+        },
+        "operation_checks": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "type": "array",
+          "title": "Operation Checks"
+        },
+        "timeline_claims": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "type": "array",
+          "title": "Timeline Claims"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "validation_status"
+      ],
+      "title": "PerformanceValidationReport"
+    },
+    "PlanContent": {
+      "properties": {
+        "title": {
+          "type": "string",
+          "title": "Title"
+        },
+        "premise": {
+          "type": "string",
+          "title": "Premise"
+        },
+        "theme": {
+          "type": "string",
+          "title": "Theme"
+        },
+        "beginning": {
+          "type": "string",
+          "title": "Beginning"
+        },
+        "development": {
+          "type": "string",
+          "title": "Development"
+        },
+        "climax": {
+          "type": "string",
+          "title": "Climax"
+        },
+        "ending": {
+          "type": "string",
+          "title": "Ending"
+        },
+        "episode_outlines": {
+          "items": {
+            "$ref": "#/$defs/EpisodeOutline"
+          },
+          "type": "array",
+          "minItems": 1,
+          "title": "Episode Outlines"
+        },
+        "character_portrayals": {
+          "items": {
+            "$ref": "#/$defs/CharacterPortrayal"
+          },
+          "type": "array",
+          "title": "Character Portrayals"
+        },
+        "fictional_voice_roles": {
+          "items": {
+            "$ref": "#/$defs/FictionalVoiceRole"
+          },
+          "type": "array",
+          "title": "Fictional Voice Roles"
+        },
+        "mystery_causal_proof": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MysteryCausalProof"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "performance_plan": {
+          "additionalProperties": true,
+          "type": "object",
+          "title": "Performance Plan"
+        },
+        "continuity_constraints": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Continuity Constraints"
+        },
+        "change_summary": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Change Summary"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "title",
+        "premise",
+        "theme",
+        "beginning",
+        "development",
+        "climax",
+        "ending",
+        "episode_outlines"
+      ],
+      "title": "PlanContent"
+    },
+    "SceneDelivery": {
+      "properties": {
+        "scene_id": {
+          "type": "string",
+          "title": "Scene Id"
+        },
+        "scene_index": {
+          "type": "integer",
+          "minimum": 1,
+          "title": "Scene Index",
+          "description": "1-based scene index within the episode",
+          "default": 1
+        },
+        "title": {
+          "type": "string",
+          "title": "Title"
+        },
+        "location": {
+          "type": "string",
+          "title": "Location",
+          "default": ""
+        },
+        "dramatic_goal": {
+          "type": "string",
+          "title": "Dramatic Goal",
+          "default": ""
+        },
+        "utterances": {
+          "items": {
+            "$ref": "#/$defs/Utterance"
+          },
+          "type": "array",
+          "title": "Utterances"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "scene_id",
+        "title"
+      ],
+      "title": "SceneDelivery"
+    },
+    "StoryDelivery": {
+      "properties": {
+        "story_id": {
+          "type": "string",
+          "title": "Story Id"
+        },
+        "story_version_id": {
+          "type": "string",
+          "title": "Story Version Id"
+        },
+        "version_no": {
+          "type": "integer",
+          "title": "Version No",
+          "default": 1
+        },
+        "parent_story_version_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Parent Story Version Id"
+        },
+        "lineage_type": {
+          "type": "string",
+          "enum": [
+            "create",
+            "continue",
+            "revise",
+            "remix"
+          ],
+          "title": "Lineage Type",
+          "default": "create"
+        },
+        "series_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Series Id"
+        },
+        "approved_plan_id": {
+          "type": "string",
+          "title": "Approved Plan Id"
+        },
+        "approved_plan_revision": {
+          "type": "integer",
+          "title": "Approved Plan Revision"
+        },
+        "title": {
+          "type": "string",
+          "title": "Title"
+        },
+        "summary": {
+          "type": "string",
+          "title": "Summary"
+        },
+        "preview_blurb": {
+          "type": "string",
+          "title": "Preview Blurb",
+          "default": ""
+        },
+        "tags": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Tags"
+        },
+        "story_mode": {
+          "type": "string",
+          "title": "Story Mode"
+        },
+        "content_form": {
+          "type": "string",
+          "const": "audio_drama",
+          "title": "Content Form",
+          "default": "audio_drama"
+        },
+        "character_snapshot": {
+          "items": {
+            "$ref": "#/$defs/CharacterSnapshot"
+          },
+          "type": "array",
+          "title": "Character Snapshot"
+        },
+        "character_portrayals": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "type": "array",
+          "title": "Character Portrayals",
+          "description": "Plan-generated character portrayals: role_id→story_name, goal, avoidance, speech_style, relationship_stance"
+        },
+        "fictional_voice_roles": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "type": "array",
+          "title": "Fictional Voice Roles",
+          "description": "Non-toy voice roles from Plan: recording, broadcast, telephone voices with role_id, story_name, performer_id, medium, dramatic_purpose"
+        },
+        "outline": {
+          "$ref": "#/$defs/PlanContent"
+        },
+        "episodes": {
+          "items": {
+            "$ref": "#/$defs/EpisodeDelivery"
+          },
+          "type": "array",
+          "title": "Episodes"
+        },
+        "generated_episode_ids": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Generated Episode Ids"
+        },
+        "continuity_state": {
+          "additionalProperties": true,
+          "type": "object",
+          "title": "Continuity State"
+        },
+        "quality_report": {
+          "$ref": "#/$defs/PerformanceValidationReport"
+        },
+        "ready_for_playback": {
+          "type": "boolean",
+          "title": "Ready For Playback",
+          "default": false
+        },
+        "status": {
+          "$ref": "#/$defs/StoryVersionStatus",
+          "default": "CANDIDATE"
+        },
+        "engine_version": {
+          "type": "string",
+          "title": "Engine Version",
+          "default": "0.3.0"
+        },
+        "delivery_format_version": {
+          "type": "string",
+          "title": "Delivery Format Version",
+          "description": "Format version for downstream compatibility; increment when field semantics change",
+          "default": "1.0"
+        },
+        "rule_versions": {
+          "additionalProperties": true,
+          "type": "object",
+          "title": "Rule Versions"
+        },
+        "model_trace": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "type": "array",
+          "title": "Model Trace"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "title": "Created At"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "story_id",
+        "story_version_id",
+        "approved_plan_id",
+        "approved_plan_revision",
+        "title",
+        "summary",
+        "story_mode",
+        "outline",
+        "quality_report"
+      ],
+      "title": "StoryDelivery"
+    },
+    "StoryVersionStatus": {
+      "type": "string",
+      "enum": [
+        "CANDIDATE",
+        "READY",
+        "SUPERSEDED",
+        "ARCHIVED"
+      ],
+      "title": "StoryVersionStatus"
+    },
+    "Utterance": {
+      "properties": {
+        "line_id": {
+          "type": "string",
+          "title": "Line Id"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "dialogue",
+            "narration",
+            "sfx",
+            "music",
+            "action"
+          ],
+          "title": "Kind"
+        },
+        "speaker_role_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Speaker Role Id"
+        },
+        "narrator_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Narrator Id"
+        },
+        "performer_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Performer Id"
+        },
+        "text": {
+          "type": "string",
+          "title": "Text",
+          "default": ""
+        },
+        "emotion": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Emotion"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tone_instruction": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Tone Instruction"
+        },
+        "emphasis": {
+          "items": {
+            "$ref": "#/$defs/EmphasisSpan"
+          },
+          "type": "array",
+          "title": "Emphasis"
+        },
+        "speech_rate": {
+          "type": "number",
+          "maximum": 2,
+          "minimum": 0.5,
+          "title": "Speech Rate",
+          "default": 1
+        },
+        "pitch": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Pitch"
+        },
+        "volume": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Volume"
+        },
+        "pauses": {
+          "items": {
+            "$ref": "#/$defs/PauseCue"
+          },
+          "type": "array",
+          "title": "Pauses"
+        },
+        "delivery_note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Delivery Note"
+        },
+        "audio_cue_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Audio Cue Ref"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "line_id",
+        "kind"
+      ],
+      "title": "Utterance"
+    }
+  }
+}
+

@@ -1,0 +1,73 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>视觉演绎草案</title>
+<style>@font-face{font-family:story;src:url('assets/fonts/StorySansSC.ttf')}body{background:#f2eddf;color:#354330;font-family:story,sans-serif;max-width:960px;margin:30px auto;padding:16px}canvas{width:100%;image-rendering:pixelated;background:#8aaa68}button,input{margin:12px 8px 12px 0}input{width:55%}.dialogue{display:flex;gap:20px;align-items:center;min-height:140px;box-sizing:border-box;background:#102b28f7;border:2px solid #b29e70;padding:18px 22px;box-shadow:0 6px 0 #081d1933;color:#fff5df}.portrait{flex:0 0 88px;width:88px;height:100px;background:#365349;border:1px solid #b29e70;image-rendering:pixelated}.dialogue-content{flex:1;min-width:0}#speaker{color:#e5c689;font-size:23px;font-weight:bold;letter-spacing:3px;margin-bottom:8px}#subtitle{white-space:pre-wrap;font-size:22px;line-height:1.6}.dialogue-dot{align-self:flex-end;color:#e5c689}.narration{background:#253334}.narration .portrait{display:none}@media(max-width:500px){.dialogue{padding:12px;gap:12px}.portrait{flex-basis:64px;width:64px;height:78px}#subtitle{font-size:18px}#speaker{font-size:20px}}.painted{font-family:"PingFang SC","Microsoft YaHei",sans-serif}.painted canvas{image-rendering:auto}.painted .dialogue{border-radius:10px;box-shadow:0 8px 24px #102b2822}.painted .portrait{border-radius:6px}</style>
+<h1 id="title"></h1><p id="mode">演绎预览 · 视觉估算 · 网页预览不代表手机验收</p><details><summary>剧情编辑端问题记录（不阻断生成）</summary><pre id="issues"></pre></details>
+<canvas id="stage" width="1280" height="720"></canvas><section id="dialogue" class="dialogue" aria-live="polite"><canvas id="portrait" class="portrait" width="352" height="400" aria-label="当前说话人头像"></canvas><div class="dialogue-content"><div id="speaker"></div><div id="subtitle"></div></div><span class="dialogue-dot" aria-hidden="true">◆</span></section>
+<button id="play">播放</button><button id="pause">暂停</button><button id="replay">重播</button><input id="seek" type="range" min="0" step="100"><output id="time"></output><p id="error"></p>
+<script>
+// 固定播放器只消费受校验的数据与帧状态，剧本不进入代码执行路径。
+(async()=>{try{
+const data=await (await fetch('preview-data.json')).json(), doc=data.document;
+const atlas=new Image();atlas.src='assets/basic_pixel/1.0.0/actors.png';await atlas.decode();
+const custom=new Image();if(data.preview_skin){custom.src='characters.png';await custom.decode();}
+const background=new Image();if(data.preview_skin?.background_sha256){background.src='background.png';await background.decode();}
+const painted=data.preview_skin?.art_style==='painted';document.body.classList.toggle('painted',painted);
+const layout=data.preview_skin?.layout||{foot_offset_y:0,sprite_height:72};
+document.getElementById('issues').textContent=JSON.stringify(data.generation_issues||[],null,2);
+document.getElementById('mode').textContent=data.generation_mode==='automatic'?'自动生成版本 · 独立节选 · 无配音 · 问题返回剧情编辑端':'待审核草案';
+if(doc.scenes.some(s=>s.blocks.some(b=>b.source_ref==='layout_demo_only')))document.getElementById('mode').textContent='效果模拟 · 含两段演示移动（非原剧本行动） · 无配音';
+await document.fonts.ready;
+const canvas=document.getElementById('stage'),ctx=canvas.getContext('2d');ctx.imageSmoothingEnabled=painted;
+const actors=Object.fromEntries(doc.characters.map(a=>[a.role_id,a]));
+const seek=document.getElementById('seek');seek.max=data.manifest.duration_ms;
+document.getElementById('title').textContent=doc.title;
+let position=0,playing=false,last=0;
+function draw(){
+const frameIndex=Math.min(data.frames.length-1,Math.floor(position/100));
+const frame=data.frames[frameIndex],next=data.frames[Math.min(frameIndex+1,data.frames.length-1)],fraction=(position%100)/100;
+// 同场景内只插值可见立绘的坐标；换场和显隐保持求值器状态，拖动与顺播使用同一公式。
+const point=pose=>{const b=next.scene_id===frame.scene_id?next.actors.find(a=>a.role_id===pose.role_id&&a.visible===pose.visible):null;return [pose.position[0]+(b?(b.position[0]-pose.position[0])*fraction:0),pose.position[1]+(b?(b.position[1]-pose.position[1])*fraction:0)+layout.foot_offset_y];};
+ctx.setTransform(4,0,0,4,0,0);ctx.fillStyle=frame.background==='indoor'?'#c4aa77':'#8aaa68';ctx.fillRect(0,0,320,180);
+// 背景复用手机模板的基本构图；网页只做草案，手机仍由 Flame 绘制。
+const rect=(x,y,w,h,c)=>{ctx.fillStyle=c;ctx.fillRect(x,y,w,h)};
+if(background.complete&&background.naturalWidth){ctx.imageSmoothingEnabled=true;ctx.drawImage(background,0,0,320,180);ctx.imageSmoothingEnabled=painted;}else{
+for(let y=0;y<180;y+=12)for(let x=0;x<320;x+=16)if((x/16+y/12)%3===0)rect(x+3,y+5,3,2,frame.background==='indoor'?'#b59a6a':'#7c9e5d');
+if(frame.background==='indoor'){
+rect(0,0,320,57,'#75644e');rect(0,52,320,7,'#514635');rect(42,10,46,32,'#314a47');rect(46,14,38,24,'#a5c1b0');rect(158,26,96,10,'#9d754d');rect(166,36,8,16,'#71513b');rect(237,36,8,16,'#71513b');rect(196,16,25,10,'#eee1b7');
+}else{
+rect(0,94,320,32,'#c9b58b');
+if(frame.background==='courtyard'){rect(28,21,138,53,'#d5bc83');rect(46,13,102,8,'#795e45');rect(34,21,126,6,'#795e45');rect(78,42,30,32,'#5e5540');rect(118,37,28,19,'#6c785b');rect(0,84,320,4,'#cbb98c')}
+else{rect(190,28,73,26,'#80a9a0');rect(199,22,53,40,'#80a9a0');rect(205,30,32,2,'#aac5b5')}
+for(const x of [17,284]){rect(x+8,51,7,30,'#826342');rect(x,22,26,35,'#557849');rect(x+4,14,18,42,'#648b50')}
+}
+}
+for(const pose of frame.actors){if(!pose.visible)continue;
+const a=actors[pose.role_id], template=['adult','elder','child','animal'].indexOf(a.template_type), color=['blue','green','red','brown'].indexOf(a.color_key),accessory=['none','hat','beard'].indexOf(a.accessory);
+const index=((template*4+color)*3+accessory)*8+['down','left','right','up'].indexOf(pose.direction)*2+pose.walk_frame;
+const [x,y]=point(pose);
+if(data.preview_skin){
+ const slot=data.preview_skin.roles.indexOf(pose.role_id);
+ if(slot>=0){const w=custom.naturalWidth/3;ctx.drawImage(custom,slot*w,0,w,custom.naturalHeight,x-24+pose.offset_x,y-layout.sprite_height+pose.offset_y,48,layout.sprite_height);}
+}else ctx.drawImage(atlas,index%16*32,Math.floor(index/16)*32,32,32,x-16+pose.offset_x,y-30+pose.offset_y,32,32);
+ctx.font=painted?'7px sans-serif':'7px story';ctx.textAlign='center';ctx.fillStyle='#fff';ctx.fillText(a.name,x,y-(data.preview_skin?layout.sprite_height+4:35));
+if(pose.reaction){ctx.fillStyle='#ecd591';ctx.fillRect(x+13,y-32,10,8);ctx.fillStyle='#354330';ctx.fillText(pose.reaction==='surprised'?'!':'·',x+18,y-26)}
+}
+if(playing&&frame.fade){ctx.fillStyle=`rgba(28,37,27,${frame.fade})`;ctx.fillRect(0,0,320,180)}
+// 姓名、头像和场景标记共用 speaker_id，避免出现头像与台词错配。
+const speaker=frame.speaker_id, name=speaker?actors[speaker].name:'旁白';
+document.getElementById('speaker').textContent=frame.subtitle?name:'场景';
+document.getElementById('subtitle').textContent=frame.subtitle||'…';
+document.getElementById('dialogue').classList.toggle('narration',!speaker);
+const pc=document.getElementById('portrait').getContext('2d');pc.setTransform(4,0,0,4,0,0);pc.imageSmoothingEnabled=painted;pc.clearRect(0,0,88,100);
+if(speaker){
+ if(data.preview_skin){const slot=data.preview_skin.roles.indexOf(speaker),w=custom.naturalWidth/3;if(slot>=0)pc.drawImage(custom,slot*w,0,w,custom.naturalHeight*.43,0,0,88,100);}
+ else{const a=actors[speaker],idx=((['adult','elder','child','animal'].indexOf(a.template_type)*4+['blue','green','red','brown'].indexOf(a.color_key))*3+['none','hat','beard'].indexOf(a.accessory))*8;pc.drawImage(atlas,idx%16*32,Math.floor(idx/16)*32,32,24,0,0,88,100);}
+ const pose=frame.actors.find(p=>p.role_id===speaker&&p.visible);if(pose){ctx.fillStyle='#f2d38b';ctx.textAlign='center';ctx.font=painted?'9px sans-serif':'9px story';ctx.fillText('▼',point(pose)[0],point(pose)[1]-(data.preview_skin?layout.sprite_height+14:44));}
+}
+seek.value=position;document.getElementById('time').textContent=`${(position/1000).toFixed(1)} / ${(data.manifest.duration_ms/1000).toFixed(1)} 秒`;
+}
+function tick(now){if(playing){const dt=now-last;position=Math.min(+seek.max,position+dt);if(position>=+seek.max)playing=false}last=now;draw();requestAnimationFrame(tick)}
+document.getElementById('play').onclick=()=>{if(position>=+seek.max)position=0;last=performance.now();playing=true};
+document.getElementById('pause').onclick=()=>playing=false;document.getElementById('replay').onclick=()=>{position=0;last=performance.now();playing=true};seek.oninput=()=>{playing=false;position=+seek.value;draw()};
+requestAnimationFrame(tick);
+}catch(e){document.getElementById('error').textContent='预览加载失败：'+e.message}})();
+</script></html>

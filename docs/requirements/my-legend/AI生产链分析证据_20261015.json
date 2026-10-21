@@ -1,0 +1,104 @@
+{
+  "audio": {
+    "archive": "D:\\Code\\AIToy\\deliverables\\langgraph-v0.2.1-release-20261013\\release\\灵伴LangGraph_v0.2.1_开发包与使用文档_20261013.zip",
+    "bytes": 223675,
+    "sha256": "bfc23808de731620eb472ea0a2465525ec440431e6c932343abed174a3059f41",
+    "zip_members": 81,
+    "crc_passed": true,
+    "manifest_files_verified": 80,
+    "python_files_ast_parsed": 37
+  },
+  "visual": {
+    "archive": "D:\\Chat\\WeChat\\xwechat_files\\wxid_94tv06uimfad22_1d98\\temp\\RWTemp\\2026-10\\5932294316551db46ff2790d1776cc05\\Cosplay_视觉声音整合_v0.2_20261014.zip",
+    "bytes": 36601927,
+    "sha256": "9008389c3bcbb565b555e89a964b9c53b1462382fe022eff81ff26549fe6299b",
+    "zip_members": 326,
+    "crc_passed": true,
+    "manifest_files_verified": 325,
+    "python_files_ast_parsed": 81
+  },
+  "embedded_audio": {
+    "compared_files": 81,
+    "all_identical": true
+  },
+  "packaged_visual_sample": {
+    "duration_ms": 34100.0,
+    "audio_kind": "synthetic_placeholder",
+    "events": 5,
+    "status": "preview_ready",
+    "delivery_ready": false,
+    "audio_status": "awaiting_review",
+    "publication": "not_approved",
+    "stream_types_in_packaged_probe": [
+      "video",
+      "audio"
+    ],
+    "preview_manifest_files_verified": 9
+  },
+  "packaged_historical_audio_record": {
+    "bell_gain_db": {
+      "a01_b003": 0,
+      "a01_b013": 0
+    },
+    "bundle_sha256": "1e6dcb2aa2d728ea9aaefd43b02bdcb1fb1099308fe38ad16afea2665841f7f6",
+    "dry_duration_seconds": 47.78,
+    "human_acceptance": "pending",
+    "instruction_policy": {
+      "max_corrections": 2,
+      "max_weight": 240,
+      "recommended_han_range": [
+        50,
+        100
+      ]
+    },
+    "instruction_weights": [
+      234,
+      175,
+      197,
+      175,
+      193,
+      196,
+      223
+    ],
+    "manual_prompt_override": false,
+    "mix_duration_seconds": 73.11,
+    "new_sfx_calls": 0,
+    "new_text_calls": 7,
+    "new_tts_count": 7,
+    "publication": "not_approved",
+    "reused_sfx_count": 7,
+    "review_bundle_verified": true,
+    "technical_passed": true,
+    "text_call_limit": 8,
+    "timeline_version": "tl_6000db5f02c1dcb955a2a118"
+  },
+  "analysis_document": {
+    "path": "D:\\Code\\AIToy\\docs\\requirements\\my-legend\\AI创作与声画演绎工作流分析草案_v0.1_20261015.md",
+    "bytes": 25399,
+    "sha256": "f2017785a76e65e2dcad83a992d94677d06af227b58055bbe1441c8497d3685c",
+    "main_sections": 14,
+    "local_links": [
+      {
+        "target": "AI生产链分析证据_20261015.json",
+        "exists": true
+      },
+      {
+        "target": "../../../source/fingertip-legend-app/src/services/api.ts",
+        "exists": true
+      },
+      {
+        "target": "../../../source/fingertip-legend-app/src/types/domain.ts",
+        "exists": true
+      }
+    ]
+  },
+  "scope": {
+    "source_changes": false,
+    "frontend_changes": false,
+    "workflow_execution": false,
+    "generation_service_calls": 0,
+    "full_regression_rerun": false,
+    "checks": "ZIP CRC, SHA256 manifests, embedded source comparison, Python AST parsing, document structure and local links"
+  },
+  "created_at": "2026-10-15T02:24:52.192556+00:00"
+}

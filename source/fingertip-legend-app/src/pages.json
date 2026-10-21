@@ -1,0 +1,24 @@
+{
+  "pages": [
+    { "path": "pages/login/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/home/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/create/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/stories/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/characters/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/shop/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/profile/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/detail/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/reader/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/progress/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/outline/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/production/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/work/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/role-detail/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/performance/index", "style": { "navigationStyle": "custom" } }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "white", "navigationBarTitleText": "我的传说",
+    "backgroundColor": "#fffbf2", "backgroundTextStyle": "dark",
+    "rpxCalcMaxDeviceWidth": 460, "rpxCalcBaseDeviceWidth": 393, "rpxCalcIncludeWidth": 393
+  }
+}

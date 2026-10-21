@@ -1,0 +1,75 @@
+{
+  "baseline_sha": "eeb99ae66069862878387ce6850fb20ef6ea0586",
+  "engine_behavior_modified": false,
+  "new_model_calls": 0,
+  "independent_novice_human_trial": "NOT_EXECUTED",
+  "checks": [
+    {
+      "check": "route/openapi/reference parity",
+      "passed": true,
+      "detail": {
+        "operations": 26,
+        "paths": 24,
+        "component_schemas": 50
+      }
+    },
+    {
+      "check": "example request schema validation",
+      "passed": true,
+      "detail": [
+        "continue.real.json",
+        "create.real.json",
+        "forest.characters.json",
+        "forest.create.json",
+        "plan.approval.json",
+        "plan.revision.json",
+        "remix.real.json",
+        "revise.real.json",
+        "runtime.patch.json"
+      ]
+    },
+    {
+      "check": "all seven full story bodies retained in source order",
+      "passed": true,
+      "detail": 7
+    },
+    {
+      "check": "GitHub relative Markdown targets",
+      "passed": true,
+      "detail": 258
+    },
+    {
+      "check": "complete success example per operation",
+      "passed": true,
+      "detail": {
+        "examples": 26,
+        "typed_responses_validated": 21,
+        "explicit_schema_only_examples": 2
+      }
+    },
+    {
+      "check": "real HTTP archived response hashes and restored DB",
+      "passed": true,
+      "detail": {
+        "checks": 40,
+        "no_worker_or_model": true
+      }
+    },
+    {
+      "check": "regression/security/engine baseline",
+      "passed": true,
+      "detail": "685 passed; no new engine/test/migration changes; evidence secret scan passed"
+    },
+    {
+      "check": "raw physical model accounting",
+      "passed": true,
+      "detail": "Phase11 75 calls; Phase10 801 historical calls; no reasoning double count"
+    },
+    {
+      "check": "request builder six scopes / continue / remix",
+      "passed": true,
+      "detail": "8 requests validated; not submitted"
+    }
+  ],
+  "passed": true
+}

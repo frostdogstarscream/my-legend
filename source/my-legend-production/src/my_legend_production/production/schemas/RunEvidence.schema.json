@@ -1,0 +1,98 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "run_evidence/1.0",
+      "default": "run_evidence/1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "job_id": {
+      "title": "Job Id",
+      "type": "string"
+    },
+    "frozen_files": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Frozen Files",
+      "type": "object"
+    },
+    "session_interventions": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Session Interventions"
+    },
+    "manual_artifact_edits": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Manual Artifact Edits"
+    },
+    "out_of_band_context_injections": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Out Of Band Context Injections"
+    },
+    "policy_repairs": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Policy Repairs",
+      "type": "integer"
+    },
+    "provider_calls": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Provider Calls",
+      "type": "integer"
+    },
+    "evidence_basis": {
+      "default": "unattested",
+      "enum": [
+        "unattested",
+        "isolated_runner"
+      ],
+      "title": "Evidence Basis",
+      "type": "string"
+    },
+    "human_content_acceptance": {
+      "default": "pending",
+      "enum": [
+        "pending",
+        "passed",
+        "failed"
+      ],
+      "title": "Human Content Acceptance",
+      "type": "string"
+    }
+  },
+  "required": [
+    "job_id",
+    "frozen_files"
+  ],
+  "title": "RunEvidence",
+  "type": "object"
+}

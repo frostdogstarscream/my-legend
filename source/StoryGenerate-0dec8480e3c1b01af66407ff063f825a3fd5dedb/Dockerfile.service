@@ -1,0 +1,11 @@
+FROM python:3.11-slim
+WORKDIR /app
+COPY pyproject.toml alembic.ini ./
+COPY 4-引擎代码 ./4-引擎代码
+COPY 3-规则库 ./3-规则库
+COPY alembic ./alembic
+ENV DRAMA_WORKSPACE=/app
+RUN pip install --no-cache-dir '.[service]'
+ENV PYTHONPATH=/app/4-引擎代码
+EXPOSE 8000
+CMD ["python", "-m", "drama_engine.service", "serve", "--host", "0.0.0.0", "--port", "8000"]

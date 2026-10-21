@@ -1,0 +1,5 @@
+{
+  "expected_revision": 1,
+  "feedback": "不要让他们得到金银宝藏，改成最后发现宝箱里是他们小时候的回忆。",
+  "idempotency_key": "feedback-REPLACE-UUID"
+}

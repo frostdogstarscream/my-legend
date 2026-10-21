@@ -1,0 +1,87 @@
+{
+  "meta": {
+    "description": "固定模板测试案例 — 验证 Template + Recipe + Plan + Writer + StoryDelivery 完整闭环",
+    "version": "1.0",
+    "base_branch": "codex/story-formula-integration",
+    "base_commit": "acde8a6"
+  },
+  "cases": [
+    {
+      "id": "T01",
+      "template_id": "GENERAL_THREE_ACT",
+      "template_revision": 1,
+      "story_mode": "general",
+      "genre": "G01",
+      "recipe_id": "R4",
+      "target_duration_sec": 180,
+      "idea": "丈夫偷偷把家里的存款借给了赌博的弟弟，妻子发现后要求他在一个月内把钱追回来，否则带着孩子搬走。",
+      "note": "三幕结构 × 家庭反击 — 测试模板默认Recipe是否生效"
+    },
+    {
+      "id": "T02",
+      "template_id": "GENERAL_RELATIONSHIP_TURN",
+      "template_revision": 1,
+      "story_mode": "general",
+      "genre": "G02",
+      "recipe_id": "R5",
+      "target_duration_sec": 180,
+      "idea": "分居半年的夫妻在女儿的小学毕业典礼上重新坐在一起，两人发现分开后各自都变了，但有些东西一直没有变。",
+      "note": "关系转折 × 破镜重圆 — 测试模板节拍(trigger/ separation/ recognition/ reunion)是否体现在故事中"
+    },
+    {
+      "id": "T03",
+      "template_id": "SPY_MYSTERY_CLOSED",
+      "template_revision": 1,
+      "story_mode": "mystery",
+      "genre": "G11",
+      "recipe_id": "R6",
+      "target_duration_sec": 300,
+      "idea": "情报分析员在整理已故同事的遗物时，发现了一段与官方结论完全矛盾的录音——录音中被指认为叛徒的人，声音来自另一个仍在职的上级。",
+      "note": "谍战悬疑闭合版 × 悬疑反转 — 测试300s完整推理闭环，需可回溯线索和闭合结局"
+    },
+    {
+      "id": "T04",
+      "template_id": "SPY_MYSTERY_SERIALIZED",
+      "template_revision": 1,
+      "story_mode": "serialized",
+      "genre": "G11",
+      "recipe_id": null,
+      "target_duration_sec": 300,
+      "idea": "情报员在任务结束后，发现半年前失踪的同伴留下了一串加密坐标，指向一个她从未听说过的地点。她决定在提交正式报告之前先去那里看一眼。",
+      "note": "谍战悬疑连载版 — 测试serialized模式下的开放性结局和Recipe自动推导（无显式Recipe）"
+    },
+    {
+      "id": "T05",
+      "template_id": "GENERAL_THREE_ACT",
+      "template_revision": 1,
+      "story_mode": "general",
+      "genre": "G11",
+      "recipe_id": "R8",
+      "target_duration_sec": 180,
+      "idea": "高考后，两个被调换身份的女生同时收到了对方的录取通知书——一个该去清华，一个该去职校。真相被揭穿的那天，两个家庭的所有人都必须面对他们十八年来精心维护的谎言。",
+      "note": "三幕结构 × 身份反转(R8) — 补齐R8成功案例"
+    },
+    {
+      "id": "T06",
+      "template_id": "GENERAL_RELATIONSHIP_TURN",
+      "template_revision": 1,
+      "story_mode": "general",
+      "genre": "G02",
+      "recipe_id": "R11",
+      "target_duration_sec": 180,
+      "idea": "为了完成爷爷的遗愿，两个互相看不顺眼的年轻人签订了一年婚约。他们约定好互不干涉对方的生活，但一张突如其来的体检报告让他们开始重新看待这段虚假的关系。",
+      "note": "关系转折 × 先婚后爱(R11) — 补齐R11成功案例，测试合约→真情的渐进式转变"
+    },
+    {
+      "id": "T07",
+      "template_id": "GENERAL_RELATIONSHIP_TURN",
+      "template_revision": 1,
+      "story_mode": "general",
+      "genre": "G03",
+      "recipe_id": "R12",
+      "target_duration_sec": 180,
+      "idea": "女孩在未婚夫的手机里发现了一个和她长得几乎一模一样的女人的照片——那是他已故的前女友。她意识到自己一直活在另一个人的影子里，而她必须弄清楚他到底爱的是谁。",
+      "note": "关系转折 × 替身虐恋(R12) — 补齐R12成功案例，测试身份吞噬与独立人格觉醒"
+    }
+  ]
+}

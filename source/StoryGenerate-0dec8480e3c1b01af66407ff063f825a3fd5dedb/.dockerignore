@@ -1,0 +1,12 @@
+.git
+.env
+.env.*
+*.key
+*.pem
+*.secret
+.venv
+.pytest_cache
+.test-tmp-*
+6-实测产物
+service-private
+__pycache__

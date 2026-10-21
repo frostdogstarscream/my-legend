@@ -1,0 +1,10 @@
+legend-serif.ttf: Noto Serif SC, weight 900, fixed interface text subset.
+Source family: https://fonts.google.com/noto/specimen/Noto+Serif+SC
+Source repository and license: https://github.com/google/fonts/tree/main/ofl/notoserifsc
+
+legend-brush.ttf: Ma Shan Zheng, fixed slogan text subset.
+Source family: https://fonts.google.com/specimen/Ma+Shan+Zheng
+Source repository and license: https://github.com/google/fonts/tree/main/ofl/mashanzheng
+
+Both downloaded from the Google Fonts CSS API on 2026-10-14.
+These files are TrueType font subsets; unbundled characters fall back to the device's fonts.

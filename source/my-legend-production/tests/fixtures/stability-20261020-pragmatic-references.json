@@ -1,0 +1,765 @@
+{
+  "slots": [
+    {
+      "slot_id": "line_0001",
+      "speech_id": "speech_0001",
+      "source": {
+        "episode_id": "ep-1-c9562cd7",
+        "scene_id": "ep1-scene1",
+        "line_id": "ep1-s1-l1"
+      },
+      "kind": "sfx",
+      "text": "风雨声沉闷，偶尔有雨点打在窗户上的声音。突然，门外传来一阵断续的、不规律的敲击声，像是木头撞击门框，间隔时长时短。",
+      "identity_id": null
+    },
+    {
+      "slot_id": "line_0002",
+      "speech_id": "speech_0002",
+      "source": {
+        "episode_id": "ep-1-c9562cd7",
+        "scene_id": "ep1-scene1",
+        "line_id": "ep1-s1-l2"
+      },
+      "kind": "action",
+      "text": "墨羽警觉地站起身，椅子发出轻微的挪动声。",
+      "identity_id": null
+    },
+    {
+      "slot_id": "line_0003",
+      "speech_id": "speech_0003",
+      "source": {
+        "episode_id": "ep-1-c9562cd7",
+        "scene_id": "ep1-scene1",
+        "line_id": "ep1-s1-l3"
+      },
+      "kind": "dialogue",
+      "text": "有人在敲门？",
+      "identity_id": "legend-moyu"
+    },
+    {
+      "slot_id": "line_0004",
+      "speech_id": "speech_0004",
+      "source": {
+        "episode_id": "ep-1-c9562cd7",
+        "scene_id": "ep1-scene1",
+        "line_id": "ep1-s1-l4"
+      },
+      "kind": "action",
+      "text": "灵墨侧耳倾听，没有立刻回答。",
+      "identity_id": null
+    },
+    {
+      "slot_id": "line_0005",
+      "speech_id": "speech_0005",
+      "source": {
+        "episode_id": "ep-1-c9562cd7",
+        "scene_id": "ep1-scene1",
+        "line_id": "ep1-s1-l5"
+      },
+      "kind": "sfx",
+      "text": "敲击声再次响起，节奏依然混乱。",
+      "identity_id": null
+    },
+    {
+      "slot_id": "line_0006",
+      "speech_id": "speech_0006",
+      "source": {
+        "episode_id": "ep-1-c9562cd7",
+        "scene_id": "ep1-scene1",
+        "line_id": "ep1-s1-l6"
+      },
+      "kind": "dialogue",
+      "text": "你听，是不是不太规律？不像正常的敲门。",
+      "identity_id": "legend-lingmo"
+    },
+    {
+      "slot_id": "line_0007",
+      "speech_id": "speech_0007",
+      "source": {
+        "episode_id": "ep-1-c9562cd7",
+        "scene_id": "ep1-scene1",
+        "line_id": "ep1-s1-l7"
+      },
+      "kind": "dialogue",
+      "text": "我出去看看。",
+      "identity_id": "legend-moyu"
+    },
+    {
+      "slot_id": "line_0008",
+      "speech_id": "speech_0008",
+      "source": {
+        "episode_id": "ep-1-c9562cd7",
+        "scene_id": "ep1-scene1",
+        "line_id": "ep1-s1-l8"
+      },
+      "kind": "dialogue",
+      "text": "等一下，一起去。",
+      "identity_id": "legend-lingmo"
+    },
+    {
+      "slot_id": "line_0009",
+      "speech_id": "speech_0009",
+      "source": {
+        "episode_id": "ep-1-c9562cd7",
+        "scene_id": "ep1-scene1",
+        "line_id": "ep1-s1-l9"
+      },
+      "kind": "sfx",
+      "text": "提灯被拿起的轻微金属碰撞声。",
+      "identity_id": null
+    },
+    {
+      "slot_id": "line_0010",
+      "speech_id": "speech_0010",
+      "source": {
+        "episode_id": "ep-1-c9562cd7",
+        "scene_id": "ep1-scene1",
+        "line_id": "ep1-s1-l10"
+      },
+      "kind": "narration",
+      "text": "墨羽提起桌上的灯，两人走向门口。",
+      "identity_id": "narrator"
+    },
+    {
+      "slot_id": "line_0011",
+      "speech_id": "speech_0011",
+      "source": {
+        "episode_id": "ep-1-c9562cd7",
+        "scene_id": "ep1-scene1",
+        "line_id": "ep1-s1-l11"
+      },
+      "kind": "sfx",
+      "text": "门闩滑动声，随后是门被拉开的吱呀声。",
+      "identity_id": null
+    },
+    {
+      "slot_id": "line_0012",
+      "speech_id": "speech_0012",
+      "source": {
+        "episode_id": "ep-1-c9562cd7",
+        "scene_id": "ep1-scene2",
+        "line_id": "ep1-s2-l1"
+      },
+      "kind": "sfx",
+      "text": "风雨声瞬间由沉闷变得开阔而猛烈，风声呼啸，雨声清晰。",
+      "identity_id": null
+    },
+    {
+      "slot_id": "line_0013",
+      "speech_id": "speech_0013",
+      "source": {
+        "episode_id": "ep-1-c9562cd7",
+        "scene_id": "ep1-scene2",
+        "line_id": "ep1-s2-l2"
+      },
+      "kind": "narration",
+      "text": "墨羽举起灯照亮前方，但门外空无一人。",
+      "identity_id": "narrator"
+    },
+    {
+      "slot_id": "line_0014",
+      "speech_id": "speech_0014",
+      "source": {
+        "episode_id": "ep-1-c9562cd7",
+        "scene_id": "ep1-scene2",
+        "line_id": "ep1-s2-l3"
+      },
+      "kind": "sfx",
+      "text": "敲击声再次响起，这次声音的方向感更明确，来自门框侧面。",
+      "identity_id": null
+    },
+    {
+      "slot_id": "line_0015",
+      "speech_id": "speech_0015",
+      "source": {
+        "episode_id": "ep-1-c9562cd7",
+        "scene_id": "ep1-scene2",
+        "line_id": "ep1-s2-l4"
+      },
+      "kind": "action",
+      "text": "两人循声望去，灵墨走近门框，伸手按住一块晃动的木牌。",
+      "identity_id": null
+    },
+    {
+      "slot_id": "line_0016",
+      "speech_id": "speech_0016",
+      "source": {
+        "episode_id": "ep-1-c9562cd7",
+        "scene_id": "ep1-scene2",
+        "line_id": "ep1-s2-l5"
+      },
+      "kind": "sfx",
+      "text": "木板晃动碰墙的声音骤然停止。",
+      "identity_id": null
+    },
+    {
+      "slot_id": "line_0017",
+      "speech_id": "speech_0017",
+      "source": {
+        "episode_id": "ep-1-c9562cd7",
+        "scene_id": "ep1-scene2",
+        "line_id": "ep1-s2-l6"
+      },
+      "kind": "dialogue",
+      "text": "是这块牌子松了，风一吹就撞在门框上。",
+      "identity_id": "legend-lingmo"
+    },
+    {
+      "slot_id": "line_0018",
+      "speech_id": "speech_0018",
+      "source": {
+        "episode_id": "ep-1-c9562cd7",
+        "scene_id": "ep1-scene2",
+        "line_id": "ep1-s2-l7"
+      },
+      "kind": "dialogue",
+      "text": "原来只是它。来，我们把它按回去。",
+      "identity_id": "legend-moyu"
+    },
+    {
+      "slot_id": "line_0019",
+      "speech_id": "speech_0019",
+      "source": {
+        "episode_id": "ep-1-c9562cd7",
+        "scene_id": "ep1-scene2",
+        "line_id": "ep1-s2-l8"
+      },
+      "kind": "sfx",
+      "text": "提灯被放在地上的轻响。",
+      "identity_id": null
+    },
+    {
+      "slot_id": "line_0020",
+      "speech_id": "speech_0020",
+      "source": {
+        "episode_id": "ep-1-c9562cd7",
+        "scene_id": "ep1-scene2",
+        "line_id": "ep1-s2-l9"
+      },
+      "kind": "sfx",
+      "text": "木头摩擦挤压的声音，最后是一声沉闷的卡榫入位声。",
+      "identity_id": null
+    },
+    {
+      "slot_id": "line_0021",
+      "speech_id": "speech_0021",
+      "source": {
+        "episode_id": "ep-1-c9562cd7",
+        "scene_id": "ep1-scene2",
+        "line_id": "ep1-s2-l10"
+      },
+      "kind": "action",
+      "text": "墨羽松开手，两人在风雨中静静等待了片刻。",
+      "identity_id": null
+    },
+    {
+      "slot_id": "line_0022",
+      "speech_id": "speech_0022",
+      "source": {
+        "episode_id": "ep-1-c9562cd7",
+        "scene_id": "ep1-scene2",
+        "line_id": "ep1-s2-l11"
+      },
+      "kind": "dialogue",
+      "text": "好了，虚惊一场。",
+      "identity_id": "legend-lingmo"
+    },
+    {
+      "slot_id": "line_0023",
+      "speech_id": "speech_0023",
+      "source": {
+        "episode_id": "ep-1-c9562cd7",
+        "scene_id": "ep1-scene3",
+        "line_id": "ep1-s3-l1"
+      },
+      "kind": "sfx",
+      "text": "提灯被重新拿起的声音。",
+      "identity_id": null
+    },
+    {
+      "slot_id": "line_0024",
+      "speech_id": "speech_0024",
+      "source": {
+        "episode_id": "ep-1-c9562cd7",
+        "scene_id": "ep1-scene3",
+        "line_id": "ep1-s3-l2"
+      },
+      "kind": "narration",
+      "text": "两人转身走回屋内，墨羽关上了门。",
+      "identity_id": "narrator"
+    },
+    {
+      "slot_id": "line_0025",
+      "speech_id": "speech_0025",
+      "source": {
+        "episode_id": "ep-1-c9562cd7",
+        "scene_id": "ep1-scene3",
+        "line_id": "ep1-s3-l3"
+      },
+      "kind": "sfx",
+      "text": "关门声，风雨声瞬间被隔绝，重新变得沉闷，室内恢复安静。",
+      "identity_id": null
+    },
+    {
+      "slot_id": "line_0026",
+      "speech_id": "speech_0026",
+      "source": {
+        "episode_id": "ep-1-c9562cd7",
+        "scene_id": "ep1-scene3",
+        "line_id": "ep1-s3-l4"
+      },
+      "kind": "sfx",
+      "text": "提灯落桌的轻响。",
+      "identity_id": null
+    },
+    {
+      "slot_id": "line_0027",
+      "speech_id": "speech_0027",
+      "source": {
+        "episode_id": "ep-1-c9562cd7",
+        "scene_id": "ep1-scene3",
+        "line_id": "ep1-s3-l5"
+      },
+      "kind": "action",
+      "text": "两人都松了一口气，灵墨看着墨羽，轻轻笑了一声。",
+      "identity_id": null
+    },
+    {
+      "slot_id": "line_0028",
+      "speech_id": "speech_0028",
+      "source": {
+        "episode_id": "ep-1-c9562cd7",
+        "scene_id": "ep1-scene3",
+        "line_id": "ep1-s3-l6"
+      },
+      "kind": "dialogue",
+      "text": "还好只是风。",
+      "identity_id": "legend-moyu"
+    },
+    {
+      "slot_id": "line_0029",
+      "speech_id": "speech_0029",
+      "source": {
+        "episode_id": "ep-1-c9562cd7",
+        "scene_id": "ep1-scene3",
+        "line_id": "ep1-s3-l7"
+      },
+      "kind": "narration",
+      "text": "两人在灯光下安静地坐下，屋外的风雨声渐渐减弱。",
+      "identity_id": "narrator"
+    },
+    {
+      "slot_id": "line_0030",
+      "speech_id": "speech_0030",
+      "source": {
+        "episode_id": "ep-1-c9562cd7",
+        "scene_id": "ep1-scene3",
+        "line_id": "ep1-s3-l8"
+      },
+      "kind": "sfx",
+      "text": "屋外风雨声渐弱，转为隐约的白噪音，屋内只剩下安稳的呼吸声和灯火的微响。",
+      "identity_id": null
+    }
+  ],
+  "choices": {
+    "line_0001": {
+      "operations": [
+        {
+          "operation_id": "op_sfx_weather_indoor",
+          "mode": "background",
+          "cue_text": "风雨声沉闷，偶尔有雨点打在窗户上的声音。",
+          "start": {
+            "operation_id": null,
+            "point": "start",
+            "offset_ms": 0
+          },
+          "end": {
+            "operation_id": "op_sfx_open_door",
+            "point": "start",
+            "offset_ms": 0
+          },
+          "gain_db": -6,
+          "fade_out_ms": 0,
+          "reason": "这是一个持续的背景环境，概括为沉闷风雨声，偶尔的雨打窗户声融入同一氛围。pragmatic_sfx/1 允许有限声景使用一份素材，因此将二者合并为一个背景。"
+        }
+      ]
+    },
+    "line_0002": {
+      "operations": [
+        {
+          "operation_id": "op_action_0002",
+          "mode": "action_note",
+          "cue_text": "墨羽警觉地站起身，椅子发出轻微的挪动声。",
+          "start": {
+            "operation_id": "speech_0001",
+            "point": "end",
+            "offset_ms": 0
+          },
+          "reason": "剧情关键动作，通过 action_note 执行椅子轻微挪动声。具体声音由制作实现，编排不猜测时长。"
+        }
+      ]
+    },
+    "line_0003": {
+      "start": {
+        "operation_id": "op_action_0002",
+        "point": "end",
+        "offset_ms": 500
+      },
+      "gain_db": 0
+    },
+    "line_0004": {
+      "operations": [
+        {
+          "operation_id": "op_action_0004",
+          "mode": "action_note",
+          "cue_text": "灵墨侧耳倾听，没有立刻回答。",
+          "start": {
+            "operation_id": "speech_0003",
+            "point": "end",
+            "offset_ms": 500
+          },
+          "reason": "无独立环境音效的静默动作，用 action_note 执行。"
+        }
+      ]
+    },
+    "line_0005": {
+      "operations": [
+        {
+          "operation_id": "op_sfx_knocking_2",
+          "mode": "one_shot",
+          "cue_text": "敲击声再次响起，节奏依然混乱。",
+          "start": {
+            "operation_id": "op_action_0004",
+            "point": "end",
+            "offset_ms": 0
+          },
+          "gain_db": 0,
+          "reason": "断续不规律的敲击作为一次 one_shot 处理，用完整 cue_text 表达素材内部声音过程。"
+        }
+      ]
+    },
+    "line_0006": {
+      "start": {
+        "operation_id": "op_sfx_knocking_2",
+        "point": "end",
+        "offset_ms": 500
+      },
+      "gain_db": 0
+    },
+    "line_0007": {
+      "start": {
+        "operation_id": "speech_0006",
+        "point": "end",
+        "offset_ms": 200
+      },
+      "gain_db": 0
+    },
+    "line_0008": {
+      "start": {
+        "operation_id": "speech_0007",
+        "point": "end",
+        "offset_ms": 100
+      },
+      "gain_db": 0
+    },
+    "line_0009": {
+      "operations": [
+        {
+          "operation_id": "op_sfx_lantern_pickup",
+          "mode": "one_shot",
+          "cue_text": "提灯被拿起的轻微金属碰撞声。",
+          "start": {
+            "operation_id": "speech_0008",
+            "point": "end",
+            "offset_ms": 200
+          },
+          "gain_db": -3,
+          "reason": "轻音效，使用 one_shot 播放提灯金属碰撞声。"
+        }
+      ]
+    },
+    "line_0010": {
+      "start": {
+        "operation_id": "op_sfx_lantern_pickup",
+        "point": "end",
+        "offset_ms": 0
+      },
+      "gain_db": 0
+    },
+    "line_0011": {
+      "operations": [
+        {
+          "operation_id": "op_sfx_open_door",
+          "mode": "one_shot",
+          "cue_text": "门闩滑动声，随后是门被拉开的吱呀声。",
+          "start": {
+            "operation_id": "speech_0010",
+            "point": "end",
+            "offset_ms": 0
+          },
+          "gain_db": 0,
+          "reason": "开门过程用完整 one_shot 表现，可以包含门闩滑动和门轴吱呀的连续动作。"
+        }
+      ]
+    },
+    "line_0012": {
+      "operations": [
+        {
+          "operation_id": "op_sfx_weather_outdoor",
+          "mode": "background",
+          "cue_text": "风雨声瞬间由沉闷变得开阔而猛烈，风声呼啸，雨声清晰。",
+          "start": {
+            "operation_id": "op_sfx_open_door",
+            "point": "start",
+            "offset_ms": 0
+          },
+          "end": {
+            "operation_id": "op_sfx_close_door",
+            "point": "start",
+            "offset_ms": 0
+          },
+          "gain_db": 0,
+          "fade_out_ms": 0,
+          "reason": "开门后室外风雨瞬间变大声，用新的背景取代室内沉闷风雨声。pragmatic_sfx/1 允许将开阔的风声、雨声合并为同一背景。之前沉闷风雨背景已在 open_door 开始时自动结束。"
+        }
+      ]
+    },
+    "line_0013": {
+      "start": {
+        "operation_id": "op_sfx_open_door",
+        "point": "end",
+        "offset_ms": 500
+      },
+      "gain_db": 0
+    },
+    "line_0014": {
+      "operations": [
+        {
+          "operation_id": "op_sfx_knocking_3",
+          "mode": "one_shot",
+          "cue_text": "敲击声再次响起，这次声音的方向感更明确，来自门框侧面。",
+          "start": {
+            "operation_id": "speech_0013",
+            "point": "end",
+            "offset_ms": 0
+          },
+          "gain_db": 0,
+          "reason": "敲击方向感在 pragmatic_sfx/1 下可省略，仅保留敲击本身。使用 one_shot 表达完整过程。"
+        }
+      ]
+    },
+    "line_0015": {
+      "operations": [
+        {
+          "operation_id": "op_action_0015",
+          "mode": "action_note",
+          "cue_text": "两人循声望去，灵墨走近门框，伸手按住一块晃动的木牌。",
+          "start": {
+            "operation_id": "op_sfx_knocking_3",
+            "point": "end",
+            "offset_ms": 500
+          },
+          "reason": "走近和伸手按住木牌为连续动作，但按住的瞬间才是音效停止的关键，用 action_note 执行。"
+        }
+      ]
+    },
+    "line_0016": {
+      "operations": [
+        {
+          "operation_id": "op_sfx_knocking_stop",
+          "mode": "stop_sound",
+          "cue_text": "木板晃动碰墙的声音骤然停止。",
+          "start": {
+            "operation_id": "op_action_0015",
+            "point": "end",
+            "offset_ms": 0
+          },
+          "stop_target": "op_sfx_knocking_3",
+          "reason": "按住木牌使敲击停止，但敲击是 one_shot 且已结束，使用 stop_sound 精确停止可能的后回响或等待中的操作，以 cue_text 执行骤然停止之感。也可用 action_note 表示，但 header 描述为 sfx，用 stop_sound 更佳。"
+        }
+      ]
+    },
+    "line_0017": {
+      "start": {
+        "operation_id": "op_sfx_knocking_stop",
+        "point": "start",
+        "offset_ms": 200
+      },
+      "gain_db": 0
+    },
+    "line_0018": {
+      "start": {
+        "operation_id": "speech_0017",
+        "point": "end",
+        "offset_ms": 100
+      },
+      "gain_db": 0
+    },
+    "line_0019": {
+      "operations": [
+        {
+          "operation_id": "op_sfx_lantern_putdown",
+          "mode": "one_shot",
+          "cue_text": "提灯被放在地上的轻响。",
+          "start": {
+            "operation_id": "speech_0018",
+            "point": "end",
+            "offset_ms": 300
+          },
+          "gain_db": -4,
+          "reason": "放下提灯的轻音效。"
+        }
+      ]
+    },
+    "line_0020": {
+      "operations": [
+        {
+          "operation_id": "op_sfx_wood_fix",
+          "mode": "one_shot",
+          "cue_text": "木头摩擦挤压的声音，最后是一声沉闷的卡榫入位声。",
+          "start": {
+            "operation_id": "op_sfx_lantern_putdown",
+            "point": "end",
+            "offset_ms": 500
+          },
+          "gain_db": 0,
+          "reason": "修理木牌的完整过程：木头摩擦挤压加上卡榫入位，用 one_shot 一次性表达，素材内包含全过程。"
+        }
+      ]
+    },
+    "line_0021": {
+      "operations": [
+        {
+          "operation_id": "op_action_0021",
+          "mode": "action_note",
+          "cue_text": "墨羽松开手，两人在风雨中静静等待了片刻。",
+          "start": {
+            "operation_id": "op_sfx_wood_fix",
+            "point": "end",
+            "offset_ms": 0
+          },
+          "reason": "松开手为动作，静静等待片刻是不产生新声音的静默，action_note 执行等待，不新增具体音效。"
+        }
+      ]
+    },
+    "line_0022": {
+      "start": {
+        "operation_id": "op_action_0021",
+        "point": "end",
+        "offset_ms": 1500
+      },
+      "gain_db": 0
+    },
+    "line_0023": {
+      "operations": [
+        {
+          "operation_id": "op_sfx_lantern_pickup2",
+          "mode": "one_shot",
+          "cue_text": "提灯被重新拿起的声音。",
+          "start": {
+            "operation_id": "speech_0022",
+            "point": "end",
+            "offset_ms": 300
+          },
+          "gain_db": -3,
+          "reason": "重新拿起提灯的轻音效，独立于首次拿起。"
+        }
+      ]
+    },
+    "line_0024": {
+      "start": {
+        "operation_id": "op_sfx_lantern_pickup2",
+        "point": "end",
+        "offset_ms": 0
+      },
+      "gain_db": 0
+    },
+    "line_0025": {
+      "operations": [
+        {
+          "operation_id": "op_sfx_close_door",
+          "mode": "one_shot",
+          "cue_text": "关门声，风雨声瞬间被隔绝，重新变得沉闷，室内恢复安静。",
+          "start": {
+            "operation_id": "speech_0024",
+            "point": "end",
+            "offset_ms": 500
+          },
+          "gain_db": 0,
+          "reason": "关门声用 one_shot 播放。室外背景 op_sfx_weather_outdoor 在 close_door 开始时结束，不再延续。"
+        }
+      ]
+    },
+    "line_0026": {
+      "operations": [
+        {
+          "operation_id": "op_sfx_lantern_table",
+          "mode": "one_shot",
+          "cue_text": "提灯落桌的轻响。",
+          "start": {
+            "operation_id": "op_sfx_close_door",
+            "point": "end",
+            "offset_ms": 200
+          },
+          "gain_db": -4,
+          "reason": "提灯落桌轻音效。"
+        }
+      ]
+    },
+    "line_0027": {
+      "operations": [
+        {
+          "operation_id": "op_action_0027",
+          "mode": "action_note",
+          "cue_text": "两人都松了一口气，灵墨看着墨羽，轻轻笑了一声。",
+          "start": {
+            "operation_id": "op_sfx_lantern_table",
+            "point": "end",
+            "offset_ms": 0
+          },
+          "reason": "轻轻笑声可能是角色动作，但未指定讲话，可视为带轻微音效的动作，由制作根据原文 cue 执行。"
+        }
+      ]
+    },
+    "line_0028": {
+      "start": {
+        "operation_id": "op_action_0027",
+        "point": "end",
+        "offset_ms": 500
+      },
+      "gain_db": 0
+    },
+    "line_0029": {
+      "start": {
+        "operation_id": "speech_0028",
+        "point": "end",
+        "offset_ms": 200
+      },
+      "gain_db": 0
+    },
+    "line_0030": {
+      "operations": [
+        {
+          "operation_id": "op_sfx_weather_fade",
+          "mode": "background",
+          "cue_text": "屋外风雨声渐弱，转为隐约的白噪音，屋内只剩下安稳的呼吸声和灯火的微响。",
+          "start": {
+            "operation_id": "speech_0029",
+            "point": "end",
+            "offset_ms": 0
+          },
+          "end": {
+            "operation_id": "speech_0029",
+            "point": "end",
+            "offset_ms": 8000
+          },
+          "gain_db": -12,
+          "fade_out_ms": 4000,
+          "reason": "这是关上门后重新出现的新环境声（不再是室外），用独立背景表现渐弱的屋外风雨声。渐弱通过 end 和 fade_out_ms 体现。呼吸与灯火微响按 pragmatic 规则可省略，主要的剩余风雨声被保留。背景结束后自然终结全剧，不额外 stop。"
+        }
+      ]
+    }
+  },
+  "source_version_id": "2f26636b460549bf800938d702842d64",
+  "delivery_sha256": "15d8ec678c4b149da9c2f14e2e41bae9bed41b9f857d1d1470b5c22171f50d86"
+}

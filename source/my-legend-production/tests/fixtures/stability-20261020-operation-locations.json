@@ -1,0 +1,527 @@
+{
+  "slots": [
+    {
+      "slot_id": "line_0001",
+      "speech_id": "speech_0001",
+      "source": {
+        "episode_id": "ep-1-d4a62b9d",
+        "scene_id": "ep1-scene1",
+        "line_id": "ep1-s1-l1"
+      },
+      "kind": "sfx",
+      "text": "远处传来模糊的车辆引擎声，由远及近，又渐渐消失。",
+      "identity_id": null
+    },
+    {
+      "slot_id": "line_0002",
+      "speech_id": "speech_0002",
+      "source": {
+        "episode_id": "ep-1-d4a62b9d",
+        "scene_id": "ep1-scene1",
+        "line_id": "ep1-s1-l2"
+      },
+      "kind": "dialogue",
+      "text": "还好是十九点十五分的车，不用着急。",
+      "identity_id": "legend-moyu"
+    },
+    {
+      "slot_id": "line_0003",
+      "speech_id": "speech_0003",
+      "source": {
+        "episode_id": "ep-1-d4a62b9d",
+        "scene_id": "ep1-scene1",
+        "line_id": "ep1-s1-l3"
+      },
+      "kind": "dialogue",
+      "text": "等等，我记得通知上写的是十八点四十五分。",
+      "identity_id": "legend-lingmo"
+    },
+    {
+      "slot_id": "line_0004",
+      "speech_id": "speech_0004",
+      "source": {
+        "episode_id": "ep-1-d4a62b9d",
+        "scene_id": "ep1-scene1",
+        "line_id": "ep1-s1-l4"
+      },
+      "kind": "dialogue",
+      "text": "不可能，我记得明明是十九点十五分。",
+      "identity_id": "legend-moyu"
+    },
+    {
+      "slot_id": "line_0005",
+      "speech_id": "speech_0005",
+      "source": {
+        "episode_id": "ep-1-d4a62b9d",
+        "scene_id": "ep1-scene1",
+        "line_id": "ep1-s1-l5"
+      },
+      "kind": "dialogue",
+      "text": "通知上写的是三号站台，十八点四十五分，最后一班车。",
+      "identity_id": "legend-lingmo"
+    },
+    {
+      "slot_id": "line_0006",
+      "speech_id": "speech_0006",
+      "source": {
+        "episode_id": "ep-1-d4a62b9d",
+        "scene_id": "ep1-scene1",
+        "line_id": "ep1-s1-l6"
+      },
+      "kind": "action",
+      "text": "墨羽翻找口袋，拿出通知。",
+      "identity_id": null
+    },
+    {
+      "slot_id": "line_0007",
+      "speech_id": "speech_0007",
+      "source": {
+        "episode_id": "ep-1-d4a62b9d",
+        "scene_id": "ep1-scene1",
+        "line_id": "ep1-s1-l7"
+      },
+      "kind": "dialogue",
+      "text": "十八点四十五分……",
+      "identity_id": "legend-moyu"
+    },
+    {
+      "slot_id": "line_0008",
+      "speech_id": "speech_0008",
+      "source": {
+        "episode_id": "ep-1-d4a62b9d",
+        "scene_id": "ep1-scene1",
+        "line_id": "ep1-s1-l8"
+      },
+      "kind": "action",
+      "text": "短暂的沉默。",
+      "identity_id": null
+    },
+    {
+      "slot_id": "line_0009",
+      "speech_id": "speech_0009",
+      "source": {
+        "episode_id": "ep-1-d4a62b9d",
+        "scene_id": "ep1-scene1",
+        "line_id": "ep1-s1-l9"
+      },
+      "kind": "dialogue",
+      "text": "我记成十九点十五分了。",
+      "identity_id": "legend-moyu"
+    },
+    {
+      "slot_id": "line_0010",
+      "speech_id": "speech_0010",
+      "source": {
+        "episode_id": "ep-1-d4a62b9d",
+        "scene_id": "ep1-scene1",
+        "line_id": "ep1-s1-l10"
+      },
+      "kind": "dialogue",
+      "text": "现在赶过去应该还来得及。",
+      "identity_id": "legend-lingmo"
+    },
+    {
+      "slot_id": "line_0011",
+      "speech_id": "speech_0011",
+      "source": {
+        "episode_id": "ep-1-d4a62b9d",
+        "scene_id": "ep1-scene2",
+        "line_id": "ep1-s2-l1"
+      },
+      "kind": "sfx",
+      "text": "急促的脚步声响起，由慢变快，两个人的步伐混杂在一起。",
+      "identity_id": null
+    },
+    {
+      "slot_id": "line_0012",
+      "speech_id": "speech_0012",
+      "source": {
+        "episode_id": "ep-1-d4a62b9d",
+        "scene_id": "ep1-scene2",
+        "line_id": "ep1-s2-l2"
+      },
+      "kind": "dialogue",
+      "text": "我怎么就没仔细看呢……",
+      "identity_id": "legend-moyu"
+    },
+    {
+      "slot_id": "line_0013",
+      "speech_id": "speech_0013",
+      "source": {
+        "episode_id": "ep-1-d4a62b9d",
+        "scene_id": "ep1-scene2",
+        "line_id": "ep1-s2-l3"
+      },
+      "kind": "dialogue",
+      "text": "这边，三号站台在那边。",
+      "identity_id": "legend-lingmo"
+    },
+    {
+      "slot_id": "line_0014",
+      "speech_id": "speech_0014",
+      "source": {
+        "episode_id": "ep-1-d4a62b9d",
+        "scene_id": "ep1-scene2",
+        "line_id": "ep1-s2-l4"
+      },
+      "kind": "sfx",
+      "text": "脚步声持续，节奏加快。远处传来车辆进站的提示音，伴随着刹车声，由远及近。",
+      "identity_id": null
+    },
+    {
+      "slot_id": "line_0015",
+      "speech_id": "speech_0015",
+      "source": {
+        "episode_id": "ep-1-d4a62b9d",
+        "scene_id": "ep1-scene2",
+        "line_id": "ep1-s2-l5"
+      },
+      "kind": "dialogue",
+      "text": "等等我们！",
+      "identity_id": "legend-moyu"
+    },
+    {
+      "slot_id": "line_0016",
+      "speech_id": "speech_0016",
+      "source": {
+        "episode_id": "ep-1-d4a62b9d",
+        "scene_id": "ep1-scene2",
+        "line_id": "ep1-s2-l6"
+      },
+      "kind": "sfx",
+      "text": "脚步声渐缓，车门打开的气压声响起，清晰而近。",
+      "identity_id": null
+    },
+    {
+      "slot_id": "line_0017",
+      "speech_id": "speech_0017",
+      "source": {
+        "episode_id": "ep-1-d4a62b9d",
+        "scene_id": "ep1-scene3",
+        "line_id": "ep1-s3-l1"
+      },
+      "kind": "action",
+      "text": "两人喘息声渐平。",
+      "identity_id": null
+    },
+    {
+      "slot_id": "line_0018",
+      "speech_id": "speech_0018",
+      "source": {
+        "episode_id": "ep-1-d4a62b9d",
+        "scene_id": "ep1-scene3",
+        "line_id": "ep1-s3-l2"
+      },
+      "kind": "dialogue",
+      "text": "以后得先看清通知。",
+      "identity_id": "legend-moyu"
+    },
+    {
+      "slot_id": "line_0019",
+      "speech_id": "speech_0019",
+      "source": {
+        "episode_id": "ep-1-d4a62b9d",
+        "scene_id": "ep1-scene3",
+        "line_id": "ep1-s3-l3"
+      },
+      "kind": "dialogue",
+      "text": "嗯，我们一起看。",
+      "identity_id": "legend-lingmo"
+    },
+    {
+      "slot_id": "line_0020",
+      "speech_id": "speech_0020",
+      "source": {
+        "episode_id": "ep-1-d4a62b9d",
+        "scene_id": "ep1-scene3",
+        "line_id": "ep1-s3-l4"
+      },
+      "kind": "sfx",
+      "text": "车辆启动，引擎声渐强后渐弱，逐渐远去。",
+      "identity_id": null
+    }
+  ],
+  "choices": {
+    "line_0001": {
+      "operations": [
+        {
+          "operation_id": "sfx_vehicle_pass_1",
+          "mode": "one_shot",
+          "cue_text": "远处传来模糊的车辆引擎声，由远及近，又渐渐消失。",
+          "reason": "车辆驶过是一个有自然结束的完整过程，使用 one_shot 即可。",
+          "start": {
+            "operation_id": null,
+            "point": "start",
+            "offset_ms": 0
+          },
+          "gain_db": 0.0
+        }
+      ]
+    },
+    "line_0002": {
+      "start": {
+        "operation_id": "sfx_vehicle_pass_1",
+        "point": "end",
+        "offset_ms": 0
+      },
+      "gain_db": 0.0
+    },
+    "line_0003": {
+      "start": {
+        "operation_id": "speech_0002",
+        "point": "end",
+        "offset_ms": 0
+      },
+      "gain_db": 0.0
+    },
+    "line_0004": {
+      "start": {
+        "operation_id": "speech_0003",
+        "point": "end",
+        "offset_ms": 0
+      },
+      "gain_db": 0.0
+    },
+    "line_0005": {
+      "start": {
+        "operation_id": "speech_0004",
+        "point": "end",
+        "offset_ms": 0
+      },
+      "gain_db": 0.0
+    },
+    "line_0006": {
+      "operations": [
+        {
+          "operation_id": "action_find_note",
+          "mode": "action_note",
+          "cue_text": "墨羽翻找口袋，拿出通知。",
+          "reason": "动作用于记录剧情节奏，不产生声音。",
+          "start": {
+            "operation_id": "speech_0005",
+            "point": "end",
+            "offset_ms": 0
+          }
+        }
+      ]
+    },
+    "line_0007": {
+      "start": {
+        "operation_id": "action_find_note",
+        "point": "start",
+        "offset_ms": 2000
+      },
+      "gain_db": 0.0
+    },
+    "line_0008": {
+      "operations": [
+        {
+          "operation_id": "action_silence_1",
+          "mode": "action_note",
+          "cue_text": "短暂的沉默。",
+          "reason": "原文标明沉默停顿，给予真实间隔。",
+          "start": {
+            "operation_id": "speech_0007",
+            "point": "end",
+            "offset_ms": 0
+          }
+        }
+      ]
+    },
+    "line_0009": {
+      "start": {
+        "operation_id": "action_silence_1",
+        "point": "start",
+        "offset_ms": 3000
+      },
+      "gain_db": 0.0
+    },
+    "line_0010": {
+      "start": {
+        "operation_id": "speech_0009",
+        "point": "end",
+        "offset_ms": 0
+      },
+      "gain_db": 0.0
+    },
+    "line_0011": {
+      "operations": [
+        {
+          "operation_id": "sfx_footsteps_start",
+          "mode": "background",
+          "cue_text": "急促的脚步声响起",
+          "reason": "脚步声需要持续循环作为底噪，直到后续停止。",
+          "start": {
+            "operation_id": "speech_0010",
+            "point": "end",
+            "offset_ms": 0
+          },
+          "end": null,
+          "gain_db": 0.0,
+          "fade_out_ms": 0
+        },
+        {
+          "operation_id": "sfx_footsteps_change_1",
+          "mode": "change_background",
+          "cue_text": "由慢变快",
+          "reason": "根据原文脚步节奏由慢变快，调整已有背景素材。",
+          "start": {
+            "operation_id": "sfx_footsteps_start",
+            "point": "start",
+            "offset_ms": 500
+          },
+          "control_target": "sfx_footsteps_start",
+          "transition_end": {
+            "operation_id": "sfx_footsteps_start",
+            "point": "start",
+            "offset_ms": 2000
+          },
+          "target_gain_db": 2.0,
+          "gain_db": 0.0
+        }
+      ]
+    },
+    "line_0012": {
+      "start": {
+        "operation_id": "sfx_footsteps_start",
+        "point": "start",
+        "offset_ms": 1500
+      },
+      "gain_db": 0.0
+    },
+    "line_0013": {
+      "start": {
+        "operation_id": "speech_0012",
+        "point": "end",
+        "offset_ms": 200
+      },
+      "gain_db": 0.0
+    },
+    "line_0014": {
+      "operations": [
+        {
+          "operation_id": "sfx_footsteps_change_2",
+          "mode": "change_background",
+          "cue_text": "脚步声持续，节奏加快。",
+          "reason": "脚步节奏持续变快，通过再次调整背景素材强调急迫感。",
+          "start": {
+            "operation_id": "speech_0013",
+            "point": "end",
+            "offset_ms": 0
+          },
+          "control_target": "sfx_footsteps_start",
+          "transition_end": {
+            "operation_id": "sfx_footsteps_change_2",
+            "point": "start",
+            "offset_ms": 1000
+          },
+          "target_gain_db": 4.0,
+          "gain_db": 0.0
+        },
+        {
+          "operation_id": "sfx_bus_arrive",
+          "mode": "one_shot",
+          "cue_text": "远处传来车辆进站的提示音，伴随着刹车声，由远及近。",
+          "reason": "车辆进站提示音与刹车声是一个有自然结束的完整过程，使用 one_shot 表达。",
+          "start": {
+            "operation_id": "sfx_footsteps_change_2",
+            "point": "start",
+            "offset_ms": 1500
+          },
+          "gain_db": 0.0
+        }
+      ]
+    },
+    "line_0015": {
+      "start": {
+        "operation_id": "sfx_bus_arrive",
+        "point": "end",
+        "offset_ms": 2000
+      },
+      "gain_db": 0.0
+    },
+    "line_0016": {
+      "operations": [
+        {
+          "operation_id": "sfx_footsteps_stop",
+          "mode": "stop_sound",
+          "cue_text": "脚步声渐缓",
+          "reason": "根据原文脚步声最终停下，停止脚步背景层。",
+          "start": {
+            "operation_id": "sfx_footsteps_change_2",
+            "point": "start",
+            "offset_ms": 500
+          },
+          "stop_target": "sfx_footsteps_start",
+          "end": {
+            "operation_id": "speech_0015",
+            "point": "end",
+            "offset_ms": 2000
+          },
+          "gain_db": 0.0
+        },
+        {
+          "operation_id": "sfx_door_open",
+          "mode": "one_shot",
+          "cue_text": "车门打开的气压声响起，清晰而近。",
+          "reason": "车门气压声是一次性的短促音效，非常适合 one_shot。",
+          "start": {
+            "operation_id": "sfx_footsteps_stop",
+            "point": "end",
+            "offset_ms": 0
+          },
+          "gain_db": 0.0
+        }
+      ]
+    },
+    "line_0017": {
+      "operations": [
+        {
+          "operation_id": "action_panting",
+          "mode": "action_note",
+          "cue_text": "两人喘息声渐平。",
+          "reason": "喘息声渐平属于动作描写，标记表演状态。",
+          "start": {
+            "operation_id": "sfx_door_open",
+            "point": "end",
+            "offset_ms": 0
+          }
+        }
+      ]
+    },
+    "line_0018": {
+      "start": {
+        "operation_id": "action_panting",
+        "point": "start",
+        "offset_ms": 3000
+      },
+      "gain_db": 0.0
+    },
+    "line_0019": {
+      "start": {
+        "operation_id": "speech_0018",
+        "point": "end",
+        "offset_ms": 0
+      },
+      "gain_db": 0.0
+    },
+    "line_0020": {
+      "operations": [
+        {
+          "operation_id": "sfx_bus_depart",
+          "mode": "one_shot",
+          "cue_text": "车辆启动，引擎声渐强后渐弱，逐渐远去。",
+          "reason": "车辆启动远去是完整声音过程，有自然结束，使用 one_shot 即可。",
+          "start": {
+            "operation_id": "speech_0019",
+            "point": "end",
+            "offset_ms": 500
+          },
+          "gain_db": 0.0
+        }
+      ]
+    }
+  },
+  "source_version_id": "9d449dd945fc4b20abec6bb22dc4bc94",
+  "delivery_sha256": "eaf5165154a33b5d0aed8a6d32da8f23869be22bb781428424adfd3012c25847"
+}

@@ -1,0 +1,997 @@
+{
+  "engine_version": "0.2.1",
+  "rule_library": {
+    "formula_version": "1.0.0",
+    "timetravel_version": "1.2.0",
+    "continuity_version": "1.0.0",
+    "prompt_version": "p1.1.0",
+    "genres": 10,
+    "recipes": 5,
+    "r_rules": 13,
+    "k_rules": 18,
+    "ch_rules": 6,
+    "rl_rules": 5,
+    "fc_rules": 6,
+    "ev_rules": 6,
+    "max_voiced_characters": 5
+  },
+  "brief": {
+    "raw_idea": "社畜穿越成将军府嫡女，用现代记账法整顿府库",
+    "genre_id": null,
+    "target_episodes": 1,
+    "target_duration_sec": 90,
+    "locked_assets": [],
+    "audio_fit_floor": 70,
+    "notes": ""
+  },
+  "genre_id": "G01",
+  "recipe_id": "R4",
+  "gadget": {
+    "assets": [
+      {
+        "id": "audit_mind",
+        "name": "复式审计思维与数据沙盘",
+        "layer": "L3",
+        "curve": "TC1",
+        "capacity": "infinite",
+        "activation": "接触原始账册并在脑海或沙盘建立复式记账与数据透视模型",
+        "knowledge_track": true,
+        "non_resource_constraint": "知识盲区：现代审计无法识别古代特有的实物折算火耗与政治人情暗账，导致初期查错方向，必须依赖本土老账房的经验补全认知。",
+        "decay_plan": null
+      },
+      {
+        "id": "anti_fake_ink",
+        "name": "现代防伪显影印泥",
+        "layer": "L2",
+        "curve": "TC2",
+        "capacity": "limited",
+        "activation": "涂抹于纸张或皮肤，遇特定温度或水渍显现隐藏荧光印记",
+        "knowledge_track": false,
+        "non_resource_constraint": null,
+        "decay_plan": "定点投放：1.用于底层军饷票防伪收买军心；2.用于传递绝密军情；3.用于伪造贪官受贿收据。随着印泥见底，主角被迫研发古代替代配方，期间因替代品瑕疵引发伪钞危机。"
+      }
+    ],
+    "core_conflict": "将军府账面亏空巨大且军饷被贪，面临朝廷钦差查账与底层士兵哗变的双重死局，主角必须在限期内平账并揪出内鬼。",
+    "escalated_conflict": "平账后发现亏空并非贪腐，而是将军父亲暗中挪用军费资助夺嫡与私养死士，账本从经济烂摊子变成了谋反铁证，主角卷入皇权绞肉机。",
+    "escalation_rationale": "记账法金手指完美解决了查账与平账的经济冲突，若冲突停留在抓贪官则沦为流水账。必须将冲突上移至政治层，让账目清晰本身成为致命威胁，从而产生无法用记账法解决的政治张力。"
+  },
+  "cast": [
+    {
+      "slot": "A",
+      "name": "沈青筠",
+      "role_label": "穿越嫡女/账房主理",
+      "voice_label": "冷静理智、带着现代社畜的疲惫与干练",
+      "voice_anchor": "语速平稳偏快，思考时带有轻微的吸气声，句尾习惯干脆利落不收尾音",
+      "speech_rate": 1.1,
+      "catchphrase": "账平了吗？",
+      "sfx_signature": "算盘清脆的拨珠声伴随纸张翻动的沙沙声",
+      "faction": "protagonist",
+      "same_camp": true,
+      "is_voiced": true,
+      "merged_into": null
+    },
+    {
+      "slot": "B",
+      "name": "沙盘",
+      "role_label": "复式审计思维/数据沙盘",
+      "voice_label": "绝对理智、毫无波澜的机械感女声",
+      "voice_anchor": "语速恒定无起伏，句尾带有极轻微的电子混响，数字播报时咬字极度清晰",
+      "speech_rate": 1.0,
+      "catchphrase": "数据透视完成，误差三厘。",
+      "sfx_signature": "类似算盘与电子音效结合的滴嗒清脆锁定声",
+      "faction": "ally",
+      "same_camp": true,
+      "is_voiced": true,
+      "merged_into": null
+    },
+    {
+      "slot": "C",
+      "name": "沈云舟",
+      "role_label": "觉醒的弟弟/情绪供给",
+      "voice_label": "少年音，清澈热血，对姐姐无条件崇拜",
+      "voice_anchor": "语速较快，情绪激动时会有轻微的破音或喘息，称呼姐姐时带有上扬的尾音",
+      "speech_rate": 1.2,
+      "catchphrase": "姐，我帮你！",
+      "sfx_signature": "少年人拔剑出鞘的清脆铮鸣",
+      "faction": "ally",
+      "same_camp": true,
+      "is_voiced": true,
+      "merged_into": null
+    },
+    {
+      "slot": "D",
+      "name": "柳氏",
+      "role_label": "吸血继母/情绪压力源",
+      "voice_label": "表面温婉实则刻薄，喜欢用软刀子割人",
+      "voice_anchor": "说话喜欢拖长尾音，句首常带一声娇柔的轻笑，反问时语调上扬且带有气声",
+      "speech_rate": 0.85,
+      "catchphrase": "青筠啊，母亲这也是为了府里好……",
+      "sfx_signature": "护甲刮擦瓷茶杯盖的刺耳摩擦声",
+      "faction": "antagonist",
+      "same_camp": true,
+      "is_voiced": true,
+      "merged_into": null
+    },
+    {
+      "slot": "E",
+      "name": "沈婉儿",
+      "role_label": "被偏袒的庶妹/打脸落点",
+      "voice_label": "娇纵天真，带着不谙世事的愚蠢与傲慢",
+      "voice_anchor": "语速轻快，笑声清脆但缺乏底气，生气时习惯跺脚伴随急促的呼吸声",
+      "speech_rate": 1.15,
+      "catchphrase": "凭什么她可以，我就不行？",
+      "sfx_signature": "珠串剧烈碰撞的杂乱声响",
+      "faction": "antagonist",
+      "same_camp": true,
+      "is_voiced": true,
+      "merged_into": null
+    }
+  ],
+  "behavior": {
+    "hero_misbelief": "只要账目做平、数据无误，就能解决所有现实危机，忽视了政治与人性的非理性",
+    "against_self_interest_total": 7,
+    "cards": [
+      {
+        "slot": "A",
+        "name": "沈青筠",
+        "misbelief": "只要账目做平、数据无误，就能解决所有现实危机，忽视了政治与人性的非理性",
+        "arc": "从迷信数据的现代社畜，成长为懂得在政治泥潭中利用人心与规则破局的执棋者",
+        "choices": 3,
+        "pressure_types": [
+          "P4",
+          "P5",
+          "P6"
+        ],
+        "against_self_interest": 2
+      },
+      {
+        "slot": "B",
+        "name": "沙盘",
+        "misbelief": "所有人类行为都可以被量化为数据并精准预测",
+        "arc": "从冰冷的数据播报器，逐渐学会在播报中加入风险提示以辅助宿主的人性决策",
+        "choices": 3,
+        "pressure_types": [
+          "P1",
+          "P2",
+          "P5"
+        ],
+        "against_self_interest": 1
+      },
+      {
+        "slot": "C",
+        "name": "沈云舟",
+        "misbelief": "只要自己武力够强、够拼命，就能解决姐姐面临的所有麻烦",
+        "arc": "从只懂拔剑的冲动少年，成长为懂得用脑子和隐忍来守护家人的将领",
+        "choices": 3,
+        "pressure_types": [
+          "P1",
+          "P3",
+          "P4"
+        ],
+        "against_self_interest": 2
+      },
+      {
+        "slot": "D",
+        "name": "柳氏",
+        "misbelief": "后宅女人的手段足以对付一切敌人，包括前朝的账目",
+        "arc": "从自以为掌控后宅的吸血继母，沦为政治斗争中被轻易碾碎的弃子",
+        "choices": 3,
+        "pressure_types": [
+          "P1",
+          "P2",
+          "P3"
+        ],
+        "against_self_interest": 1
+      },
+      {
+        "slot": "E",
+        "name": "沈婉儿",
+        "misbelief": "只要自己哭闹撒娇，父亲和母亲就会像以前一样满足自己的一切要求",
+        "arc": "从娇纵愚蠢的庶妹，在家族覆灭的毒打中认清现实，最终学会自食其力",
+        "choices": 3,
+        "pressure_types": [
+          "P2",
+          "P3",
+          "P6"
+        ],
+        "against_self_interest": 1
+      }
+    ],
+    "relations": [
+      {
+        "pair": "沈青筠→沙盘",
+        "axis": "trust",
+        "path": "away→toward",
+        "turning_points": [
+          3,
+          8
+        ]
+      },
+      {
+        "pair": "沈青筠→沈云舟",
+        "axis": "trust",
+        "path": "away→toward",
+        "turning_points": [
+          2,
+          6
+        ]
+      },
+      {
+        "pair": "沈青筠→柳氏",
+        "axis": "rivalry",
+        "path": "volatile→away",
+        "turning_points": [
+          4
+        ]
+      },
+      {
+        "pair": "沈青筠→沈婉儿",
+        "axis": "rivalry",
+        "path": "volatile→frozen",
+        "turning_points": [
+          5
+        ]
+      }
+    ]
+  },
+  "outline": [
+    {
+      "episode": 1,
+      "title": "第一集：账平天下",
+      "act": 4,
+      "core_goal": "将将军府谋反死局转化为违规经商，保全家族的同时，利用假账本中的暗号向朝廷传递夺嫡情报，从解决家族账目危机升维至干预皇权更迭与历史进程。",
+      "conflict_intensity": 10,
+      "polarity": "positive",
+      "loop_step": null,
+      "side_effect_of": null,
+      "deployment": "现代防伪显影印泥用于伪造死士为商队护卫的假账，耗尽最后三滴，引入无法验证核心军情真伪的新变量",
+      "gadget_failed": true,
+      "quantified_gain": "保全将军府三百口性命，获得太子暗中庇护",
+      "exercised_choice": "沈青筠@P6：发现父亲挪用军饷养死士的账本，交出可保全自己，隐瞒则满门抄斩 → 利用防伪印泥伪造一份死士实为商队护卫的假账，把谋反降级为违规经商｜代价：耗尽了仅剩的三滴现代防伪印泥，导致后续无法验证核心军情真伪，且自己背上欺君的隐性死罪 ★违背自身利益",
+      "relation_turn": null,
+      "carried_facts": [
+        "res_01_ink",
+        "know_01_treason",
+        "prom_01_prince"
+      ]
+    }
+  ],
+  "ledger": {
+    "entries": [
+      {
+        "id": "res_01_ink",
+        "kind": "resource",
+        "subject": "现代防伪显影印泥",
+        "statement": "第1集伪造假账时耗尽最后3滴，余量归零，后续需研发古代替代配方。",
+        "established_at": 1,
+        "due_at": null,
+        "holders": [
+          "沈青筠",
+          "沙盘"
+        ],
+        "forbidden_holders": [
+          "沈云舟",
+          "柳氏",
+          "沈婉儿"
+        ],
+        "expected_mentions": [
+          1
+        ],
+        "remaining": 0
+      },
+      {
+        "id": "know_01_treason",
+        "kind": "knowledge",
+        "subject": "谋反死局降级为违规经商的真相",
+        "statement": "第1集沈青筠利用假账将父亲养死士的谋反死局伪装成违规经商，此欺君真相仅沈青筠与沙盘知晓。",
+        "established_at": 1,
+        "due_at": null,
+        "holders": [
+          "沈青筠",
+          "沙盘"
+        ],
+        "forbidden_holders": [
+          "沈云舟",
+          "柳氏",
+          "沈婉儿"
+        ],
+        "expected_mentions": [
+          1
+        ],
+        "remaining": null
+      },
+      {
+        "id": "prom_01_prince",
+        "kind": "promise",
+        "subject": "太子暗中庇护承诺",
+        "statement": "第1集将军府保全后，太子暗中承诺给予庇护，此承诺尚未兑现。",
+        "established_at": 1,
+        "due_at": null,
+        "holders": [
+          "沈青筠",
+          "沙盘"
+        ],
+        "forbidden_holders": [
+          "沈云舟",
+          "柳氏",
+          "沈婉儿"
+        ],
+        "expected_mentions": [
+          1
+        ],
+        "remaining": null
+      }
+    ],
+    "note": ""
+  },
+  "episode_count": 1,
+  "script": [
+    {
+      "episode": 1,
+      "title": "第一集：账平天下",
+      "duration_sec": 90,
+      "hook_type": "反转钩",
+      "revision": 2,
+      "line_count": 34,
+      "lines": [
+        {
+          "id": "L1",
+          "segment": "S1",
+          "kind": "sfx",
+          "speaker": null,
+          "text": "算盘猛砸碎裂声",
+          "start_sec": 0.0,
+          "end_sec": 3.0,
+          "sfx_category": "AV1",
+          "event": "hook",
+          "emotion_peak": 8
+        },
+        {
+          "id": "L2",
+          "segment": "S2",
+          "kind": "dialogue",
+          "speaker": "柳氏",
+          "text": "钦差就在门外，亏空怎么平？",
+          "start_sec": 3.0,
+          "end_sec": 5.0,
+          "sfx_category": null,
+          "event": null,
+          "emotion_peak": 0
+        },
+        {
+          "id": "L3",
+          "segment": "S2",
+          "kind": "dialogue",
+          "speaker": "沈青筠",
+          "text": "表面账已平。",
+          "start_sec": 5.0,
+          "end_sec": 6.0,
+          "sfx_category": null,
+          "event": null,
+          "emotion_peak": 0
+        },
+        {
+          "id": "L4",
+          "segment": "S2",
+          "kind": "dialogue",
+          "speaker": "柳氏",
+          "text": "那暗账呢？",
+          "start_sec": 6.0,
+          "end_sec": 8.0,
+          "sfx_category": null,
+          "event": null,
+          "emotion_peak": 0
+        },
+        {
+          "id": "L5",
+          "segment": "S2",
+          "kind": "dialogue",
+          "speaker": "沈青筠",
+          "text": "正在查。",
+          "start_sec": 8.0,
+          "end_sec": 10.0,
+          "sfx_category": null,
+          "event": null,
+          "emotion_peak": 0
+        },
+        {
+          "id": "L6",
+          "segment": "S3",
+          "kind": "sfx",
+          "speaker": null,
+          "text": "夜风呼啸，窗棂震颤",
+          "start_sec": 10.0,
+          "end_sec": 12.0,
+          "sfx_category": "AV4",
+          "event": null,
+          "emotion_peak": 0
+        },
+        {
+          "id": "L7",
+          "segment": "S3",
+          "kind": "sfx",
+          "speaker": null,
+          "text": "急促翻找暗账的纸张声",
+          "start_sec": 12.0,
+          "end_sec": 14.0,
+          "sfx_category": "AV1",
+          "event": null,
+          "emotion_peak": 0
+        },
+        {
+          "id": "L8",
+          "segment": "S3",
+          "kind": "dialogue",
+          "speaker": "沈青筠",
+          "text": "上次强行平账，竟引出死士暗账！",
+          "start_sec": 14.0,
+          "end_sec": 18.0,
+          "sfx_category": null,
+          "event": null,
+          "emotion_peak": 0
+        },
+        {
+          "id": "L9",
+          "segment": "S3",
+          "kind": "dialogue",
+          "speaker": "沙盘",
+          "text": "谋反死局。建议交出账本。",
+          "start_sec": 18.0,
+          "end_sec": 21.0,
+          "sfx_category": null,
+          "event": null,
+          "emotion_peak": 0
+        },
+        {
+          "id": "L10",
+          "segment": "S3",
+          "kind": "dialogue",
+          "speaker": "沈青筠",
+          "text": "不！用印泥，伪造成商队护卫！",
+          "start_sec": 21.0,
+          "end_sec": 25.0,
+          "sfx_category": null,
+          "event": null,
+          "emotion_peak": 0
+        },
+        {
+          "id": "L11",
+          "segment": "S3",
+          "kind": "sfx",
+          "speaker": null,
+          "text": "滴管滴落三声，空管刮擦",
+          "start_sec": 25.0,
+          "end_sec": 27.0,
+          "sfx_category": "AV1",
+          "event": null,
+          "emotion_peak": 0
+        },
+        {
+          "id": "L12",
+          "segment": "S3",
+          "kind": "dialogue",
+          "speaker": "沙盘",
+          "text": "印泥归零。代价：欺君死罪。",
+          "start_sec": 27.0,
+          "end_sec": 30.0,
+          "sfx_category": null,
+          "event": "release",
+          "emotion_peak": 8
+        },
+        {
+          "id": "L13",
+          "segment": "S4",
+          "kind": "sfx",
+          "speaker": null,
+          "text": "门外喧闹渐弱，室内死寂",
+          "start_sec": 30.0,
+          "end_sec": 32.0,
+          "sfx_category": "AV4",
+          "event": null,
+          "emotion_peak": 0
+        },
+        {
+          "id": "L14",
+          "segment": "S4",
+          "kind": "dialogue",
+          "speaker": "沈云舟",
+          "text": "姐，江南盐税底稿，我理清了。",
+          "start_sec": 32.0,
+          "end_sec": 36.0,
+          "sfx_category": null,
+          "event": null,
+          "emotion_peak": 0
+        },
+        {
+          "id": "L15",
+          "segment": "S4",
+          "kind": "sfx",
+          "speaker": null,
+          "text": "纸张递过，轻快翻动声",
+          "start_sec": 36.0,
+          "end_sec": 38.0,
+          "sfx_category": "AV1",
+          "event": null,
+          "emotion_peak": 0
+        },
+        {
+          "id": "L16",
+          "segment": "S4",
+          "kind": "dialogue",
+          "speaker": "沈青筠",
+          "text": "算得不错，没丢我的脸。",
+          "start_sec": 38.0,
+          "end_sec": 41.0,
+          "sfx_category": null,
+          "event": null,
+          "emotion_peak": 0
+        },
+        {
+          "id": "L17",
+          "segment": "S4",
+          "kind": "sfx",
+          "speaker": null,
+          "text": "护甲刮擦茶杯盖，刺耳",
+          "start_sec": 41.0,
+          "end_sec": 43.0,
+          "sfx_category": "AV1",
+          "event": null,
+          "emotion_peak": 0
+        },
+        {
+          "id": "L18",
+          "segment": "S4",
+          "kind": "dialogue",
+          "speaker": "柳氏",
+          "text": "青筠，母亲这也是为了府里好……",
+          "start_sec": 43.0,
+          "end_sec": 48.0,
+          "sfx_category": null,
+          "event": null,
+          "emotion_peak": 0
+        },
+        {
+          "id": "L19",
+          "segment": "S4",
+          "kind": "sfx",
+          "speaker": null,
+          "text": "算盘清脆拨珠声，利落",
+          "start_sec": 48.0,
+          "end_sec": 50.0,
+          "sfx_category": "AV1",
+          "event": null,
+          "emotion_peak": 0
+        },
+        {
+          "id": "L20",
+          "segment": "S4",
+          "kind": "dialogue",
+          "speaker": "沈青筠",
+          "text": "母亲，这笔账，您平不了，我来。",
+          "start_sec": 50.0,
+          "end_sec": 54.0,
+          "sfx_category": null,
+          "event": "beat",
+          "emotion_peak": 6
+        },
+        {
+          "id": "L21",
+          "segment": "S4",
+          "kind": "sfx",
+          "speaker": null,
+          "text": "纸张被用力撕碎",
+          "start_sec": 54.0,
+          "end_sec": 56.0,
+          "sfx_category": "AV1",
+          "event": null,
+          "emotion_peak": 0
+        },
+        {
+          "id": "L22",
+          "segment": "S4",
+          "kind": "dialogue",
+          "speaker": "沈婉儿",
+          "text": "凭什么她可以，我就不行？",
+          "start_sec": 56.0,
+          "end_sec": 60.0,
+          "sfx_category": null,
+          "event": null,
+          "emotion_peak": 0
+        },
+        {
+          "id": "L23",
+          "segment": "S4",
+          "kind": "sfx",
+          "speaker": null,
+          "text": "脚步声渐远，环境音变空旷",
+          "start_sec": 60.0,
+          "end_sec": 62.0,
+          "sfx_category": "AV4",
+          "event": null,
+          "emotion_peak": 0
+        },
+        {
+          "id": "L24",
+          "segment": "S4",
+          "kind": "sfx",
+          "speaker": null,
+          "text": "压抑的抽泣声",
+          "start_sec": 62.0,
+          "end_sec": 64.0,
+          "sfx_category": "AV1",
+          "event": null,
+          "emotion_peak": 0
+        },
+        {
+          "id": "L25",
+          "segment": "S4",
+          "kind": "sfx",
+          "speaker": null,
+          "text": "大门推开，沉重脚步声逼近",
+          "start_sec": 64.0,
+          "end_sec": 67.0,
+          "sfx_category": "AV4",
+          "event": null,
+          "emotion_peak": 0
+        },
+        {
+          "id": "L26",
+          "segment": "S4",
+          "kind": "dialogue",
+          "speaker": "钦差",
+          "text": "沈大小姐，账册拿来！",
+          "start_sec": 67.0,
+          "end_sec": 70.0,
+          "sfx_category": null,
+          "event": "hook",
+          "emotion_peak": 7
+        },
+        {
+          "id": "L27",
+          "segment": "S5",
+          "kind": "sfx",
+          "speaker": null,
+          "text": "厚重账册拍在桌上",
+          "start_sec": 70.0,
+          "end_sec": 72.0,
+          "sfx_category": "AV1",
+          "event": null,
+          "emotion_peak": 0
+        },
+        {
+          "id": "L28",
+          "segment": "S5",
+          "kind": "dialogue",
+          "speaker": "钦差",
+          "text": "养死士？这是谋反！等等...",
+          "start_sec": 72.0,
+          "end_sec": 76.0,
+          "sfx_category": null,
+          "event": null,
+          "emotion_peak": 0
+        },
+        {
+          "id": "L29",
+          "segment": "S5",
+          "kind": "sfx",
+          "speaker": null,
+          "text": "滴水显影的滋滋声",
+          "start_sec": 76.0,
+          "end_sec": 78.0,
+          "sfx_category": "AV1",
+          "event": null,
+          "emotion_peak": 0
+        },
+        {
+          "id": "L30",
+          "segment": "S5",
+          "kind": "dialogue",
+          "speaker": "钦差",
+          "text": "商队护卫印泥？只是违规经商！",
+          "start_sec": 78.0,
+          "end_sec": 82.0,
+          "sfx_category": null,
+          "event": "reversal",
+          "emotion_peak": 9
+        },
+        {
+          "id": "L31",
+          "segment": "S5",
+          "kind": "dialogue",
+          "speaker": "沙盘",
+          "text": "危机解除。太子密信已夹入账册。",
+          "start_sec": 82.0,
+          "end_sec": 85.0,
+          "sfx_category": null,
+          "event": null,
+          "emotion_peak": 0
+        },
+        {
+          "id": "L32",
+          "segment": "S6",
+          "kind": "dialogue",
+          "speaker": "沈青筠",
+          "text": "密信里，太子承诺了暗中庇护。",
+          "start_sec": 85.0,
+          "end_sec": 88.0,
+          "sfx_category": null,
+          "event": null,
+          "emotion_peak": 0
+        },
+        {
+          "id": "L33",
+          "segment": "S6",
+          "kind": "dialogue",
+          "speaker": "沈青筠",
+          "text": "沙盘，关闭演算。",
+          "start_sec": 88.0,
+          "end_sec": 89.0,
+          "sfx_category": null,
+          "event": null,
+          "emotion_peak": 0
+        },
+        {
+          "id": "L34",
+          "segment": "S6",
+          "kind": "dialogue",
+          "speaker": "沙盘",
+          "text": "已关闭。祝你好运，青筠。",
+          "start_sec": 89.0,
+          "end_sec": 90.0,
+          "sfx_category": null,
+          "event": "cliffhanger",
+          "emotion_peak": 10
+        }
+      ]
+    }
+  ],
+  "validation": {
+    "outstanding": {
+      "total": 9,
+      "errors": 2,
+      "warnings": 7,
+      "tier1": 9,
+      "tier2": 0,
+      "by_rule": {
+        "K05": 1,
+        "R05": 1,
+        "R11": 3,
+        "R09": 1,
+        "RL02": 1,
+        "CH01": 1,
+        "EV05": 1
+      },
+      "by_location": {
+        "outline": 2,
+        "episode": 1,
+        "S2": 1,
+        "S5": 1,
+        "S6": 1,
+        "series": 2,
+        "沈青筠-沙盘": 1
+      },
+      "details": [
+        {
+          "rule_id": "K05",
+          "severity": "warning",
+          "tier": 1,
+          "location": "outline",
+          "message": "现代段为空，无法完成开场情绪释放",
+          "repair_hint": "至少保留 1 集现代段。",
+          "route": "repair_outline",
+          "evidence": "",
+          "pattern": ""
+        },
+        {
+          "rule_id": "R05",
+          "severity": "error",
+          "tier": 1,
+          "location": "episode",
+          "message": "结尾钩子类型非法或缺失：反转钩",
+          "repair_hint": "必须取六类钩子之一：['H1', 'H2', 'H3', 'H4', 'H5', 'H6']。广播剧最优的是反转钩 H6 与危机钩 H5。",
+          "route": "repair_beat",
+          "evidence": "",
+          "pattern": ""
+        },
+        {
+          "rule_id": "R11",
+          "severity": "warning",
+          "tier": 1,
+          "location": "S2",
+          "message": "节拍 S2 没有任何音效",
+          "repair_hint": "短刺激点也至少要有一个音效落点。",
+          "route": "repair_audio",
+          "evidence": "",
+          "pattern": ""
+        },
+        {
+          "rule_id": "R11",
+          "severity": "warning",
+          "tier": 1,
+          "location": "S5",
+          "message": "节拍 S5（15s）缺少 环境音",
+          "repair_hint": "超过 15 秒的场景必须同时有环境音与动作音。",
+          "route": "repair_audio",
+          "evidence": "",
+          "pattern": ""
+        },
+        {
+          "rule_id": "R11",
+          "severity": "warning",
+          "tier": 1,
+          "location": "S6",
+          "message": "节拍 S6 没有任何音效",
+          "repair_hint": "短刺激点也至少要有一个音效落点。",
+          "route": "repair_audio",
+          "evidence": "",
+          "pattern": ""
+        },
+        {
+          "rule_id": "R09",
+          "severity": "error",
+          "tier": 1,
+          "location": "series",
+          "message": "实际开口的角色有 6 个，超过上限 5：['柳氏', '沈云舟', '沈婉儿', '沈青筠', '沙盘', '钦差']",
+          "repair_hint": "合并声线或降级为旁白提及。听众无法靠脸认人。",
+          "route": "repair_cast",
+          "evidence": "",
+          "pattern": ""
+        },
+        {
+          "rule_id": "RL02",
+          "severity": "warning",
+          "tier": 1,
+          "location": "沈青筠-沙盘",
+          "message": "关系「沈青筠→沙盘（trust）」声明终局为 toward，但最后三集的正文中找不到支撑痕迹",
+          "repair_hint": "关系终局需要在结尾附近有一次可听见的确认，否则整条关系线等于没有兑现。",
+          "route": "none",
+          "evidence": "",
+          "pattern": "fake_trust"
+        },
+        {
+          "rule_id": "CH01",
+          "severity": "warning",
+          "tier": 1,
+          "location": "outline",
+          "message": "以下有声角色全剧没有一次选择被演练：['沙盘', '沈云舟', '柳氏', '沈婉儿']",
+          "repair_hint": "要么给他一集属于自己的选择（哪怕只有一句台词），要么把他合并掉 —— 有声角色是稀缺资源，不该用来当背景板。",
+          "route": "none",
+          "evidence": "",
+          "pattern": "label_only"
+        },
+        {
+          "rule_id": "EV05",
+          "severity": "warning",
+          "tier": 1,
+          "location": "series",
+          "message": "正文中新出现、账本未登记的事实 2 条：['沈婉儿被罚抄府规并撕碎纸张、压抑抽泣', '沙盘具有人格化对话能力并主动告别『祝你好运，青筠』']",
+          "repair_hint": "判断它们是伏笔还是废笔需要人的判断，因此本版只提取与告警。确认为伏笔的，登记进账本并在后续集数安排兑现。",
+          "route": "none",
+          "evidence": "",
+          "pattern": "label_only"
+        }
+      ]
+    },
+    "fake_patterns": {
+      "fake_trust": {
+        "count": 1,
+        "rules": {
+          "RL02": 1
+        },
+        "locations": [
+          "沈青筠-沙盘"
+        ]
+      },
+      "label_only": {
+        "count": 2,
+        "rules": {
+          "CH01": 1,
+          "EV05": 1
+        },
+        "locations": [
+          "outline",
+          "series"
+        ]
+      }
+    },
+    "history": {
+      "total": 25,
+      "errors": 12,
+      "warnings": 13,
+      "tier1": 22,
+      "tier2": 3,
+      "by_rule": {
+        "K07": 1,
+        "K05": 1,
+        "R01": 1,
+        "R02": 1,
+        "R03": 1,
+        "R05": 2,
+        "R11": 7,
+        "R12": 1,
+        "R04": 1,
+        "EV02": 1,
+        "K09": 1,
+        "K06": 1,
+        "K08": 1,
+        "FC04": 1,
+        "R09": 1,
+        "RL02": 1,
+        "CH01": 1,
+        "EV05": 1
+      },
+      "by_location": {
+        "outline": 3,
+        "L1": 1,
+        "S2": 2,
+        "S3": 2,
+        "episode": 5,
+        "S4": 1,
+        "S5": 2,
+        "episode-1": 5,
+        "S6": 1,
+        "series": 2,
+        "沈青筠-沙盘": 1
+      }
+    }
+  },
+  "continuity": {
+    "ledger_entries": 3,
+    "carried_per_episode": {
+      "1": [
+        "res_01_ink",
+        "know_01_treason",
+        "prom_01_prince"
+      ]
+    },
+    "exercised_choices": {
+      "1": "沈青筠@P6：发现父亲挪用军饷养死士的账本，交出可保全自己，隐瞒则满门抄斩 → 利用防伪印泥伪造一份死士实为商队护卫的假账，把谋反降级为违规经商｜代价：耗尽了仅剩的三滴现代防伪印泥，导致后续无法验证核心军情真伪，且自己背上欺君的隐性死罪 ★违背自身利益"
+    },
+    "relation_turns": {},
+    "unclaimed_facts": [
+      "沈婉儿被罚抄府规并撕碎纸张、压抑抽泣",
+      "沙盘具有人格化对话能力并主动告别『祝你好运，青筠』"
+    ],
+    "episodes_generated": 1
+  },
+  "budgets": {
+    "llm_calls": 13
+  },
+  "attempts": {
+    "outline_attempt": 1
+  },
+  "usage": {
+    "total_calls": 0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "by_node": {}
+  },
+  "trace": [
+    "intake:idea=社畜穿越成将军府嫡女，用现代记账法整顿府库... episodes=1",
+    "s1_topic:G01/R4 audio_fit=95",
+    "s2_gadget:assets=[('复式审计思维与数据沙盘', 'L3', 'TC1'), ('现代防伪显影印泥', 'L2', 'TC2')]",
+    "gate_gadget:passed=True errors=0 tier1=0 tier2=0",
+    "s3_cast:['沈青筠', '沙盘', '沈云舟', '柳氏', '沈婉儿']",
+    "gate_cast:passed=True errors=0",
+    "s3b_behavior:cards=5 relations=4",
+    "gate_behavior:passed=True errors=0",
+    "s4_outline:episodes=1",
+    "gate_outline:passed=False errors=1",
+    "repair_outline:attempt=1",
+    "gate_outline:passed=True errors=0",
+    "s5_ledger:entries=3",
+    "gate_ledger:passed=True errors=0",
+    "gate_bible:frozen genre=G01 cast=5 cards=5 relations=4 episodes=1 ledger=3",
+    "ep1:gen_beats(rev0)",
+    "ep1:validate passed=False err=4 t1=9 t2=0 judge_calls=0 judge_saved=1 claims=0",
+    "ep1:repair_beat",
+    "ep1:validate passed=False err=5 t1=3 t2=3 judge_calls=1 judge_saved=1 claims=8 patterns={'fake_reversal': 1, 'label_only': 2}",
+    "ep1:repair_beat",
+    "ep1:validate passed=False err=1 t1=4 t2=0 judge_calls=0 judge_saved=1 claims=0",
+    "s7_series:passed=False errors=1 patterns={'fake_trust': 1, 'label_only': 2} unclaimed=2 affected={'cast_presence': [1, 2, 3], 'behavior_delivery': [1], 'unclaimed_facts': [-1]}"
+  ],
+  "output_guard": {
+    "passed": true,
+    "issues": []
+  }
+}

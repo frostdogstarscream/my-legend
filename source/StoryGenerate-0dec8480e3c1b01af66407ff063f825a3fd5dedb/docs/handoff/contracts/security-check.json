@@ -1,0 +1,9 @@
+{
+  "files_checked": 271,
+  "configured_credential_available_for_exact_match": true,
+  "credential_match_count": 0,
+  "database_password_literals": 0,
+  "private_addresses": 0,
+  "scope": "new handoff/scripts, modified legacy Markdown and referenced real model evidence; no secret values printed",
+  "passed": true
+}

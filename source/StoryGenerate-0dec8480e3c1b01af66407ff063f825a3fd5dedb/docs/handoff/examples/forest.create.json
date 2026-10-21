@@ -1,0 +1,34 @@
+{
+  "intent": "create",
+  "request_id": "forest-create-REPLACE-UUID",
+  "idempotency_key": "forest-plan-REPLACE-UUID",
+  "user_instruction": "讲一个小熊和小兔子在森林里寻找神秘宝箱的故事，要幽默、有反转；用清楚温和的语言。此请求按当前支持的14-17年龄档演示，不宣称适用于低龄儿童。",
+  "creation_preferences": {
+    "story_mode": "general",
+    "genre": "森林冒险",
+    "tone_style": "幽默温暖",
+    "audience_band": "14-17",
+    "content_rating": "teen",
+    "target_episodes": 2,
+    "target_duration_sec": 120,
+    "ending_preference": "open"
+  },
+  "characters": {
+    "selected_character_ids": [
+      "bear",
+      "rabbit"
+    ],
+    "role_bindings": [
+      {
+        "character_id": "bear",
+        "role_id": "bear",
+        "performer_id": "voice-bear"
+      },
+      {
+        "character_id": "rabbit",
+        "role_id": "rabbit",
+        "performer_id": "voice-rabbit"
+      }
+    ]
+  }
+}

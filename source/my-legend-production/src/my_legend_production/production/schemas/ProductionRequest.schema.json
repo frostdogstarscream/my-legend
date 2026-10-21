@@ -1,0 +1,580 @@
+{
+  "$defs": {
+    "ArtifactRef": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$",
+          "title": "Kind",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "source_version_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Source Version Id",
+          "type": "string"
+        },
+        "media_type": {
+          "default": "application/json",
+          "maxLength": 100,
+          "title": "Media Type",
+          "type": "string"
+        },
+        "size_bytes": {
+          "minimum": 1,
+          "title": "Size Bytes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "kind",
+        "sha256",
+        "source_version_id",
+        "size_bytes"
+      ],
+      "title": "ArtifactRef",
+      "type": "object"
+    },
+    "AudioRemakeSelection": {
+      "additionalProperties": false,
+      "properties": {
+        "episode_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Episode Id",
+          "type": "string"
+        },
+        "scene_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Scene Id",
+          "type": "string"
+        },
+        "line_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Line Id",
+          "type": "string"
+        },
+        "operation_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Operation Id"
+        }
+      },
+      "required": [
+        "episode_id",
+        "scene_id",
+        "line_id"
+      ],
+      "title": "AudioRemakeSelection",
+      "type": "object"
+    },
+    "AudioRevision": {
+      "additionalProperties": false,
+      "properties": {
+        "cache": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "regenerate": {
+          "items": {
+            "$ref": "#/$defs/AudioRemakeSelection"
+          },
+          "maxItems": 1000,
+          "title": "Regenerate",
+          "type": "array"
+        },
+        "arrangement": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ArtifactRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "review": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ArtifactRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "cache"
+      ],
+      "title": "AudioRevision",
+      "type": "object"
+    },
+    "Budget": {
+      "additionalProperties": false,
+      "properties": {
+        "max_provider_calls": {
+          "default": 80,
+          "maximum": 500,
+          "minimum": 1,
+          "title": "Max Provider Calls",
+          "type": "integer"
+        },
+        "max_elapsed_seconds": {
+          "default": 1800,
+          "maximum": 14400,
+          "minimum": 10,
+          "title": "Max Elapsed Seconds",
+          "type": "integer"
+        },
+        "max_repairs_per_stage": {
+          "default": 1,
+          "maximum": 2,
+          "minimum": 0,
+          "title": "Max Repairs Per Stage",
+          "type": "integer"
+        }
+      },
+      "title": "Budget",
+      "type": "object"
+    },
+    "CreativeSource": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "creative",
+          "default": "creative",
+          "title": "Kind",
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "idea": {
+          "maxLength": 8000,
+          "minLength": 1,
+          "title": "Idea",
+          "type": "string"
+        },
+        "genre": {
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Genre",
+          "type": "string"
+        },
+        "character_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 6,
+          "minItems": 1,
+          "title": "Character Ids",
+          "type": "array"
+        },
+        "target_duration_seconds": {
+          "default": 90,
+          "enum": [
+            90,
+            120,
+            150,
+            180,
+            300
+          ],
+          "title": "Target Duration Seconds",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "title",
+        "idea",
+        "genre",
+        "character_ids"
+      ],
+      "title": "CreativeSource",
+      "type": "object"
+    },
+    "DeliverySource": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "delivery",
+          "title": "Kind",
+          "type": "string"
+        },
+        "source_version_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Source Version Id",
+          "type": "string"
+        },
+        "delivery": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "manifest": {
+          "$ref": "#/$defs/ArtifactRef"
+        }
+      },
+      "required": [
+        "kind",
+        "source_version_id",
+        "delivery",
+        "manifest"
+      ],
+      "title": "DeliverySource",
+      "type": "object"
+    },
+    "StoryEdit": {
+      "additionalProperties": false,
+      "properties": {
+        "scope": {
+          "enum": [
+            "line",
+            "scene",
+            "episode",
+            "arc",
+            "ending",
+            "whole_story"
+          ],
+          "title": "Scope",
+          "type": "string"
+        },
+        "target": {
+          "additionalProperties": true,
+          "title": "Target",
+          "type": "object"
+        },
+        "preserve": {
+          "additionalProperties": {
+            "type": "boolean"
+          },
+          "title": "Preserve",
+          "type": "object"
+        },
+        "downstream_policy": {
+          "default": "replan_affected",
+          "enum": [
+            "replan_affected",
+            "branch_from_here"
+          ],
+          "title": "Downstream Policy",
+          "type": "string"
+        }
+      },
+      "required": [
+        "scope"
+      ],
+      "title": "StoryEdit",
+      "type": "object"
+    },
+    "StoryOperationSource": {
+      "additionalProperties": false,
+      "description": "Owned immutable source, processed into a new native story version.",
+      "properties": {
+        "kind": {
+          "const": "operation",
+          "default": "operation",
+          "title": "Kind",
+          "type": "string"
+        },
+        "source_version_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Source Version Id",
+          "type": "string"
+        },
+        "delivery": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "manifest": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "intent": {
+          "enum": [
+            "revise",
+            "continue",
+            "remix"
+          ],
+          "title": "Intent",
+          "type": "string"
+        },
+        "instruction": {
+          "maxLength": 8000,
+          "minLength": 1,
+          "title": "Instruction",
+          "type": "string"
+        },
+        "target_duration_seconds": {
+          "default": 90,
+          "enum": [
+            90,
+            120,
+            150,
+            180,
+            300
+          ],
+          "title": "Target Duration Seconds",
+          "type": "integer"
+        },
+        "edit": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/StoryEdit"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "remix": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/StoryRemix"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "source_version_id",
+        "delivery",
+        "manifest",
+        "intent",
+        "instruction"
+      ],
+      "title": "StoryOperationSource",
+      "type": "object"
+    },
+    "StoryRemix": {
+      "additionalProperties": false,
+      "properties": {
+        "retain_elements": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 30,
+          "minItems": 1,
+          "title": "Retain Elements",
+          "type": "array"
+        },
+        "transform_elements": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 30,
+          "minItems": 1,
+          "title": "Transform Elements",
+          "type": "array"
+        },
+        "relation_to_source": {
+          "default": "adaptation",
+          "enum": [
+            "alternate_version",
+            "adaptation",
+            "parallel_world",
+            "new_story"
+          ],
+          "title": "Relation To Source",
+          "type": "string"
+        }
+      },
+      "required": [
+        "retain_elements",
+        "transform_elements"
+      ],
+      "title": "StoryRemix",
+      "type": "object"
+    },
+    "VoicePolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "default": "catalog_policy",
+          "enum": [
+            "configured",
+            "catalog_policy"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "bindings": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Bindings",
+          "type": "object"
+        },
+        "policy_version": {
+          "const": "stable-role/1",
+          "default": "stable-role/1",
+          "title": "Policy Version",
+          "type": "string"
+        }
+      },
+      "title": "VoicePolicy",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "production_request/1.0",
+      "default": "production_request/1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "idempotency_key": {
+      "maxLength": 128,
+      "minLength": 8,
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "title": "Idempotency Key",
+      "type": "string"
+    },
+    "work_id": {
+      "anyOf": [
+        {
+          "maxLength": 128,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Work Id"
+    },
+    "source": {
+      "discriminator": {
+        "mapping": {
+          "creative": "#/$defs/CreativeSource",
+          "delivery": "#/$defs/DeliverySource",
+          "operation": "#/$defs/StoryOperationSource"
+        },
+        "propertyName": "kind"
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/CreativeSource"
+        },
+        {
+          "$ref": "#/$defs/DeliverySource"
+        },
+        {
+          "$ref": "#/$defs/StoryOperationSource"
+        }
+      ],
+      "title": "Source"
+    },
+    "outputs": {
+      "items": {
+        "enum": [
+          "script",
+          "audio",
+          "visual"
+        ],
+        "type": "string"
+      },
+      "maxItems": 3,
+      "minItems": 1,
+      "title": "Outputs",
+      "type": "array"
+    },
+    "mode": {
+      "default": "automatic",
+      "enum": [
+        "automatic",
+        "reviewed"
+      ],
+      "title": "Mode",
+      "type": "string"
+    },
+    "voices": {
+      "$ref": "#/$defs/VoicePolicy"
+    },
+    "visual_profile": {
+      "default": "standing_performance/1",
+      "enum": [
+        "standing_performance/1",
+        "pixel_performance/1",
+        "basic_storyboard/1"
+      ],
+      "title": "Visual Profile",
+      "type": "string"
+    },
+    "budget": {
+      "$ref": "#/$defs/Budget"
+    },
+    "audio_revision": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/AudioRevision"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "sound_workflow": {
+      "anyOf": [
+        {
+          "const": "sound_bridge/1",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Sound Workflow"
+    },
+    "audio_delivery_policy": {
+      "default": "strict",
+      "enum": [
+        "strict",
+        "audio_first"
+      ],
+      "title": "Audio Delivery Policy",
+      "type": "string"
+    },
+    "review_policy": {
+      "default": "standard",
+      "enum": [
+        "standard",
+        "listen_first"
+      ],
+      "title": "Review Policy",
+      "type": "string"
+    }
+  },
+  "required": [
+    "idempotency_key",
+    "source",
+    "outputs"
+  ],
+  "title": "ProductionRequest",
+  "type": "object"
+}

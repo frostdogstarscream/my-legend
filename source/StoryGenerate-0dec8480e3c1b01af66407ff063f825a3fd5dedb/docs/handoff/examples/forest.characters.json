@@ -1,0 +1,44 @@
+{
+  "characters": [
+    {
+      "character_id": "bear",
+      "expected_version": 0,
+      "canon": {
+        "name": "小熊",
+        "species": "熊"
+      },
+      "runtime_defaults": {
+        "personality": [
+          "热心但容易冒失"
+        ]
+      },
+      "assets": {
+        "voice": {
+          "asset_id": "demo-bear",
+          "revision": "1",
+          "performer_id": "voice-bear"
+        }
+      }
+    },
+    {
+      "character_id": "rabbit",
+      "expected_version": 0,
+      "canon": {
+        "name": "小兔",
+        "species": "兔"
+      },
+      "runtime_defaults": {
+        "personality": [
+          "细心且幽默"
+        ]
+      },
+      "assets": {
+        "voice": {
+          "asset_id": "demo-rabbit",
+          "revision": "1",
+          "performer_id": "voice-rabbit"
+        }
+      }
+    }
+  ]
+}

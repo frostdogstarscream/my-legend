@@ -1,0 +1,5533 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "StoryGenerate Product API",
+    "version": "11.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": [
+          "operations"
+        ],
+        "summary": "Health",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/plans": {
+      "post": {
+        "tags": [
+          "plans"
+        ],
+        "summary": "Prepare",
+        "operationId": "prepare_v1_plans_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/CreateStoryRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ContinueStoryRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ReviseStoryRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/RemixStoryRequest"
+                  }
+                ],
+                "title": "Value",
+                "discriminator": {
+                  "propertyName": "intent",
+                  "mapping": {
+                    "create": "#/components/schemas/CreateStoryRequest",
+                    "continue": "#/components/schemas/ContinueStoryRequest",
+                    "revise": "#/components/schemas/ReviseStoryRequest",
+                    "remix": "#/components/schemas/RemixStoryRequest"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskView"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/tasks/{task_id}": {
+      "get": {
+        "tags": [
+          "tasks"
+        ],
+        "summary": "Get Task",
+        "operationId": "get_task_v1_tasks__task_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "title": "Task Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskView"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/v1/tasks/{task_id}/cancel": {
+      "post": {
+        "tags": [
+          "tasks"
+        ],
+        "summary": "Cancel Task",
+        "operationId": "cancel_task_v1_tasks__task_id__cancel_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "title": "Task Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskView"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/v1/tasks/{task_id}/retry": {
+      "post": {
+        "tags": [
+          "tasks"
+        ],
+        "summary": "Retry Task",
+        "operationId": "retry_task_v1_tasks__task_id__retry_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "title": "Task Id"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskView"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/v1/plans/{plan_id}": {
+      "get": {
+        "tags": [
+          "plans"
+        ],
+        "summary": "Get Plan",
+        "operationId": "get_plan_v1_plans__plan_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "plan_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "title": "Plan Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanPreview"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/v1/plans/{plan_id}/revisions": {
+      "get": {
+        "tags": [
+          "plans"
+        ],
+        "summary": "Revisions",
+        "operationId": "revisions_v1_plans__plan_id__revisions_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "plan_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "title": "Plan Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PlanPreview"
+                  },
+                  "title": "Response Revisions V1 Plans  Plan Id  Revisions Get"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "plans"
+        ],
+        "summary": "Revise",
+        "operationId": "revise_v1_plans__plan_id__revisions_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "plan_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "title": "Plan Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanRevisionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskView"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/v1/plans/{plan_id}/approve": {
+      "post": {
+        "tags": [
+          "plans"
+        ],
+        "summary": "Approve",
+        "operationId": "approve_v1_plans__plan_id__approve_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "plan_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "title": "Plan Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanApprovalRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobView"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/v1/plans/{plan_id}/generate": {
+      "post": {
+        "tags": [
+          "plans"
+        ],
+        "summary": "Generate",
+        "operationId": "generate_v1_plans__plan_id__generate_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "plan_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "title": "Plan Id"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobView"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/v1/jobs/{job_id}": {
+      "get": {
+        "tags": [
+          "jobs"
+        ],
+        "summary": "Get Job",
+        "operationId": "get_job_v1_jobs__job_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "title": "Job Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobView"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/v1/jobs/{job_id}/cancel": {
+      "post": {
+        "tags": [
+          "jobs"
+        ],
+        "summary": "Cancel Job",
+        "operationId": "cancel_job_v1_jobs__job_id__cancel_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "title": "Job Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobView"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/v1/jobs/{job_id}/retry": {
+      "post": {
+        "tags": [
+          "jobs"
+        ],
+        "summary": "Retry Job",
+        "operationId": "retry_job_v1_jobs__job_id__retry_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "title": "Job Id"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobView"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/v1/stories": {
+      "get": {
+        "tags": [
+          "stories"
+        ],
+        "summary": "Stories",
+        "operationId": "stories_v1_stories_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 200,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/v1/stories/{story_id}/versions": {
+      "get": {
+        "tags": [
+          "stories"
+        ],
+        "summary": "Versions",
+        "operationId": "versions_v1_stories__story_id__versions_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "story_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "title": "Story Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StoryDelivery"
+                  },
+                  "title": "Response Versions V1 Stories  Story Id  Versions Get"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/v1/story-versions/{version_id}": {
+      "get": {
+        "tags": [
+          "stories"
+        ],
+        "summary": "Get Version",
+        "operationId": "get_version_v1_story_versions__version_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "version_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "title": "Version Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoryDelivery"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/v1/story-versions/{version_id}/lineage": {
+      "get": {
+        "tags": [
+          "stories"
+        ],
+        "summary": "Lineage",
+        "operationId": "lineage_v1_story_versions__version_id__lineage_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "version_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "title": "Version Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/v1/story-versions/{version_id}/export": {
+      "get": {
+        "tags": [
+          "delivery"
+        ],
+        "summary": "Export",
+        "operationId": "export_v1_story_versions__version_id__export_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "version_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "title": "Version Id"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "^(json|script|characters)$",
+              "default": "json",
+              "title": "Format"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/v1/story-versions/{version_id}/render-manifest": {
+      "get": {
+        "tags": [
+          "delivery"
+        ],
+        "summary": "Render",
+        "operationId": "render_v1_story_versions__version_id__render_manifest_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "version_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "title": "Version Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RenderManifest"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/v1/story-versions/{version_id}/simulate-tts": {
+      "post": {
+        "tags": [
+          "delivery"
+        ],
+        "summary": "Simulate",
+        "operationId": "simulate_v1_story_versions__version_id__simulate_tts_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "version_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "title": "Version Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/v1/characters/import": {
+      "post": {
+        "tags": [
+          "characters"
+        ],
+        "summary": "Import Characters",
+        "operationId": "import_characters_v1_characters_import_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CharacterBatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CharacterView"
+                  },
+                  "type": "array",
+                  "title": "Response Import Characters V1 Characters Import Post"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/characters": {
+      "get": {
+        "tags": [
+          "characters"
+        ],
+        "summary": "Characters",
+        "operationId": "characters_v1_characters_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 200,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CharacterView"
+                  },
+                  "title": "Response Characters V1 Characters Get"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/v1/characters/{character_id}": {
+      "get": {
+        "tags": [
+          "characters"
+        ],
+        "summary": "Character",
+        "operationId": "character_v1_characters__character_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "character_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "title": "Character Id"
+            }
+          },
+          {
+            "name": "version_number",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Version Number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CharacterView"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/v1/characters/{character_id}/versions": {
+      "get": {
+        "tags": [
+          "characters"
+        ],
+        "summary": "Character Versions",
+        "operationId": "character_versions_v1_characters__character_id__versions_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "character_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "title": "Character Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CharacterView"
+                  },
+                  "title": "Response Character Versions V1 Characters  Character Id  Versions Get"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/v1/characters/{character_id}/runtime": {
+      "get": {
+        "tags": [
+          "characters"
+        ],
+        "summary": "Runtime Versions",
+        "operationId": "runtime_versions_v1_characters__character_id__runtime_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "character_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "title": "Character Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RuntimeView"
+                  },
+                  "title": "Response Runtime Versions V1 Characters  Character Id  Runtime Get"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "characters"
+        ],
+        "summary": "Runtime Update",
+        "operationId": "runtime_update_v1_characters__character_id__runtime_patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "character_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "title": "Character Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RuntimeUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeView"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AssetReference": {
+        "properties": {
+          "asset_id": {
+            "type": "string",
+            "maxLength": 256,
+            "minLength": 1,
+            "title": "Asset Id"
+          },
+          "revision": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Revision",
+            "default": "1"
+          },
+          "uri": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Uri"
+          },
+          "performer_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Performer Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "asset_id"
+        ],
+        "title": "AssetReference"
+      },
+      "AudienceBand": {
+        "type": "string",
+        "enum": [
+          "14-17",
+          "18-35",
+          "36-55"
+        ],
+        "title": "AudienceBand"
+      },
+      "CanonInput": {
+        "properties": {
+          "character_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Character Id",
+            "description": "长期角色ID（opaque）"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "gender": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Gender"
+          },
+          "age": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Age"
+          },
+          "age_band": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Age Band"
+          },
+          "species": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Species"
+          },
+          "character_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Character Type"
+          },
+          "identity": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Identity"
+          },
+          "world_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "World Id"
+          },
+          "appearance": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CharacterAppearance"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "abilities": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Abilities"
+          },
+          "immutable_facts": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Immutable Facts"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "CanonInput"
+      },
+      "CharacterAppearance": {
+        "properties": {
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "signature_elements": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Signature Elements"
+          }
+        },
+        "type": "object",
+        "title": "CharacterAppearance",
+        "description": "不要拆成几十个视觉字段——保持简单。"
+      },
+      "CharacterBatch": {
+        "properties": {
+          "characters": {
+            "items": {
+              "$ref": "#/components/schemas/CharacterImport"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "minItems": 1,
+            "title": "Characters"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "characters"
+        ],
+        "title": "CharacterBatch"
+      },
+      "CharacterImport": {
+        "properties": {
+          "character_id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Character Id"
+          },
+          "expected_version": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Expected Version"
+          },
+          "canon": {
+            "$ref": "#/components/schemas/CanonInput"
+          },
+          "runtime_defaults": {
+            "$ref": "#/components/schemas/RuntimeInput"
+          },
+          "assets": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/AssetReference"
+            },
+            "propertyNames": {
+              "enum": [
+                "image",
+                "voice",
+                "expression",
+                "action"
+              ]
+            },
+            "type": "object",
+            "title": "Assets"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "character_id",
+          "expected_version",
+          "canon"
+        ],
+        "title": "CharacterImport"
+      },
+      "CharacterPortrayal": {
+        "properties": {
+          "role_id": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Role Id"
+          },
+          "story_name": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Story Name"
+          },
+          "external_goal": {
+            "type": "string",
+            "minLength": 1,
+            "title": "External Goal"
+          },
+          "emotional_avoidance": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Emotional Avoidance"
+          },
+          "speech_style": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Speech Style"
+          },
+          "relationship_stance": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Relationship Stance"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "role_id",
+          "story_name",
+          "external_goal",
+          "emotional_avoidance",
+          "speech_style",
+          "relationship_stance"
+        ],
+        "title": "CharacterPortrayal",
+        "description": "An approved, story-local portrayal; it never edits a toy's Canon."
+      },
+      "CharacterSelection": {
+        "properties": {
+          "selected_character_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Selected Character Ids"
+          },
+          "character_profile_revisions": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Character Profile Revisions"
+          },
+          "temporary_profile_overrides": {
+            "additionalProperties": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "object",
+            "title": "Temporary Profile Overrides"
+          },
+          "new_fictional_roles": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "New Fictional Roles"
+          },
+          "role_bindings": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Role Bindings"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "CharacterSelection"
+      },
+      "CharacterSnapshot": {
+        "properties": {
+          "character_id": {
+            "type": "string",
+            "title": "Character Id"
+          },
+          "canon_revision": {
+            "type": "integer",
+            "title": "Canon Revision",
+            "default": 1
+          },
+          "profile_revision": {
+            "type": "integer",
+            "title": "Profile Revision",
+            "default": 1
+          },
+          "canon": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Canon"
+          },
+          "profile": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Profile"
+          },
+          "role_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Role Id"
+          },
+          "performer_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Performer Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "character_id"
+        ],
+        "title": "CharacterSnapshot"
+      },
+      "CharacterView": {
+        "properties": {
+          "character_id": {
+            "type": "string",
+            "title": "Character Id"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          },
+          "canon": {
+            "$ref": "#/components/schemas/CanonInput"
+          },
+          "runtime_defaults": {
+            "$ref": "#/components/schemas/RuntimeInput"
+          },
+          "assets": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/AssetReference"
+            },
+            "type": "object",
+            "title": "Assets"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "character_id",
+          "version",
+          "canon",
+          "runtime_defaults",
+          "assets"
+        ],
+        "title": "CharacterView"
+      },
+      "ContentRating": {
+        "type": "string",
+        "enum": [
+          "teen",
+          "mature_non_explicit"
+        ],
+        "title": "ContentRating"
+      },
+      "ContinueStoryRequest": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Request Id"
+          },
+          "idempotency_key": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Idempotency Key"
+          },
+          "session_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Session Id"
+          },
+          "user_instruction": {
+            "type": "string",
+            "minLength": 1,
+            "title": "User Instruction"
+          },
+          "creation_preferences": {
+            "$ref": "#/components/schemas/CreationPreferences"
+          },
+          "characters": {
+            "$ref": "#/components/schemas/CharacterSelection"
+          },
+          "template_ref": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/StoryTemplateRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "safety_profile": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SafetyProfile"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "client_context": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Client Context"
+          },
+          "intent": {
+            "type": "string",
+            "const": "continue",
+            "title": "Intent",
+            "default": "continue"
+          },
+          "source_selector": {
+            "$ref": "#/components/schemas/SourceSelector"
+          },
+          "continuation_kind": {
+            "type": "string",
+            "enum": [
+              "next_episode",
+              "resume_playback"
+            ],
+            "title": "Continuation Kind",
+            "default": "next_episode"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "request_id",
+          "idempotency_key",
+          "user_instruction",
+          "source_selector"
+        ],
+        "title": "ContinueStoryRequest"
+      },
+      "CreateStoryRequest": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Request Id"
+          },
+          "idempotency_key": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Idempotency Key"
+          },
+          "session_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Session Id"
+          },
+          "user_instruction": {
+            "type": "string",
+            "minLength": 1,
+            "title": "User Instruction"
+          },
+          "creation_preferences": {
+            "$ref": "#/components/schemas/CreationPreferences"
+          },
+          "characters": {
+            "$ref": "#/components/schemas/CharacterSelection"
+          },
+          "template_ref": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/StoryTemplateRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "safety_profile": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SafetyProfile"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "client_context": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Client Context"
+          },
+          "intent": {
+            "type": "string",
+            "const": "create",
+            "title": "Intent",
+            "default": "create"
+          },
+          "source_selector": {
+            "type": "null",
+            "title": "Source Selector"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "request_id",
+          "idempotency_key",
+          "user_instruction"
+        ],
+        "title": "CreateStoryRequest"
+      },
+      "CreationPreferences": {
+        "properties": {
+          "story_mode": {
+            "$ref": "#/components/schemas/StoryModeChoice",
+            "default": "auto"
+          },
+          "content_form": {
+            "type": "string",
+            "const": "audio_drama",
+            "title": "Content Form",
+            "default": "audio_drama"
+          },
+          "genre": {
+            "type": "string",
+            "title": "Genre",
+            "default": "auto"
+          },
+          "recipe_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recipe Id"
+          },
+          "tone_style": {
+            "type": "string",
+            "title": "Tone Style",
+            "default": "warm"
+          },
+          "audience_band": {
+            "$ref": "#/components/schemas/AudienceBand",
+            "default": "18-35"
+          },
+          "content_rating": {
+            "$ref": "#/components/schemas/ContentRating",
+            "default": "teen"
+          },
+          "target_duration_sec": {
+            "type": "integer",
+            "enum": [
+              90,
+              120,
+              150,
+              180,
+              300
+            ],
+            "title": "Target Duration Sec",
+            "default": 180
+          },
+          "target_episodes": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 1.0,
+            "title": "Target Episodes",
+            "default": 1
+          },
+          "language": {
+            "type": "string",
+            "title": "Language",
+            "default": "zh-CN"
+          },
+          "narration_pov": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "first",
+              "third"
+            ],
+            "title": "Narration Pov",
+            "default": "auto"
+          },
+          "dialogue_density": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ],
+            "title": "Dialogue Density",
+            "default": "medium"
+          },
+          "pacing": {
+            "type": "string",
+            "enum": [
+              "slow",
+              "normal",
+              "fast"
+            ],
+            "title": "Pacing",
+            "default": "normal"
+          },
+          "ending_preference": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "happy",
+              "closed",
+              "open",
+              "cliffhanger"
+            ],
+            "title": "Ending Preference",
+            "default": "auto"
+          },
+          "theme_keywords": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Theme Keywords"
+          },
+          "must_include": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Must Include"
+          },
+          "must_avoid": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Must Avoid"
+          },
+          "additional_instructions": {
+            "type": "string",
+            "title": "Additional Instructions",
+            "default": ""
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "CreationPreferences"
+      },
+      "EditPolicy": {
+        "properties": {
+          "timing": {
+            "type": "string",
+            "enum": [
+              "pre_playback",
+              "historical"
+            ],
+            "title": "Timing",
+            "default": "historical"
+          },
+          "scope": {
+            "type": "string",
+            "enum": [
+              "line",
+              "scene",
+              "episode",
+              "arc",
+              "ending",
+              "whole_story"
+            ],
+            "title": "Scope"
+          },
+          "target": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Target"
+          },
+          "instruction": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Instruction"
+          },
+          "preserve": {
+            "additionalProperties": {
+              "type": "boolean"
+            },
+            "type": "object",
+            "title": "Preserve"
+          },
+          "downstream_policy": {
+            "type": "string",
+            "enum": [
+              "replan_affected",
+              "branch_from_here"
+            ],
+            "title": "Downstream Policy",
+            "default": "replan_affected"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "scope",
+          "instruction"
+        ],
+        "title": "EditPolicy"
+      },
+      "Emotion": {
+        "type": "string",
+        "enum": [
+          "neutral",
+          "calm",
+          "happy",
+          "excited",
+          "sad",
+          "worried",
+          "angry",
+          "surprised",
+          "fearful",
+          "reassuring",
+          "serious",
+          "playful",
+          "mysterious",
+          "tender"
+        ],
+        "title": "Emotion"
+      },
+      "EmphasisSpan": {
+        "properties": {
+          "span_text": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Span Text"
+          },
+          "occurrence": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Occurrence",
+            "default": 1
+          },
+          "start_char": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start Char"
+          },
+          "end_char": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "End Char"
+          },
+          "strength": {
+            "type": "string",
+            "enum": [
+              "medium",
+              "strong"
+            ],
+            "title": "Strength",
+            "default": "medium"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "span_text"
+        ],
+        "title": "EmphasisSpan"
+      },
+      "EpisodeDelivery": {
+        "properties": {
+          "episode_id": {
+            "type": "string",
+            "title": "Episode Id"
+          },
+          "index": {
+            "type": "integer",
+            "title": "Index"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "synopsis": {
+            "type": "string",
+            "title": "Synopsis",
+            "default": ""
+          },
+          "duration_target_sec": {
+            "type": "integer",
+            "title": "Duration Target Sec"
+          },
+          "duration_estimate_sec": {
+            "type": "integer",
+            "title": "Duration Estimate Sec",
+            "default": 0
+          },
+          "scenes": {
+            "items": {
+              "$ref": "#/components/schemas/SceneDelivery"
+            },
+            "type": "array",
+            "title": "Scenes"
+          },
+          "episode_summary": {
+            "type": "string",
+            "title": "Episode Summary",
+            "default": ""
+          },
+          "ending_hook": {
+            "type": "string",
+            "title": "Ending Hook",
+            "default": ""
+          },
+          "fact_delta": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Fact Delta"
+          },
+          "relationship_delta": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Relationship Delta"
+          },
+          "new_open_threads": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "New Open Threads"
+          },
+          "closed_threads": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Closed Threads"
+          },
+          "validation_status": {
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "PASSED",
+              "FAILED"
+            ],
+            "title": "Validation Status",
+            "default": "PENDING"
+          },
+          "ready_for_playback": {
+            "type": "boolean",
+            "title": "Ready For Playback",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "episode_id",
+          "index",
+          "title",
+          "duration_target_sec"
+        ],
+        "title": "EpisodeDelivery"
+      },
+      "EpisodeOutline": {
+        "properties": {
+          "index": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Index"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "core_goal": {
+            "type": "string",
+            "title": "Core Goal"
+          },
+          "major_beats": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Major Beats"
+          },
+          "ending": {
+            "type": "string",
+            "title": "Ending"
+          },
+          "target_duration_sec": {
+            "type": "integer",
+            "title": "Target Duration Sec"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "index",
+          "title",
+          "core_goal",
+          "major_beats",
+          "ending",
+          "target_duration_sec"
+        ],
+        "title": "EpisodeOutline"
+      },
+      "ErrorInfo": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "request_id": {
+            "type": "string",
+            "title": "Request Id"
+          },
+          "details": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Details"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "message",
+          "request_id"
+        ],
+        "title": "ErrorInfo"
+      },
+      "ErrorResponse": {
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ErrorInfo"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "title": "ErrorResponse"
+      },
+      "FictionalVoiceRole": {
+        "properties": {
+          "role_id": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Role Id"
+          },
+          "story_name": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Story Name"
+          },
+          "performer_id": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Performer Id"
+          },
+          "medium": {
+            "type": "string",
+            "enum": [
+              "live",
+              "recording",
+              "telephone",
+              "broadcast"
+            ],
+            "title": "Medium"
+          },
+          "dramatic_purpose": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Dramatic Purpose"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "role_id",
+          "story_name",
+          "performer_id",
+          "medium",
+          "dramatic_purpose"
+        ],
+        "title": "FictionalVoiceRole",
+        "description": "A non-toy voice proposed in the Plan, then frozen at approval."
+      },
+      "JobView": {
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "title": "Job Id"
+          },
+          "request_id": {
+            "type": "string",
+            "title": "Request Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "stage": {
+            "type": "string",
+            "title": "Stage"
+          },
+          "progress_pct": {
+            "type": "integer",
+            "title": "Progress Pct"
+          },
+          "approved_plan_id": {
+            "type": "string",
+            "title": "Approved Plan Id"
+          },
+          "approved_plan_revision": {
+            "type": "integer",
+            "title": "Approved Plan Revision"
+          },
+          "result_story_version_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Result Story Version Id"
+          },
+          "error_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Code"
+          },
+          "error_message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Message"
+          },
+          "usage": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Usage"
+          },
+          "story_state": {
+            "type": "string",
+            "enum": [
+              "NOT_GENERATED",
+              "GENERATING",
+              "SUCCEEDED",
+              "FAILED",
+              "CANCELLED"
+            ],
+            "title": "Story State"
+          },
+          "audio_state": {
+            "type": "string",
+            "const": "NOT_SYNTHESIZED",
+            "title": "Audio State",
+            "default": "NOT_SYNTHESIZED"
+          },
+          "playback_state": {
+            "type": "string",
+            "const": "NOT_REPORTED",
+            "title": "Playback State",
+            "default": "NOT_REPORTED"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "job_id",
+          "request_id",
+          "status",
+          "stage",
+          "progress_pct",
+          "approved_plan_id",
+          "approved_plan_revision",
+          "story_state"
+        ],
+        "title": "JobView"
+      },
+      "MysteryCausalProof": {
+        "properties": {
+          "actual_event_timeline": {
+            "type": "string",
+            "minLength": 8,
+            "title": "Actual Event Timeline"
+          },
+          "witnessed_event": {
+            "type": "string",
+            "minLength": 8,
+            "title": "Witnessed Event"
+          },
+          "actor_opportunity": {
+            "type": "string",
+            "minLength": 8,
+            "title": "Actor Opportunity"
+          },
+          "audible_trace_before_reveal": {
+            "type": "string",
+            "minLength": 8,
+            "title": "Audible Trace Before Reveal"
+          },
+          "onstage_verification": {
+            "type": "string",
+            "minLength": 8,
+            "title": "Onstage Verification"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "actual_event_timeline",
+          "witnessed_event",
+          "actor_opportunity",
+          "audible_trace_before_reveal",
+          "onstage_verification"
+        ],
+        "title": "MysteryCausalProof",
+        "description": "Approved explanation of an apparent impossibility, not a literary score."
+      },
+      "PauseCue": {
+        "properties": {
+          "after_char": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "After Char"
+          },
+          "duration_ms": {
+            "type": "integer",
+            "maximum": 5000.0,
+            "minimum": 0.0,
+            "title": "Duration Ms"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "after_char",
+          "duration_ms"
+        ],
+        "title": "PauseCue"
+      },
+      "PerformanceValidationReport": {
+        "properties": {
+          "validation_status": {
+            "type": "string",
+            "enum": [
+              "PASSED",
+              "FAILED"
+            ],
+            "title": "Validation Status"
+          },
+          "spoken_line_count": {
+            "type": "integer",
+            "title": "Spoken Line Count",
+            "default": 0
+          },
+          "emotion_coverage": {
+            "type": "number",
+            "title": "Emotion Coverage",
+            "default": 0.0
+          },
+          "tone_coverage": {
+            "type": "number",
+            "title": "Tone Coverage",
+            "default": 0.0
+          },
+          "emphasis_coverage": {
+            "type": "number",
+            "title": "Emphasis Coverage",
+            "default": 0.0
+          },
+          "emphasis_span_validity": {
+            "type": "number",
+            "title": "Emphasis Span Validity",
+            "default": 0.0
+          },
+          "continuity_passed": {
+            "type": "boolean",
+            "title": "Continuity Passed",
+            "default": true
+          },
+          "outline_alignment_passed": {
+            "type": "boolean",
+            "title": "Outline Alignment Passed",
+            "default": true
+          },
+          "content_rating_passed": {
+            "type": "boolean",
+            "title": "Content Rating Passed",
+            "default": true
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          },
+          "operation_checks": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Operation Checks"
+          },
+          "timeline_claims": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Timeline Claims"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "validation_status"
+        ],
+        "title": "PerformanceValidationReport"
+      },
+      "PlanApprovalRequest": {
+        "properties": {
+          "expected_revision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Expected Revision"
+          },
+          "fingerprint": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 64,
+            "title": "Fingerprint"
+          },
+          "idempotency_key": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "expected_revision",
+          "fingerprint",
+          "idempotency_key"
+        ],
+        "title": "PlanApprovalRequest"
+      },
+      "PlanContent": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "premise": {
+            "type": "string",
+            "title": "Premise"
+          },
+          "theme": {
+            "type": "string",
+            "title": "Theme"
+          },
+          "beginning": {
+            "type": "string",
+            "title": "Beginning"
+          },
+          "development": {
+            "type": "string",
+            "title": "Development"
+          },
+          "climax": {
+            "type": "string",
+            "title": "Climax"
+          },
+          "ending": {
+            "type": "string",
+            "title": "Ending"
+          },
+          "episode_outlines": {
+            "items": {
+              "$ref": "#/components/schemas/EpisodeOutline"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Episode Outlines"
+          },
+          "character_portrayals": {
+            "items": {
+              "$ref": "#/components/schemas/CharacterPortrayal"
+            },
+            "type": "array",
+            "title": "Character Portrayals"
+          },
+          "fictional_voice_roles": {
+            "items": {
+              "$ref": "#/components/schemas/FictionalVoiceRole"
+            },
+            "type": "array",
+            "title": "Fictional Voice Roles"
+          },
+          "mystery_causal_proof": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MysteryCausalProof"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "performance_plan": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Performance Plan"
+          },
+          "continuity_constraints": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Continuity Constraints"
+          },
+          "change_summary": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Change Summary"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "title",
+          "premise",
+          "theme",
+          "beginning",
+          "development",
+          "climax",
+          "ending",
+          "episode_outlines"
+        ],
+        "title": "PlanContent"
+      },
+      "PlanPreview": {
+        "properties": {
+          "plan_id": {
+            "type": "string",
+            "title": "Plan Id"
+          },
+          "plan_revision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Plan Revision"
+          },
+          "status": {
+            "$ref": "#/components/schemas/PlanStatus"
+          },
+          "intent": {
+            "$ref": "#/components/schemas/StoryIntent"
+          },
+          "requires_confirmation": {
+            "type": "boolean",
+            "title": "Requires Confirmation",
+            "default": true
+          },
+          "source_reference": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResolvedSourceReference"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "template_snapshot": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Template Snapshot"
+          },
+          "strategy_snapshot": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Strategy Snapshot"
+          },
+          "plan": {
+            "$ref": "#/components/schemas/PlanContent"
+          },
+          "resolved_preferences": {
+            "$ref": "#/components/schemas/CreationPreferences"
+          },
+          "character_snapshots": {
+            "items": {
+              "$ref": "#/components/schemas/CharacterSnapshot"
+            },
+            "type": "array",
+            "title": "Character Snapshots"
+          },
+          "character_profile_revision_map": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Character Profile Revision Map"
+          },
+          "auto_filled_fields": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Auto Filled Fields"
+          },
+          "inherited_fields": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Inherited Fields"
+          },
+          "impact_analysis": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Impact Analysis"
+          },
+          "model_trace": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Model Trace"
+          },
+          "rule_versions": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Rule Versions"
+          },
+          "explicit_fields": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Explicit Fields"
+          },
+          "plan_fingerprint": {
+            "type": "string",
+            "title": "Plan Fingerprint"
+          },
+          "allowed_actions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Allowed Actions"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "plan_id",
+          "plan_revision",
+          "status",
+          "intent",
+          "plan",
+          "resolved_preferences",
+          "plan_fingerprint"
+        ],
+        "title": "PlanPreview"
+      },
+      "PlanRevisionRequest": {
+        "properties": {
+          "expected_revision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Expected Revision"
+          },
+          "feedback": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Feedback"
+          },
+          "idempotency_key": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Idempotency Key"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "expected_revision",
+          "feedback",
+          "idempotency_key"
+        ],
+        "title": "PlanRevisionRequest"
+      },
+      "PlanStatus": {
+        "type": "string",
+        "enum": [
+          "PREPARING",
+          "AWAITING_APPROVAL",
+          "REVISING",
+          "APPROVED",
+          "STALE",
+          "CANCELLED",
+          "EXPIRED"
+        ],
+        "title": "PlanStatus"
+      },
+      "RemixPolicy": {
+        "properties": {
+          "instruction": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Instruction"
+          },
+          "retain_elements": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Retain Elements"
+          },
+          "transform_elements": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Transform Elements"
+          },
+          "relation_to_source": {
+            "type": "string",
+            "enum": [
+              "alternate_version",
+              "adaptation",
+              "parallel_world",
+              "new_story"
+            ],
+            "title": "Relation To Source",
+            "default": "alternate_version"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "instruction",
+          "retain_elements",
+          "transform_elements"
+        ],
+        "title": "RemixPolicy"
+      },
+      "RemixStoryRequest": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Request Id"
+          },
+          "idempotency_key": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Idempotency Key"
+          },
+          "session_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Session Id"
+          },
+          "user_instruction": {
+            "type": "string",
+            "minLength": 1,
+            "title": "User Instruction"
+          },
+          "creation_preferences": {
+            "$ref": "#/components/schemas/CreationPreferences"
+          },
+          "characters": {
+            "$ref": "#/components/schemas/CharacterSelection"
+          },
+          "template_ref": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/StoryTemplateRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "safety_profile": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SafetyProfile"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "client_context": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Client Context"
+          },
+          "intent": {
+            "type": "string",
+            "const": "remix",
+            "title": "Intent",
+            "default": "remix"
+          },
+          "source_selector": {
+            "$ref": "#/components/schemas/SourceSelector"
+          },
+          "remix": {
+            "$ref": "#/components/schemas/RemixPolicy"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "request_id",
+          "idempotency_key",
+          "user_instruction",
+          "source_selector",
+          "remix"
+        ],
+        "title": "RemixStoryRequest"
+      },
+      "RenderManifest": {
+        "properties": {
+          "contract_version": {
+            "type": "string",
+            "const": "1.0",
+            "title": "Contract Version",
+            "default": "1.0"
+          },
+          "delivery_format_version": {
+            "type": "string",
+            "title": "Delivery Format Version"
+          },
+          "story_version_id": {
+            "type": "string",
+            "title": "Story Version Id"
+          },
+          "story_state": {
+            "type": "string",
+            "const": "SUCCEEDED",
+            "title": "Story State",
+            "default": "SUCCEEDED"
+          },
+          "audio_state": {
+            "type": "string",
+            "const": "NOT_SYNTHESIZED",
+            "title": "Audio State",
+            "default": "NOT_SYNTHESIZED"
+          },
+          "playback_state": {
+            "type": "string",
+            "const": "NOT_REPORTED",
+            "title": "Playback State",
+            "default": "NOT_REPORTED"
+          },
+          "role_map": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Role Map"
+          },
+          "tasks": {
+            "items": {
+              "$ref": "#/components/schemas/RenderTask"
+            },
+            "type": "array",
+            "title": "Tasks"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "delivery_format_version",
+          "story_version_id",
+          "role_map",
+          "tasks"
+        ],
+        "title": "RenderManifest"
+      },
+      "RenderTask": {
+        "properties": {
+          "task_id": {
+            "type": "string",
+            "title": "Task Id"
+          },
+          "sequence": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Sequence"
+          },
+          "episode_id": {
+            "type": "string",
+            "title": "Episode Id"
+          },
+          "episode_index": {
+            "type": "integer",
+            "title": "Episode Index"
+          },
+          "scene_id": {
+            "type": "string",
+            "title": "Scene Id"
+          },
+          "line_id": {
+            "type": "string",
+            "title": "Line Id"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "speech",
+              "cue"
+            ],
+            "title": "Kind"
+          },
+          "source_kind": {
+            "type": "string",
+            "enum": [
+              "dialogue",
+              "narration",
+              "sfx",
+              "music",
+              "action"
+            ],
+            "title": "Source Kind"
+          },
+          "speaker_role_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Speaker Role Id"
+          },
+          "narrator_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Narrator Id"
+          },
+          "performer_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Performer Id"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "performance": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Performance"
+          },
+          "asset_refs": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Asset Refs"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "task_id",
+          "sequence",
+          "episode_id",
+          "episode_index",
+          "scene_id",
+          "line_id",
+          "kind",
+          "source_kind",
+          "text",
+          "performance"
+        ],
+        "title": "RenderTask"
+      },
+      "ResolvedSourceReference": {
+        "properties": {
+          "story_id": {
+            "type": "string",
+            "title": "Story Id"
+          },
+          "story_version_id": {
+            "type": "string",
+            "title": "Story Version Id"
+          },
+          "version_no": {
+            "type": "integer",
+            "title": "Version No",
+            "default": 1
+          },
+          "episode_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Episode Id"
+          },
+          "series_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Series Id"
+          },
+          "resolved_reason": {
+            "type": "string",
+            "title": "Resolved Reason"
+          },
+          "last_played_position_ms": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Played Position Ms"
+          },
+          "story_summary": {
+            "type": "string",
+            "title": "Story Summary",
+            "default": ""
+          },
+          "continuity_snapshot": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Continuity Snapshot"
+          },
+          "source_content_snapshot": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Source Content Snapshot"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "story_id",
+          "story_version_id",
+          "resolved_reason"
+        ],
+        "title": "ResolvedSourceReference"
+      },
+      "ReviseStoryRequest": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Request Id"
+          },
+          "idempotency_key": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Idempotency Key"
+          },
+          "session_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Session Id"
+          },
+          "user_instruction": {
+            "type": "string",
+            "minLength": 1,
+            "title": "User Instruction"
+          },
+          "creation_preferences": {
+            "$ref": "#/components/schemas/CreationPreferences"
+          },
+          "characters": {
+            "$ref": "#/components/schemas/CharacterSelection"
+          },
+          "template_ref": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/StoryTemplateRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "safety_profile": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SafetyProfile"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "client_context": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Client Context"
+          },
+          "intent": {
+            "type": "string",
+            "const": "revise",
+            "title": "Intent",
+            "default": "revise"
+          },
+          "source_selector": {
+            "$ref": "#/components/schemas/SourceSelector"
+          },
+          "edit": {
+            "$ref": "#/components/schemas/EditPolicy"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "request_id",
+          "idempotency_key",
+          "user_instruction",
+          "source_selector",
+          "edit"
+        ],
+        "title": "ReviseStoryRequest"
+      },
+      "RuntimeInput": {
+        "properties": {
+          "personality": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Personality",
+            "description": "性格标签"
+          },
+          "goal": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Goal",
+            "description": "当前目标/欲望"
+          },
+          "motivation": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Motivation",
+            "description": "行为动机"
+          },
+          "fear": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fear",
+            "description": "最怕失去的事物"
+          },
+          "stance": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stance",
+            "description": "对核心冲突的立场"
+          },
+          "dialogue_style": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dialogue Style",
+            "description": "说话风格"
+          },
+          "story_function": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Story Function",
+            "description": "叙事功能角色"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "RuntimeInput"
+      },
+      "RuntimeUpdate": {
+        "properties": {
+          "expected_revision": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Expected Revision"
+          },
+          "patch": {
+            "$ref": "#/components/schemas/RuntimeInput"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "expected_revision",
+          "patch"
+        ],
+        "title": "RuntimeUpdate"
+      },
+      "RuntimeView": {
+        "properties": {
+          "character_id": {
+            "type": "string",
+            "title": "Character Id"
+          },
+          "revision": {
+            "type": "integer",
+            "title": "Revision"
+          },
+          "profile": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Profile"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "character_id",
+          "revision",
+          "profile"
+        ],
+        "title": "RuntimeView"
+      },
+      "SafetyProfile": {
+        "properties": {
+          "content_rating": {
+            "$ref": "#/components/schemas/ContentRating",
+            "default": "teen"
+          },
+          "blocked_topics": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Blocked Topics"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "SafetyProfile"
+      },
+      "SceneDelivery": {
+        "properties": {
+          "scene_id": {
+            "type": "string",
+            "title": "Scene Id"
+          },
+          "scene_index": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Scene Index",
+            "description": "1-based scene index within the episode",
+            "default": 1
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "location": {
+            "type": "string",
+            "title": "Location",
+            "default": ""
+          },
+          "dramatic_goal": {
+            "type": "string",
+            "title": "Dramatic Goal",
+            "default": ""
+          },
+          "utterances": {
+            "items": {
+              "$ref": "#/components/schemas/Utterance"
+            },
+            "type": "array",
+            "title": "Utterances"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "scene_id",
+          "title"
+        ],
+        "title": "SceneDelivery"
+      },
+      "SourceSelector": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "last_generated",
+              "last_played",
+              "series_latest",
+              "by_id"
+            ],
+            "title": "Type"
+          },
+          "series_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Series Id"
+          },
+          "story_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Story Id"
+          },
+          "story_version_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Story Version Id"
+          },
+          "episode_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Episode Id"
+          },
+          "playback_position_ms": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Playback Position Ms"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "title": "SourceSelector"
+      },
+      "StoryDelivery": {
+        "properties": {
+          "story_id": {
+            "type": "string",
+            "title": "Story Id"
+          },
+          "story_version_id": {
+            "type": "string",
+            "title": "Story Version Id"
+          },
+          "version_no": {
+            "type": "integer",
+            "title": "Version No",
+            "default": 1
+          },
+          "parent_story_version_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Story Version Id"
+          },
+          "lineage_type": {
+            "type": "string",
+            "enum": [
+              "create",
+              "continue",
+              "revise",
+              "remix"
+            ],
+            "title": "Lineage Type",
+            "default": "create"
+          },
+          "series_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Series Id"
+          },
+          "approved_plan_id": {
+            "type": "string",
+            "title": "Approved Plan Id"
+          },
+          "approved_plan_revision": {
+            "type": "integer",
+            "title": "Approved Plan Revision"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary"
+          },
+          "preview_blurb": {
+            "type": "string",
+            "title": "Preview Blurb",
+            "default": ""
+          },
+          "tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Tags"
+          },
+          "story_mode": {
+            "type": "string",
+            "title": "Story Mode"
+          },
+          "content_form": {
+            "type": "string",
+            "const": "audio_drama",
+            "title": "Content Form",
+            "default": "audio_drama"
+          },
+          "character_snapshot": {
+            "items": {
+              "$ref": "#/components/schemas/CharacterSnapshot"
+            },
+            "type": "array",
+            "title": "Character Snapshot"
+          },
+          "character_portrayals": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Character Portrayals",
+            "description": "Plan-generated character portrayals: role_id→story_name, goal, avoidance, speech_style, relationship_stance"
+          },
+          "fictional_voice_roles": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Fictional Voice Roles",
+            "description": "Non-toy voice roles from Plan: recording, broadcast, telephone voices with role_id, story_name, performer_id, medium, dramatic_purpose"
+          },
+          "outline": {
+            "$ref": "#/components/schemas/PlanContent"
+          },
+          "episodes": {
+            "items": {
+              "$ref": "#/components/schemas/EpisodeDelivery"
+            },
+            "type": "array",
+            "title": "Episodes"
+          },
+          "generated_episode_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Generated Episode Ids"
+          },
+          "continuity_state": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Continuity State"
+          },
+          "quality_report": {
+            "$ref": "#/components/schemas/PerformanceValidationReport"
+          },
+          "ready_for_playback": {
+            "type": "boolean",
+            "title": "Ready For Playback",
+            "default": false
+          },
+          "status": {
+            "$ref": "#/components/schemas/StoryVersionStatus",
+            "default": "CANDIDATE"
+          },
+          "engine_version": {
+            "type": "string",
+            "title": "Engine Version",
+            "default": "0.3.0"
+          },
+          "delivery_format_version": {
+            "type": "string",
+            "title": "Delivery Format Version",
+            "description": "Format version for downstream compatibility; increment when field semantics change",
+            "default": "1.0"
+          },
+          "rule_versions": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Rule Versions"
+          },
+          "model_trace": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Model Trace"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "story_id",
+          "story_version_id",
+          "approved_plan_id",
+          "approved_plan_revision",
+          "title",
+          "summary",
+          "story_mode",
+          "outline",
+          "quality_report"
+        ],
+        "title": "StoryDelivery"
+      },
+      "StoryIntent": {
+        "type": "string",
+        "enum": [
+          "create",
+          "continue",
+          "revise",
+          "remix"
+        ],
+        "title": "StoryIntent"
+      },
+      "StoryModeChoice": {
+        "type": "string",
+        "enum": [
+          "auto",
+          "general",
+          "mystery",
+          "serialized",
+          "viral_drama"
+        ],
+        "title": "StoryModeChoice"
+      },
+      "StoryTemplateRef": {
+        "properties": {
+          "template_id": {
+            "type": "string",
+            "title": "Template Id"
+          },
+          "template_revision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Template Revision"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "template_id",
+          "template_revision"
+        ],
+        "title": "StoryTemplateRef"
+      },
+      "StoryVersionStatus": {
+        "type": "string",
+        "enum": [
+          "CANDIDATE",
+          "READY",
+          "SUPERSEDED",
+          "ARCHIVED"
+        ],
+        "title": "StoryVersionStatus"
+      },
+      "TaskView": {
+        "properties": {
+          "task_id": {
+            "type": "string",
+            "title": "Task Id"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "prepare",
+              "revise"
+            ],
+            "title": "Kind"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "QUEUED",
+              "RUNNING",
+              "SUCCEEDED",
+              "FAILED",
+              "CANCEL_REQUESTED",
+              "CANCELLED"
+            ],
+            "title": "Status"
+          },
+          "progress_pct": {
+            "type": "integer",
+            "title": "Progress Pct"
+          },
+          "stage": {
+            "type": "string",
+            "title": "Stage"
+          },
+          "result": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Result"
+          },
+          "error_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Code"
+          },
+          "error_message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Message"
+          },
+          "usage": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Usage"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "task_id",
+          "kind",
+          "status",
+          "progress_pct",
+          "stage",
+          "result",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "TaskView"
+      },
+      "Utterance": {
+        "properties": {
+          "line_id": {
+            "type": "string",
+            "title": "Line Id"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "dialogue",
+              "narration",
+              "sfx",
+              "music",
+              "action"
+            ],
+            "title": "Kind"
+          },
+          "speaker_role_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Speaker Role Id"
+          },
+          "narrator_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Narrator Id"
+          },
+          "performer_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Performer Id"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text",
+            "default": ""
+          },
+          "emotion": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Emotion"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "tone_instruction": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tone Instruction"
+          },
+          "emphasis": {
+            "items": {
+              "$ref": "#/components/schemas/EmphasisSpan"
+            },
+            "type": "array",
+            "title": "Emphasis"
+          },
+          "speech_rate": {
+            "type": "number",
+            "maximum": 2.0,
+            "minimum": 0.5,
+            "title": "Speech Rate",
+            "default": 1.0
+          },
+          "pitch": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pitch"
+          },
+          "volume": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Volume"
+          },
+          "pauses": {
+            "items": {
+              "$ref": "#/components/schemas/PauseCue"
+            },
+            "type": "array",
+            "title": "Pauses"
+          },
+          "delivery_note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Delivery Note"
+          },
+          "audio_cue_ref": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Audio Cue Ref"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "line_id",
+          "kind"
+        ],
+        "title": "Utterance"
+      }
+    },
+    "securitySchemes": {
+      "HTTPBearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}

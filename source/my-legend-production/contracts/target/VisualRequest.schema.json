@@ -1,0 +1,682 @@
+{
+  "$defs": {
+    "Appearance": {
+      "additionalProperties": false,
+      "properties": {
+        "template_type": {
+          "enum": [
+            "adult",
+            "elder",
+            "child",
+            "animal"
+          ],
+          "title": "Template Type",
+          "type": "string"
+        },
+        "color_key": {
+          "enum": [
+            "blue",
+            "green",
+            "red",
+            "brown"
+          ],
+          "title": "Color Key",
+          "type": "string"
+        },
+        "accessory": {
+          "default": "none",
+          "enum": [
+            "none",
+            "hat",
+            "beard"
+          ],
+          "title": "Accessory",
+          "type": "string"
+        }
+      },
+      "required": [
+        "template_type",
+        "color_key"
+      ],
+      "title": "Appearance",
+      "type": "object"
+    },
+    "Character": {
+      "additionalProperties": false,
+      "properties": {
+        "role_id": {
+          "pattern": "^[A-Za-z0-9_-]{1,64}$",
+          "title": "Role Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 20,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "appearance": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Appearance"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "visual_requirements": {
+          "items": {
+            "maxLength": 500,
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Visual Requirements",
+          "type": "array"
+        }
+      },
+      "required": [
+        "role_id",
+        "name",
+        "description"
+      ],
+      "title": "Character",
+      "type": "object"
+    },
+    "Constraints": {
+      "additionalProperties": false,
+      "properties": {
+        "preserve_dialogue": {
+          "const": true,
+          "default": true,
+          "title": "Preserve Dialogue",
+          "type": "boolean"
+        },
+        "locked_facts": {
+          "items": {
+            "maxLength": 500,
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Locked Facts",
+          "type": "array"
+        },
+        "allow_new_plot": {
+          "const": false,
+          "default": false,
+          "title": "Allow New Plot",
+          "type": "boolean"
+        },
+        "allow_narration_fallback": {
+          "default": true,
+          "title": "Allow Narration Fallback",
+          "type": "boolean"
+        },
+        "allow_visual_simplification": {
+          "default": false,
+          "title": "Allow Visual Simplification",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "locked_facts"
+      ],
+      "title": "Constraints",
+      "type": "object"
+    },
+    "Event": {
+      "additionalProperties": false,
+      "properties": {
+        "block_id": {
+          "pattern": "^[A-Za-z0-9_-]{1,64}$",
+          "title": "Block Id",
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "dialogue",
+            "narration",
+            "action",
+            "pause"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "role_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9_-]{1,64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Role Id"
+        },
+        "participant_role_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9_-]{1,64}$",
+            "type": "string"
+          },
+          "title": "Participant Role Ids",
+          "type": "array"
+        },
+        "target_role_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9_-]{1,64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Role Id"
+        },
+        "text": {
+          "anyOf": [
+            {
+              "maxLength": 500,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Text"
+        },
+        "action": {
+          "anyOf": [
+            {
+              "maxLength": 64,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Action"
+        },
+        "target_anchor": {
+          "anyOf": [
+            {
+              "enum": [
+                "slot_1",
+                "slot_2",
+                "slot_3",
+                "slot_4",
+                "entry",
+                "exit"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Anchor"
+        },
+        "direction": {
+          "anyOf": [
+            {
+              "enum": [
+                "down",
+                "left",
+                "right",
+                "up"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Direction"
+        },
+        "emotion": {
+          "anyOf": [
+            {
+              "enum": [
+                "neutral",
+                "happy",
+                "sad",
+                "angry",
+                "surprised",
+                "serious"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Emotion"
+        },
+        "intensity": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Intensity"
+        },
+        "duration_ms": {
+          "anyOf": [
+            {
+              "maximum": 90000,
+              "minimum": 100,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Duration Ms"
+        },
+        "source_ref": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Ref"
+        },
+        "timing": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SourceTiming"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "block_id",
+        "type"
+      ],
+      "title": "Event",
+      "type": "object"
+    },
+    "Scene": {
+      "additionalProperties": false,
+      "properties": {
+        "scene_id": {
+          "pattern": "^[A-Za-z0-9_-]{1,64}$",
+          "title": "Scene Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 40,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "background_type": {
+          "enum": [
+            "indoor",
+            "courtyard",
+            "outdoor"
+          ],
+          "title": "Background Type",
+          "type": "string"
+        },
+        "cast": {
+          "items": {
+            "pattern": "^[A-Za-z0-9_-]{1,64}$",
+            "type": "string"
+          },
+          "maxItems": 4,
+          "minItems": 1,
+          "title": "Cast",
+          "type": "array"
+        },
+        "initial_cast": {
+          "anyOf": [
+            {
+              "items": {
+                "pattern": "^[A-Za-z0-9_-]{1,64}$",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Initial Cast"
+        },
+        "blocks": {
+          "items": {
+            "$ref": "#/$defs/Event"
+          },
+          "maxItems": 100,
+          "minItems": 1,
+          "title": "Blocks",
+          "type": "array"
+        },
+        "result": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Result"
+        }
+      },
+      "required": [
+        "scene_id",
+        "name",
+        "description",
+        "background_type",
+        "cast",
+        "blocks"
+      ],
+      "title": "Scene",
+      "type": "object"
+    },
+    "SourceTiming": {
+      "additionalProperties": false,
+      "properties": {
+        "start_ms": {
+          "minimum": 0,
+          "title": "Start Ms",
+          "type": "integer"
+        },
+        "end_ms": {
+          "exclusiveMinimum": 0,
+          "title": "End Ms",
+          "type": "integer"
+        },
+        "verified": {
+          "title": "Verified",
+          "type": "boolean"
+        },
+        "basis": {
+          "enum": [
+            "visual_estimate",
+            "provided_media",
+            "fixed_schedule"
+          ],
+          "title": "Basis",
+          "type": "string"
+        }
+      },
+      "required": [
+        "start_ms",
+        "end_ms",
+        "verified",
+        "basis"
+      ],
+      "title": "SourceTiming",
+      "type": "object"
+    },
+    "VisualScript": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "visual_script/1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "document_id": {
+          "pattern": "^[A-Za-z0-9_-]{1,64}$",
+          "title": "Document Id",
+          "type": "string"
+        },
+        "source_version_id": {
+          "pattern": "^[A-Za-z0-9_-]{1,64}$",
+          "title": "Source Version Id",
+          "type": "string"
+        },
+        "revision": {
+          "default": 1,
+          "minimum": 1,
+          "title": "Revision",
+          "type": "integer"
+        },
+        "title": {
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "source_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Text"
+        },
+        "excerpt": {
+          "default": false,
+          "title": "Excerpt",
+          "type": "boolean"
+        },
+        "continuity_confirmed": {
+          "default": false,
+          "title": "Continuity Confirmed",
+          "type": "boolean"
+        },
+        "target_duration_ms": {
+          "anyOf": [
+            {
+              "maximum": 90000,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Duration Ms"
+        },
+        "constraints": {
+          "$ref": "#/$defs/Constraints"
+        },
+        "characters": {
+          "items": {
+            "$ref": "#/$defs/Character"
+          },
+          "maxItems": 6,
+          "minItems": 1,
+          "title": "Characters",
+          "type": "array"
+        },
+        "scenes": {
+          "items": {
+            "$ref": "#/$defs/Scene"
+          },
+          "maxItems": 2,
+          "minItems": 1,
+          "title": "Scenes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "schema_version",
+        "document_id",
+        "source_version_id",
+        "title",
+        "constraints",
+        "characters",
+        "scenes"
+      ],
+      "title": "VisualScript",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "visual_request/1.0",
+      "default": "visual_request/1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "request_id": {
+      "pattern": "^[A-Za-z0-9_-]{1,64}$",
+      "title": "Request Id",
+      "type": "string"
+    },
+    "target_profile": {
+      "enum": [
+        "mobile_current_v2",
+        "web_basic_v1"
+      ],
+      "title": "Target Profile",
+      "type": "string"
+    },
+    "generation_mode": {
+      "default": "reviewed",
+      "enum": [
+        "reviewed",
+        "automatic"
+      ],
+      "title": "Generation Mode",
+      "type": "string"
+    },
+    "presentation_profile": {
+      "default": "legacy_basic",
+      "enum": [
+        "legacy_basic",
+        "standing_dialogue_v1"
+      ],
+      "title": "Presentation Profile",
+      "type": "string"
+    },
+    "deliverable": {
+      "default": "runtime_package",
+      "enum": [
+        "runtime_package",
+        "preview"
+      ],
+      "title": "Deliverable",
+      "type": "string"
+    },
+    "document": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Document"
+    },
+    "script": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/VisualScript"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "preview_skin": {
+      "default": "basic",
+      "enum": [
+        "basic",
+        "fogport_v1",
+        "fogport_v2",
+        "fogport_painted_v1"
+      ],
+      "title": "Preview Skin",
+      "type": "string"
+    },
+    "asset_pack_id": {
+      "default": "basic_pixel",
+      "title": "Asset Pack Id",
+      "type": "string"
+    },
+    "asset_pack_version": {
+      "default": "1.0.0",
+      "title": "Asset Pack Version",
+      "type": "string"
+    },
+    "context_confirmed": {
+      "default": false,
+      "title": "Context Confirmed",
+      "type": "boolean"
+    },
+    "context_notes": {
+      "default": "",
+      "title": "Context Notes",
+      "type": "string"
+    },
+    "parent_visual_version": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Parent Visual Version"
+    }
+  },
+  "required": [
+    "request_id",
+    "target_profile"
+  ],
+  "title": "Request",
+  "type": "object"
+}

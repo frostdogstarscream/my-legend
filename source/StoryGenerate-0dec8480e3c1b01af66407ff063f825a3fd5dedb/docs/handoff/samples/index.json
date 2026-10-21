@@ -1,0 +1,215 @@
+[
+  {
+    "id": "S01",
+    "label": "Phase11 原创",
+    "source_directory": "6-实测产物/phase11_live_20261015_v3/create",
+    "delivery_path": "6-实测产物/phase11_live_20261015_v3/create/delivery.json",
+    "delivery_pointer": "response",
+    "version_id": "8e0711e8c2fe4407b2e1e7449ecee292",
+    "story_id": "8b8dd2f1fde64ba4a4820432f2ab06c7",
+    "parent": null,
+    "version_no": 1,
+    "episodes": 2,
+    "content_sha256": "ddbfe4b3e129c4aea5da1bffc3e7a3194bb444d45bfc6ea03c4245a330480a42",
+    "body_human_edited": false,
+    "cost": {
+      "calls": 20,
+      "input": 117704,
+      "output": 104627,
+      "reasoning_in_output": 79514,
+      "cache_read": 10368,
+      "model_seconds": 893.482,
+      "models": [
+        "qwen3.6-flash",
+        "qwen3.7-max"
+      ]
+    },
+    "operation_timing_fields": {
+      "wall_seconds": 908.328
+    },
+    "sample_status": "passed"
+  },
+  {
+    "id": "S02",
+    "label": "Phase11 场景修订",
+    "source_directory": "6-实测产物/phase11_live_20261015_v3/revise",
+    "delivery_path": "6-实测产物/phase11_live_20261015_v3/revise/delivery.json",
+    "delivery_pointer": "response",
+    "version_id": "f3b9178f174f4cf39a7bfa8bd616abcb",
+    "story_id": "8b8dd2f1fde64ba4a4820432f2ab06c7",
+    "parent": "8e0711e8c2fe4407b2e1e7449ecee292",
+    "version_no": 2,
+    "episodes": 2,
+    "content_sha256": "014491e3816d743fbb7f320194b9de7d8922796a2f85c6f86c9bd30afa4f036f",
+    "body_human_edited": false,
+    "cost": {
+      "calls": 4,
+      "input": 97414,
+      "output": 14721,
+      "reasoning_in_output": 10773,
+      "cache_read": 0,
+      "model_seconds": 114.553,
+      "models": [
+        "qwen3.6-flash",
+        "qwen3.7-max"
+      ]
+    },
+    "operation_timing_fields": {
+      "wall_seconds": 124.907
+    },
+    "sample_status": "passed"
+  },
+  {
+    "id": "S03",
+    "label": "Phase11 新增两集",
+    "source_directory": "6-实测产物/phase11_live_20261015_v3/continue",
+    "delivery_path": "6-实测产物/phase11_live_20261015_v3/continue/delivery.json",
+    "delivery_pointer": "response",
+    "version_id": "1cf88eb73f914da89b058679166830b6",
+    "story_id": "8b8dd2f1fde64ba4a4820432f2ab06c7",
+    "parent": "f3b9178f174f4cf39a7bfa8bd616abcb",
+    "version_no": 3,
+    "episodes": 4,
+    "content_sha256": "83b105d6bf9da96228afef7a246252d3bf96207c3d8f2d986b17bd722a9eace9",
+    "body_human_edited": false,
+    "cost": {
+      "calls": 10,
+      "input": 157696,
+      "output": 50956,
+      "reasoning_in_output": 38160,
+      "cache_read": 0,
+      "model_seconds": 419.309,
+      "models": [
+        "qwen3.6-flash",
+        "qwen3.7-max"
+      ]
+    },
+    "operation_timing_fields": {
+      "wall_seconds": 424.297
+    },
+    "sample_status": "passed"
+  },
+  {
+    "id": "S04",
+    "label": "Phase11 平行二创",
+    "source_directory": "6-实测产物/phase11_live_20261015_v3/remix",
+    "delivery_path": "6-实测产物/phase11_live_20261015_v3/remix/delivery.json",
+    "delivery_pointer": "response",
+    "version_id": "00311c8545574b6498afbe291e96ffce",
+    "story_id": "969862f3639242c48439db74505d544c",
+    "parent": "1cf88eb73f914da89b058679166830b6",
+    "version_no": 1,
+    "episodes": 2,
+    "content_sha256": "29252e7b09613d4560f8b6005afed0bccf2252d739a11d7c60896183b3aa8185",
+    "body_human_edited": false,
+    "cost": {
+      "calls": 30,
+      "input": 525181,
+      "output": 133183,
+      "reasoning_in_output": 102374,
+      "cache_read": 87040,
+      "model_seconds": 1027.792,
+      "models": [
+        "qwen3.6-flash",
+        "qwen3.7-max"
+      ]
+    },
+    "operation_timing_fields": {
+      "wall_seconds": 351.547
+    },
+    "sample_status": "passed"
+  },
+  {
+    "id": "S05",
+    "label": "Phase10 台词修改的来源",
+    "source_directory": "6-实测产物/operations_live_v8_20261014/round_1_create",
+    "delivery_path": "6-实测产物/operations_live_v8_20261014/round_1_create/delivery.json",
+    "delivery_pointer": "root",
+    "version_id": "a04475a957cb49abbccc0cf430ee4eac",
+    "story_id": "85f22b5453974511b8d6170beaf1e6c5",
+    "parent": null,
+    "version_no": 1,
+    "episodes": 2,
+    "content_sha256": "dff454416a100a3fc4ffecd79e5aadbf6cd11cfa5015fe2f721312befbd1dd5a",
+    "body_human_edited": false,
+    "cost": {
+      "calls": 10,
+      "input": 55046,
+      "output": 52676,
+      "reasoning_in_output": 40303,
+      "cache_read": 9216,
+      "model_seconds": 496.064,
+      "models": [
+        "qwen3.6-flash",
+        "qwen3.7-max"
+      ]
+    },
+    "operation_timing_fields": {
+      "model_request_latency_sec": 496.064,
+      "wall_time_sec": 497.203
+    },
+    "sample_status": "passed"
+  },
+  {
+    "id": "S06",
+    "label": "Phase10 台词级修改",
+    "source_directory": "6-实测产物/operations_live_v8_20261014/special_line",
+    "delivery_path": "6-实测产物/operations_live_v8_20261014/special_line/delivery.json",
+    "delivery_pointer": "root",
+    "version_id": "93795207eb314589a9ed67f777d667f1",
+    "story_id": "85f22b5453974511b8d6170beaf1e6c5",
+    "parent": "a04475a957cb49abbccc0cf430ee4eac",
+    "version_no": 4,
+    "episodes": 2,
+    "content_sha256": "b25f532a8795e3e1690624c09f5221a6d9c2dc71adc1d58434ad95bcdd055e85",
+    "body_human_edited": false,
+    "cost": {
+      "calls": 4,
+      "input": 86709,
+      "output": 13221,
+      "reasoning_in_output": 10636,
+      "cache_read": 0,
+      "model_seconds": 115.866,
+      "models": [
+        "qwen3.6-flash",
+        "qwen3.7-max"
+      ]
+    },
+    "operation_timing_fields": {
+      "model_request_latency_sec": 115.866,
+      "wall_time_sec": 117.406
+    },
+    "sample_status": "passed"
+  },
+  {
+    "id": "S07",
+    "label": "Phase10 再次续写至五集",
+    "source_directory": "6-实测产物/operations_live_v8_20261014/special_continue_again",
+    "delivery_path": "6-实测产物/operations_live_v8_20261014/special_continue_again/delivery.json",
+    "delivery_pointer": "root",
+    "version_id": "082918a439534e178bfbf84cab7011bf",
+    "story_id": "85f22b5453974511b8d6170beaf1e6c5",
+    "parent": "a1a7476c911e4009bdb841b97f6d1f40",
+    "version_no": 9,
+    "episodes": 5,
+    "content_sha256": "7bcdf6e1004ca9f71ac92204d1fe3cd6ed39691fc18b9e60bab414e58732e8ef",
+    "body_human_edited": false,
+    "cost": {
+      "calls": 6,
+      "input": 147129,
+      "output": 26672,
+      "reasoning_in_output": 19652,
+      "cache_read": 0,
+      "model_seconds": 235.531,
+      "models": [
+        "qwen3.6-flash",
+        "qwen3.7-max"
+      ]
+    },
+    "operation_timing_fields": {
+      "model_request_latency_sec": 235.531,
+      "wall_time_sec": 236.562
+    },
+    "sample_status": "passed"
+  }
+]

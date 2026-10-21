@@ -1,0 +1,98 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "budget": {
+      "additionalProperties": true,
+      "title": "Budget",
+      "type": "object"
+    },
+    "constraints": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Constraints",
+      "type": "array"
+    },
+    "issues": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Issues",
+      "type": "array"
+    },
+    "placements": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Placements",
+      "type": "array"
+    },
+    "sample_rate": {
+      "title": "Sample Rate",
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": "lingban.timeline/1",
+      "default": "lingban.timeline/1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "script_sha256": {
+      "title": "Script Sha256",
+      "type": "string"
+    },
+    "source_version_id": {
+      "title": "Source Version Id",
+      "type": "string"
+    },
+    "stage": {
+      "default": "draft",
+      "enum": [
+        "draft",
+        "audio_locked",
+        "audiovisual_locked"
+      ],
+      "title": "Stage",
+      "type": "string"
+    },
+    "subtitles": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Subtitles",
+      "type": "array"
+    },
+    "timeline_version": {
+      "title": "Timeline Version",
+      "type": "string"
+    },
+    "total_frames": {
+      "title": "Total Frames",
+      "type": "integer"
+    },
+    "visual": {
+      "additionalProperties": true,
+      "title": "Visual",
+      "type": "object"
+    }
+  },
+  "required": [
+    "timeline_version",
+    "source_version_id",
+    "script_sha256",
+    "sample_rate",
+    "total_frames",
+    "placements",
+    "subtitles",
+    "constraints",
+    "issues",
+    "budget",
+    "visual"
+  ],
+  "title": "Timeline",
+  "type": "object"
+}

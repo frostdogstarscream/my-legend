@@ -1,0 +1,275 @@
+{
+  "transport": "real loopback HTTP / uvicorn / PostgreSQL16 restored isolated database",
+  "model_calls": 0,
+  "worker_started": false,
+  "original_acceptance_data_modified": false,
+  "openapi_exact_match": true,
+  "checks": [
+    {
+      "id": "01 GET /health",
+      "status": 200,
+      "expected": 200,
+      "seconds": 0.093,
+      "passed": true
+    },
+    {
+      "id": "shipped client python.exe GET /health",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "id": "shipped client pwsh.EXE GET /health",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "id": "shipped client curl.exe GET /health",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "id": "05 GET /openapi.json",
+      "status": 200,
+      "expected": 200,
+      "seconds": 0.922,
+      "passed": true
+    },
+    {
+      "id": "GET /docs",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "id": "GET /redoc",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "id": "GET /docs/oauth2-redirect",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "id": "anonymous GET /v1/stories",
+      "status": 401,
+      "passed": true
+    },
+    {
+      "id": "10 GET /v1/stories?limit=200&offset=0",
+      "status": 200,
+      "expected": 200,
+      "seconds": 0.093,
+      "passed": true
+    },
+    {
+      "id": "11 GET /v1/story-versions/1cf88eb73f914da89b058679166830b6",
+      "status": 200,
+      "expected": 200,
+      "seconds": 0.125,
+      "passed": true
+    },
+    {
+      "id": "12 GET /v1/stories/8b8dd2f1fde64ba4a4820432f2ab06c7/versions",
+      "status": 200,
+      "expected": 200,
+      "seconds": 0.063,
+      "passed": true
+    },
+    {
+      "id": "13 GET /v1/story-versions/1cf88eb73f914da89b058679166830b6/lineage",
+      "status": 200,
+      "expected": 200,
+      "seconds": 0.094,
+      "passed": true
+    },
+    {
+      "id": "14 GET /v1/story-versions/1cf88eb73f914da89b058679166830b6/export?format=json",
+      "status": 200,
+      "expected": 200,
+      "seconds": 0.046,
+      "passed": true
+    },
+    {
+      "id": "15 GET /v1/story-versions/1cf88eb73f914da89b058679166830b6/export?format=script",
+      "status": 200,
+      "expected": 200,
+      "seconds": 0.032,
+      "passed": true
+    },
+    {
+      "id": "16 GET /v1/story-versions/1cf88eb73f914da89b058679166830b6/export?format=characters",
+      "status": 200,
+      "expected": 200,
+      "seconds": 0.015,
+      "passed": true
+    },
+    {
+      "id": "17 GET /v1/story-versions/1cf88eb73f914da89b058679166830b6/render-manifest",
+      "status": 200,
+      "expected": 200,
+      "seconds": 0.047,
+      "passed": true
+    },
+    {
+      "id": "18 POST /v1/story-versions/1cf88eb73f914da89b058679166830b6/simulate-tts",
+      "status": 200,
+      "expected": 200,
+      "seconds": 0.031,
+      "passed": true
+    },
+    {
+      "id": "19 GET /v1/characters?limit=50&offset=0",
+      "status": 200,
+      "expected": 200,
+      "seconds": 0.047,
+      "passed": true
+    },
+    {
+      "id": "20 GET /v1/characters/linlan",
+      "status": 200,
+      "expected": 200,
+      "seconds": 0.032,
+      "passed": true
+    },
+    {
+      "id": "21 GET /v1/characters/linlan?version_number=1",
+      "status": 200,
+      "expected": 200,
+      "seconds": 0.015,
+      "passed": true
+    },
+    {
+      "id": "22 GET /v1/characters/linlan/versions",
+      "status": 200,
+      "expected": 200,
+      "seconds": 0.016,
+      "passed": true
+    },
+    {
+      "id": "23 GET /v1/characters/linlan/runtime",
+      "status": 200,
+      "expected": 200,
+      "seconds": 0.031,
+      "passed": true
+    },
+    {
+      "id": "24 PATCH /v1/characters/linlan/runtime",
+      "status": 200,
+      "expected": 200,
+      "seconds": 0.063,
+      "passed": true
+    },
+    {
+      "id": "25 POST /v1/characters/import",
+      "status": 200,
+      "expected": 200,
+      "seconds": 0.046,
+      "passed": true
+    },
+    {
+      "id": "26 GET /v1/plans/e0f7df910be148eab9946b311afe9ac6",
+      "status": 200,
+      "expected": 200,
+      "seconds": 0.125,
+      "passed": true
+    },
+    {
+      "id": "27 GET /v1/plans/e0f7df910be148eab9946b311afe9ac6/revisions",
+      "status": 200,
+      "expected": 200,
+      "seconds": 0.032,
+      "passed": true
+    },
+    {
+      "id": "28 POST /v1/plans/e0f7df910be148eab9946b311afe9ac6/approve",
+      "status": 202,
+      "expected": 202,
+      "seconds": 0.219,
+      "passed": true
+    },
+    {
+      "id": "29 POST /v1/plans/e0f7df910be148eab9946b311afe9ac6/generate",
+      "status": 202,
+      "expected": 202,
+      "seconds": 0.063,
+      "passed": true
+    },
+    {
+      "id": "30 GET /v1/jobs/3fddba14a0e44ecd8cbaa48b7261bd5b",
+      "status": 200,
+      "expected": 200,
+      "seconds": 0.015,
+      "passed": true
+    },
+    {
+      "id": "31 POST /v1/jobs/3fddba14a0e44ecd8cbaa48b7261bd5b/cancel",
+      "status": 409,
+      "expected": 409,
+      "seconds": 0.031,
+      "passed": true
+    },
+    {
+      "id": "32 POST /v1/jobs/3fddba14a0e44ecd8cbaa48b7261bd5b/retry",
+      "status": 409,
+      "expected": 409,
+      "seconds": 0.125,
+      "passed": true
+    },
+    {
+      "id": "33 POST /v1/plans/e0f7df910be148eab9946b311afe9ac6/revisions",
+      "status": 409,
+      "expected": 409,
+      "seconds": 0.094,
+      "passed": true
+    },
+    {
+      "id": "34 POST /v1/plans",
+      "status": 202,
+      "expected": 202,
+      "seconds": 0.078,
+      "passed": true
+    },
+    {
+      "id": "35 POST /v1/plans",
+      "status": 202,
+      "expected": 202,
+      "seconds": 0.063,
+      "passed": true
+    },
+    {
+      "id": "36 POST /v1/plans",
+      "status": 409,
+      "expected": 409,
+      "seconds": 0.031,
+      "passed": true
+    },
+    {
+      "id": "37 GET /v1/tasks/45e619b3875344df9e2046372c8b8bfa",
+      "status": 200,
+      "expected": 200,
+      "seconds": 0.031,
+      "passed": true
+    },
+    {
+      "id": "38 POST /v1/tasks/45e619b3875344df9e2046372c8b8bfa/cancel",
+      "status": 200,
+      "expected": 200,
+      "seconds": 0.125,
+      "passed": true
+    },
+    {
+      "id": "39 POST /v1/tasks/45e619b3875344df9e2046372c8b8bfa/retry",
+      "status": 409,
+      "expected": 409,
+      "seconds": 0.032,
+      "passed": true
+    },
+    {
+      "id": "fresh session after API shutdown",
+      "status": "CANCELLED persisted",
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "not_executed": "No new model Plan/Revision/Generation; positive model results remain historical evidence. No independent novice human trial."
+}

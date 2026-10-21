@@ -1,0 +1,78 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "bundle_sha256": {
+      "title": "Bundle Sha256",
+      "type": "string"
+    },
+    "confirmed_points": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Confirmed Points",
+      "type": "array"
+    },
+    "decision": {
+      "enum": [
+        "approve",
+        "changes",
+        "cancel"
+      ],
+      "title": "Decision",
+      "type": "string"
+    },
+    "delivery": {
+      "additionalProperties": true,
+      "title": "Delivery",
+      "type": "object"
+    },
+    "notes": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Notes",
+      "type": "array"
+    },
+    "review_id": {
+      "title": "Review Id",
+      "type": "string"
+    },
+    "reviewer": {
+      "title": "Reviewer",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "lingban.review/1",
+      "default": "lingban.review/1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Scope",
+      "type": "array"
+    },
+    "source_version_id": {
+      "title": "Source Version Id",
+      "type": "string"
+    },
+    "timeline_version": {
+      "title": "Timeline Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "review_id",
+    "bundle_sha256",
+    "source_version_id",
+    "timeline_version",
+    "decision",
+    "reviewer",
+    "scope"
+  ],
+  "title": "ReviewRecord",
+  "type": "object"
+}

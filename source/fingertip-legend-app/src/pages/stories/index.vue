@@ -1,0 +1,19 @@
+<script setup lang="ts">
+import { computed,ref } from 'vue'
+import { onShow } from '@dcloudio/uni-app'
+import FeatureLayout from '../../components/FeatureLayout.vue'
+import ProductionJobList from '../../components/ProductionJobList.vue'
+import { config } from '../../config'
+import { api } from '../../services/api'
+import type { Story } from '../../types/domain'
+import { errorMessage,goPage,goTab,requireSession } from '../../utils/navigation'
+const stories=ref<Story[]>([]),loading=ref(true),error=ref(''),search=ref(''),filter=ref('全部')
+const independentWorks=ref<string[]>([])
+const statuses={draft:'草稿',generating:'生成中',ready:'已完成',failed:'待重试'}
+const visible=computed(()=>stories.value.filter(s=>!independentWorks.value.includes(s.id)&&(!search.value||s.title.toLowerCase().includes(search.value.trim().toLowerCase()))&&(filter.value==='全部'||filter.value==='草稿'&&(s.status==='draft'||s.status==='failed')||filter.value==='已完成'&&s.status==='ready')))
+async function load(){if(!requireSession())return;loading.value=true;error.value='';try{stories.value=await api.stories()}catch(e){error.value=errorMessage(e)}finally{loading.value=false}}
+onShow(load)
+function open(story:Story){goPage(story.status==='draft'?'create':'detail',{id:story.id})}
+</script>
+<template><FeatureLayout title="我的故事" subtitle="把每一次灵感，留在你的故事集里" active="stories"><view class="page-content"><input v-model="search" class="form-input search-box" aria-label="搜索故事名称" placeholder="搜索故事名称"/><view class="chip-list filters"><button v-for="item in ['全部','草稿','已完成']" :key="item" class="chip" :class="{selected:filter===item}" @tap="filter=item">{{item}}</button></view><ProductionJobList v-if="!config.useMock" :search="search" :filter="filter" @loaded="independentWorks=$event"/><view v-if="loading" class="state-panel">正在打开故事集…</view><view v-else-if="error" class="state-panel"><text class="error-copy">{{error}}</text><button class="warm-button" @tap="load">重新加载</button></view><view v-else-if="!visible.length&&!independentWorks.length" class="paper-panel empty-state"><image src="/static/figma/continue-story.png" mode="aspectFill"/><text class="section-title serif">{{search||filter!=='全部'?'没有找到对应的故事':'故事从这里开始'}}</text><text class="small-note">{{search||filter!=='全部'?'换个关键词或筛选条件再看看。':'写下第一份灵感，让想象有个归处。'}}</text><button class="warm-button full-button" @tap="goTab('create')">创作新故事</button></view><view v-else class="story-list"><view v-for="story in visible" :key="story.id" class="paper-panel story-item"><image class="list-cover" :src="story.coverUrl" mode="aspectFill"/><view class="story-info"><view class="row-between"><text class="story-name serif">{{story.title}}</text><text class="status-label">{{story.media?'演绎就绪':statuses[story.status]}}</text></view><text class="story-meta">{{story.media?'沈砚 · 苏棠 · 老秦':story.genre}}</text><text class="small-note">{{story.chapter}}</text><button class="story-open" :aria-label="`打开${story.title}`" @tap="open(story)">{{story.media?'观看演绎':story.status==='draft'?'继续创作':'查看故事'}} ›</button></view></view></view></view></FeatureLayout></template>
+<style scoped>.filters{margin:24rpx 0 30rpx}.story-list{display:flex;flex-direction:column;gap:24rpx}.story-item{display:flex;gap:22rpx;padding:25rpx}.list-cover{width:145rpx;height:190rpx;border-radius:16rpx}.story-info{flex:1;min-width:0}.story-name{display:block;font-size:34rpx;line-height:1.5;overflow-wrap:anywhere}.story-meta{display:block;color:#856143;font-size:23rpx;margin:12rpx 0}.status-label{flex-shrink:0;font-size:19rpx;background:#eaf5ed;color:#337553;border-radius:99rpx;padding:6rpx 12rpx}.story-open{margin-top:16rpx;padding:12rpx 18rpx;text-align:center;width:100%;border:2rpx solid #e7d6bf;border-radius:99rpx;background:#fffaf0;color:#a8452d;font-size:24rpx;font-weight:700}.empty-state{text-align:center;padding:36rpx}.empty-state image{width:100%;height:240rpx;border-radius:22rpx;margin-bottom:26rpx}</style>

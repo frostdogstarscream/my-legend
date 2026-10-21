@@ -1,0 +1,215 @@
+{
+  "story_id": "fixture-story-001",
+  "story_version_id": "fixture-version-001",
+  "version_no": 1,
+  "parent_story_version_id": null,
+  "lineage_type": "create",
+  "approved_plan_id": "fixture-plan-not-real-approval",
+  "approved_plan_revision": 1,
+  "title": "灯下的合作",
+  "summary": "人工编写的协议示例，不是实际模型作品。",
+  "preview_blurb": "两位伙伴在灯下商议设备检查，先说明分工再耐心合作。",
+  "story_mode": "general",
+  "content_form": "audio_drama",
+  "outline": {
+    "title": "灯下的合作",
+    "premise": "两人检查设备",
+    "theme": "合作",
+    "beginning": "进入房间",
+    "development": "商议检查",
+    "climax": "共同开始",
+    "ending": "等待检查结果",
+    "episode_outlines": [
+      {
+        "index": 1,
+        "title": "灯下的合作",
+        "core_goal": "开始合作",
+        "major_beats": [
+          "商议检查"
+        ],
+        "ending": "等待检查结果",
+        "target_duration_sec": 90
+      }
+    ]
+  },
+  "character_snapshot": [
+    {
+      "character_id": "linlan",
+      "role_id": "repairer",
+      "performer_id": "voice-linlan",
+      "canon_revision": 1,
+      "profile_revision": 1,
+      "canon": {
+        "name": "林岚"
+      },
+      "profile": {}
+    },
+    {
+      "character_id": "zhouye",
+      "role_id": "host",
+      "performer_id": "voice-zhouye",
+      "canon_revision": 1,
+      "profile_revision": 1,
+      "canon": {
+        "name": "周野"
+      },
+      "profile": {}
+    }
+  ],
+  "episodes": [
+    {
+      "episode_id": "episode-1",
+      "index": 1,
+      "title": "灯下的合作",
+      "duration_target_sec": 90,
+      "duration_estimate_sec": 0,
+      "scenes": [
+        {
+          "scene_id": "scene-1",
+          "scene_index": 1,
+          "title": "检查前",
+          "location": "室内",
+          "dramatic_goal": "商议检查",
+          "utterances": [
+            {
+              "speaker_role_id": null,
+              "narrator_id": null,
+              "performer_id": null,
+              "emotion": null,
+              "tone_instruction": null,
+              "emphasis": [],
+              "speech_rate": 1.0,
+              "pitch": null,
+              "volume": null,
+              "pauses": [],
+              "delivery_note": null,
+              "audio_cue_ref": "door-close-once",
+              "kind": "sfx",
+              "text": "木门轻轻合上一次。",
+              "line_id": "line-1"
+            },
+            {
+              "speaker_role_id": null,
+              "narrator_id": "narrator",
+              "performer_id": "narrator",
+              "emotion": "calm",
+              "tone_instruction": "平稳叙述，保持清楚。",
+              "emphasis": [
+                {
+                  "span_text": "手电",
+                  "occurrence": 1,
+                  "strength": "medium",
+                  "start_char": 3,
+                  "end_char": 5
+                }
+              ],
+              "speech_rate": 1.0,
+              "pitch": null,
+              "volume": null,
+              "pauses": [],
+              "delivery_note": null,
+              "audio_cue_ref": null,
+              "kind": "narration",
+              "text": "林岚把手电放在桌上。",
+              "line_id": "line-2"
+            },
+            {
+              "speaker_role_id": "repairer",
+              "narrator_id": null,
+              "performer_id": "voice-linlan",
+              "emotion": "calm",
+              "tone_instruction": "克制而耐心地邀请对方合作。",
+              "emphasis": [
+                {
+                  "span_text": "一起",
+                  "occurrence": 1,
+                  "strength": "medium",
+                  "start_char": 6,
+                  "end_char": 8
+                }
+              ],
+              "speech_rate": 1.0,
+              "pitch": null,
+              "volume": null,
+              "pauses": [
+                {
+                  "after_char": 4,
+                  "duration_ms": 200
+                }
+              ],
+              "delivery_note": null,
+              "audio_cue_ref": null,
+              "kind": "dialogue",
+              "text": "先别急，我们一起检查。",
+              "line_id": "line-3"
+            },
+            {
+              "speaker_role_id": "host",
+              "narrator_id": null,
+              "performer_id": "voice-zhouye",
+              "emotion": "happy",
+              "tone_instruction": "轻声回应，自然积极。",
+              "emphasis": [
+                {
+                  "span_text": "好",
+                  "occurrence": 1,
+                  "strength": "medium",
+                  "start_char": 0,
+                  "end_char": 1
+                }
+              ],
+              "speech_rate": 1.0,
+              "pitch": null,
+              "volume": null,
+              "pauses": [],
+              "delivery_note": null,
+              "audio_cue_ref": null,
+              "kind": "dialogue",
+              "text": "好，我来照亮这里。",
+              "line_id": "line-4"
+            },
+            {
+              "speaker_role_id": null,
+              "narrator_id": null,
+              "performer_id": null,
+              "emotion": null,
+              "tone_instruction": null,
+              "emphasis": [],
+              "speech_rate": 1.0,
+              "pitch": null,
+              "volume": null,
+              "pauses": [],
+              "delivery_note": null,
+              "audio_cue_ref": null,
+              "kind": "action",
+              "text": "周野原地等待。",
+              "line_id": "line-5"
+            }
+          ]
+        }
+      ],
+      "validation_status": "PASSED",
+      "ready_for_playback": true
+    }
+  ],
+  "generated_episode_ids": [
+    "episode-1"
+  ],
+  "continuity_state": {},
+  "quality_report": {
+    "validation_status": "PASSED",
+    "warnings": [
+      "FIXTURE_ONLY_NOT_SERVICE_ACCEPTANCE"
+    ]
+  },
+  "status": "READY",
+  "ready_for_playback": true,
+  "delivery_format_version": "1.0",
+  "engine_version": "0.3.0",
+  "model_trace": [
+    {
+      "fixture_only": true,
+      "model_called": false
+    }
+  ]
+}

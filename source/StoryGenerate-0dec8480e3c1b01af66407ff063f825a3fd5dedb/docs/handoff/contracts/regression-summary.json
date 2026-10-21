@@ -1,0 +1,17 @@
+{
+  "tests": "685",
+  "failures": "0",
+  "errors": "0",
+  "skipped": "0",
+  "time": "238.806",
+  "timestamp": "2026-10-15T10:12:29.777498+08:00",
+  "passed": true,
+  "warnings": 16,
+  "postgres_integration_enabled": true,
+  "model_calls": 0,
+  "first_attempt": {
+    "outcome": "interrupted after environment setup errors",
+    "reason": "Windows default pytest temp directory PermissionError WinError5",
+    "remediation": "reran full suite with a fresh writable --basetemp; no tests changed or skipped"
+  }
+}

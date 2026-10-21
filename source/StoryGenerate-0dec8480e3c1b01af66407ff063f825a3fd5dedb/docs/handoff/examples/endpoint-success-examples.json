@@ -1,0 +1,1010 @@
+{
+  "description": "Complete success bodies for all 26 operations: probe_response_reference selects an entry and its response from http-responses.json; response_reference then resolves any archived JSON from repository root. NOT_EXECUTED entries are schema examples, not real executions.",
+  "operations": {
+    "GET /health": {
+      "evidence_kind": "executed_no_model_http",
+      "http_probe_id": "01 GET /health",
+      "status": 200,
+      "request": null,
+      "complete_success_response": {
+        "probe_response_reference": {
+          "path": "docs/handoff/contracts/http-responses.json",
+          "entry": "01 GET /health",
+          "json_pointer": "/response"
+        }
+      }
+    },
+    "POST /v1/plans": {
+      "evidence_kind": "executed_no_model_http",
+      "http_probe_id": "34 POST /v1/plans",
+      "status": 202,
+      "request": {
+        "intent": "create",
+        "request_id": "adb9a33929ab87c22386650caba0de69",
+        "idempotency_key": "7f3c8814b2db4c5ad532f1a6b9d12db1",
+        "user_instruction": "讲一个小熊和小兔子在森林里寻找神秘宝箱的故事，要幽默、有反转；用清楚温和的语言。此请求按当前支持的14-17年龄档演示，不宣称适用于低龄儿童。 conflict",
+        "creation_preferences": {
+          "story_mode": "general",
+          "genre": "森林冒险",
+          "tone_style": "幽默温暖",
+          "audience_band": "14-17",
+          "content_rating": "teen",
+          "target_episodes": 2,
+          "target_duration_sec": 120,
+          "ending_preference": "open"
+        },
+        "characters": {
+          "selected_character_ids": [
+            "bear",
+            "rabbit"
+          ],
+          "role_bindings": [
+            {
+              "character_id": "bear",
+              "role_id": "bear",
+              "performer_id": "voice-bear"
+            },
+            {
+              "character_id": "rabbit",
+              "role_id": "rabbit",
+              "performer_id": "voice-rabbit"
+            }
+          ]
+        }
+      },
+      "complete_success_response": {
+        "probe_response_reference": {
+          "path": "docs/handoff/contracts/http-responses.json",
+          "entry": "34 POST /v1/plans",
+          "json_pointer": "/response"
+        }
+      }
+    },
+    "GET /v1/tasks/{task_id}": {
+      "evidence_kind": "executed_no_model_http",
+      "http_probe_id": "37 GET /v1/tasks/45e619b3875344df9e2046372c8b8bfa",
+      "status": 200,
+      "request": null,
+      "complete_success_response": {
+        "probe_response_reference": {
+          "path": "docs/handoff/contracts/http-responses.json",
+          "entry": "37 GET /v1/tasks/45e619b3875344df9e2046372c8b8bfa",
+          "json_pointer": "/response"
+        }
+      }
+    },
+    "POST /v1/tasks/{task_id}/cancel": {
+      "evidence_kind": "executed_no_model_http",
+      "http_probe_id": "38 POST /v1/tasks/45e619b3875344df9e2046372c8b8bfa/cancel",
+      "status": 200,
+      "request": null,
+      "complete_success_response": {
+        "probe_response_reference": {
+          "path": "docs/handoff/contracts/http-responses.json",
+          "entry": "38 POST /v1/tasks/45e619b3875344df9e2046372c8b8bfa/cancel",
+          "json_pointer": "/response"
+        }
+      }
+    },
+    "POST /v1/tasks/{task_id}/retry": {
+      "evidence_kind": "schema_example_NOT_EXECUTED",
+      "status": 202,
+      "request": null,
+      "complete_success_response": {
+        "task_id": "EXAMPLE_FAILED_TASK",
+        "kind": "prepare",
+        "status": "QUEUED",
+        "progress_pct": 0,
+        "stage": "queued",
+        "result": {},
+        "error_code": null,
+        "error_message": null,
+        "usage": {},
+        "created_at": "2026-10-15T00:00:00Z",
+        "updated_at": "2026-10-15T00:01:00Z"
+      }
+    },
+    "GET /v1/plans/{plan_id}": {
+      "evidence_kind": "executed_no_model_http",
+      "http_probe_id": "26 GET /v1/plans/e0f7df910be148eab9946b311afe9ac6",
+      "status": 200,
+      "request": null,
+      "complete_success_response": {
+        "probe_response_reference": {
+          "path": "docs/handoff/contracts/http-responses.json",
+          "entry": "26 GET /v1/plans/e0f7df910be148eab9946b311afe9ac6",
+          "json_pointer": "/response"
+        }
+      }
+    },
+    "GET /v1/plans/{plan_id}/revisions": {
+      "evidence_kind": "executed_no_model_http",
+      "http_probe_id": "27 GET /v1/plans/e0f7df910be148eab9946b311afe9ac6/revisions",
+      "status": 200,
+      "request": null,
+      "complete_success_response": {
+        "probe_response_reference": {
+          "path": "docs/handoff/contracts/http-responses.json",
+          "entry": "27 GET /v1/plans/e0f7df910be148eab9946b311afe9ac6/revisions",
+          "json_pointer": "/response"
+        }
+      }
+    },
+    "POST /v1/plans/{plan_id}/revisions": {
+      "evidence_kind": "historical_real_model_http_chain",
+      "status": 202,
+      "request": {
+        "expected_revision": 1,
+        "feedback": "保留固定故障原因、人物身份、两集120秒及未兑现三声铃，增强共同核对设备的具体行动。",
+        "idempotency_key": "20c2d37e715d415d9aef1b8c83748306"
+      },
+      "complete_success_response": {
+        "task_id": "670b3218304c4c48aa70f48cfb9bcec7",
+        "kind": "revise",
+        "status": "QUEUED",
+        "progress_pct": 0,
+        "stage": "queued",
+        "result": {},
+        "error_code": null,
+        "error_message": null,
+        "usage": {},
+        "created_at": "2026-10-14T16:15:04.754884Z",
+        "updated_at": "2026-10-14T16:15:04.754884Z"
+      },
+      "evidence": "6-实测产物/phase11_live_20261015_v3/create/revision_submit.json"
+    },
+    "POST /v1/plans/{plan_id}/approve": {
+      "evidence_kind": "executed_no_model_http",
+      "http_probe_id": "28 POST /v1/plans/e0f7df910be148eab9946b311afe9ac6/approve",
+      "status": 202,
+      "request": {
+        "expected_revision": 2,
+        "fingerprint": "26e973ad21aecebec4b6fcec550b638e52cae7ec954bc3e33e57f82dd52c88f5",
+        "idempotency_key": "cee407ca32364d64a476b0cdb953be19"
+      },
+      "complete_success_response": {
+        "probe_response_reference": {
+          "path": "docs/handoff/contracts/http-responses.json",
+          "entry": "28 POST /v1/plans/e0f7df910be148eab9946b311afe9ac6/approve",
+          "json_pointer": "/response"
+        }
+      }
+    },
+    "POST /v1/plans/{plan_id}/generate": {
+      "evidence_kind": "executed_no_model_http",
+      "http_probe_id": "29 POST /v1/plans/e0f7df910be148eab9946b311afe9ac6/generate",
+      "status": 202,
+      "request": null,
+      "complete_success_response": {
+        "probe_response_reference": {
+          "path": "docs/handoff/contracts/http-responses.json",
+          "entry": "29 POST /v1/plans/e0f7df910be148eab9946b311afe9ac6/generate",
+          "json_pointer": "/response"
+        }
+      }
+    },
+    "GET /v1/jobs/{job_id}": {
+      "evidence_kind": "executed_no_model_http",
+      "http_probe_id": "30 GET /v1/jobs/3fddba14a0e44ecd8cbaa48b7261bd5b",
+      "status": 200,
+      "request": null,
+      "complete_success_response": {
+        "probe_response_reference": {
+          "path": "docs/handoff/contracts/http-responses.json",
+          "entry": "30 GET /v1/jobs/3fddba14a0e44ecd8cbaa48b7261bd5b",
+          "json_pointer": "/response"
+        }
+      }
+    },
+    "POST /v1/jobs/{job_id}/cancel": {
+      "evidence_kind": "schema_example_NOT_EXECUTED",
+      "status": 200,
+      "request": null,
+      "complete_success_response": {
+        "job_id": "EXAMPLE_QUEUED_JOB",
+        "request_id": "EXAMPLE_ENGINE_HASHED_REQUEST",
+        "status": "CANCELLED",
+        "stage": "cancelled",
+        "progress_pct": 0,
+        "approved_plan_id": "EXAMPLE_APPROVED_PLAN",
+        "approved_plan_revision": 1,
+        "result_story_version_id": null,
+        "error_code": null,
+        "error_message": null,
+        "usage": {},
+        "story_state": "CANCELLED",
+        "audio_state": "NOT_SYNTHESIZED",
+        "playback_state": "NOT_REPORTED"
+      }
+    },
+    "POST /v1/jobs/{job_id}/retry": {
+      "evidence_kind": "historical_real_model_http_chain",
+      "status": 202,
+      "request": null,
+      "complete_success_response": {
+        "job_id": "3fddba14a0e44ecd8cbaa48b7261bd5b",
+        "request_id": "e2c873e95370d9dddcda1523c1fccad87d9959c36b45563337add9e082bfab0e",
+        "status": "QUEUED",
+        "stage": "queued",
+        "progress_pct": 0,
+        "approved_plan_id": "e0f7df910be148eab9946b311afe9ac6",
+        "approved_plan_revision": 2,
+        "result_story_version_id": null,
+        "error_code": null,
+        "error_message": null,
+        "usage": {
+          "calls": 9,
+          "by_stage": {
+            "episode_writer": 36973,
+            "performance_annotation": 44128,
+            "storycraft_operation_judge": 17272
+          },
+          "call_records": [
+            {
+              "node": "episode_writer",
+              "role": "storycraft_episode_writer",
+              "stage": "story_generation",
+              "job_id": "3fddba14a0e44ecd8cbaa48b7261bd5b",
+              "status": "success",
+              "attempt": 1,
+              "call_id": "2c3332c0a01443308ac55e63ce2e6028",
+              "plan_id": "e0f7df910be148eab9946b311afe9ac6",
+              "provider": "openai_compat",
+              "error_code": null,
+              "latency_ms": 92645,
+              "request_id": "e2c873e95370d9dddcda1523c1fccad87d9959c36b45563337add9e082bfab0e",
+              "started_at": "2026-10-14T16:15:41.676925+00:00",
+              "actual_model": "qwen3.7-max",
+              "attempt_kind": "first_draft",
+              "completed_at": "2026-10-14T16:17:14.322590+00:00",
+              "input_tokens": 8502,
+              "usage_source": "reported",
+              "output_tokens": 9780,
+              "prompt_version": "p1.6.11",
+              "requested_model": "qwen/qwen3.7-max",
+              "reasoning_tokens": 7674,
+              "cache_read_tokens": 0,
+              "cache_write_tokens": 0,
+              "provider_request_id": "61632217-e8f4-4f5a-8f36-42d61a1f18dc",
+              "reasoning_included_in_output": true
+            },
+            {
+              "node": "performance_annotation",
+              "role": "performance_annotation",
+              "stage": "generation",
+              "job_id": "3fddba14a0e44ecd8cbaa48b7261bd5b",
+              "status": "success",
+              "attempt": 1,
+              "call_id": "0d4edbb328da488294f8c196ea46ac02",
+              "plan_id": "e0f7df910be148eab9946b311afe9ac6",
+              "provider": "openai_compat",
+              "error_code": null,
+              "latency_ms": 36512,
+              "request_id": "e2c873e95370d9dddcda1523c1fccad87d9959c36b45563337add9e082bfab0e",
+              "started_at": "2026-10-14T16:17:14.548612+00:00",
+              "actual_model": "qwen3.6-flash",
+              "attempt_kind": "approved_job",
+              "completed_at": "2026-10-14T16:17:51.060769+00:00",
+              "input_tokens": 2439,
+              "usage_source": "reported",
+              "output_tokens": 5039,
+              "prompt_version": "p1.6.11",
+              "requested_model": "qwen/qwen3.6-flash",
+              "reasoning_tokens": 4091,
+              "cache_read_tokens": 0,
+              "cache_write_tokens": 0,
+              "provider_request_id": "f8f8a160-28a4-471c-9111-90ec64676b4b",
+              "reasoning_included_in_output": true
+            },
+            {
+              "node": "performance_annotation",
+              "role": "performance_annotation",
+              "stage": "generation",
+              "job_id": "3fddba14a0e44ecd8cbaa48b7261bd5b",
+              "status": "success",
+              "attempt": 1,
+              "call_id": "2cf5492f0da444f494685ae37f75daac",
+              "plan_id": "e0f7df910be148eab9946b311afe9ac6",
+              "provider": "openai_compat",
+              "error_code": null,
+              "latency_ms": 34824,
+              "request_id": "e2c873e95370d9dddcda1523c1fccad87d9959c36b45563337add9e082bfab0e",
+              "started_at": "2026-10-14T16:17:51.155716+00:00",
+              "actual_model": "qwen3.6-flash",
+              "attempt_kind": "approved_job",
+              "completed_at": "2026-10-14T16:18:25.980568+00:00",
+              "input_tokens": 2455,
+              "usage_source": "reported",
+              "output_tokens": 5064,
+              "prompt_version": "p1.6.11",
+              "requested_model": "qwen/qwen3.6-flash",
+              "reasoning_tokens": 4043,
+              "cache_read_tokens": 0,
+              "cache_write_tokens": 0,
+              "provider_request_id": "b4d8f921-6155-4ab4-881e-f24b9d84c52a",
+              "reasoning_included_in_output": true
+            },
+            {
+              "node": "performance_annotation",
+              "role": "performance_annotation",
+              "stage": "generation",
+              "job_id": "3fddba14a0e44ecd8cbaa48b7261bd5b",
+              "status": "success",
+              "attempt": 1,
+              "call_id": "da3ce16cb166402d9d0feedbf50bee46",
+              "plan_id": "e0f7df910be148eab9946b311afe9ac6",
+              "provider": "openai_compat",
+              "error_code": null,
+              "latency_ms": 36723,
+              "request_id": "e2c873e95370d9dddcda1523c1fccad87d9959c36b45563337add9e082bfab0e",
+              "started_at": "2026-10-14T16:18:26.114110+00:00",
+              "actual_model": "qwen3.6-flash",
+              "attempt_kind": "approved_job",
+              "completed_at": "2026-10-14T16:19:02.837958+00:00",
+              "input_tokens": 2445,
+              "usage_source": "reported",
+              "output_tokens": 5210,
+              "prompt_version": "p1.6.11",
+              "requested_model": "qwen/qwen3.6-flash",
+              "reasoning_tokens": 4342,
+              "cache_read_tokens": 0,
+              "cache_write_tokens": 0,
+              "provider_request_id": "9c15026c-582c-4e23-845f-1a567910736f",
+              "reasoning_included_in_output": true
+            },
+            {
+              "node": "episode_writer",
+              "role": "storycraft_episode_writer",
+              "stage": "story_generation",
+              "job_id": "3fddba14a0e44ecd8cbaa48b7261bd5b",
+              "status": "success",
+              "attempt": 1,
+              "call_id": "37408bbb0119466db895e3d706571c18",
+              "plan_id": "e0f7df910be148eab9946b311afe9ac6",
+              "provider": "openai_compat",
+              "error_code": null,
+              "latency_ms": 48274,
+              "request_id": "e2c873e95370d9dddcda1523c1fccad87d9959c36b45563337add9e082bfab0e",
+              "started_at": "2026-10-14T16:19:03.039104+00:00",
+              "actual_model": "qwen3.7-max",
+              "attempt_kind": "first_draft",
+              "completed_at": "2026-10-14T16:19:51.313258+00:00",
+              "input_tokens": 13933,
+              "usage_source": "reported",
+              "output_tokens": 4758,
+              "prompt_version": "p1.6.11",
+              "requested_model": "qwen/qwen3.7-max",
+              "reasoning_tokens": 3321,
+              "cache_read_tokens": 1152,
+              "cache_write_tokens": 0,
+              "provider_request_id": "e0f23d55-24a3-4216-8434-db97b4e03197",
+              "reasoning_included_in_output": true
+            },
+            {
+              "node": "performance_annotation",
+              "role": "performance_annotation",
+              "stage": "generation",
+              "job_id": "3fddba14a0e44ecd8cbaa48b7261bd5b",
+              "status": "success",
+              "attempt": 1,
+              "call_id": "b8172dc161544b088d0e2f73f4d58b79",
+              "plan_id": "e0f7df910be148eab9946b311afe9ac6",
+              "provider": "openai_compat",
+              "error_code": null,
+              "latency_ms": 33073,
+              "request_id": "e2c873e95370d9dddcda1523c1fccad87d9959c36b45563337add9e082bfab0e",
+              "started_at": "2026-10-14T16:19:51.494660+00:00",
+              "actual_model": "qwen3.6-flash",
+              "attempt_kind": "approved_job",
+              "completed_at": "2026-10-14T16:20:24.567438+00:00",
+              "input_tokens": 2077,
+              "usage_source": "reported",
+              "output_tokens": 4424,
+              "prompt_version": "p1.6.11",
+              "requested_model": "qwen/qwen3.6-flash",
+              "reasoning_tokens": 3851,
+              "cache_read_tokens": 0,
+              "cache_write_tokens": 0,
+              "provider_request_id": "4671f82b-243c-4c38-af63-21ee585d99e6",
+              "reasoning_included_in_output": true
+            },
+            {
+              "node": "performance_annotation",
+              "role": "performance_annotation",
+              "stage": "generation",
+              "job_id": "3fddba14a0e44ecd8cbaa48b7261bd5b",
+              "status": "success",
+              "attempt": 1,
+              "call_id": "f2cc09b0fc9749d7aa1e8d132d9022b2",
+              "plan_id": "e0f7df910be148eab9946b311afe9ac6",
+              "provider": "openai_compat",
+              "error_code": null,
+              "latency_ms": 41386,
+              "request_id": "e2c873e95370d9dddcda1523c1fccad87d9959c36b45563337add9e082bfab0e",
+              "started_at": "2026-10-14T16:20:24.691024+00:00",
+              "actual_model": "qwen3.6-flash",
+              "attempt_kind": "approved_job",
+              "completed_at": "2026-10-14T16:21:06.077595+00:00",
+              "input_tokens": 2468,
+              "usage_source": "reported",
+              "output_tokens": 5479,
+              "prompt_version": "p1.6.11",
+              "requested_model": "qwen/qwen3.6-flash",
+              "reasoning_tokens": 4194,
+              "cache_read_tokens": 0,
+              "cache_write_tokens": 0,
+              "provider_request_id": "aff1d5eb-c9c7-44d1-90f9-4f6ad5e1230e",
+              "reasoning_included_in_output": true
+            },
+            {
+              "node": "performance_annotation",
+              "role": "performance_annotation",
+              "stage": "generation",
+              "job_id": "3fddba14a0e44ecd8cbaa48b7261bd5b",
+              "status": "success",
+              "attempt": 1,
+              "call_id": "e0cfef77b34b41f58d872a4ac677625a",
+              "plan_id": "e0f7df910be148eab9946b311afe9ac6",
+              "provider": "openai_compat",
+              "error_code": null,
+              "latency_ms": 34581,
+              "request_id": "e2c873e95370d9dddcda1523c1fccad87d9959c36b45563337add9e082bfab0e",
+              "started_at": "2026-10-14T16:21:06.216670+00:00",
+              "actual_model": "qwen3.6-flash",
+              "attempt_kind": "approved_job",
+              "completed_at": "2026-10-14T16:21:40.798399+00:00",
+              "input_tokens": 2258,
+              "usage_source": "reported",
+              "output_tokens": 4770,
+              "prompt_version": "p1.6.11",
+              "requested_model": "qwen/qwen3.6-flash",
+              "reasoning_tokens": 3808,
+              "cache_read_tokens": 0,
+              "cache_write_tokens": 0,
+              "provider_request_id": "6cdfdb3c-00af-4f9b-a9bd-b2187e81e7d9",
+              "reasoning_included_in_output": true
+            },
+            {
+              "node": "storycraft_operation_judge",
+              "role": "storycraft_operation_judge",
+              "stage": "generation",
+              "job_id": "3fddba14a0e44ecd8cbaa48b7261bd5b",
+              "status": "success",
+              "attempt": 1,
+              "call_id": "c0187a3f2ac64393949522088780cbe7",
+              "plan_id": "e0f7df910be148eab9946b311afe9ac6",
+              "provider": "openai_compat",
+              "error_code": null,
+              "latency_ms": 28279,
+              "request_id": "e2c873e95370d9dddcda1523c1fccad87d9959c36b45563337add9e082bfab0e",
+              "started_at": "2026-10-14T16:21:41.091674+00:00",
+              "actual_model": "qwen3.7-max",
+              "attempt_kind": "approved_job",
+              "completed_at": "2026-10-14T16:22:09.372121+00:00",
+              "input_tokens": 14410,
+              "usage_source": "reported",
+              "output_tokens": 2862,
+              "prompt_version": "p1.6.11",
+              "requested_model": "qwen/qwen3.7-max",
+              "reasoning_tokens": 2341,
+              "cache_read_tokens": 0,
+              "cache_write_tokens": 0,
+              "provider_request_id": "dccd49ec-fafb-4ed9-8471-f9e30fa634b7",
+              "reasoning_included_in_output": true
+            }
+          ],
+          "input_tokens": 50987,
+          "output_tokens": 47386,
+          "attempt_history": [
+            {
+              "usage": {
+                "calls": 9,
+                "by_stage": {
+                  "episode_writer": 36973,
+                  "performance_annotation": 44128,
+                  "storycraft_operation_judge": 17272
+                },
+                "call_records": [
+                  {
+                    "node": "episode_writer",
+                    "role": "storycraft_episode_writer",
+                    "stage": "story_generation",
+                    "job_id": "3fddba14a0e44ecd8cbaa48b7261bd5b",
+                    "status": "success",
+                    "attempt": 1,
+                    "call_id": "2c3332c0a01443308ac55e63ce2e6028",
+                    "plan_id": "e0f7df910be148eab9946b311afe9ac6",
+                    "provider": "openai_compat",
+                    "error_code": null,
+                    "latency_ms": 92645,
+                    "request_id": "e2c873e95370d9dddcda1523c1fccad87d9959c36b45563337add9e082bfab0e",
+                    "started_at": "2026-10-14T16:15:41.676925+00:00",
+                    "actual_model": "qwen3.7-max",
+                    "attempt_kind": "first_draft",
+                    "completed_at": "2026-10-14T16:17:14.322590+00:00",
+                    "input_tokens": 8502,
+                    "usage_source": "reported",
+                    "output_tokens": 9780,
+                    "prompt_version": "p1.6.11",
+                    "requested_model": "qwen/qwen3.7-max",
+                    "reasoning_tokens": 7674,
+                    "cache_read_tokens": 0,
+                    "cache_write_tokens": 0,
+                    "provider_request_id": "61632217-e8f4-4f5a-8f36-42d61a1f18dc",
+                    "reasoning_included_in_output": true
+                  },
+                  {
+                    "node": "performance_annotation",
+                    "role": "performance_annotation",
+                    "stage": "generation",
+                    "job_id": "3fddba14a0e44ecd8cbaa48b7261bd5b",
+                    "status": "success",
+                    "attempt": 1,
+                    "call_id": "0d4edbb328da488294f8c196ea46ac02",
+                    "plan_id": "e0f7df910be148eab9946b311afe9ac6",
+                    "provider": "openai_compat",
+                    "error_code": null,
+                    "latency_ms": 36512,
+                    "request_id": "e2c873e95370d9dddcda1523c1fccad87d9959c36b45563337add9e082bfab0e",
+                    "started_at": "2026-10-14T16:17:14.548612+00:00",
+                    "actual_model": "qwen3.6-flash",
+                    "attempt_kind": "approved_job",
+                    "completed_at": "2026-10-14T16:17:51.060769+00:00",
+                    "input_tokens": 2439,
+                    "usage_source": "reported",
+                    "output_tokens": 5039,
+                    "prompt_version": "p1.6.11",
+                    "requested_model": "qwen/qwen3.6-flash",
+                    "reasoning_tokens": 4091,
+                    "cache_read_tokens": 0,
+                    "cache_write_tokens": 0,
+                    "provider_request_id": "f8f8a160-28a4-471c-9111-90ec64676b4b",
+                    "reasoning_included_in_output": true
+                  },
+                  {
+                    "node": "performance_annotation",
+                    "role": "performance_annotation",
+                    "stage": "generation",
+                    "job_id": "3fddba14a0e44ecd8cbaa48b7261bd5b",
+                    "status": "success",
+                    "attempt": 1,
+                    "call_id": "2cf5492f0da444f494685ae37f75daac",
+                    "plan_id": "e0f7df910be148eab9946b311afe9ac6",
+                    "provider": "openai_compat",
+                    "error_code": null,
+                    "latency_ms": 34824,
+                    "request_id": "e2c873e95370d9dddcda1523c1fccad87d9959c36b45563337add9e082bfab0e",
+                    "started_at": "2026-10-14T16:17:51.155716+00:00",
+                    "actual_model": "qwen3.6-flash",
+                    "attempt_kind": "approved_job",
+                    "completed_at": "2026-10-14T16:18:25.980568+00:00",
+                    "input_tokens": 2455,
+                    "usage_source": "reported",
+                    "output_tokens": 5064,
+                    "prompt_version": "p1.6.11",
+                    "requested_model": "qwen/qwen3.6-flash",
+                    "reasoning_tokens": 4043,
+                    "cache_read_tokens": 0,
+                    "cache_write_tokens": 0,
+                    "provider_request_id": "b4d8f921-6155-4ab4-881e-f24b9d84c52a",
+                    "reasoning_included_in_output": true
+                  },
+                  {
+                    "node": "performance_annotation",
+                    "role": "performance_annotation",
+                    "stage": "generation",
+                    "job_id": "3fddba14a0e44ecd8cbaa48b7261bd5b",
+                    "status": "success",
+                    "attempt": 1,
+                    "call_id": "da3ce16cb166402d9d0feedbf50bee46",
+                    "plan_id": "e0f7df910be148eab9946b311afe9ac6",
+                    "provider": "openai_compat",
+                    "error_code": null,
+                    "latency_ms": 36723,
+                    "request_id": "e2c873e95370d9dddcda1523c1fccad87d9959c36b45563337add9e082bfab0e",
+                    "started_at": "2026-10-14T16:18:26.114110+00:00",
+                    "actual_model": "qwen3.6-flash",
+                    "attempt_kind": "approved_job",
+                    "completed_at": "2026-10-14T16:19:02.837958+00:00",
+                    "input_tokens": 2445,
+                    "usage_source": "reported",
+                    "output_tokens": 5210,
+                    "prompt_version": "p1.6.11",
+                    "requested_model": "qwen/qwen3.6-flash",
+                    "reasoning_tokens": 4342,
+                    "cache_read_tokens": 0,
+                    "cache_write_tokens": 0,
+                    "provider_request_id": "9c15026c-582c-4e23-845f-1a567910736f",
+                    "reasoning_included_in_output": true
+                  },
+                  {
+                    "node": "episode_writer",
+                    "role": "storycraft_episode_writer",
+                    "stage": "story_generation",
+                    "job_id": "3fddba14a0e44ecd8cbaa48b7261bd5b",
+                    "status": "success",
+                    "attempt": 1,
+                    "call_id": "37408bbb0119466db895e3d706571c18",
+                    "plan_id": "e0f7df910be148eab9946b311afe9ac6",
+                    "provider": "openai_compat",
+                    "error_code": null,
+                    "latency_ms": 48274,
+                    "request_id": "e2c873e95370d9dddcda1523c1fccad87d9959c36b45563337add9e082bfab0e",
+                    "started_at": "2026-10-14T16:19:03.039104+00:00",
+                    "actual_model": "qwen3.7-max",
+                    "attempt_kind": "first_draft",
+                    "completed_at": "2026-10-14T16:19:51.313258+00:00",
+                    "input_tokens": 13933,
+                    "usage_source": "reported",
+                    "output_tokens": 4758,
+                    "prompt_version": "p1.6.11",
+                    "requested_model": "qwen/qwen3.7-max",
+                    "reasoning_tokens": 3321,
+                    "cache_read_tokens": 1152,
+                    "cache_write_tokens": 0,
+                    "provider_request_id": "e0f23d55-24a3-4216-8434-db97b4e03197",
+                    "reasoning_included_in_output": true
+                  },
+                  {
+                    "node": "performance_annotation",
+                    "role": "performance_annotation",
+                    "stage": "generation",
+                    "job_id": "3fddba14a0e44ecd8cbaa48b7261bd5b",
+                    "status": "success",
+                    "attempt": 1,
+                    "call_id": "b8172dc161544b088d0e2f73f4d58b79",
+                    "plan_id": "e0f7df910be148eab9946b311afe9ac6",
+                    "provider": "openai_compat",
+                    "error_code": null,
+                    "latency_ms": 33073,
+                    "request_id": "e2c873e95370d9dddcda1523c1fccad87d9959c36b45563337add9e082bfab0e",
+                    "started_at": "2026-10-14T16:19:51.494660+00:00",
+                    "actual_model": "qwen3.6-flash",
+                    "attempt_kind": "approved_job",
+                    "completed_at": "2026-10-14T16:20:24.567438+00:00",
+                    "input_tokens": 2077,
+                    "usage_source": "reported",
+                    "output_tokens": 4424,
+                    "prompt_version": "p1.6.11",
+                    "requested_model": "qwen/qwen3.6-flash",
+                    "reasoning_tokens": 3851,
+                    "cache_read_tokens": 0,
+                    "cache_write_tokens": 0,
+                    "provider_request_id": "4671f82b-243c-4c38-af63-21ee585d99e6",
+                    "reasoning_included_in_output": true
+                  },
+                  {
+                    "node": "performance_annotation",
+                    "role": "performance_annotation",
+                    "stage": "generation",
+                    "job_id": "3fddba14a0e44ecd8cbaa48b7261bd5b",
+                    "status": "success",
+                    "attempt": 1,
+                    "call_id": "f2cc09b0fc9749d7aa1e8d132d9022b2",
+                    "plan_id": "e0f7df910be148eab9946b311afe9ac6",
+                    "provider": "openai_compat",
+                    "error_code": null,
+                    "latency_ms": 41386,
+                    "request_id": "e2c873e95370d9dddcda1523c1fccad87d9959c36b45563337add9e082bfab0e",
+                    "started_at": "2026-10-14T16:20:24.691024+00:00",
+                    "actual_model": "qwen3.6-flash",
+                    "attempt_kind": "approved_job",
+                    "completed_at": "2026-10-14T16:21:06.077595+00:00",
+                    "input_tokens": 2468,
+                    "usage_source": "reported",
+                    "output_tokens": 5479,
+                    "prompt_version": "p1.6.11",
+                    "requested_model": "qwen/qwen3.6-flash",
+                    "reasoning_tokens": 4194,
+                    "cache_read_tokens": 0,
+                    "cache_write_tokens": 0,
+                    "provider_request_id": "aff1d5eb-c9c7-44d1-90f9-4f6ad5e1230e",
+                    "reasoning_included_in_output": true
+                  },
+                  {
+                    "node": "performance_annotation",
+                    "role": "performance_annotation",
+                    "stage": "generation",
+                    "job_id": "3fddba14a0e44ecd8cbaa48b7261bd5b",
+                    "status": "success",
+                    "attempt": 1,
+                    "call_id": "e0cfef77b34b41f58d872a4ac677625a",
+                    "plan_id": "e0f7df910be148eab9946b311afe9ac6",
+                    "provider": "openai_compat",
+                    "error_code": null,
+                    "latency_ms": 34581,
+                    "request_id": "e2c873e95370d9dddcda1523c1fccad87d9959c36b45563337add9e082bfab0e",
+                    "started_at": "2026-10-14T16:21:06.216670+00:00",
+                    "actual_model": "qwen3.6-flash",
+                    "attempt_kind": "approved_job",
+                    "completed_at": "2026-10-14T16:21:40.798399+00:00",
+                    "input_tokens": 2258,
+                    "usage_source": "reported",
+                    "output_tokens": 4770,
+                    "prompt_version": "p1.6.11",
+                    "requested_model": "qwen/qwen3.6-flash",
+                    "reasoning_tokens": 3808,
+                    "cache_read_tokens": 0,
+                    "cache_write_tokens": 0,
+                    "provider_request_id": "6cdfdb3c-00af-4f9b-a9bd-b2187e81e7d9",
+                    "reasoning_included_in_output": true
+                  },
+                  {
+                    "node": "storycraft_operation_judge",
+                    "role": "storycraft_operation_judge",
+                    "stage": "generation",
+                    "job_id": "3fddba14a0e44ecd8cbaa48b7261bd5b",
+                    "status": "success",
+                    "attempt": 1,
+                    "call_id": "c0187a3f2ac64393949522088780cbe7",
+                    "plan_id": "e0f7df910be148eab9946b311afe9ac6",
+                    "provider": "openai_compat",
+                    "error_code": null,
+                    "latency_ms": 28279,
+                    "request_id": "e2c873e95370d9dddcda1523c1fccad87d9959c36b45563337add9e082bfab0e",
+                    "started_at": "2026-10-14T16:21:41.091674+00:00",
+                    "actual_model": "qwen3.7-max",
+                    "attempt_kind": "approved_job",
+                    "completed_at": "2026-10-14T16:22:09.372121+00:00",
+                    "input_tokens": 14410,
+                    "usage_source": "reported",
+                    "output_tokens": 2862,
+                    "prompt_version": "p1.6.11",
+                    "requested_model": "qwen/qwen3.7-max",
+                    "reasoning_tokens": 2341,
+                    "cache_read_tokens": 0,
+                    "cache_write_tokens": 0,
+                    "provider_request_id": "dccd49ec-fafb-4ed9-8471-f9e30fa634b7",
+                    "reasoning_included_in_output": true
+                  }
+                ],
+                "input_tokens": 50987,
+                "output_tokens": 47386,
+                "cache_read_tokens": 1152,
+                "unknown_usage_calls": 0,
+                "model_request_seconds": 386.297,
+                "estimated_input_tokens": 0,
+                "reasoning_tokens_in_output": 37665
+              },
+              "status": "FAILED",
+              "error_code": "WORKFLOW_GENERATION_FAILED",
+              "wall_seconds": 388.263,
+              "error_message": "PERFORMANCE_OR_STORY_VALIDATION_FAILED: executor_validation, continuity; TIMELINE_CLOCK_CLAIMS_MISSING: [('ep1-s3-l3', '02:05')]; OPERATION_REQUIREMENTS_NOT_PROVEN",
+              "inflight_usage_unknown": false
+            }
+          ],
+          "cache_read_tokens": 1152,
+          "attempt_started_at": "2026-10-14T16:15:41.498750+00:00",
+          "unknown_usage_calls": 0,
+          "attempt_completed_at": "2026-10-14T16:22:09.762120+00:00",
+          "attempt_wall_seconds": 388.263,
+          "model_request_seconds": 386.297,
+          "estimated_input_tokens": 0,
+          "current_attempt_call_ids": [],
+          "reasoning_tokens_in_output": 37665
+        },
+        "story_state": "NOT_GENERATED",
+        "audio_state": "NOT_SYNTHESIZED",
+        "playback_state": "NOT_REPORTED"
+      },
+      "evidence": "6-实测产物/phase11_live_20261015_v3/create/retry.json"
+    },
+    "GET /v1/stories": {
+      "evidence_kind": "executed_no_model_http",
+      "http_probe_id": "10 GET /v1/stories?limit=200&offset=0",
+      "status": 200,
+      "request": null,
+      "complete_success_response": {
+        "probe_response_reference": {
+          "path": "docs/handoff/contracts/http-responses.json",
+          "entry": "10 GET /v1/stories?limit=200&offset=0",
+          "json_pointer": "/response"
+        }
+      }
+    },
+    "GET /v1/stories/{story_id}/versions": {
+      "evidence_kind": "executed_no_model_http",
+      "http_probe_id": "12 GET /v1/stories/8b8dd2f1fde64ba4a4820432f2ab06c7/versions",
+      "status": 200,
+      "request": null,
+      "complete_success_response": {
+        "probe_response_reference": {
+          "path": "docs/handoff/contracts/http-responses.json",
+          "entry": "12 GET /v1/stories/8b8dd2f1fde64ba4a4820432f2ab06c7/versions",
+          "json_pointer": "/response"
+        }
+      }
+    },
+    "GET /v1/story-versions/{version_id}": {
+      "evidence_kind": "executed_no_model_http",
+      "http_probe_id": "11 GET /v1/story-versions/1cf88eb73f914da89b058679166830b6",
+      "status": 200,
+      "request": null,
+      "complete_success_response": {
+        "probe_response_reference": {
+          "path": "docs/handoff/contracts/http-responses.json",
+          "entry": "11 GET /v1/story-versions/1cf88eb73f914da89b058679166830b6",
+          "json_pointer": "/response"
+        }
+      }
+    },
+    "GET /v1/story-versions/{version_id}/lineage": {
+      "evidence_kind": "executed_no_model_http",
+      "http_probe_id": "13 GET /v1/story-versions/1cf88eb73f914da89b058679166830b6/lineage",
+      "status": 200,
+      "request": null,
+      "complete_success_response": {
+        "probe_response_reference": {
+          "path": "docs/handoff/contracts/http-responses.json",
+          "entry": "13 GET /v1/story-versions/1cf88eb73f914da89b058679166830b6/lineage",
+          "json_pointer": "/response"
+        }
+      }
+    },
+    "GET /v1/story-versions/{version_id}/export": {
+      "evidence_kind": "executed_no_model_http",
+      "http_probe_id": "14 GET /v1/story-versions/1cf88eb73f914da89b058679166830b6/export?format=json",
+      "status": 200,
+      "request": null,
+      "complete_success_response": {
+        "probe_response_reference": {
+          "path": "docs/handoff/contracts/http-responses.json",
+          "entry": "14 GET /v1/story-versions/1cf88eb73f914da89b058679166830b6/export?format=json",
+          "json_pointer": "/response"
+        }
+      }
+    },
+    "GET /v1/story-versions/{version_id}/render-manifest": {
+      "evidence_kind": "executed_no_model_http",
+      "http_probe_id": "17 GET /v1/story-versions/1cf88eb73f914da89b058679166830b6/render-manifest",
+      "status": 200,
+      "request": null,
+      "complete_success_response": {
+        "probe_response_reference": {
+          "path": "docs/handoff/contracts/http-responses.json",
+          "entry": "17 GET /v1/story-versions/1cf88eb73f914da89b058679166830b6/render-manifest",
+          "json_pointer": "/response"
+        }
+      }
+    },
+    "POST /v1/story-versions/{version_id}/simulate-tts": {
+      "evidence_kind": "executed_no_model_http",
+      "http_probe_id": "18 POST /v1/story-versions/1cf88eb73f914da89b058679166830b6/simulate-tts",
+      "status": 200,
+      "request": null,
+      "complete_success_response": {
+        "probe_response_reference": {
+          "path": "docs/handoff/contracts/http-responses.json",
+          "entry": "18 POST /v1/story-versions/1cf88eb73f914da89b058679166830b6/simulate-tts",
+          "json_pointer": "/response"
+        }
+      }
+    },
+    "POST /v1/characters/import": {
+      "evidence_kind": "executed_no_model_http",
+      "http_probe_id": "25 POST /v1/characters/import",
+      "status": 200,
+      "request": {
+        "characters": [
+          {
+            "character_id": "bear",
+            "expected_version": 0,
+            "canon": {
+              "name": "小熊",
+              "species": "熊"
+            },
+            "runtime_defaults": {
+              "personality": [
+                "热心但容易冒失"
+              ]
+            },
+            "assets": {
+              "voice": {
+                "asset_id": "demo-bear",
+                "revision": "1",
+                "performer_id": "voice-bear"
+              }
+            }
+          },
+          {
+            "character_id": "rabbit",
+            "expected_version": 0,
+            "canon": {
+              "name": "小兔",
+              "species": "兔"
+            },
+            "runtime_defaults": {
+              "personality": [
+                "细心且幽默"
+              ]
+            },
+            "assets": {
+              "voice": {
+                "asset_id": "demo-rabbit",
+                "revision": "1",
+                "performer_id": "voice-rabbit"
+              }
+            }
+          }
+        ]
+      },
+      "complete_success_response": {
+        "probe_response_reference": {
+          "path": "docs/handoff/contracts/http-responses.json",
+          "entry": "25 POST /v1/characters/import",
+          "json_pointer": "/response"
+        }
+      }
+    },
+    "GET /v1/characters": {
+      "evidence_kind": "executed_no_model_http",
+      "http_probe_id": "19 GET /v1/characters?limit=50&offset=0",
+      "status": 200,
+      "request": null,
+      "complete_success_response": {
+        "probe_response_reference": {
+          "path": "docs/handoff/contracts/http-responses.json",
+          "entry": "19 GET /v1/characters?limit=50&offset=0",
+          "json_pointer": "/response"
+        }
+      }
+    },
+    "GET /v1/characters/{character_id}": {
+      "evidence_kind": "executed_no_model_http",
+      "http_probe_id": "20 GET /v1/characters/linlan",
+      "status": 200,
+      "request": null,
+      "complete_success_response": {
+        "probe_response_reference": {
+          "path": "docs/handoff/contracts/http-responses.json",
+          "entry": "20 GET /v1/characters/linlan",
+          "json_pointer": "/response"
+        }
+      }
+    },
+    "GET /v1/characters/{character_id}/versions": {
+      "evidence_kind": "executed_no_model_http",
+      "http_probe_id": "22 GET /v1/characters/linlan/versions",
+      "status": 200,
+      "request": null,
+      "complete_success_response": {
+        "probe_response_reference": {
+          "path": "docs/handoff/contracts/http-responses.json",
+          "entry": "22 GET /v1/characters/linlan/versions",
+          "json_pointer": "/response"
+        }
+      }
+    },
+    "GET /v1/characters/{character_id}/runtime": {
+      "evidence_kind": "executed_no_model_http",
+      "http_probe_id": "23 GET /v1/characters/linlan/runtime",
+      "status": 200,
+      "request": null,
+      "complete_success_response": {
+        "probe_response_reference": {
+          "path": "docs/handoff/contracts/http-responses.json",
+          "entry": "23 GET /v1/characters/linlan/runtime",
+          "json_pointer": "/response"
+        }
+      }
+    },
+    "PATCH /v1/characters/{character_id}/runtime": {
+      "evidence_kind": "executed_no_model_http",
+      "http_probe_id": "24 PATCH /v1/characters/linlan/runtime",
+      "status": 200,
+      "request": {
+        "expected_revision": 0,
+        "patch": {
+          "dialogue_style": "联调隔离库测试"
+        }
+      },
+      "complete_success_response": {
+        "probe_response_reference": {
+          "path": "docs/handoff/contracts/http-responses.json",
+          "entry": "24 PATCH /v1/characters/linlan/runtime",
+          "json_pointer": "/response"
+        }
+      }
+    }
+  }
+}
