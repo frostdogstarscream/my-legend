@@ -34,6 +34,8 @@ class StagePreviewRequest(Contract):
     face_track: dict | None = None
     dialogue_enabled: bool = False
     dialogue_track: dict | None = None
+    scene: dict | None = None
+    furniture_track: dict | None = None
 
 
 def local_root():
@@ -161,8 +163,12 @@ def save_preview(root, value):
 
 
 def register_spine_routes(router, repository, artifacts, owner, translate):
-    from .life_contracts import LifeValidationError
+    from .life_contracts import LifeValidationError, fail
     from .life_preview import build_life_preview, life_asset_catalog, load_life_catalog, read_life_preview
+    from .scene_preview import load_scene_catalog, scene_asset_catalog
+    from .theme_library import register_theme_library_routes
+
+    register_theme_library_routes(router, owner, local_root)
 
     def life_result(operation):
         try:
@@ -186,11 +192,19 @@ def register_spine_routes(router, repository, artifacts, owner, translate):
             except ProductionError:
                 allowlist = {'files': {}}
             if digest not in allowlist['files']:
-                allowlist = life_asset_catalog(root, digest)
+                try:
+                    allowlist = life_asset_catalog(root, digest)
+                except ProductionError:
+                    allowlist = scene_asset_catalog(root, digest)
             path, mime = resolve_asset(root, allowlist, digest)
         except ProductionError as exc:
             raise HTTPException(404, exc.code) from None
         return FileResponse(path, media_type=mime, headers={'Cache-Control': 'private, no-store'})
+
+    @router.get('/stage-preview/scenes')
+    def scenes(request: Request, catalog_sha256: str | None = None):
+        owner(request)
+        return life_result(lambda: public_catalog(load_scene_catalog(local_root(), catalog_sha256)))
 
     @router.post('/production-jobs/{job_id}/stage-preview')
     def preview(job_id: str, body: StagePreviewRequest, request: Request):
@@ -198,7 +212,9 @@ def register_spine_routes(router, repository, artifacts, owner, translate):
         root = local_root()
         if body.profile == 'life_v1':
             return life_result(lambda: save_preview(root, build_life_preview(job, body, artifacts,
-                load_life_catalog(root, body.script.get('catalog_sha256') if body.operation == 'validate_and_save' and body.script else None))))
+                load_life_catalog(root, body.script.get('catalog_sha256') if body.operation == 'validate_and_save' and body.script else None), scene_root=root)))
+        if body.scene is not None or body.furniture_track is not None:
+            return life_result(lambda: fail('scene', '场景仅适用于生活演绎'))
         return translate(lambda: save_preview(root, compile_preview(job, body, artifacts, load_catalog(root))))
 
     @router.get('/production-jobs/{job_id}/stage-preview/{preview_sha256}')

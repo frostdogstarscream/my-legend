@@ -245,7 +245,7 @@ def compile_keywords(script, delivery, timeline, lines, dialogue=False):
     return diagnostics
 
 
-def build_life_preview(job, body, store, catalog):
+def build_life_preview(job, body, store, catalog, *, scene_root=None):
     base, delivery, timeline, lines, expected, roles = context(job, body, store, catalog)
     diagnostics = []
     if body.operation == 'compile':
@@ -277,7 +277,14 @@ def build_life_preview(job, body, store, catalog):
         else:
             track = body.dialogue_track
         direction['dialogue'] = validate_direction_track(track, script, set(lines))
-    return {**face, **direction, 'schema_version': 'spine_stage_preview/2.0', 'profile': 'life_v1', 'job_id': job['id'],
+    scene = {}
+    if body.scene is not None or body.furniture_track is not None:
+        from .scene_preview import scene_envelope
+        from .spine_preview import local_root
+        if body.furniture_track is not None and body.dialogue_enabled:
+            fail('furniture_track', '家具技术样例需关闭对白朝向编排')
+        scene = scene_envelope(scene_root or local_root(), body.scene, body.furniture_track, script, catalog)
+    return {**face, **direction, **scene, 'schema_version': 'spine_stage_preview/2.0', 'profile': 'life_v1', 'job_id': job['id'],
             'title': base['title'], 'source_version_id': base['source_version_id'], 'catalog_sha256': catalog['catalog_sha256'],
             'audio': base['audio'], 'timeline': base['timeline'], 'script': base['script'],
             'stage': script, 'roles': roles, 'diagnostics': diagnostics, 'mouth_control': False, 'usage': 'local_preview_only'}
@@ -296,8 +303,11 @@ def read_life_preview(root, job, digest, store):
     except (OSError, ValueError, KeyError):
         raise ProductionError('SPINE_PREVIEW_NOT_FOUND') from None
     from .spine_preview import StagePreviewRequest
-    body = StagePreviewRequest(profile='life_v1', operation='validate_and_save', script=value['stage'])
+    body = StagePreviewRequest(profile='life_v1', operation='validate_and_save', script=value['stage'],
+                               scene=value.get('scene'), furniture_track=value.get('furniture_track'))
+    if value.get('furniture_track') is not None and value.get('dialogue') is not None:
+        fail('furniture_track', '家具技术样例不能同时包含对白朝向编排')
     catalog = load_life_catalog(root, value['catalog_sha256'])
     # Recheck current audio/source provenance without recompiling or changing the saved draft.
-    build_life_preview(job, body, store, catalog)
+    build_life_preview(job, body, store, catalog, scene_root=root)
     return {**value, 'preview_sha256': digest}

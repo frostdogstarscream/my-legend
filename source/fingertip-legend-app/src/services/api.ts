@@ -1,4 +1,4 @@
-export interface PerformanceTracks {dialogue_enabled?:boolean;dialogue_track?:import('../../../my-legend-stage/src/performance-tracks').DirectionTrack;face_track?:import('../../../my-legend-stage/src/performance-tracks').FaceTrack;face_mode?:'basic'|'expressions'}
+export interface PerformanceTracks {dialogue_enabled?:boolean;dialogue_track?:import('../../../my-legend-stage/src/performance-tracks').DirectionTrack;face_track?:import('../../../my-legend-stage/src/performance-tracks').FaceTrack;face_mode?:'basic'|'expressions';scene?:import('../../../my-legend-stage/src/scene-types').SceneRef;furniture_track?:import('../../../my-legend-stage/src/scene-types').FurnitureTrack}
 import { config } from '../config'
 import { clearSession, getToken } from '../stores/session'
 import type { Character, CreateStoryInput, GenerationTask, HomeSummary, LoginInput, LoginResult, Product, Story, ProductionOptions, ProductionContext, ProductionTask } from '../types/domain'
@@ -26,6 +26,7 @@ const request = createHttpClient({ baseUrl: config.apiBaseUrl, timeout: config.r
 
 // UI pages use this contract in both modes. Adapt existing backends here only.
 export const api = {
+  sceneCatalog:(digest?:string):Promise<import('../../../my-legend-stage/src/scene-types').SceneCatalog>=>request('/stage-preview/scenes'+(digest?'?catalog_sha256='+encodeURIComponent(digest):'')),
   lifeSuggestFace:(id:string,source_preview_sha256:string):Promise<import('./face-suggestions').FaceSuggestions>=>request(`/production-jobs/${encodeURIComponent(id)}/stage-preview/suggest-face`,'POST',{profile:'life_v1',source_preview_sha256,mode:'offline_rules',max_suggestions:32,include_diagnostics:true}),
   lifeCatalog: (digest?:string):Promise<import('../../../my-legend-stage/src/life-types').LifeCatalog> => request('/stage-preview/catalog?profile=life_v1'+(digest?'&catalog_sha256='+encodeURIComponent(digest):'')),
   lifeCompile: (id:string,bindings:Record<string,string>={},initial_outfits:Record<string,string|null>={},face_enabled=false,face_profile_sha256?:string,tracks:PerformanceTracks={dialogue_enabled:true}):Promise<import('../../../my-legend-stage/src/life-types').LifePreview> => request(`/production-jobs/${encodeURIComponent(id)}/stage-preview`,'POST',{profile:'life_v1',operation:'compile',bindings,initial_outfits,face_enabled,face_profile_sha256,...tracks}),

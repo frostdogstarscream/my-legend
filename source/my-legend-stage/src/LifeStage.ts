@@ -3,6 +3,8 @@ import {installLegacyFixes,expandLegacyDeforms} from './legacy-fixes'
 import type {BasicFaceRuntime} from './basic-face'
 import {actorTime,type AssetRef} from './types'
 import type {ActorState,Calibration,LifeAsset,LifeBinding,LifeCatalog,LifeOutfit,LifeSkeleton,LifeState} from './life-types'
+import {SceneDecor} from './SceneDecor'
+import type {SceneDefinition} from './scene-types'
 
 type Legacy=any
 type FetchAsset=(ref:AssetRef)=>Promise<ArrayBuffer>
@@ -24,18 +26,22 @@ export class LifeStage {
   private moduleUrl=''
   private lastState:LifeState|undefined
   private face:BasicFaceRuntime|undefined
+  private room:SceneDecor|undefined
   setFace(face:BasicFaceRuntime){this.face=face}
   get faceDiagnostics(){return this.face?.diagnostics||[]}
   readonly width=960
   readonly height=540
 
-  async mount(host:HTMLElement,catalog:LifeCatalog,bindings:LifeBinding[],fetchAsset:FetchAsset){
+  async mount(host:HTMLElement,catalog:LifeCatalog,bindings:LifeBinding[],fetchAsset:FetchAsset,scene?:SceneDefinition){
     try{
       await this.app.init({width:this.width,height:this.height,backgroundAlpha:0,antialias:true,autoStart:false,sharedTicker:false,
         preference:'webgl',resolution:Math.min(window.devicePixelRatio||1,2)})
       this.initialized=true
       if(this.disposed){this.cleanup();return}
       this.app.stage.addChild(this.world)
+      this.world.sortableChildren=true
+      if(scene){this.room=new SceneDecor(scene);await this.room.mount(this.world,fetchAsset)}
+      if(this.disposed){this.cleanup();return}
       this.app.canvas.style.width='100%';this.app.canvas.style.height='100%'
       this.app.canvas.setAttribute('aria-label','生活演绎舞台')
       const runtime=await fetchAsset(catalog.runtime)
@@ -167,17 +173,23 @@ export class LifeStage {
       if(!selected)throw Error('服装尚未加载')
       entity.root.visible=actor.visible
       entity.root.position.set(actor.position[0]*this.width,actor.position[1]*this.height)
-      entity.root.scale.set(actor.facing,1)
+      const scale=this.room?.definition.actor_scale||1
+      entity.root.scale.set(actor.facing*scale,scale)
+      const seat=this.room?.definition.seats.find(s=>s.seat_id===actor.seat_id)
+      const furniture=this.room?.definition.objects.find(o=>o.id===seat?.object_id)
+      entity.root.zIndex=this.room?(furniture?furniture.depth_y*10+5:actor.position[1]*this.height*10+5):this.entities.indexOf(entity)
       for(const variant of entity.variants.values())variant.visual.visible=variant===selected
       this.pose(entity,selected,actor)
     }
     const {zoom,x}=state.camera
-    this.world.scale.set(zoom);this.world.position.set(this.width/2-x*this.width*zoom,this.height*(1-zoom)*.825)
+    const cameraX=this.room?Math.max(.5/zoom,Math.min(1-.5/zoom,x)):x
+    this.world.scale.set(zoom);this.world.position.set(this.width/2-cameraX*this.width*zoom,this.height*(1-zoom)*.825)
+    this.world.sortChildren()
     this.app.render()
   }
 
   snapshot(){
-    return {state:this.lastState,face_diagnostics:this.face?.diagnostics||[],texture_count:this.textures.size,actors:this.entities.map(e=>{
+    return {state:this.lastState,scene:this.room?.snapshot(),camera:{x:this.world.x,y:this.world.y,zoom:this.world.scale.x},face_diagnostics:this.face?.diagnostics||[],texture_count:this.textures.size,actors:this.entities.map(e=>{
       const v=[...e.variants.values()].find(v=>v.visual.visible)!
       return {instance_id:e.binding.instance_id,scale:e.scale,position:[e.root.x,e.root.y],parts:v.parts.map(p=>({slot:p.slot,
         attachments:p.skeleton.slots.map((s:Legacy)=>({slot:s.data.name,attachment:s.attachment?.name||null})),
@@ -186,9 +198,12 @@ export class LifeStage {
     })}
   }
   private cleanup(){
+    this.room?.destroy();this.room=undefined
     for(const e of this.entities)for(const v of e.variants.values())for(const p of v.parts)for(const m of p.meshes.values()){m.geometry.destroy();m.destroy()}
     this.entities=[]
-    if(this.initialized){this.app.destroy(true,{children:true});this.initialized=false}
+    // Pixi 8 treats boolean `true` as releasing global pools. During an atomic
+    // stage swap another renderer is still alive; only destroy this instance.
+    if(this.initialized){this.app.destroy({removeView:true,releaseGlobalResources:false},{children:true});this.initialized=false}
     for(const texture of this.textures.values())texture.destroy(true)
     this.textures.clear()
     if(this.moduleUrl){URL.revokeObjectURL(this.moduleUrl);this.moduleUrl=''}

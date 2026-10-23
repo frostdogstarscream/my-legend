@@ -3,6 +3,8 @@ import {computed,nextTick,onBeforeUnmount,onMounted,ref} from 'vue'
 import {api} from '../services/api'
 import PerformanceTrackEditor from './PerformanceTrackEditor.vue'
 import FaceSuggestionReview from './FaceSuggestionReview.vue'
+import ScenePicker from './ScenePicker.vue'
+import {evaluateFurniture,furnitureSample,sceneSample,type SceneCatalog,type SceneDefinition,type SceneRef,type FurnitureTrack} from '../../../my-legend-stage/src/scene-types'
 import {checkSuggestionContext,mergeFaceSuggestions,type FaceSuggestions} from '../services/face-suggestions'
 import {evaluateDialogue,prepareDirection,emptyDirectionTrack,type DirectionTrack,type FaceTrack} from '../../../my-legend-stage/src/performance-tracks'
 import HtmlInput from './HtmlInput'
@@ -14,7 +16,7 @@ import {evaluateStage,technicalCoverage,type CueType,type LifeBinding,type LifeC
 import type {StageCue} from '../../../my-legend-stage/src/types'
 import type {IndependentJob} from '../types/production'
 
-const props=defineProps<{productionId?:string;previewId?:string}>()
+const props=defineProps<{productionId?:string;previewId?:string;initialScene?:string;initialSceneCatalog?:string}>()
 const host=ref<HTMLElement>(),catalog=ref<LifeCatalog>(),draft=ref<LifeScript>(),applied=ref<LifeScript>(),preview=ref<LifePreview>()
 const jobs=ref<IndependentJob[]>([]),jobId=ref(props.productionId||''),busy=ref(false),error=ref(''),visualError=ref(''),notice=ref('')
 const time=ref(0),duration=ref(12),playing=ref(false),speed=ref(1),ready=ref(false),audioReady=ref(false)
@@ -23,6 +25,12 @@ const jsonText=ref(''),jsonOpen=ref(false),savedId=ref(props.previewId||''),save
 const dialogueEnabled=ref(true),directionDraft=ref<DirectionTrack>(),appliedDirection=ref<DirectionTrack>(),faceTrackDraft=ref<FaceTrack>(),directionDiagnostics=ref<{code:string;message:string}[]>([])
 const faceEnabled=ref(false),faceProfileDigest=ref<string>(),faceDiagnostics=ref<BasicFaceRuntime['diagnostics']>([])
 const suggestions=ref<FaceSuggestions>(),suggestionBusy=ref(false),suggestionError=ref(''),addedSuggestionIds=ref<string[]>([])
+const sceneCatalog=ref<SceneCatalog>(),sceneDraft=ref<SceneRef>(),furnitureDraft=ref<FurnitureTrack>(),sceneError=ref('')
+const appliedScene=ref<SceneRef>(),appliedRoom=ref<SceneDefinition>(),appliedFurniture=ref<FurnitureTrack>()
+const sceneSnapshots=new Map<string,SceneCatalog>()
+const sceneChanged=computed(()=>JSON.stringify(sceneDraft.value)!==JSON.stringify(appliedScene.value)||JSON.stringify(furnitureDraft.value)!==JSON.stringify(appliedFurniture.value))
+const selectedScene=computed(()=>sceneDraft.value?sceneSnapshots.get(sceneDraft.value.catalog_sha256)?.scenes.find(s=>s.scene_id===sceneDraft.value?.scene_id):undefined)
+const sceneSampleUrl=computed(()=>selectedScene.value?`#/pages/performance/index?mode=spine&profile=life_v1&scene=${selectedScene.value.scene_id}&sceneCatalog=${sceneDraft.value!.catalog_sha256}`:'')
 let suggestionRun=0
 const fallbackSubtitles=ref<StageCue[]>([]),loopTrial=ref(true)
 const labels:Record<string,string>={idle:'待机',walk:'行走',sit:'坐下',pick:'拾取',lie:'躺卧',victory:'胜利',victoryloop:'胜利待机'}
@@ -30,9 +38,9 @@ const cueLabels:Record<CueType,string>={'body.play':'身体动作','actor.move_t
 const modes:Record<PlayMode,string>={once:'播放一次后待机',loop:'循环至结束',hold:'播放后保持末姿态'}
 const trialActor=computed(()=>draft.value?.actors.find(a=>a.instance_id===selected.value))
 const trialActions=computed(()=>Object.keys(trialActor.value?.actions||{}))
-const subtitles=computed(()=> (applied.value?.subtitles||fallbackSubtitles.value).filter(c=>c.start_frame<=time.value*(applied.value?.sample_rate||audioRate)&&time.value*(applied.value?.sample_rate||audioRate)<c.end_frame))
+const subtitles=computed(()=> appliedFurniture.value?[]:(applied.value?.subtitles||fallbackSubtitles.value).filter(c=>c.start_frame<=time.value*(applied.value?.sample_rate||audioRate)&&time.value*(applied.value?.sample_rate||audioRate)<c.end_frame))
 const tracksDirty=computed(()=>dialogueEnabled.value!==!!preview.value?.dialogue||JSON.stringify(directionDraft.value)!==JSON.stringify(preview.value?.dialogue)||JSON.stringify(faceTrackDraft.value)!==JSON.stringify(preview.value?.face?.track))
-const dirty=computed(()=>!!draft.value&&(tracksDirty.value||JSON.stringify(draft.value)!==JSON.stringify(applied.value)||faceEnabled.value!==!!preview.value?.face||faceEnabled.value&&faceProfileDigest.value!==preview.value?.face?.profile_sha256))
+const dirty=computed(()=>!!draft.value&&(sceneChanged.value||tracksDirty.value||JSON.stringify(draft.value)!==JSON.stringify(applied.value)||faceEnabled.value!==!!preview.value?.face||faceEnabled.value&&faceProfileDigest.value!==preview.value?.face?.profile_sha256))
 const shareUrl=computed(()=>preview.value?`#/pages/performance/index?mode=spine&profile=life_v1&productionId=${encodeURIComponent(preview.value.job_id)}&previewId=${preview.value.preview_sha256}`:'')
 let stage:LifeStage|undefined,audio:HTMLAudioElement|undefined,mediaUrl='',audioDigest='',audioRate=48000,raf=0,last=0,disposed=false,loadGeneration=0
 const copy=<T,>(v:T):T=>JSON.parse(JSON.stringify(v))
@@ -42,7 +50,7 @@ function inputNumber(event:Event){return Number((event.target as HTMLInputElemen
 function pause(){playing.value=false;audio?.pause();draw()}
 function draw(){
   if(!ready.value||!stage||!applied.value)return
-  try{stage.render(evaluateDialogue(applied.value,Math.floor(time.value*applied.value.sample_rate),appliedDirection.value));faceDiagnostics.value=[...stage.faceDiagnostics]}
+  try{stage.render(evaluateFurniture(evaluateDialogue(applied.value,Math.floor(time.value*applied.value.sample_rate),appliedDirection.value),applied.value,appliedRoom.value,appliedFurniture.value));faceDiagnostics.value=[...stage.faceDiagnostics]}
   catch(e){visualError.value=message(e);ready.value=false}
 }
 function seek(value:number){time.value=Math.max(0,Math.min(duration.value,Number.isFinite(value)?value:0));if(audio&&audioReady.value)audio.currentTime=time.value;draw()}
@@ -70,20 +78,31 @@ function remember(value:LifePreview){
   try{localStorage.setItem('legend-life-previews',JSON.stringify(savedVersions.value))}catch{/* History is optional; immutable server versions remain available. */}
 }
 
-async function swap(script:LifeScript,nextCatalog:LifeCatalog,face?:BasicFace,dialogue?:DirectionTrack){
+async function resolveRoom(ref?:SceneRef){
+  if(!ref)return undefined
+  let c=sceneSnapshots.get(ref.catalog_sha256)
+  if(!c){c=await api.sceneCatalog(ref.catalog_sha256);sceneSnapshots.set(c.catalog_sha256,c)}
+  const room=c.scenes.find(s=>s.scene_id===ref.scene_id)
+  if(!room)throw Error('保存版本的场景不存在')
+  return room
+}
+async function swap(script:LifeScript,nextCatalog:LifeCatalog,face?:BasicFace,dialogue?:DirectionTrack,roomRef?:SceneRef,furniture?:FurnitureTrack){
   const candidate=new LifeStage(),detached=document.createElement('div')
   try{
-    await candidate.mount(detached,nextCatalog,script.actors,stageAsset)
+    const room=await resolveRoom(roomRef)
+    await candidate.mount(detached,nextCatalog,script.actors,stageAsset,room)
     if(disposed){candidate.destroy();return}
     candidate.setFace(await BasicFaceRuntime.prepare(script,nextCatalog,face))
     const relation=prepareDirection(script,dialogue)
-    candidate.render(evaluateDialogue(script,Math.floor(time.value*script.sample_rate),relation.track))
+    candidate.render(evaluateFurniture(evaluateDialogue(script,Math.floor(time.value*script.sample_rate),relation.track),script,room,furniture))
     await nextTick()
     if(!host.value)throw Error('舞台容器未就绪')
     const previous=stage
     host.value.replaceChildren(...Array.from(detached.childNodes))
     appliedDirection.value=relation.track;directionDiagnostics.value=relation.diagnostics
     stage=candidate;catalog.value=nextCatalog;applied.value=copy(script);ready.value=true;visualError.value=''
+    appliedScene.value=roomRef?copy(roomRef):undefined;appliedRoom.value=room;appliedFurniture.value=furniture?copy(furniture):undefined
+    if(audio)audio.muted=!!furniture
     faceDiagnostics.value=[...candidate.faceDiagnostics]
     previous?.destroy()
   }catch(e){candidate.destroy();throw e}
@@ -92,12 +111,13 @@ async function swap(script:LifeScript,nextCatalog:LifeCatalog,face?:BasicFace,di
 async function accept(value:LifePreview){
   if(value.job_id!==jobId.value||value.audio.artifact.sha256!==audioDigest)throw Error('编排与当前音频版本不一致')
   const nextCatalog=catalog.value?.catalog_sha256===value.catalog_sha256?catalog.value:await api.lifeCatalog(value.catalog_sha256)
-  await swap(value.stage,nextCatalog,value.face,value.dialogue)
+  await swap(value.stage,nextCatalog,value.face,value.dialogue,value.scene,value.furniture_track)
   if(disposed)return
   cancelSuggestions();addedSuggestionIds.value=[]
   dialogueEnabled.value=!!value.dialogue;directionDraft.value=value.dialogue?copy(value.dialogue):undefined;faceTrackDraft.value=value.face?.track?copy(value.face.track):undefined
   faceEnabled.value=!!value.face;faceProfileDigest.value=value.face?.profile_sha256
   preview.value=value;draft.value=copy(value.stage);savedId.value=value.preview_sha256
+  sceneDraft.value=value.scene?copy(value.scene):undefined;furnitureDraft.value=value.furniture_track?copy(value.furniture_track):undefined
   bindings.value=Object.fromEntries(value.stage.actors.map(a=>[a.role_id,a.actor_id]))
   initialOutfits.value=Object.fromEntries(value.stage.actors.map(a=>[a.role_id,a.initial_outfit_id]))
   selected.value=draft.value.actors[0]?.instance_id||''
@@ -111,11 +131,27 @@ async function compile(){
     const chosen=Object.fromEntries(Object.entries(bindings.value).filter(([,v])=>v))
     if(!Object.keys(chosen).length)throw Error('请至少绑定一个舞台演员')
     if(Object.keys(chosen).length>3)throw Error('最多绑定三个舞台演员')
-    const value=await api.lifeCompile(jobId.value,chosen,initialOutfits.value,faceEnabled.value,faceProfileDigest.value,{dialogue_enabled:dialogueEnabled.value})
+    const value=await api.lifeCompile(jobId.value,chosen,initialOutfits.value,faceEnabled.value,faceProfileDigest.value,{dialogue_enabled:dialogueEnabled.value,scene:sceneDraft.value})
     await accept(value)
   }catch(e){error.value=message(e)}finally{busy.value=false}
 }
-function trackOptions(){return {dialogue_enabled:dialogueEnabled.value,dialogue_track:dialogueEnabled.value?directionDraft.value:undefined,face_track:faceEnabled.value?faceTrackDraft.value:undefined}}
+function trackOptions(){return {dialogue_enabled:dialogueEnabled.value,dialogue_track:dialogueEnabled.value?directionDraft.value:undefined,face_track:faceEnabled.value?faceTrackDraft.value:undefined,scene:sceneDraft.value,furniture_track:furnitureDraft.value}}
+function chooseScene(id:string){
+  if(busy.value||!sceneCatalog.value)return
+  const room=sceneCatalog.value.scenes.find(s=>s.scene_id===id)
+  sceneDraft.value=room?{scene_id:id,catalog_sha256:sceneCatalog.value.catalog_sha256}:undefined
+  furnitureDraft.value=undefined;notice.value='场景已选入草稿，点击应用后更新舞台。'
+}
+function createFurnitureDraft(){
+  if(!draft.value||!selectedScene.value||busy.value)return
+  try{
+    const sample=furnitureSample(draft.value,selectedScene.value)
+    draft.value=sample.stage;furnitureDraft.value=sample.track
+    selected.value=sample.stage.actors[0].instance_id
+    dialogueEnabled.value=false;directionDraft.value=undefined;faceEnabled.value=false;faceTrackDraft.value=undefined
+    cancelSuggestions();notice.value='家具技术样例已加入独立草稿，应用后演示走近、坐下与离开；不代表原剧情。'
+  }catch(e){error.value=message(e)}
+}
 function cancelSuggestions(){suggestionRun++;suggestionBusy.value=false;suggestions.value=undefined;suggestionError.value=''}
 async function suggestFace(){
   if(busy.value||suggestionBusy.value||dirty.value||!preview.value?.face?.track)return
@@ -146,8 +182,14 @@ async function enableExpressions(){
 }
 async function apply(){
   if(!draft.value||busy.value)return
-  pause();busy.value=true;error.value=''
-  try{await accept(await api.lifeSave(jobId.value,copy(draft.value),faceEnabled.value,faceProfileDigest.value,trackOptions()))}catch(e){error.value=message(e)}finally{busy.value=false}
+  busy.value=true;error.value=''
+  try{
+    if(!jobId.value){
+      if(!catalog.value)throw Error('演员目录尚未就绪')
+      await swap(copy(draft.value),catalog.value,undefined,undefined,sceneDraft.value,furnitureDraft.value)
+      notice.value='已应用素材试演草稿；独立时钟，无音频。'
+    }else await accept(await api.lifeSave(jobId.value,copy(draft.value),faceEnabled.value,faceProfileDigest.value,trackOptions()))
+  }catch(e){error.value=message(e)}finally{busy.value=false}
 }
 async function reopen(){
   if(!jobId.value||!savedId.value||busy.value)return
@@ -160,10 +202,22 @@ async function loadJob(digest=''){
   cancelSuggestions();addedSuggestionIds.value=[]
   pause();busy.value=true;error.value='';visualError.value='';notice.value='';const generation=++loadGeneration
   releaseAudio();stage?.destroy();stage=undefined;ready.value=false;applied.value=undefined;draft.value=undefined;preview.value=undefined;fallbackSubtitles.value=[]
+  sceneDraft.value=undefined;furnitureDraft.value=undefined;appliedScene.value=undefined;appliedRoom.value=undefined;appliedFurniture.value=undefined
   dialogueEnabled.value=true;directionDraft.value=undefined;appliedDirection.value=undefined;faceTrackDraft.value=undefined;directionDiagnostics.value=[]
   time.value=0;bindings.value={};initialOutfits.value={};faceEnabled.value=false;faceProfileDigest.value=undefined;faceDiagnostics.value=[]
   try{
-    if(!jobId.value){await materialTrial();return}
+    if(!jobId.value){
+      await materialTrial()
+      if(props.initialScene&&sceneCatalog.value){
+        const room=sceneCatalog.value.scenes.find(s=>s.scene_id===props.initialScene)
+        if(!room)throw Error('样例场景不存在')
+        const sample=sceneSample(draft.value!,room),ref={scene_id:room.scene_id,catalog_sha256:sceneCatalog.value.catalog_sha256}
+        await swap(sample.stage,catalog.value!,undefined,undefined,ref,sample.track)
+        draft.value=copy(sample.stage);sceneDraft.value=ref;furnitureDraft.value=sample.track;selected.value=sample.stage.actors[0].instance_id
+        notice.value=sample.track?'独立家具互动样例：走近、坐下、起身离开。无音频，不代表剧情。':'独立场景样例：站立与行走。无音频，家具座位尚未校准。'
+      }
+      return
+    }
     const id=jobId.value,playback=await api.independentPlayback(id),refs=playbackArtifacts(playback,id)
     const ref=refs.find(a=>a.kind==='AudioMix'),timelineRef=refs.find(a=>a.kind==='MeasuredTimeline'),scriptRef=refs.find(a=>a.kind==='StoryDelivery')
     if(!ref||!timelineRef||!scriptRef)throw Error('此任务尚未交付完整音频与时间轴')
@@ -210,10 +264,11 @@ function trial(){
   if(!a.actions[trialAction.value])trialAction.value='idle'
   s.cues=[{id:'trial',type:'body.play',instance_id:a.instance_id,start_frame:0,end_frame:s.total_frames,enabled:true,
     params:{action:trialAction.value,mode:trialMode.value},source:null,source_text:'素材试演',rule_id:'manual',reason:'素材试演'}]
-  applied.value=s;seek(0);draw()
+  furnitureDraft.value=undefined;appliedFurniture.value=undefined
+  draft.value=copy(s);applied.value=s;seek(0);draw()
 }
 function selectTrial(){trialAction.value='idle';trial()}
-function coverage(){if(!draft.value||!catalog.value)return;draft.value=technicalCoverage(draft.value,catalog.value);notice.value='已生成技术覆盖草稿，请应用；这些动作不代表剧情自动识别结果。'}
+function coverage(){if(!draft.value||!catalog.value)return;furnitureDraft.value=undefined;draft.value=technicalCoverage(draft.value,catalog.value);notice.value='已生成技术覆盖草稿，请应用；这些动作不代表剧情自动识别结果。'}
 function addCue(type:CueType='body.play'){
   if(!draft.value)return
   const start=Math.min(draft.value.total_frames-1,Math.round(time.value*draft.value.sample_rate))
@@ -239,14 +294,23 @@ function markEdited(c:LifeCue){if(c.rule_id!=='manual'){c.reason='人工修正�
 function changeTime(c:LifeCue,key:'start_frame'|'end_frame',event:Event){c[key]=Math.round(inputNumber(event)*draft.value!.sample_rate);if(['actor.place','actor.change_outfit'].includes(c.type))c.end_frame=c.start_frame}
 function exportJson(){
   if(!draft.value)return
-  jsonText.value=JSON.stringify(faceEnabled.value||dialogueEnabled.value?{schema_version:'legend_performance_draft/1',stage:draft.value,face_enabled:faceEnabled.value,face_profile_sha256:faceProfileDigest.value,...trackOptions()}:draft.value,null,2);jsonOpen.value=true
+  jsonText.value=JSON.stringify(faceEnabled.value||dialogueEnabled.value||sceneDraft.value?{schema_version:'legend_performance_draft/1',stage:draft.value,face_enabled:faceEnabled.value,face_profile_sha256:faceProfileDigest.value,...trackOptions()}:draft.value,null,2);jsonOpen.value=true
   const url=URL.createObjectURL(new Blob([jsonText.value],{type:'application/json'})),a=document.createElement('a')
   a.href=url;a.download=`life-stage-${draft.value.job_id}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)
 }
 async function importJson(){
   if(busy.value)return
   busy.value=true
-  try{const v=JSON.parse(jsonText.value);const wrapped=['legend_face_draft/1','legend_performance_draft/1'].includes(v.schema_version);const checked=await api.lifeSave(jobId.value,wrapped?v.stage:v,wrapped&&v.face_enabled===true,wrapped?v.face_profile_sha256:undefined,wrapped?{dialogue_enabled:v.dialogue_enabled===true,dialogue_track:v.dialogue_track,face_track:v.face_track}:{});draft.value=checked.stage;faceEnabled.value=!!checked.face;faceProfileDigest.value=checked.face?.profile_sha256;dialogueEnabled.value=!!checked.dialogue;directionDraft.value=checked.dialogue;faceTrackDraft.value=checked.face?.track;remember(checked);error.value='';notice.value='JSON 已通过校验并载入草稿，点击应用后更换当前舞台。'}catch(e){error.value=message(e)}finally{busy.value=false}
+  try{
+    const v=JSON.parse(jsonText.value),wrapped=['legend_face_draft/1','legend_performance_draft/1'].includes(v.schema_version)
+    const checked=await api.lifeSave(jobId.value,wrapped?v.stage:v,wrapped&&v.face_enabled===true,wrapped?v.face_profile_sha256:undefined,
+      wrapped?{dialogue_enabled:v.dialogue_enabled===true,dialogue_track:v.dialogue_track,face_track:v.face_track,scene:v.scene,furniture_track:v.furniture_track}:{})
+    await resolveRoom(checked.scene)
+    draft.value=checked.stage;faceEnabled.value=!!checked.face;faceProfileDigest.value=checked.face?.profile_sha256
+    dialogueEnabled.value=!!checked.dialogue;directionDraft.value=checked.dialogue;faceTrackDraft.value=checked.face?.track
+    sceneDraft.value=checked.scene;furnitureDraft.value=checked.furniture_track
+    remember(checked);error.value='';notice.value='JSON 已通过校验并载入草稿，点击应用后更换当前舞台。'
+  }catch(e){error.value=message(e)}finally{busy.value=false}
 }
 async function importFile(event:Event){const f=(event.target as HTMLInputElement).files?.[0];if(!f)return;jsonText.value=await f.text();jsonOpen.value=true;importJson()}
 function historySelected(event:Event){savedId.value=(event.target as HTMLSelectElement).value}
@@ -256,11 +320,13 @@ onMounted(async()=>{
   document.addEventListener('visibilitychange',visibility);raf=requestAnimationFrame(tick)
   try{const value=await api.independentJobs();jobs.value=value.items.filter(j=>j.artifacts.some(a=>a.kind==='AudioMix'))}catch(e){notice.value='成品列表暂不可用，可从作品页打开：'+message(e)}
   if(disposed)return
+  try{const c=await api.sceneCatalog(props.initialSceneCatalog);sceneCatalog.value=c;sceneSnapshots.set(c.catalog_sha256,c)}catch(e){sceneError.value='主题场景暂不可用：'+message(e)}
+  if(disposed)return
   await loadJob(props.previewId||'')
 })
 onBeforeUnmount(()=>{disposed=true;loadGeneration++;cancelSuggestions();cancelAnimationFrame(raf);document.removeEventListener('visibilitychange',visibility);releaseAudio();stage?.destroy()})
 defineExpose({pause,snapshot:()=>stage?.snapshot(),playbackState:()=>({time:time.value,audioTime:audio?.currentTime,
-  playing:playing.value,ready:ready.value,previewId:preview.value?.preview_sha256,audioDigest})})
+  playing:playing.value,ready:ready.value,busy:busy.value,previewId:preview.value?.preview_sha256,audioDigest,scene:appliedScene.value,furniture:appliedFurniture.value,audioMuted:audio?.muted})})
 </script>
 
 <template>
@@ -272,12 +338,14 @@ defineExpose({pause,snapshot:()=>stage?.snapshot(),playbackState:()=>({time:time
       <p v-if="notice" class="notice">{{notice}}</p>
     </section>
     <div v-if="error" class="error" role="alert">{{error}}</div>
-    <div class="theatre"><div class="floor"/><div ref="host" class="canvas-host"/><div class="stage-caption">{{preview?.title||'首批素材试演'}} <span v-if="applied?.usage==='technical_coverage'">· 技术覆盖</span></div><div v-if="visualError" class="visual-error">{{visualError}}<p v-if="audioReady">声音与字幕仍可播放；当前画面可能保留上次有效状态。</p></div><div v-if="busy&&!ready" class="visual-error">正在加载舞台…</div></div>
+    <section v-if="sceneCatalog" class="panel scene-panel"><h2>固定主题场景 · {{sceneCatalog.scenes.length}} 套</h2><ScenePicker :catalog="sceneCatalog" :selected="sceneDraft" :disabled="busy" @select="chooseScene"/><div class="buttons scene-actions"><button class="primary" :disabled="busy||!draft" @click="apply">应用场景与当前草稿</button><button v-if="selectedScene?.seats.length" :disabled="busy||!draft" @click="createFurnitureDraft">创建家具互动草稿</button><a v-if="sceneSampleUrl" :href="sceneSampleUrl" target="_blank" rel="noopener">打开独立无声样例</a></div><p v-if="selectedScene" class="fine">{{selectedScene.description}} {{selectedScene.seats.length?'支持已校准 HK416 家具样例。':'站立与行走预览；家具座位尚未校准。'}} 真实剧目切换场景保留原编排。</p><p v-if="sceneChanged" class="notice">场景或家具互动有待应用的修改。</p></section>
+    <p v-if="sceneError" class="error">{{sceneError}}</p>
+    <div class="theatre"><div v-if="!appliedScene" class="floor"/><div ref="host" class="canvas-host"/><div class="stage-caption">{{appliedRoom?.display_name||preview?.title||'首批素材试演'}} <span v-if="appliedFurniture">· 家具互动技术样例</span><span v-else-if="applied?.usage==='technical_coverage'">· 技术覆盖</span></div><div v-if="visualError" class="visual-error">{{visualError}}<p v-if="audioReady">声音与字幕仍可播放；当前画面可能保留上次有效状态。</p></div><div v-if="busy&&!ready" class="visual-error">正在加载舞台…</div></div>
     <section class="panel transport">
-      <div class="subtitle"><span v-for="(cue,i) in subtitles" :key="i">{{cue.speaker}}：{{cue.text}}</span><span v-if="!subtitles.length">{{jobId?'等待下一句对白…':'选择角色与动作检查原始素材'}}</span></div>
+      <div class="subtitle"><span v-for="(cue,i) in subtitles" :key="i">{{cue.speaker}}：{{cue.text}}</span><span v-if="!subtitles.length">{{appliedFurniture?'家具技术样例：走近 → 坐下停留 → 起身离开；非剧情还原。':jobId?'等待下一句对白…':'选择角色与动作检查原始素材'}}</span></div>
       <label class="seek"><span>进度</span><HtmlInput aria-label="演绎进度" type="range" min="0" :max="duration" step=".01" :value="time" @input="seek(inputNumber($event))"/><HtmlInput aria-label="定位秒数" class="time-input" type="number" min="0" :max="duration" step=".01" :value="Number(time.toFixed(2))" @change="seek(inputNumber($event))"/><span>/ {{duration.toFixed(2)}} 秒</span></label>
       <div class="buttons"><button :disabled="!ready&&!audioReady" @click="seek(0)">回到开头</button><button class="primary" :disabled="busy||!ready&&!audioReady" @click="toggle">{{playing?'暂停':'播放'}}</button><button @click="replay" :disabled="busy||!ready&&!audioReady">重播</button><label v-if="!jobId"><HtmlInput v-model="loopTrial" type="checkbox"/>循环试演</label><button v-for="rate in [.5,1,1.5,2]" :key="rate" :class="{active:speed===rate}" @click="setSpeed(rate)">{{rate}}×</button></div>
-      <p class="fine">{{jobId?'以原音频绝对播放位置驱动；编排不会重新生成声音。':'素材试演使用独立时钟，音频演绎使用原音频时钟。'}} 基础面部需在下方明确启用并应用保存。</p>
+      <p class="fine">{{appliedFurniture?(jobId?'家具技术版本静音演示，借用原音频时钟；声音成品未更改。':'独立家具技术样例，无音频。'):jobId?'以原音频绝对播放位置驱动；编排不会重新生成声音。':'素材试演使用独立时钟，音频演绎使用原音频时钟。'}} 基础面部需在下方明确启用并应用保存。</p>
     </section>
     <section v-if="draft&&!jobId" class="panel">
       <h2>素材试演</h2><div class="fields"><label>演员<select v-model="selected" @change="selectTrial"><option v-for="actor in draft.actors" :key="actor.instance_id" :value="actor.instance_id">{{actor.name}}</option></select></label><label>动作<select v-model="trialAction" @change="trial"><option v-for="a in trialActions" :key="a" :value="a">{{labels[a]||a}}</option></select></label><label>播放方式<select v-model="trialMode" @change="trial"><option v-for="(label,key) in modes" :key="key" :value="key">{{label}}</option></select></label><label v-if="trialActor?.initial_outfit_id">服装<select v-model="trialActor.initial_outfit_id" @change="trial"><option v-for="o in catalog?.outfits.filter(o=>o.actor_id===trialActor?.actor_id)" :key="o.outfit_id" :value="o.outfit_id">{{o.display_name}}</option></select></label></div>
@@ -318,3 +386,5 @@ defineExpose({pause,snapshot:()=>stage?.snapshot(),playbackState:()=>({time:time
 <style scoped>
 .life-page{padding:26px 22px 56px;background:#f5eddf;color:#493a30;min-height:100vh}.life-heading,.panel,.theatre,.error{max-width:1100px;margin:0 auto 20px}.life-heading{display:flex;align-items:center;justify-content:space-between;gap:20px}.life-heading h1{font-size:28px;margin:6px 0 10px}.life-heading p{margin:4px 0;color:#8b6c58}.eyebrow{font-size:12px;letter-spacing:2px}.badge{padding:7px 12px;border:1px solid #ccb69b;border-radius:20px;background:#fff5df;font-size:12px;white-space:nowrap}.panel{box-sizing:border-box;background:#fffaf1;border:1px solid #e5d8c7;border-radius:16px;padding:20px}.panel h2{font-size:17px;margin:0 0 16px}.selection label{display:flex;gap:14px;align-items:center}.selection select{min-width:260px;max-width:85%}button,select,input,textarea{font:inherit}button{cursor:pointer;border:1px solid #d9c5ad;border-radius:8px;background:#f8eddb;color:#674932;padding:9px 14px;margin:0;font-size:13px;line-height:1.5}button:disabled{opacity:.5;cursor:default}button.primary{background:#8b422d;color:#fff7e7;border-color:#8b422d}button.active{border-color:#b8432e;background:#f1d8c2}select,input[type=number],input:not([type]),textarea{border:1px solid #d9c5ad;border-radius:7px;padding:7px;background:#fffdf7;color:#493a30;box-sizing:border-box;font-size:13px}select{max-width:100%}input[type=checkbox]{accent-color:#8b422d}label{font-size:13px}.buttons,.fields{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.fields label{display:flex;flex-direction:column;gap:8px}.theatre{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:18px;background:radial-gradient(ellipse at 50% 25%,#58685a,#243736 70%);border:1px solid #8f9c8950;box-sizing:border-box}.floor{position:absolute;top:82.5%;left:0;right:0;bottom:0;background:#142c2b;border-top:1px solid #a8bc8f60}.canvas-host{position:absolute;inset:0}.stage-caption{position:absolute;left:18px;top:15px;color:#ece2c6;font-size:13px;pointer-events:none}.visual-error{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;text-align:center;padding:30px;background:#182728b0;color:#fff1cf;font-size:14px}.subtitle{min-height:52px;display:flex;flex-direction:column;justify-content:center;background:#f1e7d5;border-radius:10px;padding:12px 16px;font-size:16px;line-height:1.7}.seek{display:flex;align-items:center;gap:10px;margin:18px 0}.seek input[type=range]{flex:1;accent-color:#a74830}.time-input{width:85px}.seek span{font-size:12px;white-space:nowrap}.transport .buttons{justify-content:center}.fine{font-size:12px;color:#9b7d65;line-height:1.7;overflow-wrap:anywhere}.notice{font-size:13px;color:#71684d;margin:12px 0 0}.error{padding:15px;border:1px solid #e1b7a9;background:#fae3dc;border-radius:10px;color:#9f3529;box-sizing:border-box;overflow-wrap:anywhere}.cast{display:flex;align-items:center;gap:14px;margin:10px 0}.cast>span{min-width:100px}.cast:last-of-type{margin-bottom:20px}.section-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.section-heading h2{margin:0}.table-scroll{overflow:auto;margin-top:20px}table{width:100%;border-collapse:collapse;min-width:780px;font-size:13px}th{text-align:left;background:#f1e3cd;color:#795238;padding:10px}td{padding:12px 10px;border-bottom:1px solid #e8dccb;vertical-align:top}td:first-child{width:35%;max-width:340px}td p{line-height:1.7;margin:7px 0}td small{display:block;font-size:11px;line-height:1.5;color:#987963;overflow-wrap:anywhere}td select,td input[type=number]{display:block;width:100%;margin-bottom:7px;min-width:80px}td label{display:block}.disabled{opacity:.5}.json{margin-top:16px}.json textarea{display:block;width:100%;min-height:220px;font-family:monospace;margin:10px 0}ul{padding-left:20px;font-size:13px;line-height:1.8}li{margin:8px 0}li strong{color:#935c3c;font-size:11px}li p{margin:3px 0;color:#8b6c58}a{font-size:13px;color:#9c4c32}.fields{margin-top:12px}.fields input{flex:1;min-width:220px}@media(max-width:650px){.life-page{padding:18px 12px 36px}.life-heading h1{font-size:23px}.life-heading>.badge{display:none}.panel{padding:15px}.selection label{flex-direction:column;align-items:flex-start}.selection select{max-width:100%;width:100%;min-width:0}.stage-caption{font-size:10px;left:10px;top:10px}.seek{gap:5px}.time-input{width:68px}.seek>span:first-child{display:none}.cast{flex-wrap:wrap}.cast>span{min-width:75px}.subtitle{font-size:14px}.section-heading{align-items:flex-start;gap:8px}.section-heading .badge{font-size:10px}.fields{align-items:stretch}.fields>*{max-width:100%}}
 </style>
+
+<style scoped>.scene-actions{margin-top:16px}.stage-caption{background:#182728b8;padding:6px 10px;border-radius:7px;max-width:85%;line-height:1.5}.scene-panel h2{margin-bottom:14px}</style>

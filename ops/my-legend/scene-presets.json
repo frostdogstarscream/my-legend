@@ -1,0 +1,55 @@
+{
+  "schema_version": "legend_scene_layout_sources/1",
+  "scenes": [
+    {
+      "scene_id": "loft", "display_name": "LOFT 居室", "resource_group": "loft2016",
+      "name_evidence": "游戏名称表含 LOFT；本场景使用 loft2016 资源组，自行布置。",
+      "actor_scale": 0.72,
+      "objects": [
+        {"id":"wall","source":"loft2016_wall","layer":"wall","x":0,"y":0,"width":960,"height":350,"repeat":true,"tile_scale":0.38,"anchor":[0,0]},
+        {"id":"floor","source":"loft2016_floor","layer":"floor","x":0,"y":350,"width":960,"height":190,"repeat":true,"tile_scale":0.5,"anchor":[0,0]},
+        {"id":"window","source":"loft2016_window","layer":"back","x":175,"y":280,"width":270},
+        {"id":"art","source":"loft2016_walldeco_02","layer":"back","x":447,"y":180,"width":85},
+        {"id":"sofa","source":"loft2016_sofa","layer":"depth","x":685,"y":430,"width":365,"depth_y":415},
+        {"id":"table","source":"loft2016_table","layer":"depth","x":215,"y":427,"width":175},
+        {"id":"chair","source":"loft2016_chair_a","layer":"depth","x":105,"y":455,"width":90},
+        {"id":"bicycle","source":"loft2016_bicycle","layer":"front","x":895,"y":530,"width":145}
+      ],
+      "seat":{"seat_id":"sofa","object_id":"sofa","label":"沙发座位","approach":[0.46,0.825],"position":[0.7135,0.825],"exit":[0.44,0.825],"sit_offset":[0,-65],"facing":1}
+    },
+    {
+      "scene_id":"cafe", "display_name":"咖啡店", "resource_group":"coffeeshop",
+      "name_evidence":"游戏名称表含咖啡店；本场景使用 coffeeshop 资源组，自行布置。",
+      "actor_scale":0.72,
+      "objects":[
+        {"id":"wall","source":"coffeeshop_floor","layer":"wall","x":0,"y":0,"width":960,"height":350,"repeat":true,"tile_scale":0.7,"anchor":[0,0],"tint":"#665448"},
+        {"id":"floor","source":"coffeeshop_floor","layer":"floor","x":0,"y":350,"width":960,"height":190,"repeat":true,"tile_scale":0.6,"anchor":[0,0]},
+        {"id":"header_left","source":"coffeeshop_headerleft","layer":"back","x":265,"y":346,"width":530},
+        {"id":"header_right","source":"coffeeshop_headerright","layer":"back","x":745,"y":346,"width":430},
+        {"id":"bar","source":"coffeeshop_counter_deskB","layer":"back","x":274,"y":398,"width":420},
+        {"id":"machine","source":"coffeeshop_coffeemachine","layer":"back","x":195,"y":310,"width":95},
+        {"id":"shelf","source":"coffeeshop_mangashelf","layer":"back","x":912,"y":407,"width":92},
+        {"id":"chair","source":"coffeeshop_chairL","layer":"depth","x":655,"y":458,"width":125,"depth_y":420},
+        {"id":"table","source":"coffeeshop_tableM","layer":"depth","x":797,"y":473,"width":146},
+        {"id":"bench","source":"coffeeshop_chairlong","layer":"front","x":195,"y":535,"width":245}
+      ],
+      "seat":{"seat_id":"chair","object_id":"chair","label":"咖啡桌旁座位","approach":[0.49,0.825],"position":[0.6823,0.825],"exit":[0.43,0.825],"sit_offset":[0,-45],"facing":1}
+    },
+    {
+      "scene_id":"halloween", "display_name":"万圣主题", "resource_group":"halloween2018",
+      "name_evidence":"名称按 halloween2018 资源组描述；尚未确认它与游戏名称表具体套装 ID 的关系。",
+      "actor_scale":0.72,
+      "objects":[
+        {"id":"wall","source":"halloween2018_wall","layer":"wall","x":0,"y":0,"width":960,"height":350,"repeat":true,"tile_scale":0.36,"anchor":[0,0]},
+        {"id":"floor","source":"halloween2018_floor","layer":"floor","x":0,"y":350,"width":960,"height":190,"repeat":true,"tile_scale":0.5,"anchor":[0,0]},
+        {"id":"fireplace","source":"halloween2018_chair_01","layer":"back","x":235,"y":408,"width":385},
+        {"id":"chandelier","source":"halloween2018_chair_02_A","layer":"back","x":650,"y":164,"width":170},
+        {"id":"armor","source":"halloween2018_deco_04","layer":"back","x":900,"y":397,"width":115},
+        {"id":"seat","source":"halloween2018_sofa","layer":"depth","x":663,"y":449,"width":173,"depth_y":420},
+        {"id":"ornament","source":"halloween2018_walldeco_01","layer":"back","x":453,"y":193,"width":105},
+        {"id":"front_deco","source":"halloween2018_deco_01","layer":"front","x":900,"y":535,"width":135}
+      ],
+      "seat":{"seat_id":"seat","object_id":"seat","label":"万圣扶手椅","approach":[0.46,0.825],"position":[0.69,0.825],"exit":[0.43,0.825],"sit_offset":[0,-32],"facing":1}
+    }
+  ]
+}

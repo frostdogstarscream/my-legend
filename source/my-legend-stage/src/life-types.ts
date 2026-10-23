@@ -44,11 +44,14 @@ export interface LifePreview extends Omit<StagePreview,'schema_version'|'stage'|
   script:StagePreview['timeline'];
   face?:import('./basic-face').BasicFace;
   dialogue?:import('./performance-tracks').DirectionTrack;
+  scene?:import('./scene-types').SceneRef;
+  furniture_track?:import('./scene-types').FurnitureTrack;
   roles:{role_id:string;name:string}[]; diagnostics:LifeDiagnostic[];
 }
 export interface ActorState {
   instance_id:string; position:number[]; facing:1|-1; visible:boolean; outfit_id:string|null;
   action:string; time:number; mode:PlayMode; speaking:boolean;
+  seat_id?:string;
 }
 export interface LifeState {sample_frame:number;actors:ActorState[];camera:{target_instance_id:string|null;zoom:number;x:number}}
 
