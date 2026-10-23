@@ -211,7 +211,11 @@ onUnload(()=>{visible=false;stopPolling();release()})
       <button class="chip" :class="{selected:tab==='script'}" :disabled="!hasScript" @tap="selectResult('script')">剧本{{hasScript?'':' · 未就绪'}}</button>
       <button class="chip" :class="{selected:tab==='audio'}" :disabled="!hasAudio" @tap="selectResult('audio')">广播剧{{hasAudio?'':' · 未就绪'}}</button>
       <button class="chip" :class="{selected:tab==='video'}" :disabled="!hasVideo" @tap="selectResult('video')">演绎{{hasVideo?'':' · 未就绪'}}</button>
-    </view><text v-if="!hasScript&&!hasAudio&&!hasVideo" class="small-note spaced">制作完成的内容会出现在这里。</text>
+    </view>
+      <!-- #ifdef H5 -->
+      <view class="chip-list spaced"><button class="chip" @tap="goPage('performance',{mode:'spine'})">战斗动作试演</button><button v-if="hasAudio" class="chip" @tap="goPage('performance',{productionId:job.id})">配音动作联动</button></view>
+      <!-- #endif -->
+      <text v-if="!hasScript&&!hasAudio&&!hasVideo" class="small-note spaced">制作完成的内容会出现在这里。</text>
       <view v-if="tab==='script'&&delivery" class="reader"><view v-for="episode in delivery.episodes" :key="episode.episode_id"><text class="chapter-title serif">{{episode.title}}</text>
         <view v-for="scene in episode.scenes" :key="scene.scene_id"><text class="scene-title">{{scene.title}}</text><view v-for="line in scene.utterances" :key="line.line_id" class="script-line"><text class="speaker">{{label(line.kind,line.speaker_role_id)}}</text><text>{{line.text}}</text><button v-if="canRemake&&canRemakeLine(episode.episode_id,scene.scene_id,line.line_id)" class="chip remake-line" :class="{selected:selectedEvent(episode.episode_id,scene.scene_id,line.line_id)}" :aria-pressed="selectedEvent(episode.episode_id,scene.scene_id,line.line_id)" :disabled="busy" @tap="toggleRemake(episode.episode_id,scene.scene_id,line.line_id)">{{selectedEvent(episode.episode_id,scene.scene_id,line.line_id)?'已选重制':'重做这段声音'}}</button></view></view>
       </view></view>

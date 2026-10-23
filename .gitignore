@@ -8,6 +8,7 @@
 /source/*
 !/source/fingertip-legend-app/
 !/source/my-legend-production/
+!/source/my-legend-stage/
 !/source/StoryGenerate-0dec8480e3c1b01af66407ff063f825a3fd5dedb/
 !/source/my-legend-workflow-dependencies/
 !/ops/
@@ -53,6 +54,10 @@
 **/*.wav
 **/*.mp3
 **/*.mp4
+# Third-party character resources stay local; never publish them with source.
+**/*.skel
+**/*.atlas
+**/*.spine
 **/.DS_Store
 **/Thumbs.db
 **/.test-tmp*/

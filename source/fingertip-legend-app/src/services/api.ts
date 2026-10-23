@@ -25,6 +25,12 @@ const request = createHttpClient({ baseUrl: config.apiBaseUrl, timeout: config.r
 
 // UI pages use this contract in both modes. Adapt existing backends here only.
 export const api = {
+  lifeCatalog: (digest?:string):Promise<import('../../../my-legend-stage/src/life-types').LifeCatalog> => request('/stage-preview/catalog?profile=life_v1'+(digest?'&catalog_sha256='+encodeURIComponent(digest):'')),
+  lifeCompile: (id:string,bindings:Record<string,string>={},initial_outfits:Record<string,string|null>={}):Promise<import('../../../my-legend-stage/src/life-types').LifePreview> => request(`/production-jobs/${encodeURIComponent(id)}/stage-preview`,'POST',{profile:'life_v1',operation:'compile',bindings,initial_outfits}),
+  lifeSave: (id:string,script:import('../../../my-legend-stage/src/life-types').LifeScript):Promise<import('../../../my-legend-stage/src/life-types').LifePreview> => request(`/production-jobs/${encodeURIComponent(id)}/stage-preview`,'POST',{profile:'life_v1',operation:'validate_and_save',script}),
+  lifeSaved: (id:string,digest:string):Promise<import('../../../my-legend-stage/src/life-types').LifePreview> => request(`/production-jobs/${encodeURIComponent(id)}/stage-preview/${encodeURIComponent(digest)}`),
+  stageCatalog: ():Promise<import('../../../my-legend-stage/src/types').StageCatalog> => request('/stage-preview/catalog'),
+  stagePreview: (id:string):Promise<import('../../../my-legend-stage/src/types').StagePreview> => request(`/production-jobs/${encodeURIComponent(id)}/stage-preview`,'POST',{}),
   independentCapabilities: (): Promise<ProductionCapabilities> => request('/production-capabilities'),
   independentJobs: (offset=0, workId?:string): Promise<{items:IndependentJob[];next_offset:number|null}> => request(`/production-jobs?offset=${offset}${workId?'&work_id='+encodeURIComponent(workId):''}`),
   independentJob: (id:string): Promise<IndependentJob> => request(`/production-jobs/${encodeURIComponent(id)}`),

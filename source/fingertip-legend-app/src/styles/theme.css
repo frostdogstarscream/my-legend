@@ -46,4 +46,5 @@ image, uni-image { display: block; flex-shrink: 0; }
 @media (min-width: 461px) {
   body { background: #1b1714; }
   uni-page-body { max-width: 393px; margin: 0 auto; box-shadow: 0 0 60px #0006; }
+  uni-page-body:has(.life-page) { max-width: 1200px; width: 100%; }
 }

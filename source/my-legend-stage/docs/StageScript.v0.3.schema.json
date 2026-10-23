@@ -1,0 +1,538 @@
+{
+  "$defs": {
+    "LifeActor": {
+      "additionalProperties": false,
+      "properties": {
+        "instance_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Instance Id",
+          "type": "string"
+        },
+        "role_id": {
+          "title": "Role Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "actor_id": {
+          "title": "Actor Id",
+          "type": "string"
+        },
+        "actor_revision": {
+          "title": "Actor Revision",
+          "type": "string"
+        },
+        "initial_outfit_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Initial Outfit Id"
+        },
+        "position": {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "title": "Position",
+          "type": "array"
+        },
+        "facing": {
+          "default": 1,
+          "enum": [
+            -1,
+            1
+          ],
+          "title": "Facing",
+          "type": "integer"
+        },
+        "visible": {
+          "default": true,
+          "title": "Visible",
+          "type": "boolean"
+        },
+        "actions": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "title": "Actions",
+          "type": "object"
+        }
+      },
+      "required": [
+        "instance_id",
+        "role_id",
+        "name",
+        "actor_id",
+        "actor_revision",
+        "position",
+        "actions"
+      ],
+      "title": "LifeActor",
+      "type": "object"
+    },
+    "LifeCue": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "body.play",
+            "actor.move_to",
+            "actor.place",
+            "actor.change_outfit",
+            "camera.focus"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "instance_id": {
+          "title": "Instance Id",
+          "type": "string"
+        },
+        "start_frame": {
+          "minimum": 0,
+          "title": "Start Frame",
+          "type": "integer"
+        },
+        "end_frame": {
+          "minimum": 0,
+          "title": "End Frame",
+          "type": "integer"
+        },
+        "enabled": {
+          "default": true,
+          "title": "Enabled",
+          "type": "boolean"
+        },
+        "params": {
+          "additionalProperties": true,
+          "title": "Params",
+          "type": "object"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Source"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "source_text": {
+          "default": "",
+          "title": "Source Text",
+          "type": "string"
+        },
+        "rule_id": {
+          "default": "manual",
+          "title": "Rule Id",
+          "type": "string"
+        },
+        "reason": {
+          "default": "人工指令",
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "instance_id",
+        "start_frame",
+        "end_frame",
+        "params"
+      ],
+      "title": "LifeCue",
+      "type": "object",
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "body.play"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "properties": {
+              "params": {
+                "$ref": "#/$defs/BodyParams"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "actor.move_to"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "properties": {
+              "params": {
+                "$ref": "#/$defs/MoveParams"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "actor.place"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "properties": {
+              "params": {
+                "$ref": "#/$defs/PlaceParams"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "actor.change_outfit"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "properties": {
+              "params": {
+                "$ref": "#/$defs/OutfitParams"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "camera.focus"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "properties": {
+              "params": {
+                "$ref": "#/$defs/FocusParams"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Source": {
+      "additionalProperties": false,
+      "properties": {
+        "episode_id": {
+          "title": "Episode Id",
+          "type": "string"
+        },
+        "scene_id": {
+          "title": "Scene Id",
+          "type": "string"
+        },
+        "line_id": {
+          "title": "Line Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "episode_id",
+        "scene_id",
+        "line_id"
+      ],
+      "title": "Source",
+      "type": "object"
+    },
+    "Subtitle": {
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/Source"
+        },
+        "role_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Role Id"
+        },
+        "speaker": {
+          "title": "Speaker",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "start_frame": {
+          "minimum": 0,
+          "title": "Start Frame",
+          "type": "integer"
+        },
+        "end_frame": {
+          "minimum": 1,
+          "title": "End Frame",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "source",
+        "role_id",
+        "speaker",
+        "text",
+        "start_frame",
+        "end_frame"
+      ],
+      "title": "Subtitle",
+      "type": "object"
+    },
+    "BodyParams": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "title": "Action",
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "once",
+            "loop",
+            "hold"
+          ],
+          "title": "Mode",
+          "type": "string"
+        }
+      },
+      "required": [
+        "action",
+        "mode"
+      ],
+      "title": "BodyParams",
+      "type": "object"
+    },
+    "MoveParams": {
+      "additionalProperties": false,
+      "properties": {
+        "to": {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "title": "To",
+          "type": "array"
+        },
+        "visible_after": {
+          "default": true,
+          "title": "Visible After",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "to"
+      ],
+      "title": "MoveParams",
+      "type": "object"
+    },
+    "PlaceParams": {
+      "additionalProperties": false,
+      "properties": {
+        "position": {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "title": "Position",
+          "type": "array"
+        },
+        "visible": {
+          "default": true,
+          "title": "Visible",
+          "type": "boolean"
+        },
+        "facing": {
+          "default": 1,
+          "enum": [
+            -1,
+            1
+          ],
+          "title": "Facing",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "position"
+      ],
+      "title": "PlaceParams",
+      "type": "object"
+    },
+    "OutfitParams": {
+      "additionalProperties": false,
+      "properties": {
+        "outfit_id": {
+          "title": "Outfit Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "outfit_id"
+      ],
+      "title": "OutfitParams",
+      "type": "object"
+    },
+    "FocusParams": {
+      "additionalProperties": false,
+      "properties": {
+        "target_instance_id": {
+          "title": "Target Instance Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "target_instance_id"
+      ],
+      "title": "FocusParams",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "legend_stage_script/0.3",
+      "default": "legend_stage_script/0.3",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "job_id": {
+      "title": "Job Id",
+      "type": "string"
+    },
+    "source_version_id": {
+      "title": "Source Version Id",
+      "type": "string"
+    },
+    "audio_sha256": {
+      "title": "Audio Sha256",
+      "type": "string"
+    },
+    "timeline_sha256": {
+      "title": "Timeline Sha256",
+      "type": "string"
+    },
+    "catalog_sha256": {
+      "title": "Catalog Sha256",
+      "type": "string"
+    },
+    "rule_version": {
+      "const": "zh_life_keywords/1",
+      "default": "zh_life_keywords/1",
+      "title": "Rule Version",
+      "type": "string"
+    },
+    "sample_rate": {
+      "maximum": 192000,
+      "minimum": 8000,
+      "title": "Sample Rate",
+      "type": "integer"
+    },
+    "total_frames": {
+      "minimum": 1,
+      "title": "Total Frames",
+      "type": "integer"
+    },
+    "actors": {
+      "items": {
+        "$ref": "#/$defs/LifeActor"
+      },
+      "maxItems": 3,
+      "minItems": 1,
+      "title": "Actors",
+      "type": "array"
+    },
+    "subtitles": {
+      "items": {
+        "$ref": "#/$defs/Subtitle"
+      },
+      "title": "Subtitles",
+      "type": "array"
+    },
+    "cues": {
+      "items": {
+        "$ref": "#/$defs/LifeCue"
+      },
+      "maxItems": 2000,
+      "title": "Cues",
+      "type": "array"
+    },
+    "usage": {
+      "default": "story_preview",
+      "enum": [
+        "story_preview",
+        "technical_coverage"
+      ],
+      "title": "Usage",
+      "type": "string"
+    }
+  },
+  "required": [
+    "job_id",
+    "source_version_id",
+    "audio_sha256",
+    "timeline_sha256",
+    "catalog_sha256",
+    "sample_rate",
+    "total_frames",
+    "actors",
+    "subtitles",
+    "cues"
+  ],
+  "title": "LifeScript",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Runtime validation additionally checks provenance, source references, cross-cue conflicts, catalog capabilities and outfit transitions."
+}

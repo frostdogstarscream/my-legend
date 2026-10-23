@@ -15,6 +15,7 @@
 |---|---|
 | `source/fingertip-legend-app` | uni-app / Vue 3 / TypeScript 前端 |
 | `source/my-legend-production` | 业务 API、生产 Worker、声音桥接与混音适配 |
+| `source/my-legend-stage` | Spine 2.1 战斗／生活动作舞台、定时换装与现有配音联动 |
 | `source/StoryGenerate-0dec8480e3c1b01af66407ff063f825a3fd5dedb` | 本机使用的 StoryGenerate 源码及适配修订 |
 | `source/my-legend-workflow-dependencies` | 固定音频/视觉工作流源码快照与内容哈希 |
 | `ops/my-legend` | Windows 本机启动、配置及验证工具 |
@@ -42,6 +43,8 @@ npm run dev:h5
 4. 环境准备后，通过 `ops/my-legend/Start-Prototype.ps1` 启动原真实链路。配置和启动本身不代替模型调用验收，真实生成会产生供应商费用。
 
 最新行为以 [先试听模式](docs/requirements/my-legend/先试听模式_20261020.md) 和 [修改、续写、改编接口](docs/requirements/my-legend/指定版本修改续写改编_20261020.md) 为准；较早文档保留当时的审批和视觉试验记录。
+
+新增的 [Spine 动作预览](source/my-legend-stage/README.md) 可在本机 H5 查看原始动作，并与已交付广播剧联动。[生活演绎 v0.3](source/my-legend-stage/docs/life-stage-v0.3.md) 支持基础关键词编排、三部件定时换装、简表修正及版本保存。素材只在本机导入，不包含口型驱动或对话自动相向／对视，不会触发新的配音生成。
 
 ## 仓库范围
 

@@ -95,4 +95,6 @@ def register_production_routes(app, repository, artifacts: ArtifactStore, owner,
         owner(request)
         return {"code": 0, "message": "ok", "data": capabilities()}
 
+    from .spine_preview import register_spine_routes
+    register_spine_routes(router, repository, artifacts, owner, translate)
     app.include_router(router)
