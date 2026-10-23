@@ -1,0 +1,59 @@
+{
+  "version": "basic_face_profiles/1",
+  "algorithm_version": "basic_face/1",
+  "profiles": [
+    {
+      "actor_id": "hk416_dorm",
+      "actor_revision": "d13098df2b6556eefc7ff224d80c041ab70e7fd0435745370c8d33f28a0c10d8",
+      "asset_id": "hk416_dorm",
+      "source_filename": "RHK416.skel",
+      "original_sha256": "4612cb1a207ef8251ba977722fe6f82cb94919ae81d67f7dc28de5678de45b11",
+      "skeleton_sha256": "5f28aef9ecdec3af3970d25fac80a96bd5c8d191cd269327d5a6b8693c6962ee",
+      "part_slot": "full",
+      "actions": [
+        "idle",
+        "walk",
+        "sit"
+      ],
+      "mouth": {
+        "slot": "mouth1",
+        "closed": "mouth1",
+        "open": "mouth2",
+        "period_ms": 280,
+        "open_start_ms": 75,
+        "open_end_ms": 215,
+        "lead_ms": 70,
+        "tail_ms": 75
+      }
+    },
+    {
+      "actor_id": "ak15mod_dorm",
+      "actor_revision": "6cef6fa2418a0ad846ffc4be6049eab408cc346b85fd8598c2aad26085e96c5a",
+      "asset_id": "ak15mod_dorm",
+      "source_filename": "RAK15Mod.skel",
+      "original_sha256": "5f3ba453f32da0836ecd3aa3ed1411b19b8b56a3a40bd7bbe4e6fa12b9330bb2",
+      "skeleton_sha256": "0df56ec892fa29bcddf866ac09e0a8c0654e414c86af94668fbd849d89336ff3",
+      "part_slot": "full",
+      "actions": [
+        "idle",
+        "walk",
+        "sit"
+      ],
+      "blink": {
+        "slots": [
+          {
+            "slot": "Leye1",
+            "closed": "eyeR5"
+          },
+          {
+            "slot": "Reye1",
+            "closed": "eyeL5"
+          }
+        ],
+        "period_ms": 3700,
+        "offset_ms": 420,
+        "duration_ms": 115
+      }
+    }
+  ]
+}

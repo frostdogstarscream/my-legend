@@ -99,7 +99,7 @@ def make_actors(base, catalog, initial_outfits):
     return actors
 
 
-def compile_keywords(script, delivery, timeline, lines):
+def compile_keywords(script, delivery, timeline, lines, dialogue=False):
     actors = script['actors']
     by_role = {a['role_id']: a for a in actors}
     aliases = {a['instance_id']: {a['name']} for a in actors}
@@ -226,7 +226,7 @@ def compile_keywords(script, delivery, timeline, lines):
                 destination = next(a['position'][0] for a in actors if a['instance_id'] == c['instance_id'])
                 pos = [.06, pos[1]]
             elif action == 'exit':
-                destination = .96
+                destination = (.04 if pos[0] < .5 else .96) if dialogue else .96
             elif target:
                 x = position_at(target, c['start_frame'])[0]
                 direction = 1 if x > pos[0] else -1
@@ -252,7 +252,7 @@ def build_life_preview(job, body, store, catalog):
         script = {k: deepcopy(v) for k, v in expected.items() if k != 'roles'}
         script.update(schema_version='legend_stage_script/0.3', rule_version=RULE_VERSION,
                       actors=make_actors(base, catalog, body.initial_outfits), cues=[], usage='story_preview')
-        diagnostics = compile_keywords(script, delivery, timeline, lines)
+        diagnostics = compile_keywords(script, delivery, timeline, lines, dialogue=body.dialogue_enabled)
         if len(roles) > len(script['actors']):
             diagnostics.append({'code': 'UNBOUND_ROLES', 'message': '超过三个的声音角色保留声音和字幕，未绑定舞台演员'})
     else:
@@ -261,8 +261,23 @@ def build_life_preview(job, body, store, catalog):
         script = body.script
     script = validate_script(script, catalog, expected, set(lines))
     if body.operation == 'validate_and_save':
-        diagnostics = compile_keywords(deepcopy(script), delivery, timeline, lines)
-    return {'schema_version': 'spine_stage_preview/2.0', 'profile': 'life_v1', 'job_id': job['id'],
+        diagnostics = compile_keywords(deepcopy(script), delivery, timeline, lines, dialogue=body.dialogue_enabled)
+    from .face_preview import face_envelope
+    from .performance_tracks import compile_direction_track, validate_direction_track
+    if body.face_track is not None and not body.face_enabled:
+        fail('face_track', '保存面部轨道时需要启用面部')
+    if body.dialogue_track is not None and not body.dialogue_enabled:
+        fail('dialogue_track', '保存朝向轨道时需要启用对白关系')
+    face = {'face': face_envelope(script, catalog, body.face_profile_sha256, body.face_mode, body.face_track)} if body.face_enabled else {}
+    direction = {}
+    if body.dialogue_enabled:
+        if body.dialogue_track is None:
+            track, notes = compile_direction_track(script, delivery, timeline, lines)
+            diagnostics.extend(notes)
+        else:
+            track = body.dialogue_track
+        direction['dialogue'] = validate_direction_track(track, script, set(lines))
+    return {**face, **direction, 'schema_version': 'spine_stage_preview/2.0', 'profile': 'life_v1', 'job_id': job['id'],
             'title': base['title'], 'source_version_id': base['source_version_id'], 'catalog_sha256': catalog['catalog_sha256'],
             'audio': base['audio'], 'timeline': base['timeline'], 'script': base['script'],
             'stage': script, 'roles': roles, 'diagnostics': diagnostics, 'mouth_control': False, 'usage': 'local_preview_only'}

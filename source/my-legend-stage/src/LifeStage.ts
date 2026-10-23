@@ -1,5 +1,6 @@
 import {Application,Container,ImageSource,Mesh,MeshGeometry,Texture} from 'pixi.js'
 import {installLegacyFixes,expandLegacyDeforms} from './legacy-fixes'
+import type {BasicFaceRuntime} from './basic-face'
 import {actorTime,type AssetRef} from './types'
 import type {ActorState,Calibration,LifeAsset,LifeBinding,LifeCatalog,LifeOutfit,LifeSkeleton,LifeState} from './life-types'
 
@@ -22,6 +23,9 @@ export class LifeStage {
   private disposed=false
   private moduleUrl=''
   private lastState:LifeState|undefined
+  private face:BasicFaceRuntime|undefined
+  setFace(face:BasicFaceRuntime){this.face=face}
+  get faceDiagnostics(){return this.face?.diagnostics||[]}
   readonly width=960
   readonly height=540
 
@@ -111,6 +115,13 @@ export class LifeStage {
   }
 
   private pose(entity:Entity,variant:Variant,state:ActorState){
+    try{this.poseCore(entity,variant,state)}catch(e){
+      if(!this.face?.disable(state.instance_id,e))throw e
+      // Retry the complete pose and mesh pass from setup + native animation this frame.
+      this.poseCore(entity,variant,state)
+    }
+  }
+  private poseCore(entity:Entity,variant:Variant,state:ActorState){
     const name=entity.asset.action_map[state.action]
     if(!name||variant.outfit&&!variant.outfit.allowed_actions.includes(state.action))throw Error('当前服装不支持动作：'+state.action)
     for(const part of variant.parts){
@@ -118,6 +129,7 @@ export class LifeStage {
       if(!animation)throw Error('部件缺少动作：'+name)
       sk.setToSetupPose()
       animation.apply(sk,-1,actorTime(state.time,animation.duration,state.mode==='loop'),false,null)
+      this.face?.apply(sk,part.asset,part.slot,state,this.lastState?.sample_frame||0)
       sk.updateWorldTransform()
       for(const mesh of part.meshes.values())mesh.visible=false
       const base=variant.outfit?.calibration[part.slot]||blank,c={...base,...base.actions?.[name]}
@@ -165,9 +177,10 @@ export class LifeStage {
   }
 
   snapshot(){
-    return {state:this.lastState,texture_count:this.textures.size,actors:this.entities.map(e=>{
+    return {state:this.lastState,face_diagnostics:this.face?.diagnostics||[],texture_count:this.textures.size,actors:this.entities.map(e=>{
       const v=[...e.variants.values()].find(v=>v.visual.visible)!
       return {instance_id:e.binding.instance_id,scale:e.scale,position:[e.root.x,e.root.y],parts:v.parts.map(p=>({slot:p.slot,
+        attachments:p.skeleton.slots.map((s:Legacy)=>({slot:s.data.name,attachment:s.attachment?.name||null})),
         bones:p.skeleton.bones.map((b:Legacy)=>[b.worldX,b.worldY,b.m00,b.m01,b.m10,b.m11]),
         meshes:[...p.meshes.values()].filter(m=>m.visible).map(m=>({vertices:Array.from(m.geometry.positions),uv:Array.from(m.geometry.uvs),indices:Array.from(m.geometry.indices),z:m.zIndex}))}))}
     })}

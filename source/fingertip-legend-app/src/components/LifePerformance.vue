@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import {computed,nextTick,onBeforeUnmount,onMounted,ref} from 'vue'
 import {api} from '../services/api'
+import PerformanceTrackEditor from './PerformanceTrackEditor.vue'
+import {evaluateDialogue,prepareDirection,emptyDirectionTrack,type DirectionTrack,type FaceTrack} from '../../../my-legend-stage/src/performance-tracks'
 import HtmlInput from './HtmlInput'
 import {stageArtifactJson,stageAsset,stageAudio} from '../services/stage-assets'
 import {playbackArtifacts,releaseProductionMedia} from '../services/production-media'
+import {BasicFaceRuntime,type BasicFace} from '../../../my-legend-stage/src/basic-face'
 import {LifeStage} from '../../../my-legend-stage/src/LifeStage'
 import {evaluateStage,technicalCoverage,type CueType,type LifeBinding,type LifeCatalog,type LifeCue,type LifePreview,type LifeScript,type PlayMode} from '../../../my-legend-stage/src/life-types'
 import type {StageCue} from '../../../my-legend-stage/src/types'
@@ -15,6 +18,8 @@ const jobs=ref<IndependentJob[]>([]),jobId=ref(props.productionId||''),busy=ref(
 const time=ref(0),duration=ref(12),playing=ref(false),speed=ref(1),ready=ref(false),audioReady=ref(false)
 const selected=ref(''),trialAction=ref('idle'),trialMode=ref<PlayMode>('loop'),initialOutfits=ref<Record<string,string|null>>({}),bindings=ref<Record<string,string>>({})
 const jsonText=ref(''),jsonOpen=ref(false),savedId=ref(props.previewId||''),savedVersions=ref<{job:string;digest:string;title:string}[]>([])
+const dialogueEnabled=ref(true),directionDraft=ref<DirectionTrack>(),appliedDirection=ref<DirectionTrack>(),faceTrackDraft=ref<FaceTrack>(),directionDiagnostics=ref<{code:string;message:string}[]>([])
+const faceEnabled=ref(false),faceProfileDigest=ref<string>(),faceDiagnostics=ref<BasicFaceRuntime['diagnostics']>([])
 const fallbackSubtitles=ref<StageCue[]>([]),loopTrial=ref(true)
 const labels:Record<string,string>={idle:'待机',walk:'行走',sit:'坐下',pick:'拾取',lie:'躺卧',victory:'胜利',victoryloop:'胜利待机'}
 const cueLabels:Record<CueType,string>={'body.play':'身体动作','actor.move_to':'移动','actor.place':'位置与可见性','actor.change_outfit':'定时换装','camera.focus':'镜头聚焦'}
@@ -22,7 +27,8 @@ const modes:Record<PlayMode,string>={once:'播放一次后待机',loop:'循环�
 const trialActor=computed(()=>draft.value?.actors.find(a=>a.instance_id===selected.value))
 const trialActions=computed(()=>Object.keys(trialActor.value?.actions||{}))
 const subtitles=computed(()=> (applied.value?.subtitles||fallbackSubtitles.value).filter(c=>c.start_frame<=time.value*(applied.value?.sample_rate||audioRate)&&time.value*(applied.value?.sample_rate||audioRate)<c.end_frame))
-const dirty=computed(()=>!!draft.value&&JSON.stringify(draft.value)!==JSON.stringify(applied.value))
+const tracksDirty=computed(()=>dialogueEnabled.value!==!!preview.value?.dialogue||JSON.stringify(directionDraft.value)!==JSON.stringify(preview.value?.dialogue)||JSON.stringify(faceTrackDraft.value)!==JSON.stringify(preview.value?.face?.track))
+const dirty=computed(()=>!!draft.value&&(tracksDirty.value||JSON.stringify(draft.value)!==JSON.stringify(applied.value)||faceEnabled.value!==!!preview.value?.face||faceEnabled.value&&faceProfileDigest.value!==preview.value?.face?.profile_sha256))
 const shareUrl=computed(()=>preview.value?`#/pages/performance/index?mode=spine&profile=life_v1&productionId=${encodeURIComponent(preview.value.job_id)}&previewId=${preview.value.preview_sha256}`:'')
 let stage:LifeStage|undefined,audio:HTMLAudioElement|undefined,mediaUrl='',audioDigest='',audioRate=48000,raf=0,last=0,disposed=false,loadGeneration=0
 const copy=<T,>(v:T):T=>JSON.parse(JSON.stringify(v))
@@ -32,7 +38,7 @@ function inputNumber(event:Event){return Number((event.target as HTMLInputElemen
 function pause(){playing.value=false;audio?.pause();draw()}
 function draw(){
   if(!ready.value||!stage||!applied.value)return
-  try{stage.render(evaluateStage(applied.value,Math.floor(time.value*applied.value.sample_rate)))}
+  try{stage.render(evaluateDialogue(applied.value,Math.floor(time.value*applied.value.sample_rate),appliedDirection.value));faceDiagnostics.value=[...stage.faceDiagnostics]}
   catch(e){visualError.value=message(e);ready.value=false}
 }
 function seek(value:number){time.value=Math.max(0,Math.min(duration.value,Number.isFinite(value)?value:0));if(audio&&audioReady.value)audio.currentTime=time.value;draw()}
@@ -60,17 +66,21 @@ function remember(value:LifePreview){
   try{localStorage.setItem('legend-life-previews',JSON.stringify(savedVersions.value))}catch{/* History is optional; immutable server versions remain available. */}
 }
 
-async function swap(script:LifeScript,nextCatalog:LifeCatalog){
+async function swap(script:LifeScript,nextCatalog:LifeCatalog,face?:BasicFace,dialogue?:DirectionTrack){
   const candidate=new LifeStage(),detached=document.createElement('div')
   try{
     await candidate.mount(detached,nextCatalog,script.actors,stageAsset)
     if(disposed){candidate.destroy();return}
-    candidate.render(evaluateStage(script,Math.floor(time.value*script.sample_rate)))
+    candidate.setFace(await BasicFaceRuntime.prepare(script,nextCatalog,face))
+    const relation=prepareDirection(script,dialogue)
+    candidate.render(evaluateDialogue(script,Math.floor(time.value*script.sample_rate),relation.track))
     await nextTick()
     if(!host.value)throw Error('舞台容器未就绪')
     const previous=stage
     host.value.replaceChildren(...Array.from(detached.childNodes))
+    appliedDirection.value=relation.track;directionDiagnostics.value=relation.diagnostics
     stage=candidate;catalog.value=nextCatalog;applied.value=copy(script);ready.value=true;visualError.value=''
+    faceDiagnostics.value=[...candidate.faceDiagnostics]
     previous?.destroy()
   }catch(e){candidate.destroy();throw e}
 }
@@ -78,8 +88,10 @@ async function swap(script:LifeScript,nextCatalog:LifeCatalog){
 async function accept(value:LifePreview){
   if(value.job_id!==jobId.value||value.audio.artifact.sha256!==audioDigest)throw Error('编排与当前音频版本不一致')
   const nextCatalog=catalog.value?.catalog_sha256===value.catalog_sha256?catalog.value:await api.lifeCatalog(value.catalog_sha256)
-  await swap(value.stage,nextCatalog)
+  await swap(value.stage,nextCatalog,value.face,value.dialogue)
   if(disposed)return
+  dialogueEnabled.value=!!value.dialogue;directionDraft.value=value.dialogue?copy(value.dialogue):undefined;faceTrackDraft.value=value.face?.track?copy(value.face.track):undefined
+  faceEnabled.value=!!value.face;faceProfileDigest.value=value.face?.profile_sha256
   preview.value=value;draft.value=copy(value.stage);savedId.value=value.preview_sha256
   bindings.value=Object.fromEntries(value.stage.actors.map(a=>[a.role_id,a.actor_id]))
   initialOutfits.value=Object.fromEntries(value.stage.actors.map(a=>[a.role_id,a.initial_outfit_id]))
@@ -94,14 +106,22 @@ async function compile(){
     const chosen=Object.fromEntries(Object.entries(bindings.value).filter(([,v])=>v))
     if(!Object.keys(chosen).length)throw Error('请至少绑定一个舞台演员')
     if(Object.keys(chosen).length>3)throw Error('最多绑定三个舞台演员')
-    const value=await api.lifeCompile(jobId.value,chosen,initialOutfits.value)
+    const value=await api.lifeCompile(jobId.value,chosen,initialOutfits.value,faceEnabled.value,faceProfileDigest.value,{dialogue_enabled:dialogueEnabled.value})
     await accept(value)
   }catch(e){error.value=message(e)}finally{busy.value=false}
+}
+function trackOptions(){return {dialogue_enabled:dialogueEnabled.value,dialogue_track:dialogueEnabled.value?directionDraft.value:undefined,face_track:faceEnabled.value?faceTrackDraft.value:undefined}}
+function enableDirection(){if(dialogueEnabled.value&&draft.value&&!directionDraft.value)notice.value='应用后从原剧本生成朝向覆盖；也可添加人工修正。'}
+function addDirectionDraft(){if(draft.value&&!directionDraft.value)directionDraft.value=emptyDirectionTrack(draft.value)}
+async function enableExpressions(){
+  if(!draft.value||busy.value)return
+  pause();busy.value=true;error.value=''
+  try{await accept(await api.lifeSave(jobId.value,copy(draft.value),true,undefined,{...trackOptions(),face_track:undefined,face_mode:'expressions'}))}catch(e){error.value=message(e)}finally{busy.value=false}
 }
 async function apply(){
   if(!draft.value||busy.value)return
   pause();busy.value=true;error.value=''
-  try{await accept(await api.lifeSave(jobId.value,copy(draft.value)))}catch(e){error.value=message(e)}finally{busy.value=false}
+  try{await accept(await api.lifeSave(jobId.value,copy(draft.value),faceEnabled.value,faceProfileDigest.value,trackOptions()))}catch(e){error.value=message(e)}finally{busy.value=false}
 }
 async function reopen(){
   if(!jobId.value||!savedId.value||busy.value)return
@@ -113,7 +133,8 @@ async function loadJob(digest=''){
   if(busy.value)return
   pause();busy.value=true;error.value='';visualError.value='';notice.value='';const generation=++loadGeneration
   releaseAudio();stage?.destroy();stage=undefined;ready.value=false;applied.value=undefined;draft.value=undefined;preview.value=undefined;fallbackSubtitles.value=[]
-  time.value=0;bindings.value={};initialOutfits.value={}
+  dialogueEnabled.value=true;directionDraft.value=undefined;appliedDirection.value=undefined;faceTrackDraft.value=undefined;directionDiagnostics.value=[]
+  time.value=0;bindings.value={};initialOutfits.value={};faceEnabled.value=false;faceProfileDigest.value=undefined;faceDiagnostics.value=[]
   try{
     if(!jobId.value){await materialTrial();return}
     const id=jobId.value,playback=await api.independentPlayback(id),refs=playbackArtifacts(playback,id)
@@ -191,14 +212,14 @@ function markEdited(c:LifeCue){if(c.rule_id!=='manual'){c.reason='人工修正�
 function changeTime(c:LifeCue,key:'start_frame'|'end_frame',event:Event){c[key]=Math.round(inputNumber(event)*draft.value!.sample_rate);if(['actor.place','actor.change_outfit'].includes(c.type))c.end_frame=c.start_frame}
 function exportJson(){
   if(!draft.value)return
-  jsonText.value=JSON.stringify(draft.value,null,2);jsonOpen.value=true
+  jsonText.value=JSON.stringify(faceEnabled.value||dialogueEnabled.value?{schema_version:'legend_performance_draft/1',stage:draft.value,face_enabled:faceEnabled.value,face_profile_sha256:faceProfileDigest.value,...trackOptions()}:draft.value,null,2);jsonOpen.value=true
   const url=URL.createObjectURL(new Blob([jsonText.value],{type:'application/json'})),a=document.createElement('a')
   a.href=url;a.download=`life-stage-${draft.value.job_id}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)
 }
 async function importJson(){
   if(busy.value)return
   busy.value=true
-  try{const v=JSON.parse(jsonText.value);const checked=await api.lifeSave(jobId.value,v);draft.value=checked.stage;remember(checked);error.value='';notice.value='JSON 已通过校验并载入草稿，点击应用后更换当前舞台。'}catch(e){error.value=message(e)}finally{busy.value=false}
+  try{const v=JSON.parse(jsonText.value);const wrapped=['legend_face_draft/1','legend_performance_draft/1'].includes(v.schema_version);const checked=await api.lifeSave(jobId.value,wrapped?v.stage:v,wrapped&&v.face_enabled===true,wrapped?v.face_profile_sha256:undefined,wrapped?{dialogue_enabled:v.dialogue_enabled===true,dialogue_track:v.dialogue_track,face_track:v.face_track}:{});draft.value=checked.stage;faceEnabled.value=!!checked.face;faceProfileDigest.value=checked.face?.profile_sha256;dialogueEnabled.value=!!checked.dialogue;directionDraft.value=checked.dialogue;faceTrackDraft.value=checked.face?.track;remember(checked);error.value='';notice.value='JSON 已通过校验并载入草稿，点击应用后更换当前舞台。'}catch(e){error.value=message(e)}finally{busy.value=false}
 }
 async function importFile(event:Event){const f=(event.target as HTMLInputElement).files?.[0];if(!f)return;jsonText.value=await f.text();jsonOpen.value=true;importJson()}
 function historySelected(event:Event){savedId.value=(event.target as HTMLSelectElement).value}
@@ -229,13 +250,13 @@ defineExpose({pause,snapshot:()=>stage?.snapshot(),playbackState:()=>({time:time
       <div class="subtitle"><span v-for="(cue,i) in subtitles" :key="i">{{cue.speaker}}：{{cue.text}}</span><span v-if="!subtitles.length">{{jobId?'等待下一句对白…':'选择角色与动作检查原始素材'}}</span></div>
       <label class="seek"><span>进度</span><HtmlInput aria-label="演绎进度" type="range" min="0" :max="duration" step=".01" :value="time" @input="seek(inputNumber($event))"/><HtmlInput aria-label="定位秒数" class="time-input" type="number" min="0" :max="duration" step=".01" :value="Number(time.toFixed(2))" @change="seek(inputNumber($event))"/><span>/ {{duration.toFixed(2)}} 秒</span></label>
       <div class="buttons"><button :disabled="!ready&&!audioReady" @click="seek(0)">回到开头</button><button class="primary" :disabled="busy||!ready&&!audioReady" @click="toggle">{{playing?'暂停':'播放'}}</button><button @click="replay" :disabled="busy||!ready&&!audioReady">重播</button><label v-if="!jobId"><HtmlInput v-model="loopTrial" type="checkbox"/>循环试演</label><button v-for="rate in [.5,1,1.5,2]" :key="rate" :class="{active:speed===rate}" @click="setSpeed(rate)">{{rate}}×</button></div>
-      <p class="fine">{{jobId?'以原音频绝对播放位置驱动；编排不会重新生成声音。':'素材试演使用独立时钟，音频演绎使用原音频时钟。'}} 本轮不含嘴型。</p>
+      <p class="fine">{{jobId?'以原音频绝对播放位置驱动；编排不会重新生成声音。':'素材试演使用独立时钟，音频演绎使用原音频时钟。'}} 基础面部需在下方明确启用并应用保存。</p>
     </section>
     <section v-if="draft&&!jobId" class="panel">
       <h2>素材试演</h2><div class="fields"><label>演员<select v-model="selected" @change="selectTrial"><option v-for="actor in draft.actors" :key="actor.instance_id" :value="actor.instance_id">{{actor.name}}</option></select></label><label>动作<select v-model="trialAction" @change="trial"><option v-for="a in trialActions" :key="a" :value="a">{{labels[a]||a}}</option></select></label><label>播放方式<select v-model="trialMode" @change="trial"><option v-for="(label,key) in modes" :key="key" :value="key">{{label}}</option></select></label><label v-if="trialActor?.initial_outfit_id">服装<select v-model="trialActor.initial_outfit_id" @change="trial"><option v-for="o in catalog?.outfits.filter(o=>o.actor_id===trialActor?.actor_id)" :key="o.outfit_id" :value="o.outfit_id">{{o.display_name}}</option></select></label></div>
     </section>
     <template v-if="jobId&&draft&&preview">
-      <section class="panel"><h2>演员绑定与初始服装</h2><div class="cast" v-for="role in preview.roles" :key="role.role_id"><span>{{role.name}}</span><select v-model="bindings[role.role_id]" :aria-label="role.name+'素材演员'" @change="actorChanged(role.role_id)"><option value="">仅声音与字幕</option><option v-for="a in catalog?.actors" :key="a.actor_id" :value="a.actor_id">{{a.display_name}}</option></select><select v-if="catalog?.actors.find(a=>a.actor_id===bindings[role.role_id])?.asset_mode==='commander_tripartite'" v-model="initialOutfits[role.role_id]" aria-label="初始服装"><option v-for="o in catalog?.outfits.filter(o=>o.actor_id===bindings[role.role_id])" :key="o.outfit_id" :value="o.outfit_id">{{o.display_name}}</option></select></div><button :disabled="busy" @click="compile">重新自动编排（生成新草稿）</button><p class="fine">重新编排会生成新版本；已经保存的修改可从历史版本恢复。</p></section>
+      <section class="panel"><h2>演员绑定与初始服装</h2><div class="cast" v-for="role in preview.roles" :key="role.role_id"><span>{{role.name}}</span><select v-model="bindings[role.role_id]" :aria-label="role.name+'素材演员'" @change="actorChanged(role.role_id)"><option value="">仅声音与字幕</option><option v-for="a in catalog?.actors" :key="a.actor_id" :value="a.actor_id">{{a.display_name}}</option></select><select v-if="catalog?.actors.find(a=>a.actor_id===bindings[role.role_id])?.asset_mode==='commander_tripartite'" v-model="initialOutfits[role.role_id]" aria-label="初始服装"><option v-for="o in catalog?.outfits.filter(o=>o.actor_id===bindings[role.role_id])" :key="o.outfit_id" :value="o.outfit_id">{{o.display_name}}</option></select></div><button :disabled="busy" @click="compile">重新自动编排（生成新草稿）</button><p class="fine">重新编排会生成新版本并重建朝向、面部轨道；已经保存的修改可从历史版本恢复。</p></section>
       <section class="panel"><div class="section-heading"><h2>编排简表</h2><span class="badge">{{dirty?'草稿有修改':'已应用'}} · {{draft.usage==='technical_coverage'?'技术覆盖':'剧情预览'}}</span></div><div class="buttons"><button @click="addCue()">添加动作</button><button @click="addCue('actor.change_outfit')">添加定时换装</button><button @click="coverage">生成技术覆盖草稿</button><button class="primary" :disabled="busy" @click="apply">应用并预览</button><button @click="exportJson">导出 JSON</button><button @click="jsonOpen=!jsonOpen">导入 JSON</button></div>
         <div v-if="jsonOpen" class="json"><HtmlInput type="file" accept=".json,application/json" aria-label="导入脚本文件" @change="importFile"/><HtmlInput tag="textarea" v-model="jsonText" aria-label="编排 JSON" spellcheck="false"/><button @click="importJson">载入草稿</button></div>
         <div class="table-scroll"><table><thead><tr><th>启用 / 来源</th><th>演员 / 指令</th><th>起止时间（秒）</th><th>参数</th></tr></thead><tbody><tr v-for="c in draft.cues" :key="c.id" :class="{disabled:!c.enabled}" @change="markEdited(c)"><td><label><HtmlInput v-model="c.enabled" type="checkbox" :aria-label="'启用 '+c.id"/>{{c.id}}</label><p>{{c.source_text}}</p><small>{{c.source?`${c.source.episode_id}/${c.source.scene_id}/${c.source.line_id}`:'人工 / 技术覆盖'}}</small><small>{{c.reason}}</small></td><td><select v-model="c.instance_id" :aria-label="'演员 '+c.id" @change="resetType(c)"><option v-for="a in draft.actors" :key="a.instance_id" :value="a.instance_id">{{a.name}}</option></select><select v-model="c.type" :aria-label="'指令 '+c.id" @change="resetType(c)"><option v-for="(label,key) in cueLabels" :key="key" :value="key">{{label}}</option></select></td><td><HtmlInput type="number" min="0" step=".01" :aria-label="'开始 '+c.id" :value="seconds(c.start_frame)" @change="changeTime(c,'start_frame',$event)"/><HtmlInput type="number" min="0" step=".01" :aria-label="'结束 '+c.id" :disabled="c.type==='actor.change_outfit'||c.type==='actor.place'" :value="seconds(c.end_frame)" @change="changeTime(c,'end_frame',$event)"/></td><td>
@@ -246,6 +267,10 @@ defineExpose({pause,snapshot:()=>stage?.snapshot(),playbackState:()=>({time:time
           <select v-if="c.type==='camera.focus'" v-model="c.params.target_instance_id" :aria-label="'镜头目标 '+c.id"><option v-for="a in draft.actors" :key="a.instance_id" :value="a.instance_id">{{a.name}}</option></select>
         </td></tr><tr v-if="!draft.cues.length"><td colspan="4">未生成可执行动作，演员保持待机与说话高亮。可查看诊断、添加指令或生成技术覆盖草稿。</td></tr></tbody></table></div>
       </section>
+      <section class="panel"><h2>对白关系</h2><label><HtmlInput v-model="dialogueEnabled" type="checkbox" aria-label="启用双人对白关系" @change="enableDirection"/>默认互相面向（新编排启用，历史版本保留原规则）</label><p class="fine">应用后生效。背对、转身与人工修正覆盖默认规则；离场按移动方向行走。当前素材以左右镜像表示转向。</p><button v-if="dialogueEnabled&&!directionDraft" @click="addDirectionDraft">编辑朝向轨道</button><p v-for="d in directionDiagnostics" :key="d.code">{{d.code}} · {{d.message}}</p></section>
+      <PerformanceTrackEditor v-if="dialogueEnabled" :script="draft" v-model:direction="directionDraft" :time="time"/>
+      <PerformanceTrackEditor v-if="faceEnabled" :script="draft" v-model:face-track="faceTrackDraft" :profiles="preview.face?.profile_set.profiles" :time="time"/>
+      <section class="panel"><h2>基础面部试播</h2><label><HtmlInput v-model="faceEnabled" type="checkbox" aria-label="启用基础面部"/>启用 HK416 两态口型 / AK15 眨眼（应用后生效）</label><p class="fine">默认关闭。对白区间内使用节律口型，未做音素对齐；保留原生眨眼，躺卧与拾取使用原动作。表情需使用下方已核对的版本；头部摆动未启用。</p><button v-if="!preview.face?.track" :disabled="busy" @click="enableExpressions">启用表情与手工轨道</button><p class="fine" v-if="preview.face">已保存 Profile：{{preview.face.profile_sha256}}</p><ul><li v-for="(d,i) in faceDiagnostics" :key="i"><strong>{{d.code}}</strong> {{d.instance_id}} · {{d.message}}</li></ul><p v-if="!preview.face">当前保存版本使用原生面部。</p></section>
       <section class="panel"><h2>编排诊断</h2><p v-if="!preview.diagnostics.length">本版本没有自动编排诊断。</p><ul><li v-for="(d,i) in preview.diagnostics" :key="i"><strong>{{d.code}}</strong> {{d.message}}<p v-if="d.text">{{d.text}}</p></li></ul></section>
       <section class="panel"><h2>保存与恢复</h2><p class="fine">版本 {{preview.preview_sha256}}</p><a :href="shareUrl">打开当前保存版本</a><div class="fields"><select aria-label="历史版本" @change="historySelected"><option value="">选择本机历史版本</option><option v-for="v in savedVersions.filter(v=>v.job===jobId)" :key="v.digest" :value="v.digest">{{v.title}} · {{v.digest.slice(0,12)}}</option></select><HtmlInput v-model="savedId" aria-label="保存版本哈希" placeholder="完整版本哈希"/><button :disabled="busy" @click="reopen">恢复保存版本</button></div></section>
     </template>

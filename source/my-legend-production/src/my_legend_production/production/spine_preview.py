@@ -27,6 +27,12 @@ class StagePreviewRequest(Contract):
     operation: Literal['compile', 'validate_and_save'] = 'compile'
     initial_outfits: dict[str, str | None] = Field(default_factory=dict, max_length=3)
     script: dict | None = None
+    face_enabled: bool = False
+    face_profile_sha256: str | None = Field(default=None, pattern="^[a-f0-9]{64}$")
+    face_mode: Literal['basic', 'expressions'] = 'basic'
+    face_track: dict | None = None
+    dialogue_enabled: bool = False
+    dialogue_track: dict | None = None
 
 
 def local_root():
