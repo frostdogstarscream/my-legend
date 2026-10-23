@@ -19,6 +19,7 @@ from .contracts import ArtifactRef, Contract
 from .playback import playback_view
 from .repository import ProductionError
 from .timeline import read_timeline
+from .auto_face_suggestions import FaceSuggestionRequest, build_face_suggestions
 
 
 class StagePreviewRequest(Contract):
@@ -204,3 +205,16 @@ def register_spine_routes(router, repository, artifacts, owner, translate):
     def saved_preview(job_id: str, preview_sha256: str, request: Request):
         job = translate(lambda: repository.get(job_id, owner(request)))['data']
         return life_result(lambda: read_life_preview(local_root(), job, preview_sha256, artifacts))
+
+    @router.post('/production-jobs/{job_id}/stage-preview/suggest-face')
+    def suggest_face(job_id: str, body: FaceSuggestionRequest, request: Request):
+        # Ownership precedes all preview/artifact reads. No save_preview or model call here.
+        job = translate(lambda: repository.get(job_id, owner(request)))['data']
+        def generate():
+            root = local_root()
+            value = read_life_preview(root, job, body.source_preview_sha256, artifacts)
+            return build_face_suggestions(value,
+                artifacts.json(ArtifactRef.model_validate(value['script']['artifact'])),
+                artifacts.json(ArtifactRef.model_validate(value['timeline']['artifact'])),
+                load_life_catalog(root, value['catalog_sha256']), body)
+        return life_result(generate)

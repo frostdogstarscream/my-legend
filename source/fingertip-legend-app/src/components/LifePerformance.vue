@@ -2,6 +2,8 @@
 import {computed,nextTick,onBeforeUnmount,onMounted,ref} from 'vue'
 import {api} from '../services/api'
 import PerformanceTrackEditor from './PerformanceTrackEditor.vue'
+import FaceSuggestionReview from './FaceSuggestionReview.vue'
+import {checkSuggestionContext,mergeFaceSuggestions,type FaceSuggestions} from '../services/face-suggestions'
 import {evaluateDialogue,prepareDirection,emptyDirectionTrack,type DirectionTrack,type FaceTrack} from '../../../my-legend-stage/src/performance-tracks'
 import HtmlInput from './HtmlInput'
 import {stageArtifactJson,stageAsset,stageAudio} from '../services/stage-assets'
@@ -20,6 +22,8 @@ const selected=ref(''),trialAction=ref('idle'),trialMode=ref<PlayMode>('loop'),i
 const jsonText=ref(''),jsonOpen=ref(false),savedId=ref(props.previewId||''),savedVersions=ref<{job:string;digest:string;title:string}[]>([])
 const dialogueEnabled=ref(true),directionDraft=ref<DirectionTrack>(),appliedDirection=ref<DirectionTrack>(),faceTrackDraft=ref<FaceTrack>(),directionDiagnostics=ref<{code:string;message:string}[]>([])
 const faceEnabled=ref(false),faceProfileDigest=ref<string>(),faceDiagnostics=ref<BasicFaceRuntime['diagnostics']>([])
+const suggestions=ref<FaceSuggestions>(),suggestionBusy=ref(false),suggestionError=ref(''),addedSuggestionIds=ref<string[]>([])
+let suggestionRun=0
 const fallbackSubtitles=ref<StageCue[]>([]),loopTrial=ref(true)
 const labels:Record<string,string>={idle:'待机',walk:'行走',sit:'坐下',pick:'拾取',lie:'躺卧',victory:'胜利',victoryloop:'胜利待机'}
 const cueLabels:Record<CueType,string>={'body.play':'身体动作','actor.move_to':'移动','actor.place':'位置与可见性','actor.change_outfit':'定时换装','camera.focus':'镜头聚焦'}
@@ -90,6 +94,7 @@ async function accept(value:LifePreview){
   const nextCatalog=catalog.value?.catalog_sha256===value.catalog_sha256?catalog.value:await api.lifeCatalog(value.catalog_sha256)
   await swap(value.stage,nextCatalog,value.face,value.dialogue)
   if(disposed)return
+  cancelSuggestions();addedSuggestionIds.value=[]
   dialogueEnabled.value=!!value.dialogue;directionDraft.value=value.dialogue?copy(value.dialogue):undefined;faceTrackDraft.value=value.face?.track?copy(value.face.track):undefined
   faceEnabled.value=!!value.face;faceProfileDigest.value=value.face?.profile_sha256
   preview.value=value;draft.value=copy(value.stage);savedId.value=value.preview_sha256
@@ -111,6 +116,27 @@ async function compile(){
   }catch(e){error.value=message(e)}finally{busy.value=false}
 }
 function trackOptions(){return {dialogue_enabled:dialogueEnabled.value,dialogue_track:dialogueEnabled.value?directionDraft.value:undefined,face_track:faceEnabled.value?faceTrackDraft.value:undefined}}
+function cancelSuggestions(){suggestionRun++;suggestionBusy.value=false;suggestions.value=undefined;suggestionError.value=''}
+async function suggestFace(){
+  if(busy.value||suggestionBusy.value||dirty.value||!preview.value?.face?.track)return
+  const run=++suggestionRun,source=preview.value
+  suggestionBusy.value=true;suggestionError.value='';suggestions.value=undefined
+  try{
+    const value=await api.lifeSuggestFace(source.job_id,source.preview_sha256)
+    if(run!==suggestionRun||disposed)return
+    if(dirty.value||preview.value?.preview_sha256!==source.preview_sha256)throw Error('请求期间版本或草稿发生变化，请重新生成建议。')
+    checkSuggestionContext(value,preview.value);suggestions.value=value
+  }catch(e){if(run===suggestionRun)suggestionError.value='建议未生成：'+message(e)}
+  finally{if(run===suggestionRun)suggestionBusy.value=false}
+}
+function acceptSuggestions(ids:string[]){
+  try{
+    if(dirty.value||!suggestions.value||!preview.value||!faceTrackDraft.value)throw Error('草稿已变化，请重新生成建议。')
+    faceTrackDraft.value=mergeFaceSuggestions(suggestions.value,preview.value,faceTrackDraft.value,ids)
+    addedSuggestionIds.value=[...ids];cancelSuggestions();notice.value='建议已加入待审草稿，当前舞台未改变。调整后点击“应用并预览”，或撤销加入的建议。'
+  }catch(e){suggestionError.value=message(e)}
+}
+function undoSuggestions(){if(faceTrackDraft.value)faceTrackDraft.value={...faceTrackDraft.value,cues:faceTrackDraft.value.cues.filter(c=>!addedSuggestionIds.value.includes(c.id))};addedSuggestionIds.value=[];notice.value='已撤销加入的建议，当前已应用舞台保持不变。'}
 function enableDirection(){if(dialogueEnabled.value&&draft.value&&!directionDraft.value)notice.value='应用后从原剧本生成朝向覆盖；也可添加人工修正。'}
 function addDirectionDraft(){if(draft.value&&!directionDraft.value)directionDraft.value=emptyDirectionTrack(draft.value)}
 async function enableExpressions(){
@@ -131,6 +157,7 @@ async function reopen(){
 
 async function loadJob(digest=''){
   if(busy.value)return
+  cancelSuggestions();addedSuggestionIds.value=[]
   pause();busy.value=true;error.value='';visualError.value='';notice.value='';const generation=++loadGeneration
   releaseAudio();stage?.destroy();stage=undefined;ready.value=false;applied.value=undefined;draft.value=undefined;preview.value=undefined;fallbackSubtitles.value=[]
   dialogueEnabled.value=true;directionDraft.value=undefined;appliedDirection.value=undefined;faceTrackDraft.value=undefined;directionDiagnostics.value=[]
@@ -231,7 +258,7 @@ onMounted(async()=>{
   if(disposed)return
   await loadJob(props.previewId||'')
 })
-onBeforeUnmount(()=>{disposed=true;loadGeneration++;cancelAnimationFrame(raf);document.removeEventListener('visibilitychange',visibility);releaseAudio();stage?.destroy()})
+onBeforeUnmount(()=>{disposed=true;loadGeneration++;cancelSuggestions();cancelAnimationFrame(raf);document.removeEventListener('visibilitychange',visibility);releaseAudio();stage?.destroy()})
 defineExpose({pause,snapshot:()=>stage?.snapshot(),playbackState:()=>({time:time.value,audioTime:audio?.currentTime,
   playing:playing.value,ready:ready.value,previewId:preview.value?.preview_sha256,audioDigest})})
 </script>
@@ -268,6 +295,17 @@ defineExpose({pause,snapshot:()=>stage?.snapshot(),playbackState:()=>({time:time
         </td></tr><tr v-if="!draft.cues.length"><td colspan="4">未生成可执行动作，演员保持待机与说话高亮。可查看诊断、添加指令或生成技术覆盖草稿。</td></tr></tbody></table></div>
       </section>
       <section class="panel"><h2>对白关系</h2><label><HtmlInput v-model="dialogueEnabled" type="checkbox" aria-label="启用双人对白关系" @change="enableDirection"/>默认互相面向（新编排启用，历史版本保留原规则）</label><p class="fine">应用后生效。背对、转身与人工修正覆盖默认规则；离场按移动方向行走。当前素材以左右镜像表示转向。</p><button v-if="dialogueEnabled&&!directionDraft" @click="addDirectionDraft">编辑朝向轨道</button><p v-for="d in directionDiagnostics" :key="d.code">{{d.code}} · {{d.message}}</p></section>
+      <section class="panel"><h2>自动表情建议 · 离线规则</h2>
+        <p class="fine">仅根据明确原文与实测语音区间提出“惊讶”或“挤眼强调”。不会调用付费模型；已有表情优先。生成建议不会改变当前演出。</p>
+        <button :disabled="busy||suggestionBusy||dirty||!faceEnabled||!preview.face?.track" @click="suggestFace">生成表情建议</button>
+        <button v-if="suggestionBusy" @click="cancelSuggestions">取消建议请求</button>
+        <button v-if="addedSuggestionIds.length" @click="undoSuggestions">撤销加入的建议</button>
+        <p class="fine" v-if="suggestionBusy">正在检查来源与时间区间…</p>
+        <p class="fine" v-if="!preview.face?.track">请先明确启用并保存“表情与手工轨道”。</p>
+        <p class="fine" v-else-if="dirty">请先应用或撤销当前草稿修改，再生成建议。</p>
+        <p v-if="suggestionError" class="error" role="alert">{{suggestionError}}</p>
+        <FaceSuggestionReview v-if="suggestions" :key="suggestions.request_fingerprint" :value="suggestions" :script="draft" :stale="dirty" @accept="acceptSuggestions" @cancel="cancelSuggestions" @seek="seek"/>
+      </section>
       <PerformanceTrackEditor v-if="dialogueEnabled" :script="draft" v-model:direction="directionDraft" :time="time"/>
       <PerformanceTrackEditor v-if="faceEnabled" :script="draft" v-model:face-track="faceTrackDraft" :profiles="preview.face?.profile_set.profiles" :time="time"/>
       <section class="panel"><h2>基础面部试播</h2><label><HtmlInput v-model="faceEnabled" type="checkbox" aria-label="启用基础面部"/>启用 HK416 两态口型 / AK15 眨眼（应用后生效）</label><p class="fine">默认关闭。对白区间内使用节律口型，未做音素对齐；保留原生眨眼，躺卧与拾取使用原动作。表情需使用下方已核对的版本；头部摆动未启用。</p><button v-if="!preview.face?.track" :disabled="busy" @click="enableExpressions">启用表情与手工轨道</button><p class="fine" v-if="preview.face">已保存 Profile：{{preview.face.profile_sha256}}</p><ul><li v-for="(d,i) in faceDiagnostics" :key="i"><strong>{{d.code}}</strong> {{d.instance_id}} · {{d.message}}</li></ul><p v-if="!preview.face">当前保存版本使用原生面部。</p></section>

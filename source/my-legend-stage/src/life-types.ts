@@ -41,6 +41,7 @@ export interface LifeScript {
 export interface LifeDiagnostic {code:string;message:string;source?:StageCue['source'];text?:string;cue_id?:string}
 export interface LifePreview extends Omit<StagePreview,'schema_version'|'stage'|'warnings'> {
   schema_version:'spine_stage_preview/2.0'; profile:'life_v1'; stage:LifeScript;
+  script:StagePreview['timeline'];
   face?:import('./basic-face').BasicFace;
   dialogue?:import('./performance-tracks').DirectionTrack;
   roles:{role_id:string;name:string}[]; diagnostics:LifeDiagnostic[];
