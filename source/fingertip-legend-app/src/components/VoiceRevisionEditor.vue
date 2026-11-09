@@ -6,7 +6,7 @@ import type {IndependentJob,StoryDeliveryView} from '../types/production'
 import {voiceRows,voiceRevision,type VoiceChoice,type VoiceRow,type VoiceRevisionState} from '../utils/voice-revision'
 import {errorMessage} from '../utils/navigation'
 
-const props=defineProps<{job:IndependentJob;delivery:StoryDeliveryView;disabled:boolean}>()
+const props=defineProps<{job:IndependentJob;delivery:StoryDeliveryView;disabled:boolean;whole?:boolean}>()
 const emit=defineEmits<{'revision-change':[value:VoiceRevisionState];close:[]}>()
 const rows=ref<VoiceRow[]>([]),choices=ref<VoiceChoice[]>([]),loading=ref(false),error=ref('')
 let sequence=0
@@ -36,7 +36,7 @@ const voiceName=(id:string)=>choices.value.find(choice=>choice.id===id)?.name||'
 
 <template><view class="paper-panel section-gap">
   <view class="row-between"><text class="section-title serif">更换角色音色</text><button class="close-voices" :disabled="disabled" @tap="emit('close')">取消修改</button></view>
-  <text class="small-note spaced">更换后会重制该角色在本剧本中的所有配音。其他角色及未改动的音效优先复用。</text>
+  <text class="small-note spaced">{{whole?'按所选音色重新制作整段声音，并重新编排舞台。':'更换后会重制该角色在本剧本中的所有配音。其他角色及未改动的音效优先复用。'}}</text>
   <text v-if="loading" class="copy spaced">正在读取本作品的音色…</text>
   <view v-if="error"><text class="error-copy" role="alert">{{error}}</text><button class="outline-button full-button" :disabled="loading||disabled" @tap="load">重新加载音色</button></view>
   <view v-for="row in rows" :key="row.identity" class="voice-row">

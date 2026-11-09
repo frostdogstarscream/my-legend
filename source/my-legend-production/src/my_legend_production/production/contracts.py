@@ -14,11 +14,11 @@ class Contract(BaseModel):
 
 class CreativeSource(Contract):
     kind: Literal["creative"] = "creative"
-    title: str = Field(min_length=1, max_length=80)
+    title: str = Field(default='', max_length=80)
     idea: str = Field(min_length=1, max_length=8000)
     genre: str = Field(min_length=1, max_length=80)
     character_ids: list[str] = Field(min_length=1, max_length=6)
-    target_duration_seconds: Literal[90, 120, 150, 180, 300] = 90
+    target_duration_seconds: Literal[90, 120, 150, 180, 300] | None = 90
 
 
 class ArtifactRef(Contract):
@@ -62,7 +62,7 @@ class StoryOperationSource(DeliverySource):
     kind: Literal["operation"] = "operation"
     intent: Literal["revise", "continue", "remix"]
     instruction: str = Field(min_length=1, max_length=8000)
-    target_duration_seconds: Literal[90, 120, 150, 180, 300] = 90
+    target_duration_seconds: Literal[90, 120, 150, 180, 300] | None = 90
     edit: StoryEdit | None = None
     remix: StoryRemix | None = None
 
@@ -157,12 +157,57 @@ class RemakeAudioRequest(Contract):
         return self
 
 
+class H5DeliveryRequest(Contract):
+    preview_sha256: str = Field(pattern=r'^[a-f0-9]{64}$')
+    idempotency_key: str = Field(min_length=8, max_length=128, pattern=r'^[A-Za-z0-9_.:-]+$')
+    parent_job_id: str | None = Field(default=None, pattern=r'^[A-Za-z0-9_-]{1,128}$')
+
+
+class SavedPerformanceSource(Contract):
+    kind: Literal['saved_performance'] = 'saved_performance'
+    source_job_id: str = Field(pattern=r'^[A-Za-z0-9_-]{1,128}$')
+    source_version_id: str
+    preview: ArtifactRef
+    inputs: list[ArtifactRef]
+    parent_job_id: str | None = None
+
+
+class DirectingRequest(Contract):
+    idempotency_key: str = Field(min_length=8, max_length=128, pattern=r'^[A-Za-z0-9_.:-]+$')
+    catalog_sha256: str = Field(pattern=r'^[a-f0-9]{64}$')
+    bindings: dict[str, str] = Field(min_length=1, max_length=3)
+    initial_outfits: dict[str, str] = Field(min_length=1, max_length=3)
+    casting_confirmed: Literal[True]
+    parent_job_id: str | None = Field(default=None, pattern=r'^[A-Za-z0-9_-]{1,128}$')
+
+
+class DirectedPerformanceSource(Contract):
+    kind: Literal['directed_performance'] = 'directed_performance'
+    source_job_id: str = Field(pattern=r'^[A-Za-z0-9_-]{1,128}$')
+    source_version_id: str
+    inputs: list[ArtifactRef]
+    catalog_sha256: str
+    scene_catalog_sha256: str
+    bindings: dict[str, str]
+    initial_outfits: dict[str, str]
+    casting_confirmed: Literal[True] = True
+    parent_job_id: str | None = None
+    visual_policy: Literal['asset_stage/1'] | None = None
+    capability_sha256: str | None = Field(default=None, pattern=r'^[a-f0-9]{64}$')
+
+    @model_validator(mode='after')
+    def capability_binding(self):
+        if bool(self.visual_policy) != bool(self.capability_sha256):
+            raise ValueError('CAPABILITY_POLICY_BINDING_REQUIRED')
+        return self
+
+
 class ProductionRequest(Contract):
     schema_version: Literal["production_request/1.0"] = "production_request/1.0"
     idempotency_key: str = Field(min_length=8, max_length=128, pattern=r"^[A-Za-z0-9_.:-]+$")
     work_id: str | None = Field(default=None, min_length=1, max_length=128)
-    source: Annotated[CreativeSource | DeliverySource | StoryOperationSource, Field(discriminator="kind")]
-    outputs: list[Literal["script", "audio", "visual"]] = Field(min_length=1, max_length=3)
+    source: Annotated[CreativeSource | DeliverySource | StoryOperationSource | SavedPerformanceSource | DirectedPerformanceSource, Field(discriminator="kind")]
+    outputs: list[Literal["script", "audio", "visual", "h5"]] = Field(min_length=1, max_length=3)
     mode: Literal["automatic", "reviewed"] = "automatic"
     voices: VoicePolicy = Field(default_factory=VoicePolicy)
     visual_profile: Literal["standing_performance/1", "pixel_performance/1", "basic_storyboard/1"] = "standing_performance/1"
@@ -177,6 +222,13 @@ class ProductionRequest(Contract):
         if len(set(self.outputs)) != len(self.outputs):
             raise ValueError("DUPLICATE_OUTPUT")
         self.outputs = sorted(self.outputs)
+        if isinstance(self.source, (SavedPerformanceSource, DirectedPerformanceSource)):
+            if self.outputs != ['h5'] or self.sound_workflow or self.audio_revision or self.mode != 'automatic' or self.review_policy != 'standard' or self.audio_delivery_policy != 'strict':
+                raise ValueError('H5_IMPORT_ONLY')
+            if isinstance(self.source, DirectedPerformanceSource) and self.budget.max_provider_calls > 6:
+                raise ValueError('DIRECTING_BUDGET_EXCEEDED')
+        elif 'h5' in self.outputs:
+            raise ValueError('H5_SAVED_PERFORMANCE_REQUIRED')
         if self.review_policy == 'listen_first':
             if self.mode != 'automatic' or 'visual' in self.outputs or self.audio_revision:
                 raise ValueError('LISTEN_FIRST_REQUIRES_AUTOMATIC_NONVISUAL')
@@ -240,6 +292,11 @@ class RunEvidence(Contract):
 
 
 REQUIRED_ARTIFACTS = {
+    'performance_context': {'StoryDelivery', 'AudioMix', 'MeasuredTimeline', 'SpineDirectingContext'},
+    'spine_direct': {'SpineDirectingPlan', 'SpineDirectingReview', 'SpineDirectingEvidence'},
+    'spine_compile': {'SpineStagePreview', 'PerformanceSource'},
+    "performance_import": {"StoryDelivery", "AudioMix", "MeasuredTimeline", "SpineStagePreview", "PerformanceSource"},
+    "performance_package": {"PerformanceManifest"},
     "story": {"StoryDelivery", "RenderManifest"},
     "sound_plan": {"SoundProductionPackage", "SoundSourceClassification", "AudioArrangement", "AudioArrangementReview", "AudioArrangementEvidence"},
     "audio": {"AudioMix", "MeasuredTimeline"},
@@ -250,6 +307,11 @@ REQUIRED_ARTIFACTS = {
 
 
 def stage_graph(request: ProductionRequest) -> dict[str, list[str]]:
+    if isinstance(request.source, DirectedPerformanceSource):
+        return {'performance_context': [], 'spine_direct': ['performance_context'],
+                'spine_compile': ['spine_direct'], 'performance_package': ['spine_compile']}
+    if isinstance(request.source, SavedPerformanceSource):
+        return {'performance_import': [], 'performance_package': ['performance_import']}
     graph = {"story": []}
     if "audio" in request.outputs or "visual" in request.outputs:
         graph["audio"] = ["story"]

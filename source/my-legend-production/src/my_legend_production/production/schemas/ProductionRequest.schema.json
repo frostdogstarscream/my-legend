@@ -164,8 +164,8 @@
           "type": "string"
         },
         "title": {
+          "default": "",
           "maxLength": 80,
-          "minLength": 1,
           "title": "Title",
           "type": "string"
         },
@@ -191,20 +191,26 @@
           "type": "array"
         },
         "target_duration_seconds": {
-          "default": 90,
-          "enum": [
-            90,
-            120,
-            150,
-            180,
-            300
+          "anyOf": [
+            {
+              "enum": [
+                90,
+                120,
+                150,
+                180,
+                300
+              ],
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
           ],
-          "title": "Target Duration Seconds",
-          "type": "integer"
+          "default": 90,
+          "title": "Target Duration Seconds"
         }
       },
       "required": [
-        "title",
         "idea",
         "genre",
         "character_ids"
@@ -240,6 +246,160 @@
         "manifest"
       ],
       "title": "DeliverySource",
+      "type": "object"
+    },
+    "DirectedPerformanceSource": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "directed_performance",
+          "default": "directed_performance",
+          "title": "Kind",
+          "type": "string"
+        },
+        "source_job_id": {
+          "pattern": "^[A-Za-z0-9_-]{1,128}$",
+          "title": "Source Job Id",
+          "type": "string"
+        },
+        "source_version_id": {
+          "title": "Source Version Id",
+          "type": "string"
+        },
+        "inputs": {
+          "items": {
+            "$ref": "#/$defs/ArtifactRef"
+          },
+          "title": "Inputs",
+          "type": "array"
+        },
+        "catalog_sha256": {
+          "title": "Catalog Sha256",
+          "type": "string"
+        },
+        "scene_catalog_sha256": {
+          "title": "Scene Catalog Sha256",
+          "type": "string"
+        },
+        "bindings": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Bindings",
+          "type": "object"
+        },
+        "initial_outfits": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Initial Outfits",
+          "type": "object"
+        },
+        "casting_confirmed": {
+          "const": true,
+          "default": true,
+          "title": "Casting Confirmed",
+          "type": "boolean"
+        },
+        "parent_job_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent Job Id"
+        },
+        "visual_policy": {
+          "anyOf": [
+            {
+              "const": "asset_stage/1",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Visual Policy"
+        },
+        "capability_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Capability Sha256"
+        }
+      },
+      "required": [
+        "source_job_id",
+        "source_version_id",
+        "inputs",
+        "catalog_sha256",
+        "scene_catalog_sha256",
+        "bindings",
+        "initial_outfits"
+      ],
+      "title": "DirectedPerformanceSource",
+      "type": "object"
+    },
+    "SavedPerformanceSource": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "saved_performance",
+          "default": "saved_performance",
+          "title": "Kind",
+          "type": "string"
+        },
+        "source_job_id": {
+          "pattern": "^[A-Za-z0-9_-]{1,128}$",
+          "title": "Source Job Id",
+          "type": "string"
+        },
+        "source_version_id": {
+          "title": "Source Version Id",
+          "type": "string"
+        },
+        "preview": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "inputs": {
+          "items": {
+            "$ref": "#/$defs/ArtifactRef"
+          },
+          "title": "Inputs",
+          "type": "array"
+        },
+        "parent_job_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent Job Id"
+        }
+      },
+      "required": [
+        "source_job_id",
+        "source_version_id",
+        "preview",
+        "inputs"
+      ],
+      "title": "SavedPerformanceSource",
       "type": "object"
     },
     "StoryEdit": {
@@ -323,16 +483,23 @@
           "type": "string"
         },
         "target_duration_seconds": {
-          "default": 90,
-          "enum": [
-            90,
-            120,
-            150,
-            180,
-            300
+          "anyOf": [
+            {
+              "enum": [
+                90,
+                120,
+                150,
+                180,
+                300
+              ],
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
           ],
-          "title": "Target Duration Seconds",
-          "type": "integer"
+          "default": 90,
+          "title": "Target Duration Seconds"
         },
         "edit": {
           "anyOf": [
@@ -471,7 +638,9 @@
         "mapping": {
           "creative": "#/$defs/CreativeSource",
           "delivery": "#/$defs/DeliverySource",
-          "operation": "#/$defs/StoryOperationSource"
+          "directed_performance": "#/$defs/DirectedPerformanceSource",
+          "operation": "#/$defs/StoryOperationSource",
+          "saved_performance": "#/$defs/SavedPerformanceSource"
         },
         "propertyName": "kind"
       },
@@ -484,6 +653,12 @@
         },
         {
           "$ref": "#/$defs/StoryOperationSource"
+        },
+        {
+          "$ref": "#/$defs/SavedPerformanceSource"
+        },
+        {
+          "$ref": "#/$defs/DirectedPerformanceSource"
         }
       ],
       "title": "Source"
@@ -493,7 +668,8 @@
         "enum": [
           "script",
           "audio",
-          "visual"
+          "visual",
+          "h5"
         ],
         "type": "string"
       },

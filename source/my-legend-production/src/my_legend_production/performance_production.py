@@ -82,7 +82,9 @@ def prepare_audio(root, delivery, manifest, voices, paths, *, instruction_limits
     routes=[];holds={}
     for ep,sc,u in rows:
         if u['kind'] in ('dialogue','narration'): continue
-        require(u['kind'] in ('sfx','action'),'MUSIC_MEDIA_REQUIRED')
+        decision = sound_decisions.get((ep['episode_id'],sc['scene_id'],u['line_id']))
+        music_control=compound and u['kind']=='music' and decision and decision.mode in ('action_note','stop_sound','continue_background','change_background')
+        require(u['kind'] in ('sfx','action') or music_control,'MUSIC_MEDIA_REQUIRED')
         loc=locator(ep['episode_id'],sc['scene_id'],u)
         ref=None
         if u['kind']=='action' and arrangement is None:
@@ -90,9 +92,8 @@ def prepare_audio(root, delivery, manifest, voices, paths, *, instruction_limits
             path=Path(root)/'input/holds'/(sha(json_bytes(loc))+'.wav');path.parent.mkdir(parents=True,exist_ok=True)
             sf.write(path,np.zeros(28800,dtype=np.float32),24000,subtype='PCM_16')
             ref=store.register(path);holds[key(loc)]=ref
-        decision = sound_decisions.get((ep['episode_id'],sc['scene_id'],u['line_id']))
         route = 'audio_marker' if decision and u['kind']=='action' else 'ambience' if decision and decision.mode=='background' else 'sfx'
-        if decision and (decision.mode in ('continue_background','change_background') or
+        if music_control or decision and (decision.mode in ('continue_background','change_background') or
                          decision.mode=='stop_sound' and arrangement.schema_version in ('audio_arrangement/1.1','audio_arrangement/2.0')):
             route='sound_control'
         routes.append({'source':loc,'route':route,'description':u['text'],'media_ref':ref,

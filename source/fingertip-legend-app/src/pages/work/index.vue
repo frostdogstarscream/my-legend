@@ -5,7 +5,7 @@ import FeatureLayout from '../../components/FeatureLayout.vue'
 import VoiceRevisionEditor from '../../components/VoiceRevisionEditor.vue'
 import { api } from '../../services/api'
 import { downloadProductionMedia, readProductionArtifact, releaseProductionMedia, playbackArtifacts } from '../../services/production-media'
-import type { IndependentJob, ProductionArtifact, StoryDeliveryView, OutputKind, AudioRemakeSelection } from '../../types/production'
+import type { PerformanceManifest, IndependentJob, ProductionArtifact, StoryDeliveryView, OutputKind, AudioRemakeSelection } from '../../types/production'
 import { playbackSounds, audibleSound, sameSource, selectionIncludes, toggleSoundSelection, soundModeLabel } from '../../utils/audio-timeline'
 import type { AudioTimeline, PlaybackSound } from '../../utils/audio-timeline'
 import { jobActive, jobStatus, jobTitle, productionError, requestKey, stageNames, stageStatus, progressNote, needsReconciliation, requiresPlanRevision } from '../../utils/production'
@@ -38,6 +38,13 @@ const revisions=ref<IndependentJob[]>([])
 const revisionsNext=ref<number|null>(null),revisionsBusy=ref(false)
 const playable=ref<ProductionArtifact[]>([])
 const deliveryWarnings=ref<string[]>([])
+const performanceManifest=ref<PerformanceManifest>()
+const directingIssue=ref<{message?:string;error_code:string;feedback?:{details:string}}>()
+async function showDirectingIssue(){
+ const current=job.value,ref=current?.artifacts.find(a=>a.kind==='SpineDirectingIssueReport');if(!current||!ref)return
+ try{directingIssue.value=await readProductionArtifact(current.id,ref)}catch(e){error.value=errorMessage(e)}
+}
+const isH5=computed(()=>['saved_performance','directed_performance'].includes(job.value?.request.source.kind||''))
 const remakeEvents=ref<AudioRemakeSelection[]>([])
 const voiceEditOpen=ref(false),voiceEdit=ref<VoiceRevisionState>({ready:false,bindings:{},changedCount:0,affectedSegments:0})
 let timer:ReturnType<typeof setTimeout>|undefined, visible=true, epoch=0
@@ -51,7 +58,7 @@ const outline=computed(()=>job.value?.status==='needs_input'?job.value.stages.fi
 const displayedRevisions=computed(()=>revisions.value.map(item=>item.id===job.value?.id?job.value:item))
 const title=computed(()=>delivery.value?.title||(job.value?jobTitle(job.value):'作品制作'))
 const subtitle=computed(()=>job.value?jobStatus[job.value.status]:'正在读取后台任务')
-const orderedStages=computed(()=>[...(job.value?.stages||[])].sort((a,b)=>['story','sound_plan','audio','visual_plan','visual_render','integrate'].indexOf(a.name)-['story','sound_plan','audio','visual_plan','visual_render','integrate'].indexOf(b.name)))
+const orderedStages=computed(()=>[...(job.value?.stages||[])].sort((a,b)=>['story','sound_plan','audio','visual_plan','visual_render','integrate','performance_import','performance_context','spine_direct','spine_compile','performance_package'].indexOf(a.name)-['story','sound_plan','audio','visual_plan','visual_render','integrate','performance_import','performance_context','spine_direct','spine_compile','performance_package'].indexOf(b.name)))
 const outlineReview=computed(()=>buildOutlineReview(outline.value?.outline))
 const speakerNames=computed(()=>Object.fromEntries([
   ...(delivery.value?.character_snapshot||[]).map(c=>[c.role_id,c.canon?.name||c.role_id]),
@@ -86,7 +93,8 @@ async function refresh(){
     const results=playbackArtifacts(view,id.value)
     if(view.manifest&&(view.manifest.work_id!==value.work_id||(value.source_version_id&&view.manifest.source_version_id!==value.source_version_id)))throw new Error('作品版本不一致，请刷新')
     if(view.manifest?.duration_seconds)duration.value=view.manifest.duration_seconds
-    deliveryWarnings.value=view.manifest?.delivery_warnings||[]
+    performanceManifest.value=view.performance_manifest
+    deliveryWarnings.value=[...new Set([...(view.manifest?.delivery_warnings||[]),...(view.performance_manifest?.delivery_warnings||[])])]
     job.value=value;playable.value=results;error.value='';if(hasScript.value&&!delivery.value)await readScript();if(hasAudio.value)await readTiming()
     if(captured===epoch&&sequence===fetchSequence&&jobActive(value))timer=setTimeout(refresh,2500)
   }catch(e){if(captured===epoch&&sequence===fetchSequence){error.value=errorMessage(e);timer=setTimeout(refresh,5000)}}finally{if(sequence===fetchSequence)refreshing.value=false}
@@ -176,7 +184,7 @@ async function submitRemake(){
   }catch(e){error.value=errorMessage(e)}finally{busy.value=false}
 }
 function closeVoiceEditor(){voiceEditOpen.value=false;voiceEdit.value={ready:false,bindings:{},changedCount:0,affectedSegments:0}}
-function outputLabel(item:IndependentJob){return item.request.outputs.includes('visual')?'视觉演绎':item.request.outputs.includes('audio')?'广播剧':'剧本'}
+function outputLabel(item:IndependentJob){return item.request.outputs.includes('h5')?'H5 演绎':item.request.outputs.includes('visual')?'视觉演绎':item.request.outputs.includes('audio')?'广播剧':'剧本'}
 onLoad(q=>{id.value=String(q?.id||'')})
 onShow(async()=>{visible=true;if(!requireSession())return;stopPolling();await refresh();await loadVersions()})
 onHide(()=>{visible=false;stopPolling();audio?.pause();uni.createVideoContext('work-video').pause()})
@@ -210,10 +218,10 @@ onUnload(()=>{visible=false;stopPolling();release()})
     <view class="paper-panel section-gap"><text class="section-title serif">作品内容</text><view class="chip-list spaced">
       <button class="chip" :class="{selected:tab==='script'}" :disabled="!hasScript" @tap="selectResult('script')">剧本{{hasScript?'':' · 未就绪'}}</button>
       <button class="chip" :class="{selected:tab==='audio'}" :disabled="!hasAudio" @tap="selectResult('audio')">广播剧{{hasAudio?'':' · 未就绪'}}</button>
-      <button class="chip" :class="{selected:tab==='video'}" :disabled="!hasVideo" @tap="selectResult('video')">演绎{{hasVideo?'':' · 未就绪'}}</button>
+      <button class="chip" :class="{selected:tab==='video'}" :disabled="!hasVideo" @tap="selectResult('video')">{{isH5?'视频':'演绎'}}{{hasVideo?'':isH5?' · 未生成':' · 未就绪'}}</button>
     </view>
       <!-- #ifdef H5 -->
-      <view class="chip-list spaced"><button class="chip" @tap="goPage('performance',{mode:'spine'})">战斗动作试演</button><button v-if="hasAudio" class="chip" @tap="goPage('performance',{productionId:job.id})">配音动作联动</button></view>
+
       <!-- #endif -->
       <text v-if="!hasScript&&!hasAudio&&!hasVideo" class="small-note spaced">制作完成的内容会出现在这里。</text>
       <view v-if="tab==='script'&&delivery" class="reader"><view v-for="episode in delivery.episodes" :key="episode.episode_id"><text class="chapter-title serif">{{episode.title}}</text>
@@ -223,12 +231,12 @@ onUnload(()=>{visible=false;stopPolling();release()})
       <view v-if="tab==='audio'&&sounds.length" class="sound-list"><text class="section-title serif">声音片段</text><text class="small-note spaced">点击定位可试听对应位置。可单独选择需要重制的配音或音效。</text>
         <view v-for="sound in sounds" :key="sound.operation_id" class="sound-row"><text class="speaker">{{soundModeLabel(sound.mode)}} · {{timeLabel(sound.start_frame/(timeline?.sample_rate||48000))}}</text><text class="copy">{{sound.cue_text}}</text><view class="chip-list spaced"><button class="chip" :disabled="!audioUrl||mediaLoading" @tap="seekSound(sound)">定位</button><button v-if="canRemake&&audibleSound(sound)" class="chip" :class="{selected:selectionIncludes(remakeEvents,sound.source)}" :aria-pressed="selectionIncludes(remakeEvents,sound.source)" :disabled="busy" @tap="toggleOperation(sound)">{{selectionIncludes(remakeEvents,sound.source)?'已选重制':'重做这段声音'}}</button><text v-if="!audibleSound(sound)" class="small-note">随编排执行</text></view></view>
       </view>
-      <view v-if="tab==='video'&&hasVideo"><text v-if="mediaLoading" class="copy">正在加载演绎视频…</text><video v-else-if="videoUrl" id="work-video" class="work-video" :src="videoUrl" controls object-fit="contain"/><button v-else class="outline-button full-button" @tap="selectResult('video')">加载视频</button><text class="small-note spaced">基础像素演绎 · 制作完成后可自行评价效果。</text></view>
+      <view v-if="tab==='video'&&hasVideo"><text v-if="mediaLoading" class="copy">正在加载演绎视频…</text><video v-else-if="videoUrl" id="work-video" class="work-video" :src="videoUrl" controls object-fit="contain"/><button v-else class="outline-button full-button" @tap="selectResult('video')">加载视频</button></view>
     </view>
     <button v-if="canRemake&&delivery&&!voiceEditOpen" class="outline-button full-button" :disabled="busy" @tap="voiceEditOpen=true">更换角色或旁白音色</button>
     <VoiceRevisionEditor v-if="canRemake&&delivery&&voiceEditOpen" :job="job" :delivery="delivery" :disabled="busy" @revision-change="voiceEdit=$event" @close="closeVoiceEditor"/>
     <view v-if="canRemake&&(remakeEvents.length||voiceEdit.changedCount)" class="paper-panel section-gap"><text class="section-title serif">更新作品声音</text><text v-if="remakeEvents.length" class="small-note spaced">另选 {{remakeEvents.length}} 段声音重新生成。</text><text v-if="voiceEdit.changedCount" class="small-note spaced">更换 {{voiceEdit.changedCount}} 个声音角色的音色，涉及 {{voiceEdit.affectedSegments}} 段配音。</text><text class="small-note spaced">创建新的制作记录，保留当前作品。未改动的声音优先复用，新的时长会重新计算。重制会产生模型调用。</text><button class="warm-button full-button" :disabled="busy||(voiceEditOpen&&!voiceEdit.ready)" :loading="busy" @tap="submitRemake">按当前选择重制声音</button></view>
-    <view v-if="hasScript&&!jobActive(job)" class="paper-panel section-gap"><text class="section-title serif">基于当前版本创作</text>
+    <view v-if="hasScript&&!jobActive(job)&&!isH5" class="paper-panel section-gap"><text class="section-title serif">基于当前版本创作</text>
       <view class="chip-list spaced"><button v-for="(label,intent) in storyIntentLabels" :key="intent" class="chip" :class="{selected:storyIntent===intent}" :disabled="busy" @tap="storyIntent=intent">{{label}}</button></view>
       <text class="small-note spaced">源版本：{{job.source_version_id}}</text>
       <textarea v-model="storyInstruction" class="operation-input" maxlength="8000" placeholder="填写希望修改、续写或改编的内容" :disabled="busy"/>
@@ -237,6 +245,19 @@ onUnload(()=>{visible=false;stopPolling();release()})
       <text class="small-note spaced">自动生成剧本和广播剧，完成后直接试听。原版本保留，演绎暂缓。</text>
       <button class="warm-button full-button" :loading="busy" :disabled="busy||!storyInstruction.trim()" @tap="submitStoryOperation">{{storyIntentLabels[storyIntent]}}并制作广播剧</button>
       <button v-if="!hasAudio" class="outline-button full-button" :disabled="busy" @tap="continueFromScript('audio')">仅从原剧本制作广播剧</button>
+    </view>
+    <view v-if="isH5" class="paper-panel section-gap">
+      <text class="section-title serif">正式 H5 演绎</text>
+      <template v-if="performanceManifest"><text v-if="performanceManifest.casting_confirmed" class="small-note spaced">人物与服装：用户已确认 · 视觉方案：{{performanceManifest.model_review==='edited_pending'?'人工修改后待复核':performanceManifest.model_review==='passed_with_gaps'?'模型审查通过，有明确缺口':'模型审查通过'}} · 技术执行：校验通过 · 用户观感验收：待确认</text>
+        <text class="small-note spaced">{{performanceManifest.status==='needs_attention'?'已保存 · 待校正':'可播放 · 待验收'}} · 人工验收待确认 · 未生成视频</text>
+        <view class="chip-list spaced"><button class="chip" @tap="goPage('performance',{profile:'life_v2',deliveryId:job.id})">播放 H5 版本</button><button class="chip" @tap="goPage('performance',{profile:'life_v2',deliveryId:job.id})">继续编辑并另存</button></view>
+        <text v-for="(issue,i) in performanceManifest.diagnostics" :key="i" class="small-note spaced">{{issue.text?issue.text+'：':''}}{{issue.message}}</text>
+        <button v-if="performanceManifest.parent_job_id" class="version-link" @tap="goPage('work',{id:performanceManifest.parent_job_id})">查看上一交付版本</button>
+      </template>
+      <text v-else class="small-note spaced">{{jobActive(job)?'后台正在完成视觉制作，关闭页面不会中断。':'本次交付尚未完成，原作品声音和演绎仍可使用。'}}</text>
+      <button v-if="job.artifacts.some(a=>a.kind==='SpineDirectingIssueReport')" class="version-link" @tap="showDirectingIssue">查看视觉制作问题报告</button>
+      <text v-if="directingIssue" class="small-note spaced">{{directingIssue.message||productionError(directingIssue.error_code)}} {{directingIssue.feedback?.details}}</text>
+      <button v-if="job.request.source.kind==='saved_performance'||job.request.source.kind==='directed_performance'" class="version-link" @tap="goPage('work',{id:job.request.source.source_job_id})">查看原配音作品</button>
     </view>
     <view v-if="revisions.length>1||revisionsNext!==null" class="paper-panel section-gap"><text class="section-title serif">本作品的制作记录</text><button v-for="item in displayedRevisions" :key="item.id" class="version-link" :disabled="item.id===job.id" @tap="goPage('work',{id:item.id})">{{new Date(item.created_at).toLocaleString()}} · {{outputLabel(item)}} · {{jobStatus[item.status]}}{{item.id===job.id?' · 当前':''}}</button><button v-if="revisionsNext!==null" class="outline-button full-button" :disabled="revisionsBusy" @tap="loadVersions(true)">加载更早的制作记录</button></view>
   </template>

@@ -55,13 +55,15 @@ class StageContext:
 
 
 class ProductionWorker:
-    def __init__(self, repository, store, handlers: dict[str, Callable], *, worker_id=None, lease_seconds=30):
+    def __init__(self, repository, store, handlers: dict[str, Callable], *, worker_id=None, lease_seconds=30, only_configured_stages=False):
         self.repository, self.store, self.handlers = repository, store, handlers
         self.worker_id = worker_id or "worker-" + str(uuid4())
         self.lease_seconds = lease_seconds
+        self.only_configured_stages = only_configured_stages
 
     def tick(self):
-        stage = self.repository.claim(self.worker_id, self.lease_seconds)
+        stage = (self.repository.claim(self.worker_id, self.lease_seconds, stage_names=sorted(self.handlers))
+                 if self.only_configured_stages else self.repository.claim(self.worker_id, self.lease_seconds))
         if not stage:
             return False
         stopped = threading.Event()

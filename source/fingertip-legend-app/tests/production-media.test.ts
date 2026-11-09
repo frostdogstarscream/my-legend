@@ -33,7 +33,8 @@ describe('独立作品媒体权限',()=>{
     expect(await readProductionArtifact('job',artifact)).toEqual({story_version_id:'v1'})
   })
   it('未知外部结果不展示普通重试提示',()=>{
-    expect(productionError('EXTERNAL_RESULT_UNKNOWN')).toContain('对账')
+    expect(productionError('EXTERNAL_RESULT_UNKNOWN')).toContain('确认中')
+    expect(productionError('EXTERNAL_RESULT_UNKNOWN')).toContain('别重复提交')
     expect(jobActive({status:'needs_input'} as IndependentJob)).toBe(false)
     expect(jobActive({status:'running'} as IndependentJob)).toBe(true)
     expect(needsReconciliation({status:'failed',error_code:'DEADLINE_EXCEEDED',unknown_calls:1} as IndependentJob)).toBe(true)

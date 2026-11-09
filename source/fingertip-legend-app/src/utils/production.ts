@@ -1,8 +1,8 @@
 import type { IndependentJob, JobStatus } from '../types/production'
 
 export const jobStatus:Record<JobStatus,string>={queued:'排队中',running:'制作中',needs_input:'需要处理',succeeded:'制作完成',failed:'部分制作未完成',cancelling:'正在取消',cancelled:'已取消'}
-export const stageNames:Record<string,string>={story:'生成剧本',sound_plan:'声音制作准备',audio:'制作广播剧',visual_plan:'规划视觉表演',visual_render:'执行视觉表演',integrate:'合成视频'}
-export function jobTitle(job:IndependentJob){const source=job.request.source;return source.kind==='creative'?source.title:source.kind==='operation'?({revise:'修改剧本',continue:'续写下一章',remix:'改编故事'}[source.intent]):'从已有剧本继续制作'}
+export const stageNames:Record<string,string>={performance_context:'冻结人物与声音',spine_direct:'AI 编排与独立审查',spine_compile:'校验演出配置',performance_import:'核验已有演绎',performance_package:'打包 H5 版本',story:'生成剧本',sound_plan:'声音制作准备',audio:'制作广播剧',visual_plan:'规划视觉表演',visual_render:'执行视觉表演',integrate:'合成视频'}
+export function jobTitle(job:IndependentJob){const source=job.request.source;return source.kind==='directed_performance'?'AI 编排的 H5 演绎':source.kind==='saved_performance'?'已有演绎的 H5 交付':source.kind==='creative'?source.title:source.kind==='operation'?({revise:'修改剧本',continue:'续写下一章',remix:'改编故事'}[source.intent]):'从已有剧本继续制作'}
 export function jobActive(job:IndependentJob){return ['queued','running','cancelling'].includes(job.status)}
 export function stageStatus(job:IndependentJob,status:JobStatus){
   if(status==='queued'&&job.status==='failed')return '等待上游修复'
@@ -25,15 +25,22 @@ export function requiresPlanRevision(code:string|null){
 export function productionError(code:string|null){
   if(!code)return ''
   const messages:Record<string,string>={
+    DIRECTING_PLAN_INVALID:'舞台还没准备好，可以先听声音，稍后继续制作。',
+    DIRECTING_REVIEW_REJECTED:'视觉方案未通过独立模型审查，本次停止交付，原作品保持可用。',
+    DIRECTING_REVIEW_COVERAGE_INVALID:'模型审查未完整覆盖所有分场和原文，本次未交付。',
+    DIRECTING_REVIEW_EVIDENCE_INVALID:'模型审查的原文依据不匹配，本次未交付。',
     OUTLINE_REVIEW_REQUIRED:'大纲已准备好，请阅读并确认。', EXACT_OUTLINE_DECISION_REQUIRED:'大纲版本已变化，请刷新后确认。',
-    EXTERNAL_RESULT_UNKNOWN:'供应商的生成结果尚未确认，需要完成对账后才能继续，避免重复扣费。',
+    EXTERNAL_RESULT_UNKNOWN:'制作结果还在确认中，请先别重复提交。',
     VISUAL_ACTION_UNSUPPORTED:'剧本中的部分动作超出当前视觉能力。已完成的剧本和声音仍可使用。',
     VISUAL_SEMANTIC_REVIEW_FAILED:'视觉方案未通过剧情一致性检查，已有结果保留。',
     VISUAL_EXECUTION_PREFLIGHT_FAILED:'视觉动作未通过执行前检查，已有剧本和声音仍可使用。',
     VISUAL_ACTION_NO_DISPLACEMENT:'部分移动动作未产生实际位移，本轮已停止，已有结果保留。',
+    H5_FLOW_NOT_READY:'暂时无法开始制作，请稍后再试。',
+    FLOW_INTERNAL_ERROR:'制作中断了，已完成的内容还在。可以点击继续制作。',
+    DIRECTING_CASTING_INVALID:'人物或服装与本次作品不匹配，请检查人物设置。',
     VISUAL_EXECUTION_VERSION_CHANGED:'视觉执行规则已更新，请从当前剧本建立新的制作任务。',
     VISUAL_ACTION_COVERAGE_MISMATCH:'剧本动作与视觉方案未能对应，需要修复交付内容后继续。已有剧本保留。',
-    AUDIO_GENERATION_OR_CHECK_FAILED:'声音制作或校验未通过，已有剧本保留。请查看制作记录后处理。',
+    AUDIO_GENERATION_OR_CHECK_FAILED:'声音暂时没能完成。剧本已经保存，可以稍后继续制作。',
     SOUND_BRIDGE_CLASSIFICATION_FAILED:'声音需求未能正确分类，尚未开始配音，已有剧本和问题记录保留。',
     SOUND_BRIDGE_PACKAGE_REQUIRED:'声音制作清单尚未准备完整，尚未开始配音。',
     SOUND_BRIDGE_PACKAGE_INVALID:'声音制作清单与剧本或审核版本不一致，已停止后续制作。',
@@ -44,6 +51,8 @@ export function productionError(code:string|null){
     ARRANGEMENT_FADE_EXCEEDS_BACKGROUND:'声音素材已保留，但背景淡出超过实际持续范围，需要修订时序。',
     ARRANGEMENT_SPEECH_OVERLAP_UNSUPPORTED:'声音素材已保留，但对白出现不允许的重叠，需要修订时序。',
     STORY_DRAFT_REPAIR_CONTRACT_INVALID:'剧本修订未通过结构或内容边界检查，尚未开始配音。具体问题已保存到制作记录。',
+    STORY_REVISION_UNCHANGED:'这次剧本没有变化，换个修改要求再试试。',
+    STORY_REVISION_SOURCE_MISSING:'未能核对本次修改的来源剧本，已停止后续制作。来源版本仍保留。',
     STORY_AUDIO_REVIEW_INVALID:'剧本检查结果未能完整对应原文，尚未开始配音，制作记录已保留。',
     STORY_AUDIO_READINESS_FAILED:'剧本自动修订后仍有未解决的内容问题，尚未开始配音。',
     STORY_REQUIRED_CAPABILITY_UNAVAILABLE:'故事中的必要动作超出当前素材或表演能力，需要补齐能力后制作。',
@@ -51,11 +60,11 @@ export function productionError(code:string|null){
     STORY_READINESS_REVIEW_INVALID:'剧本审查结果未能正确对应原文，本轮已停止，制作记录已保留。',
     STORY_PLAN_READINESS_FAILED:'大纲仍包含无法制作的动作或场景，本轮已停止，尚未生成正文和配音。',
     STORY_PLAN_REVIEW_INVALID:'大纲审查结果未能正确对应原文，本轮已停止，制作记录已保留。',
-    CALL_BUDGET_EXCEEDED:'本次制作已达到调用预算上限，已有结果保留。',
-    REPAIR_BUDGET_EXCEEDED:'已达到本次自动修复次数上限，已有结果保留。',
-    DEADLINE_EXCEEDED:'本次制作超过时限，已完成的结果保留。',
+    CALL_BUDGET_EXCEEDED:'这次制作已用完预设额度，已完成的内容仍可查看。',
+    REPAIR_BUDGET_EXCEEDED:'尝试调整后仍未完成，可以修改要求再试一次。',
+    DEADLINE_EXCEEDED:'这次制作等得有点久，已完成的内容已保存。',
     MODULE_NOT_CONFIGURED:'所需制作服务暂不可用，请稍后再试。',
   }
-  return messages[code]||'此阶段尚未完成，已保存制作记录和可用结果。'
+  return messages[code]||'这次制作没能完成，已完成的内容仍可查看。'
 }
 export function requestKey(){return 'app-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,12)}

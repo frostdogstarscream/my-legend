@@ -63,4 +63,10 @@ describe('真实接口边界', () => {
     transport.mockRejectedValueOnce(new Error('transport internal details'))
     await expect(request('/home')).rejects.toMatchObject({ code: -2, message: '网络连接失败，请稍后重试' })
   })
+  it('制作请求断线后不自动重发，恢复读取不产生新的制作请求',async()=>{
+    const {request,transport}=setup();transport.mockRejectedValueOnce(new Error('offline'))
+    await expect(request('/production-flows','POST',{idempotency_key:'test-only-key'})).rejects.toMatchObject({code:-2})
+    await request('/production-flows/test-only-id')
+    expect(transport.mock.calls.map(([r])=>r.method)).toEqual(['POST','GET'])
+  })
 })

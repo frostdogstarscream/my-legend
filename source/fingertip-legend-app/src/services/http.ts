@@ -1,4 +1,5 @@
 import type { ApiEnvelope } from '../types/domain'
+import {connection} from '../stores/connection'
 
 export class ApiError extends Error {
   constructor(message: string, public readonly code: number, public readonly status?: number) {
@@ -35,8 +36,10 @@ export function createHttpClient(options: {
     try {
       response = await options.transport({ url: options.baseUrl + path, method, data, headers, timeout: options.timeout })
     } catch {
+      connection.offline=true
       throw new ApiError('网络连接失败，请稍后重试', -2)
     }
+    connection.offline=response.statusCode>=500
     const body = response.body as Partial<ApiEnvelope<T>> | null
     if (response.statusCode === 401 || (body && body.code === 401)) {
       if (auth) options.onUnauthorized()

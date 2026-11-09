@@ -7,19 +7,25 @@ export interface Calibration {
 export interface LifeSkeleton extends Omit<ActorAsset,'actor_id'|'display_name'|'version'|'idle_animation'|'mouth_control'> {
   asset_id:string; source_asset_id:string; source_filename:string; original:AssetRef; qa:'pass';
 }
+export interface CommanderFace {schema_version:'commander_face/1';profile_sha256:string;head_asset_id:string;head_sha256:string;eyes:Record<string,Record<string,string>>;mouth:{slot:string;closed:string;open:string;period_ms:number;open_start_ms:number;open_end_ms:number;lead_ms:number;tail_ms:number;actions:string[]}}
 export interface LifeAsset {
   schema_version:'legend_actor/0.3'; actor_id:string; display_name:string; revision:string;
   asset_mode:'single_skeleton'|'commander_tripartite'; asset_id:string|null; outfit_ids:string[];
-  action_map:Record<string,string>; lifecycle:'ready'; asset_qa:'pass'; mouth_control:false;
+  default_outfit_id?:string;library_revision?:string;gender?:string;categories?:string[];tags?:string[];thumbnail?:AssetRef;
+  action_map:Record<string,string>; lifecycle:'ready'; asset_qa:'pass'; mouth_control:boolean;
+  normalization_outfit_id?:string;face_profile?:CommanderFace;
 }
 export interface LifeOutfit {
   schema_version:'legend_outfit/0.3'; outfit_id:string; actor_id:string; display_name:string; revision:string;
-  parts:Record<'head'|'body'|'foot',string>; allowed_actions:string[];
+  parts:Record<string,string>; allowed_actions:string[];style_category?:string;
   calibration:Record<string,Calibration>; calibration_revision:string; qa:'pass';
+  head_preset?:string;hair?:string;face_presets?:('native'|'open'|'closed'|'smile'|'squint'|'surprised'|'talk')[];
+  source_character_id?:string;source_outfit_id?:string;calibration_group?:string;categories?:string[];tags?:string[];thumbnail?:AssetRef;
+  accessory?:{image:AssetRef;bone:string;world_at_wait0:number[];hidden_slots:string[]};
 }
 export interface LifeCatalog {
-  schema_version:'spine_life_catalog/2.0'; profile:'life_v1'; catalog_sha256:string; runtime:AssetRef;
-  actors:LifeAsset[]; outfits:LifeOutfit[]; skeletons:LifeSkeleton[];
+  schema_version:'spine_life_catalog/2.0'; profile:'life_v1'|'life_v2'; catalog_sha256:string; runtime:AssetRef;
+  actors:LifeAsset[]; outfits:LifeOutfit[]; skeletons:LifeSkeleton[];actor_model?:'fixed_commander/1'|'mixed_life/1';source_character_catalog_sha256?:string;
 }
 export interface LifeBinding {
   instance_id:string; role_id:string; name:string; actor_id:string; actor_revision:string;
@@ -29,7 +35,7 @@ export type CueType='body.play'|'actor.move_to'|'actor.place'|'actor.change_outf
 export type PlayMode='once'|'loop'|'hold'
 export interface LifeCue {
   id:string; type:CueType; instance_id:string; start_frame:number; end_frame:number; enabled:boolean;
-  params:{action?:string;mode?:PlayMode;to?:number[];visible_after?:boolean;position?:number[];visible?:boolean;facing?:1|-1;outfit_id?:string;target_instance_id?:string};
+  params:{action?:string;mode?:PlayMode;to?:number[];visible_after?:boolean;target?:{kind:'actor'|'object';id:string};position?:number[];visible?:boolean;facing?:1|-1;outfit_id?:string;target_instance_id?:string};
   source:StageCue['source']|null; source_text:string; rule_id:string; reason:string;
 }
 export interface LifeScript {
@@ -51,7 +57,7 @@ export interface LifePreview extends Omit<StagePreview,'schema_version'|'stage'|
 export interface ActorState {
   instance_id:string; position:number[]; facing:1|-1; visible:boolean; outfit_id:string|null;
   action:string; time:number; mode:PlayMode; speaking:boolean;
-  seat_id?:string;
+  seat_id?:string;seat_object_id?:string;expression?:'native'|'open'|'closed'|'smile'|'squint'|'surprised'|'talk';mouth?:'native'|'open'|'closed';
 }
 export interface LifeState {sample_frame:number;actors:ActorState[];camera:{target_instance_id:string|null;zoom:number;x:number}}
 

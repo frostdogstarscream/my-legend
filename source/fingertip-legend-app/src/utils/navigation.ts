@@ -1,12 +1,13 @@
 import { getToken } from '../stores/session'
+import {redirectToLogin} from './login-return'
 export type TabId = 'home' | 'create' | 'stories' | 'characters' | 'profile'
 export function requireSession(): boolean {
   if (getToken()) return true
-  uni.reLaunch({ url: '/pages/login/index' })
+  redirectToLogin()
   return false
 }
 export function goTab(id: TabId) { uni.reLaunch({ url: `/pages/${id}/index` }) }
-export type PageId = 'shop' | 'detail' | 'reader' | 'progress' | 'outline' | 'role-detail' | 'performance' | 'production' | 'work' | TabId
+export type PageId = 'flow' | 'shop' | 'detail' | 'reader' | 'progress' | 'outline' | 'role-detail' | 'performance' | 'production' | 'work' | TabId
 export function goPage(id: PageId, query: Record<string, string | number> = {}) { const qs = Object.entries(query).map(([k,v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`).join('&'); uni.navigateTo({ url: `/pages/${id}/index${qs ? '?' + qs : ''}` }) }
 export function goBack() {
   if (getCurrentPages().length > 1) uni.navigateBack({ fail: () => goTab('home') })

@@ -106,6 +106,7 @@ class CreationPreferences(WorkflowModel):
     tone_style: str = "warm"
     audience_band: AudienceBand = AudienceBand.ADULT_18_35
     content_rating: ContentRating = ContentRating.TEEN
+    duration_mode: Literal["fixed", "auto"] = "fixed"
     target_duration_sec: Literal[90, 120, 150, 180, 300] = 180
     target_episodes: int = Field(default=1, ge=1, le=100)
     language: str = "zh-CN"

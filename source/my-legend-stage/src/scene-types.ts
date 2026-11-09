@@ -2,6 +2,14 @@ import type {AssetRef} from './types'
 import type {ActorState,LifeScript,LifeState} from './life-types'
 
 export interface SceneRef {catalog_sha256:string;scene_id:string}
+export interface SceneBlocking {
+  schema_version:'legend_scene_blocking/1';purpose:'authored_standing_layout';
+  walk_lane:[number,number,number,number];foot_y:number;
+  dialogue_slots:[number,number][];ensemble_slots:[number,number][];
+  entrances:{id:string;label:string;position:[number,number]}[];
+  targets:{id:string;object_id:string;label:string;position:[number,number];action:'approach'}[];
+  interaction_status:'standing_targets_only';
+}
 export interface SceneObject {
   id:string;image:AssetRef;source_name:string;position:[number,number];width:number;height:number;
   anchor:[number,number];layer:'wall'|'floor'|'back'|'depth'|'front';depth_y:number;
@@ -17,6 +25,8 @@ export interface SceneDefinition {
   description?:string;
   width:960;height:540;layout_kind:'authored_performance_sample';actor_scale:number;
   activity_area:number[];objects:SceneObject[];seats:SceneSeat[];
+  blocking?:SceneBlocking;
+  commander_seats?:{seat_id:string;object_id:string;label:string;calibration_revision:string;position:number[];approach:number[];exit:number[];facing:1|-1;calibrated_groups:string[]}[];
 }
 export interface SceneTheme {
   source_key:string;name:string;name_found:boolean;resources_located:boolean;pairing_verified:boolean;

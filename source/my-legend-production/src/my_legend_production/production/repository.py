@@ -11,7 +11,7 @@ from psycopg import sql
 from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
 
-from .contracts import DeliverySource, ProductionRequest, StageResult, REQUIRED_ARTIFACTS, fingerprint, stage_graph
+from .contracts import DeliverySource, SavedPerformanceSource, DirectedPerformanceSource, ProductionRequest, StageResult, REQUIRED_ARTIFACTS, fingerprint, stage_graph
 
 
 class ProductionError(Exception):
@@ -37,6 +37,11 @@ class ProductionRepository:
             db.execute("SELECT pg_advisory_xact_lock(hashtext(%s))", ("legend-production-migrate:" + self.schema,))
             db.execute(sql.SQL("CREATE SCHEMA IF NOT EXISTS {}").format(sql.Identifier(self.schema)))
             db.execute((Path(__file__).parent / "migrations/001.sql").read_text(encoding="utf-8"))
+            db.execute((Path(__file__).parent / "migrations/002_flows.sql").read_text(encoding="utf-8"))
+            db.execute((Path(__file__).parent / "migrations/003_creation_drafts.sql").read_text(encoding="utf-8"))
+            db.execute((Path(__file__).parent / "migrations/004_work_archives.sql").read_text(encoding="utf-8"))
+            db.execute((Path(__file__).parent / "migrations/005_auto_title.sql").read_text(encoding="utf-8"))
+            db.execute((Path(__file__).parent / "migrations/006_flow_recovery.sql").read_text(encoding="utf-8"))
 
     @staticmethod
     def event(db, job_id, kind, details):
@@ -63,6 +68,22 @@ class ProductionRepository:
                         (owner_id, ref.kind, ref.sha256, ref.source_version_id)).fetchone()
                     if not accessible:
                         raise ProductionError("SOURCE_ARTIFACT_NOT_OWNED")
+            if isinstance(request.source, (SavedPerformanceSource, DirectedPerformanceSource)):
+                source = request.source
+                row = db.execute('SELECT work_id,source_version_id FROM jobs WHERE id=%s AND owner_id=%s',
+                                 (source.source_job_id, owner_id)).fetchone()
+                if not row or row['work_id'] != request.work_id or row['source_version_id'] != source.source_version_id:
+                    raise ProductionError('H5_SOURCE_BINDING_MISMATCH')
+                for ref in source.inputs:
+                    found = db.execute('SELECT metadata FROM artifacts WHERE job_id=%s AND kind=%s AND sha256=%s',
+                                       (source.source_job_id, ref.kind, ref.sha256)).fetchone()
+                    if not found or found['metadata'] != ref.model_dump():
+                        raise ProductionError('SOURCE_ARTIFACT_NOT_OWNED')
+                if source.parent_job_id:
+                    parent = db.execute('SELECT work_id,request,status FROM jobs WHERE id=%s AND owner_id=%s',
+                                        (source.parent_job_id, owner_id)).fetchone()
+                    if not parent or parent['work_id'] != request.work_id or parent['status'] != 'succeeded' or parent['request']['source'].get('source_job_id') != source.source_job_id:
+                        raise ProductionError('H5_PARENT_MISMATCH')
             job_id = str(uuid4())
             db.execute("""INSERT INTO jobs(id,owner_id,work_id,idempotency_key,request_hash,request,status,deadline)
                 VALUES(%s,%s,%s,%s,%s,%s,'queued',now()+%s*interval '1 second')""",
@@ -92,10 +113,11 @@ class ProductionRepository:
             job["publication"] = "not_requested"
             return job
 
-    def list_jobs(self, owner_id, *, limit=30, offset=0, work_id=None):
+    def list_jobs(self, owner_id, *, limit=30, offset=0, work_id=None, exclude_flows=False):
         with self.transaction() as db:
             rows = db.execute("""SELECT id FROM jobs WHERE owner_id=%s AND (%s::text IS NULL OR work_id=%s)
-                ORDER BY created_at DESC,id DESC LIMIT %s OFFSET %s""", (owner_id, work_id, work_id, limit + 1, offset)).fetchall()
+                AND (NOT %s OR NOT EXISTS(SELECT 1 FROM production_flow_jobs f WHERE f.job_id=jobs.id))
+                ORDER BY created_at DESC,id DESC LIMIT %s OFFSET %s""", (owner_id, work_id, work_id, exclude_flows, limit + 1, offset)).fetchall()
         return {"items": [self.get(row["id"], owner_id) for row in rows[:limit]],
                 "next_offset": offset + limit if len(rows) > limit else None}
 
@@ -125,11 +147,14 @@ class ProductionRepository:
                 "out_of_band_context_injections": None, "evidence_basis": "server_observations_only",
                 "human_content_acceptance": "pending"}
 
-    def sweep(self, db):
+    def sweep(self, db, stage_names=None, flow_only=False):
         # Expired jobs are terminal, even when no client polls them.
         expired = db.execute("""UPDATE jobs SET status=CASE WHEN cancel_requested THEN 'cancelled' ELSE 'failed' END,
             error_code=CASE WHEN cancel_requested THEN NULL ELSE 'DEADLINE_EXCEEDED' END, updated_at=now()
-            WHERE status IN ('queued','running','cancelling') AND deadline<=now() RETURNING id,status""").fetchall()
+            WHERE status IN ('queued','running','cancelling') AND deadline<=now()
+            AND (NOT %s OR EXISTS(SELECT 1 FROM production_flow_jobs f WHERE f.job_id=jobs.id))
+            AND (%s::text[] IS NULL OR EXISTS(SELECT 1 FROM stages s WHERE s.job_id=jobs.id AND s.name=ANY(%s)))
+            RETURNING id,status""", (flow_only, stage_names, stage_names)).fetchall()
         for row in expired:
             db.execute("""UPDATE stages SET status=%s,lease_token=NULL,lease_until=NULL,error_code='DEADLINE_EXCEEDED'
                 WHERE job_id=%s AND status IN ('queued','running')""", (row["status"], row["id"]))
@@ -137,31 +162,38 @@ class ProductionRepository:
         # Cancelled workers which died cannot leave a job in cancelling forever.
         db.execute("""UPDATE stages s SET status='cancelled',lease_token=NULL,lease_until=NULL FROM jobs j
             WHERE s.job_id=j.id AND j.cancel_requested AND s.status IN ('queued','running')
-            AND (s.lease_until IS NULL OR s.lease_until<now())""")
+            AND (NOT %s OR EXISTS(SELECT 1 FROM production_flow_jobs f WHERE f.job_id=j.id))
+            AND (s.lease_until IS NULL OR s.lease_until<now())
+            AND (%s::text[] IS NULL OR s.name=ANY(%s))""", (flow_only, stage_names, stage_names))
         db.execute("""UPDATE jobs j SET status='cancelled',updated_at=now() WHERE status='cancelling'
-            AND NOT EXISTS(SELECT 1 FROM stages s WHERE s.job_id=j.id AND s.status='running')""")
+            AND (NOT %s OR EXISTS(SELECT 1 FROM production_flow_jobs f WHERE f.job_id=j.id))
+            AND NOT EXISTS(SELECT 1 FROM stages s WHERE s.job_id=j.id AND s.status='running')
+            AND (%s::text[] IS NULL OR EXISTS(SELECT 1 FROM stages s WHERE s.job_id=j.id AND s.name=ANY(%s)))""", (flow_only, stage_names, stage_names))
 
-    def claim(self, worker_id: str, lease_seconds=30):
+    def claim(self, worker_id: str, lease_seconds=30, stage_names=None, flow_only=False):
         if lease_seconds < 1:
             raise ValueError("INVALID_LEASE")
         with self.transaction() as db:
-            self.sweep(db)
+            self.sweep(db, stage_names, flow_only)
             job = db.execute("""SELECT j.* FROM jobs j
                 WHERE j.status IN ('queued','running') AND NOT j.cancel_requested AND j.deadline>now()
+                AND (NOT %s OR EXISTS(SELECT 1 FROM production_flow_jobs f WHERE f.job_id=j.id))
                 AND EXISTS(SELECT 1 FROM stages s WHERE s.job_id=j.id
                     AND s.status IN ('queued','running') AND s.available_at<=now()
+                    AND (%s::text[] IS NULL OR s.name=ANY(%s))
                     AND (s.lease_until IS NULL OR s.lease_until<now())
                     AND NOT EXISTS(SELECT 1 FROM jsonb_array_elements_text(s.dependencies) d(name)
                         LEFT JOIN stages p ON p.job_id=s.job_id AND p.name=d.name WHERE p.status IS DISTINCT FROM 'succeeded'))
-                ORDER BY j.created_at FOR UPDATE OF j SKIP LOCKED LIMIT 1""").fetchone()
+                ORDER BY j.created_at FOR UPDATE OF j SKIP LOCKED LIMIT 1""", (flow_only, stage_names, stage_names)).fetchone()
             if not job:
                 return None
             stage = db.execute("""SELECT s.* FROM stages s WHERE s.job_id=%s
                 AND s.status IN ('queued','running') AND s.available_at<=now()
+                AND (%s::text[] IS NULL OR s.name=ANY(%s))
                 AND (s.lease_until IS NULL OR s.lease_until<now())
                 AND NOT EXISTS(SELECT 1 FROM jsonb_array_elements_text(s.dependencies) d(name)
                     LEFT JOIN stages p ON p.job_id=s.job_id AND p.name=d.name WHERE p.status IS DISTINCT FROM 'succeeded')
-                ORDER BY s.name FOR UPDATE LIMIT 1""", (job["id"],)).fetchone()
+                ORDER BY s.name FOR UPDATE LIMIT 1""", (job["id"], stage_names, stage_names)).fetchone()
             stage.update({k: job[k] for k in ("request", "request_hash", "owner_id", "work_id", "source_version_id", "resolution", "deadline")})
             token = str(uuid4())
             db.execute("""UPDATE stages SET status='running',lease_token=%s,lease_owner=%s,
@@ -263,7 +295,9 @@ class ProductionRepository:
                 return
             db.execute("UPDATE jobs SET cancel_requested=true,status='cancelling',updated_at=now() WHERE id=%s", (job_id,))
             db.execute("UPDATE stages SET status='cancelled' WHERE job_id=%s AND status='queued'", (job_id,))
-            self.sweep(db)
+            # Cancellation may only clean up the explicitly targeted job.
+            db.execute("UPDATE stages SET status='cancelled',lease_token=NULL,lease_until=NULL WHERE job_id=%s AND status='running' AND lease_until<now()",(job_id,))
+            db.execute("UPDATE jobs SET status='cancelled' WHERE id=%s AND NOT EXISTS(SELECT 1 FROM stages WHERE job_id=%s AND status='running')",(job_id,job_id))
             self.event(db, job_id, "cancel_requested", {})
 
     def resume(self, job_id, owner_id, expected_revision, resolution):
@@ -281,6 +315,14 @@ class ProductionRepository:
             # Only a proven zero-submission audio preflight failure can reuse its
             # reservation. Preserve this transition in events; never reopen paid or
             # ambiguous results and never increase the reservation on resume.
+            rearm_units=db.execute("""SELECT COALESCE(sum(c.reserved_units-c.actual_units),0) AS n
+                FROM calls c JOIN stages s ON s.job_id=c.job_id AND s.name=c.stage_name
+                WHERE c.job_id=%s AND s.status='failed' AND c.stage_name='audio'
+                AND c.call_key='audio:generation-budget' AND c.state='completed'
+                AND c.actual_units=0 AND c.result=%s""",
+                (job_id,Jsonb({'provider_calls':0,'preflight_failed':True}))).fetchone()['n']
+            if self.committed_calls(db,job_id)+rearm_units>job['request']['budget']['max_provider_calls']:
+                raise ProductionError('CALL_BUDGET_EXCEEDED')
             rearmed = db.execute("""UPDATE calls c SET state='pending',result=NULL,updated_at=now()
                 FROM stages s WHERE c.job_id=%s AND s.job_id=c.job_id AND s.name=c.stage_name
                 AND s.status='failed' AND c.stage_name='audio' AND c.call_key='audio:generation-budget'
@@ -295,6 +337,14 @@ class ProductionRepository:
                 available_at=now() WHERE job_id=%s AND status IN ('failed','needs_input')""", (job_id,))
             self.event(db, job_id, "resumed", {"revision": expected_revision + 1})
 
+    @staticmethod
+    def committed_calls(db,job_id):
+        # Settled results have exact usage. Pending and unknown calls retain their
+        # full ceiling; historical reserved_calls remains an unchanged audit sum.
+        return db.execute("""SELECT COALESCE(sum(CASE WHEN state='completed'
+            THEN actual_units ELSE reserved_units END),0) AS n FROM calls WHERE job_id=%s""",
+            (job_id,)).fetchone()['n']
+
     def reserve_call(self, stage, call_key, input_hash, units):
         if units < 0:
             raise ProductionError("INVALID_CALL_RESERVATION")
@@ -308,7 +358,7 @@ class ProductionRepository:
                 if existing["input_hash"] != input_hash or existing["reserved_units"] != units:
                     raise ProductionError("CALL_INPUT_CHANGED")
                 return existing
-            if job["reserved_calls"] + units > job["request"]["budget"]["max_provider_calls"]:
+            if self.committed_calls(db,stage['job_id']) + units > job["request"]["budget"]["max_provider_calls"]:
                 raise ProductionError("CALL_BUDGET_EXCEEDED")
             db.execute("UPDATE jobs SET reserved_calls=reserved_calls+%s WHERE id=%s", (units, stage["job_id"]))
             return db.execute("""INSERT INTO calls(job_id,call_key,stage_name,input_hash,state,reserved_units)

@@ -211,6 +211,8 @@ class RestrictedAudioPlanner:
         self.model = model
 
     def call(self, ctx, key, prompt, payload, schema):
+        if callable(getattr(self.model, 'set_session', None)):
+            self.model.set_session(ctx.stage['job_id'])
         ctx.check_active()
         remaining = ctx.stage['deadline'].timestamp() - time.time()
         if remaining <= 0:

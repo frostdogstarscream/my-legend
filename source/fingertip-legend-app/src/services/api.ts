@@ -1,5 +1,9 @@
 export interface PerformanceTracks {dialogue_enabled?:boolean;dialogue_track?:import('../../../my-legend-stage/src/performance-tracks').DirectionTrack;face_track?:import('../../../my-legend-stage/src/performance-tracks').FaceTrack;face_mode?:'basic'|'expressions';scene?:import('../../../my-legend-stage/src/scene-types').SceneRef;furniture_track?:import('../../../my-legend-stage/src/scene-types').FurnitureTrack}
 import { config } from '../config'
+import {lifePresentation} from './life-presentation'
+import type {ProductionFlow,FlowInput} from '../types/flow'
+import type {CreationDraft,CreationPayload,WorkSummary} from '../types/works'
+import {redirectToLogin} from '../utils/login-return'
 import { clearSession, getToken } from '../stores/session'
 import type { Character, CreateStoryInput, GenerationTask, HomeSummary, LoginInput, LoginResult, Product, Story, ProductionOptions, ProductionContext, ProductionTask } from '../types/domain'
 import { createHttpClient, type Transport } from './http'
@@ -7,12 +11,9 @@ import { mockGateway } from './mock'
 import { getStory, getDemoTask, startDemoTask, saveStory } from './story-repository'
 import type { IndependentJob, IndependentRequest, ProductionCapabilities, PlaybackView, RemakeAudioInput } from '../types/production'
 
-let redirecting = false
 function unauthorized() {
   clearSession()
-  if (redirecting) return
-  redirecting = true
-  uni.reLaunch({ url: '/pages/login/index', complete: () => { redirecting = false } })
+  redirectToLogin()
 }
 const transport: Transport = request => new Promise((resolve, reject) => {
   uni.request({
@@ -26,8 +27,32 @@ const request = createHttpClient({ baseUrl: config.apiBaseUrl, timeout: config.r
 
 // UI pages use this contract in both modes. Adapt existing backends here only.
 export const api = {
+  works:(offset=0,search='',status='all'):Promise<{items:WorkSummary[];next_offset:number|null}>=>request(`/works?offset=${offset}&search=${encodeURIComponent(search)}&status=${encodeURIComponent(status)}`),
+  work:(id:string):Promise<WorkSummary>=>request(`/works/${encodeURIComponent(id)}`),
+  creationDraft:(id:string):Promise<CreationDraft>=>request(`/creation-drafts/${encodeURIComponent(id)}`),
+  createCreationDraft:(body:CreationPayload&{idempotency_key:string;legacy_story_id?:string}):Promise<CreationDraft>=>request('/creation-drafts','POST',{...body}),
+  updateCreationDraft:(id:string,body:CreationPayload&{expected_revision:number}):Promise<CreationDraft>=>request(`/creation-drafts/${encodeURIComponent(id)}`,'POST',{...body}),
+  createFlow:(input:FlowInput):Promise<ProductionFlow>=>request('/production-flows','POST',{...input}),
+  flow:(id:string):Promise<ProductionFlow>=>request(`/production-flows/${encodeURIComponent(id)}`),
+  flows:(offset=0,workId?:string):Promise<{items:ProductionFlow[];next_offset:number|null}>=>request(`/production-flows?offset=${offset}${workId?'&work_id='+encodeURIComponent(workId):''}`),
+  controlFlow:(id:string,action:'cancel'|'resume'|'reconcile',revision:number):Promise<ProductionFlow>=>request(`/production-flows/${encodeURIComponent(id)}/${action}`,'POST',{expected_revision:revision}),
+  reviseFlow:(id:string,input:Record<string,unknown>):Promise<ProductionFlow>=>request(`/production-flows/${encodeURIComponent(id)}/revisions`,'POST',input),
+  createH5Delivery:(id:string,input:{preview_sha256:string;idempotency_key:string;parent_job_id?:string}):Promise<IndependentJob>=>request(`/production-jobs/${encodeURIComponent(id)}/h5-deliveries`,'POST',input),
+  createH5Directing:(id:string,input:{catalog_sha256:string;bindings:Record<string,string>;initial_outfits:Record<string,string>;casting_confirmed:true;idempotency_key:string;parent_job_id?:string}):Promise<IndependentJob>=>request(`/production-jobs/${encodeURIComponent(id)}/h5-directing-jobs`,'POST',input),
+  h5Performance:(id:string):Promise<{manifest:import('../types/production').PerformanceManifest;preview:import('../../../my-legend-stage/src/h5-types').H5Preview|import('../../../my-legend-stage/src/commander-types').CommanderPreview}>=>request(`/production-jobs/${encodeURIComponent(id)}/h5-performance`),
   sceneCatalog:(digest?:string):Promise<import('../../../my-legend-stage/src/scene-types').SceneCatalog>=>request('/stage-preview/scenes'+(digest?'?catalog_sha256='+encodeURIComponent(digest):'')),
   lifeSuggestFace:(id:string,source_preview_sha256:string):Promise<import('./face-suggestions').FaceSuggestions>=>request(`/production-jobs/${encodeURIComponent(id)}/stage-preview/suggest-face`,'POST',{profile:'life_v1',source_preview_sha256,mode:'offline_rules',max_suggestions:32,include_diagnostics:true}),
+  h5Catalog:async(digest?:string):Promise<import('../../../my-legend-stage/src/life-types').LifeCatalog>=>{
+    const catalog=await request<import('../../../my-legend-stage/src/life-types').LifeCatalog>('/stage-preview/catalog?profile=life_v2'+(digest?'&catalog_sha256='+encodeURIComponent(digest):''))
+    if(digest&&catalog.actors.some(a=>a.actor_id.startsWith('gfl-guofeng-')&&a.display_name.includes(' · '))){
+      const current=await request<import('../../../my-legend-stage/src/life-types').LifeCatalog>('/stage-preview/catalog?profile=life_v2')
+      return lifePresentation(catalog,current)
+    }
+    return catalog
+  },
+  h5Prepare:(id:string,catalog_sha256?:string):Promise<import('../../../my-legend-stage/src/h5-types').H5Context>=>request(`/production-jobs/${encodeURIComponent(id)}/stage-preview`,'POST',{profile:'life_v2',operation:'prepare',catalog_sha256}),
+  h5Compile:(id:string,body:import('../../../my-legend-stage/src/h5-types').H5Request):Promise<import('../../../my-legend-stage/src/h5-types').H5Preview|import('../../../my-legend-stage/src/commander-types').CommanderPreview>=>request(`/production-jobs/${encodeURIComponent(id)}/stage-preview`,'POST',{...body}),
+  h5Saved:(id:string,digest:string):Promise<import('../../../my-legend-stage/src/h5-types').H5Preview|import('../../../my-legend-stage/src/commander-types').CommanderPreview>=>request(`/production-jobs/${encodeURIComponent(id)}/stage-preview/${encodeURIComponent(digest)}`),
   lifeCatalog: (digest?:string):Promise<import('../../../my-legend-stage/src/life-types').LifeCatalog> => request('/stage-preview/catalog?profile=life_v1'+(digest?'&catalog_sha256='+encodeURIComponent(digest):'')),
   lifeCompile: (id:string,bindings:Record<string,string>={},initial_outfits:Record<string,string|null>={},face_enabled=false,face_profile_sha256?:string,tracks:PerformanceTracks={dialogue_enabled:true}):Promise<import('../../../my-legend-stage/src/life-types').LifePreview> => request(`/production-jobs/${encodeURIComponent(id)}/stage-preview`,'POST',{profile:'life_v1',operation:'compile',bindings,initial_outfits,face_enabled,face_profile_sha256,...tracks}),
   lifeSave: (id:string,script:import('../../../my-legend-stage/src/life-types').LifeScript,face_enabled=false,face_profile_sha256?:string,tracks:PerformanceTracks={}):Promise<import('../../../my-legend-stage/src/life-types').LifePreview> => request(`/production-jobs/${encodeURIComponent(id)}/stage-preview`,'POST',{profile:'life_v1',operation:'validate_and_save',script,face_enabled,face_profile_sha256,...tracks}),
@@ -35,7 +60,7 @@ export const api = {
   stageCatalog: ():Promise<import('../../../my-legend-stage/src/types').StageCatalog> => request('/stage-preview/catalog'),
   stagePreview: (id:string):Promise<import('../../../my-legend-stage/src/types').StagePreview> => request(`/production-jobs/${encodeURIComponent(id)}/stage-preview`,'POST',{}),
   independentCapabilities: (): Promise<ProductionCapabilities> => request('/production-capabilities'),
-  independentJobs: (offset=0, workId?:string): Promise<{items:IndependentJob[];next_offset:number|null}> => request(`/production-jobs?offset=${offset}${workId?'&work_id='+encodeURIComponent(workId):''}`),
+  independentJobs: (offset=0, workId?:string,excludeFlows=false): Promise<{items:IndependentJob[];next_offset:number|null}> => request(`/production-jobs?offset=${offset}${workId?'&work_id='+encodeURIComponent(workId):''}${excludeFlows?'&exclude_flows=true':''}`),
   independentJob: (id:string): Promise<IndependentJob> => request(`/production-jobs/${encodeURIComponent(id)}`),
   independentPlayback: (id:string): Promise<PlaybackView> => request(`/production-jobs/${encodeURIComponent(id)}/playback`),
   startIndependent: (input:IndependentRequest): Promise<IndependentJob> => request('/production-jobs','POST',{...input}),

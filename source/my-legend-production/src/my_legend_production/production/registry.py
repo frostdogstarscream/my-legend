@@ -8,7 +8,7 @@ from .repository import ProductionError
 
 def enabled_modules():
     modules = {name.strip() for name in os.environ.get("MY_LEGEND_PRODUCTION_MODULES", "").split(",") if name.strip()}
-    if modules - {"story", "sound_plan", "audio", "visual_plan", "visual_render", "integrate"}:
+    if modules - {"story", "sound_plan", "audio", "visual_plan", "visual_render", "integrate", "performance_import", "performance_package", "performance_context", "spine_direct", "spine_compile"}:
         raise ProductionError("UNSUPPORTED_PRODUCTION_MODULE_CONFIG")
     return modules
 
@@ -18,6 +18,29 @@ def handlers(settings):
     from .audio import AudioStage
     modules = enabled_modules()
     result = {}
+    if modules & {'performance_context', 'spine_direct', 'spine_compile'}:
+        from .spine_director import PerformanceContextStage, SpineDirectStage, SpineCompileStage
+        if 'performance_context' in modules:
+            result['performance_context'] = PerformanceContextStage()
+        if 'spine_compile' in modules:
+            result['spine_compile'] = SpineCompileStage()
+        if 'spine_direct' in modules:
+            from .visual_model import VisualModel
+            base_url=os.environ['MY_LEGEND_VISUAL_MODEL_BASE_URL']
+            model_id=os.environ['MY_LEGEND_VISUAL_MODEL_ID']
+            # OpenCode Flash uses the output allowance for both reasoning and
+            # JSON. Real reviews and repairs were truncated at 24k tokens.
+            output_limit=65536 if (base_url.rstrip('/')=='https://opencode.ai/inference/go/openai/v1'
+                                  and model_id=='deepseek-v4.1-flash') else 24000
+            result['spine_direct'] = SpineDirectStage(VisualModel(base_url,
+                os.environ['MY_LEGEND_VISUAL_MODEL_KEY'], model_id,
+                max_tokens=output_limit,read_timeout=600,thinking=True))
+    if modules & {'performance_import', 'performance_package'}:
+        from .performance_delivery import PerformanceImportStage, PerformancePackageStage
+        if 'performance_import' in modules:
+            result['performance_import'] = PerformanceImportStage()
+        if 'performance_package' in modules:
+            result['performance_package'] = PerformancePackageStage()
     if "story" in modules:
         result["story"] = StoryStage(StoryClient(settings.story_url, os.environ["MY_LEGEND_STORY_TOKEN"]))
     if modules & {'audio','sound_plan'}:

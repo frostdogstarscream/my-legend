@@ -27,6 +27,7 @@ export class SceneDecor {
       sprite.label=item.id;world.addChild(sprite);this.sprites.push(sprite)
     }
   }
+  setVisible(visible:boolean){for(const sprite of this.sprites)sprite.visible=visible}
   snapshot(){return {scene_id:this.definition.scene_id,object_count:this.sprites.length,objects:this.sprites.map(s=>({id:s.label,x:s.x,y:s.y,width:s.width,height:s.height,z:s.zIndex}))}}
   destroy(){
     this.disposed=true

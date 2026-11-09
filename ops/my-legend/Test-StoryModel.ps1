@@ -30,6 +30,10 @@ try {
         thinking = @{ type = 'disabled' }
     } | ConvertTo-Json -Depth 8 -Compress
     $headers = @{ Authorization = 'Bearer ' + $secret }
+    if ($profile.provider -eq 'opencode_go') {
+        $headers['User-Agent'] = 'my-legend-production/1.0'
+        $headers['x-opencode-session'] = [Guid]::NewGuid().ToString()
+    }
     # Preserve certificate verification and never forward the credential to a redirect.
     $response = Invoke-WebRequest -Uri $report.endpoint -Method Post -Headers $headers -ContentType 'application/json' -Body $payload -UseBasicParsing -TimeoutSec 120 -MaximumRedirection 0
     $report.http_status = [int]$response.StatusCode

@@ -89,18 +89,30 @@ class LLMPlanGenerator:
             "revision_feedback": feedback or None,
         }
 
+        automatic_duration = request.creation_preferences.duration_mode == "auto"
+        if automatic_duration:
+            preferences.pop("target_duration_sec", None)
+            payload.pop("beat_sheet", None)
+
         # Inject strategy context into system prompt if available
         strategy_context = ""
         if strategy is not None:
             strategy_context = "\n\n【故事创作策略 — 必须遵守以下创作机制】\n" + strategy.plan_context()
             system = PLAN_SYSTEM_V2 + strategy_context
+        duration_instruction = (
+            "未指定时长。根据故事内容、角色关系和情节需要，在90、120、150、180、300秒中选择合适的篇幅，"
+            "写入每集 target_duration_sec；同一批剧集使用相同时长。不要默认套用90秒，也不要为了凑时长填充情节。"
+            if automatic_duration else "每集 target_duration_sec 必须等于请求值。"
+        )
+        if automatic_duration:
+            system += "\n自动时长模式下，时长由你决定，遵循用户输入的内容和节奏要求。"
         user = (
             "根据以下冻结参数生成完整结构化大纲。episode_outlines 数量必须等于 target_episodes，"
-            "每集 target_duration_sec 必须等于请求值。\n"
+            + duration_instruction + "\n"
             + json.dumps(payload, ensure_ascii=False, indent=2)
         )
         outline_schema = create_model("BoundEpisodeOutline", __base__=EpisodeOutline,
-            target_duration_sec=(Literal[request.creation_preferences.target_duration_sec], ...))
+            target_duration_sec=((Literal[90, 120, 150, 180, 300] if automatic_duration else Literal[request.creation_preferences.target_duration_sec]), ...))
         plan_schema = create_model("BoundPlanContent", __base__=PlanContent,
             episode_outlines=(list[outline_schema], Field(min_length=request.creation_preferences.target_episodes,
                 max_length=request.creation_preferences.target_episodes,

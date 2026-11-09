@@ -1,5 +1,6 @@
 """Reconcile recorded upstream jobs by read-only queries; never resubmit generation."""
 from urllib.parse import quote
+from fastapi import HTTPException
 
 from .contracts import fingerprint
 from .repository import ProductionError
@@ -11,7 +12,7 @@ class ProductionReconciler:
 
     def run(self, job_id, owner_id, revision):
         calls = self.repository.reconciliation_snapshot(job_id, owner_id, revision)
-        settled, unresolved = [], []
+        settled, unresolved, terminal = [], [], []
         for call in calls:
             key, state = call["call_key"], call["checkpoint"]
             if key not in ("story:planning-budget", "story:writing-budget"):
@@ -38,9 +39,14 @@ class ProductionReconciler:
                         {"basis": "recorded_upstream_terminal_query", "upstream_id": state[id_key],
                          "upstream_status": response["status"], "response_sha256": fingerprint(response)})
                     settled.append(key)
+                    terminal.append(dict(call_key=key, status=response['status']))
                     continue
             except ProductionError as exc:
                 reason = exc.code
+            except HTTPException as exc:
+                # The frontend API's upstream adapter uses HTTPException; workers
+                # use ProductionError. Both represent a failed read, never a retry.
+                reason = 'STORY_SERVICE_UNAVAILABLE' if exc.status_code >= 500 else 'STORY_REQUEST_REJECTED'
             unresolved.append({"call_key": key, "reason": reason})
-        return {"job_id": job_id, "settled": settled, "unresolved": unresolved,
+        return {"job_id": job_id, "settled": settled, "unresolved": unresolved, "terminal": terminal,
                 "generation_submissions": 0, "job": self.repository.get(job_id, owner_id)}

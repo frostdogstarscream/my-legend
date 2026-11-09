@@ -2,6 +2,7 @@
 import json
 import logging
 from urllib.parse import urlsplit
+from uuid import uuid4
 
 import httpx
 
@@ -16,6 +17,13 @@ class AudioModel:
         self.model = model
         self.client = httpx.Client(base_url=base_url.rstrip('/')+'/', headers={'Authorization':'Bearer '+key},
                                   trust_env=False, follow_redirects=False, transport=transport)
+        if base_url.rstrip('/') == 'https://opencode.ai/inference/go/openai/v1':
+            self.client.headers['User-Agent'] = 'my-legend-audio-planner/1.0'
+            self.client.headers['x-opencode-session'] = str(uuid4())
+
+    def set_session(self, session_id):
+        if 'x-opencode-session' in self.client.headers:
+            self.client.headers['x-opencode-session'] = str(session_id)
 
     def complete(self, system, payload, schema, timeout):
         try:

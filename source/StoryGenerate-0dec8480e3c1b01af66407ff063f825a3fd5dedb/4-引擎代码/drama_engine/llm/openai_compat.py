@@ -62,6 +62,7 @@ class OpenAICompatProvider(BaseLLMProvider):
         self.base_url = base_url.rstrip("/")
         self.max_retries = max_retries
         self.call_history: list[dict[str, Any]] = []
+        self._session_id = uuid.uuid4().hex
 
         # 分层超时
         self._timeout = httpx.Timeout(
@@ -137,13 +138,18 @@ class OpenAICompatProvider(BaseLLMProvider):
             t0 = time.perf_counter()
             started_at = datetime.now(timezone.utc)
             attempt_meta = self._attempt_metadata(spec, attempt, started_at)
+            headers = {
+                "Authorization": f"Bearer {self.api_key}",
+                "Content-Type": "application/json",
+            }
+            if self.base_url == 'https://opencode.ai/inference/go/openai/v1':
+                headers['User-Agent'] = 'my-legend-story/1.0'
+                headers['x-opencode-session'] = str(
+                    attempt_meta.get('plan_id') or attempt_meta.get('job_id') or self._session_id)
             try:
                 resp = httpx.post(
                     f"{self.base_url}/chat/completions",
-                    headers={
-                        "Authorization": f"Bearer {self.api_key}",
-                        "Content-Type": "application/json",
-                    },
+                    headers=headers,
                     json=payload,
                     timeout=effective_timeout,
                 )

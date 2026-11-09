@@ -181,3 +181,24 @@ def test_authenticated_api_catalog_assets_and_saved_scene(tmp_path, monkeypatch)
     assert client.get(endpoint + '/' + value['preview_sha256'], headers=h).json()['data'] == value
     body['profile'] = 'battle'
     assert client.post(endpoint, json=body, headers=h).status_code == 422
+
+
+@pytest.mark.parametrize('mutation', ['version', 'object', 'position', 'nan', 'duplicate', 'capability', 'lane', 'label'])
+def test_optional_blocking_rejects_invalid_points(mutation):
+    from my_legend_production.production.scene_preview import validate_blocking
+    value = {'schema_version':'legend_scene_blocking/1','purpose':'authored_standing_layout',
+        'interaction_status':'standing_targets_only','walk_lane':[.06,.80,.94,.86],'foot_y':.825,
+        'dialogue_slots':[[.33,.825],[.66,.825]],'ensemble_slots':[[.25,.825],[.5,.825],[.75,.825]],
+        'entrances':[{'id':'left','label':'entry','position':[.06,.825]}],
+        'targets':[{'id':'bookcase_front','object_id':'bookcase','label':'bookcase','position':[.25,.825],'action':'approach'}]}
+    validate_blocking(value, {'bookcase'})
+    if mutation == 'version': value['schema_version'] = 'guess'
+    if mutation == 'object': value['targets'][0]['object_id'] = 'missing'
+    if mutation == 'position': value['targets'][0]['position'] = [1.1,.825]
+    if mutation == 'nan': value['targets'][0]['position'] = [float('nan'),.825]
+    if mutation == 'duplicate': value['targets'].append(deepcopy(value['targets'][0]))
+    if mutation == 'capability': value['targets'][0]['action'] = 'sit'
+    if mutation == 'lane': value['walk_lane'] = [.9,.8,.1,.86]
+    if mutation == 'label': value['targets'][0]['label'] = ''
+    with pytest.raises(ValueError):
+        validate_blocking(value, {'bookcase'})

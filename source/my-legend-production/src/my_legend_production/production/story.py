@@ -63,11 +63,14 @@ def plan_body(ctx):
         else:
             body["continuation_kind"] = "next_episode"
     else:
-        body.update(intent="create", user_instruction="故事名称：" + source.title + "。创作要求：" + source.idea,
+        body.update(intent="create", user_instruction=(("故事名称：" + source.title + "。") if source.title.strip() else "请根据故事内容拟定标题。") + "创作要求：" + source.idea,
                     creation_preferences={"genre": source.genre, "story_mode": "general", "target_episodes": 1,
                                           "target_duration_sec": source.target_duration_seconds, "ending_preference": "closed"},
                     characters={"selected_character_ids": source.character_ids, "role_bindings": [
                         {"character_id": cid, "role_id": cid, "performer_id": "performer-" + cid} for cid in source.character_ids]})
+    if source.target_duration_seconds is None:
+        body["creation_preferences"].pop("target_duration_sec", None)
+        body["creation_preferences"]["duration_mode"] = "auto"
     return body
 
 
@@ -166,13 +169,18 @@ class StoryStage:
                 if (version == source.source_version_id or delivery.get("parent_story_version_id") != source.source_version_id
                         or (delivery.get("story_id") == original["story_id"]) != (source.intent != "remix")):
                     raise ProductionError("STORY_OPERATION_VERSION_MISMATCH")
+                if source.intent == 'revise':
+                    from .revision_guard import unchanged_revision
+                    if unchanged_revision(original, delivery):
+                        raise ProductionError('STORY_REVISION_UNCHANGED')
             return self.complete(ctx, delivery, manifest, state["decision"])
         raise ProductionError("INVALID_STORY_CHECKPOINT")
 
     @staticmethod
     def failed(state, response):
         code = response.get("error_code") or "STORY_GENERATION_FAILED"
-        known_policy_errors = {'STORY_REQUIRED_CAPABILITY_UNAVAILABLE', 'STORY_PRODUCTION_READINESS_FAILED',
+        known_policy_errors = {'STORY_REVISION_UNCHANGED', 'STORY_REVISION_SOURCE_MISSING',
+                               'STORY_REQUIRED_CAPABILITY_UNAVAILABLE', 'STORY_PRODUCTION_READINESS_FAILED',
                                'STORY_AUDIO_REVIEW_INVALID', 'STORY_AUDIO_READINESS_FAILED',
                                'STORY_DRAFT_REPAIR_CONTRACT_INVALID',
                                'STORY_READINESS_REVIEW_INVALID', 'STORY_PLAN_REVIEW_INVALID',

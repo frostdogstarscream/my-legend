@@ -4,6 +4,7 @@ import {api} from '../services/api'
 import PerformanceTrackEditor from './PerformanceTrackEditor.vue'
 import FaceSuggestionReview from './FaceSuggestionReview.vue'
 import ScenePicker from './ScenePicker.vue'
+import SceneBlockingGuide from './SceneBlockingGuide.vue'
 import {evaluateFurniture,furnitureSample,sceneSample,type SceneCatalog,type SceneDefinition,type SceneRef,type FurnitureTrack} from '../../../my-legend-stage/src/scene-types'
 import {checkSuggestionContext,mergeFaceSuggestions,type FaceSuggestions} from '../services/face-suggestions'
 import {evaluateDialogue,prepareDirection,emptyDirectionTrack,type DirectionTrack,type FaceTrack} from '../../../my-legend-stage/src/performance-tracks'
@@ -27,6 +28,7 @@ const faceEnabled=ref(false),faceProfileDigest=ref<string>(),faceDiagnostics=ref
 const suggestions=ref<FaceSuggestions>(),suggestionBusy=ref(false),suggestionError=ref(''),addedSuggestionIds=ref<string[]>([])
 const sceneCatalog=ref<SceneCatalog>(),sceneDraft=ref<SceneRef>(),furnitureDraft=ref<FurnitureTrack>(),sceneError=ref('')
 const appliedScene=ref<SceneRef>(),appliedRoom=ref<SceneDefinition>(),appliedFurniture=ref<FurnitureTrack>()
+const showBlocking=ref(false),guideCamera=ref({x:0,y:0,zoom:1})
 const sceneSnapshots=new Map<string,SceneCatalog>()
 const sceneChanged=computed(()=>JSON.stringify(sceneDraft.value)!==JSON.stringify(appliedScene.value)||JSON.stringify(furnitureDraft.value)!==JSON.stringify(appliedFurniture.value))
 const selectedScene=computed(()=>sceneDraft.value?sceneSnapshots.get(sceneDraft.value.catalog_sha256)?.scenes.find(s=>s.scene_id===sceneDraft.value?.scene_id):undefined)
@@ -50,7 +52,7 @@ function inputNumber(event:Event){return Number((event.target as HTMLInputElemen
 function pause(){playing.value=false;audio?.pause();draw()}
 function draw(){
   if(!ready.value||!stage||!applied.value)return
-  try{stage.render(evaluateFurniture(evaluateDialogue(applied.value,Math.floor(time.value*applied.value.sample_rate),appliedDirection.value),applied.value,appliedRoom.value,appliedFurniture.value));faceDiagnostics.value=[...stage.faceDiagnostics]}
+  try{stage.render(evaluateFurniture(evaluateDialogue(applied.value,Math.floor(time.value*applied.value.sample_rate),appliedDirection.value),applied.value,appliedRoom.value,appliedFurniture.value));faceDiagnostics.value=[...stage.faceDiagnostics];if(showBlocking.value)guideCamera.value=stage.cameraTransform}
   catch(e){visualError.value=message(e);ready.value=false}
 }
 function seek(value:number){time.value=Math.max(0,Math.min(duration.value,Number.isFinite(value)?value:0));if(audio&&audioReady.value)audio.currentTime=time.value;draw()}
@@ -104,6 +106,7 @@ async function swap(script:LifeScript,nextCatalog:LifeCatalog,face?:BasicFace,di
     appliedScene.value=roomRef?copy(roomRef):undefined;appliedRoom.value=room;appliedFurniture.value=furniture?copy(furniture):undefined
     if(audio)audio.muted=!!furniture
     faceDiagnostics.value=[...candidate.faceDiagnostics]
+    guideCamera.value=candidate.cameraTransform
     previous?.destroy()
   }catch(e){candidate.destroy();throw e}
 }
@@ -340,7 +343,11 @@ defineExpose({pause,snapshot:()=>stage?.snapshot(),playbackState:()=>({time:time
     <div v-if="error" class="error" role="alert">{{error}}</div>
     <section v-if="sceneCatalog" class="panel scene-panel"><h2>固定主题场景 · {{sceneCatalog.scenes.length}} 套</h2><ScenePicker :catalog="sceneCatalog" :selected="sceneDraft" :disabled="busy" @select="chooseScene"/><div class="buttons scene-actions"><button class="primary" :disabled="busy||!draft" @click="apply">应用场景与当前草稿</button><button v-if="selectedScene?.seats.length" :disabled="busy||!draft" @click="createFurnitureDraft">创建家具互动草稿</button><a v-if="sceneSampleUrl" :href="sceneSampleUrl" target="_blank" rel="noopener">打开独立无声样例</a></div><p v-if="selectedScene" class="fine">{{selectedScene.description}} {{selectedScene.seats.length?'支持已校准 HK416 家具样例。':'站立与行走预览；家具座位尚未校准。'}} 真实剧目切换场景保留原编排。</p><p v-if="sceneChanged" class="notice">场景或家具互动有待应用的修改。</p></section>
     <p v-if="sceneError" class="error">{{sceneError}}</p>
-    <div class="theatre"><div v-if="!appliedScene" class="floor"/><div ref="host" class="canvas-host"/><div class="stage-caption">{{appliedRoom?.display_name||preview?.title||'首批素材试演'}} <span v-if="appliedFurniture">· 家具互动技术样例</span><span v-else-if="applied?.usage==='technical_coverage'">· 技术覆盖</span></div><div v-if="visualError" class="visual-error">{{visualError}}<p v-if="audioReady">声音与字幕仍可播放；当前画面可能保留上次有效状态。</p></div><div v-if="busy&&!ready" class="visual-error">正在加载舞台…</div></div>
+    <section v-if="appliedRoom?.blocking" class="panel blocking-panel">
+      <label><HtmlInput v-model="showBlocking" type="checkbox" aria-label="显示走位参考" @change="draw"/> 显示走位参考</label>
+      <p class="fine">双人对白站位、左右进出通道与物件前停靠点。参考线不改变当前人物编排；停靠点用于站立与靠近，坐下或拿取需单独编排。</p>
+    </section>
+    <div class="theatre"><div v-if="!appliedScene" class="floor"/><div ref="host" class="canvas-host"/><SceneBlockingGuide v-if="showBlocking&&appliedRoom?.blocking" :scene="appliedRoom" :camera="guideCamera"/><div class="stage-caption">{{appliedRoom?.display_name||preview?.title||'首批素材试演'}} <span v-if="appliedFurniture">· 家具互动技术样例</span><span v-else-if="applied?.usage==='technical_coverage'">· 技术覆盖</span></div><div v-if="visualError" class="visual-error">{{visualError}}<p v-if="audioReady">声音与字幕仍可播放；当前画面可能保留上次有效状态。</p></div><div v-if="busy&&!ready" class="visual-error">正在加载舞台…</div></div>
     <section class="panel transport">
       <div class="subtitle"><span v-for="(cue,i) in subtitles" :key="i">{{cue.speaker}}：{{cue.text}}</span><span v-if="!subtitles.length">{{appliedFurniture?'家具技术样例：走近 → 坐下停留 → 起身离开；非剧情还原。':jobId?'等待下一句对白…':'选择角色与动作检查原始素材'}}</span></div>
       <label class="seek"><span>进度</span><HtmlInput aria-label="演绎进度" type="range" min="0" :max="duration" step=".01" :value="time" @input="seek(inputNumber($event))"/><HtmlInput aria-label="定位秒数" class="time-input" type="number" min="0" :max="duration" step=".01" :value="Number(time.toFixed(2))" @change="seek(inputNumber($event))"/><span>/ {{duration.toFixed(2)}} 秒</span></label>

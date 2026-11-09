@@ -24,8 +24,8 @@ from .auto_face_suggestions import FaceSuggestionRequest, build_face_suggestions
 
 class StagePreviewRequest(Contract):
     bindings: dict[str, str] = Field(default_factory=dict, max_length=3)
-    profile: Literal['battle', 'life_v1'] = 'battle'
-    operation: Literal['compile', 'validate_and_save'] = 'compile'
+    profile: Literal['battle', 'life_v1', 'life_v2'] = 'battle'
+    operation: Literal['prepare', 'compile', 'validate_and_save'] = 'compile'
     initial_outfits: dict[str, str | None] = Field(default_factory=dict, max_length=3)
     script: dict | None = None
     face_enabled: bool = False
@@ -36,6 +36,14 @@ class StagePreviewRequest(Contract):
     dialogue_track: dict | None = None
     scene: dict | None = None
     furniture_track: dict | None = None
+    catalog_sha256: str | None = Field(default=None, pattern='^[a-f0-9]{64}$')
+    scene_bindings: list[dict] = Field(default_factory=list, max_length=128)
+    coverage_decisions: list[dict] = Field(default_factory=list, max_length=2000)
+    expression_track: list[dict] = Field(default_factory=list, max_length=512)
+    review_confirmed: bool = False
+    mouth_enabled: dict[str, bool] = Field(default_factory=dict, max_length=3)
+    upgraded_from: str | None = Field(default=None, pattern='^[a-f0-9]{64}$')
+    directed_from: str | None = Field(default=None, pattern='^[a-f0-9]{64}$')
 
 
 def local_root():
@@ -168,6 +176,9 @@ def register_spine_routes(router, repository, artifacts, owner, translate):
     from .scene_preview import load_scene_catalog, scene_asset_catalog
     from .theme_library import register_theme_library_routes
 
+    from .h5_preview import load_h5_catalog, prepare_context, build_h5_preview, read_h5_preview
+    from .commander_preview import build_commander_preview, read_commander_preview, commander_scene_digest
+
     register_theme_library_routes(router, owner, local_root)
 
     def life_result(operation):
@@ -178,9 +189,9 @@ def register_spine_routes(router, repository, artifacts, owner, translate):
                 d['path'] + '：' + d['message'] for d in exc.diagnostics), 'data': {'diagnostics': exc.diagnostics}})
 
     @router.get('/stage-preview/catalog')
-    def catalog(request: Request, profile: Literal['battle', 'life_v1'] = 'battle', catalog_sha256: str | None = None):
+    def catalog(request: Request, profile: Literal['battle', 'life_v1', 'life_v2'] = 'battle', catalog_sha256: str | None = None):
         owner(request)
-        return life_result(lambda: public_catalog(load_life_catalog(local_root(), catalog_sha256) if profile == 'life_v1' else load_catalog(local_root())))
+        return life_result(lambda: public_catalog(load_h5_catalog(local_root(), catalog_sha256) if profile == 'life_v2' else load_life_catalog(local_root(), catalog_sha256) if profile == 'life_v1' else load_catalog(local_root())))
 
     @router.get('/stage-preview/assets/{digest}')
     def asset(digest: str, request: Request):
@@ -210,6 +221,25 @@ def register_spine_routes(router, repository, artifacts, owner, translate):
     def preview(job_id: str, body: StagePreviewRequest, request: Request):
         job = translate(lambda: repository.get(job_id, owner(request)))['data']
         root = local_root()
+        if body.profile == 'life_v2':
+            def h5_operation():
+                if body.directed_from:
+                    from .directing_edit import edit_directed
+                    if body.operation != 'validate_and_save':
+                        fail('operation', 'AI 编排版本只能编辑另存')
+                    return save_preview(root, edit_directed(root, job, body, artifacts))
+                digest = body.script.get('catalog_sha256') if body.operation == 'validate_and_save' and body.script else body.catalog_sha256
+                actors = load_h5_catalog(root, digest)
+                if body.operation == 'prepare':
+                    result = prepare_context(job, artifacts, actors)
+                    if actors.get('actor_model') in ('fixed_commander/1','mixed_life/1'):
+                        result['scene_catalog_sha256'] = commander_scene_digest(root, actors)
+                    return result
+                builder = build_commander_preview if actors.get('actor_model') in ('fixed_commander/1','mixed_life/1') else build_h5_preview
+                return save_preview(root, builder(job, body, artifacts, actors, root))
+            return life_result(h5_operation)
+        if body.operation == 'prepare':
+            return life_result(lambda: fail('operation', '分场准备仅用于 life_v2'))
         if body.profile == 'life_v1':
             return life_result(lambda: save_preview(root, build_life_preview(job, body, artifacts,
                 load_life_catalog(root, body.script.get('catalog_sha256') if body.operation == 'validate_and_save' and body.script else None), scene_root=root)))
@@ -220,7 +250,25 @@ def register_spine_routes(router, repository, artifacts, owner, translate):
     @router.get('/production-jobs/{job_id}/stage-preview/{preview_sha256}')
     def saved_preview(job_id: str, preview_sha256: str, request: Request):
         job = translate(lambda: repository.get(job_id, owner(request)))['data']
-        return life_result(lambda: read_life_preview(local_root(), job, preview_sha256, artifacts))
+        def read_saved():
+            root = local_root()
+            if not re.fullmatch('[a-f0-9]{64}', preview_sha256):
+                raise ProductionError('SPINE_PREVIEW_NOT_FOUND')
+            try:
+                raw = (root / 'previews' / job['id'] / (preview_sha256 + '.json')).read_bytes()
+                if sha256(raw).hexdigest() != preview_sha256:
+                    raise ValueError()
+                saved = json.loads(raw)
+                profile = saved.get('profile')
+            except (OSError, ValueError):
+                raise ProductionError('SPINE_PREVIEW_NOT_FOUND') from None
+            if saved.get('schema_version') == 'spine_stage_preview/3.2':
+                from .spine_director import read_directed_preview
+                return read_directed_preview(root, job, preview_sha256, artifacts)
+            if saved.get('schema_version') == 'spine_stage_preview/3.1':
+                return read_commander_preview(root, job, preview_sha256, artifacts)
+            return read_h5_preview(root, job, preview_sha256, artifacts) if profile == 'life_v2' else read_life_preview(root, job, preview_sha256, artifacts)
+        return life_result(read_saved)
 
     @router.post('/production-jobs/{job_id}/stage-preview/suggest-face')
     def suggest_face(job_id: str, body: FaceSuggestionRequest, request: Request):

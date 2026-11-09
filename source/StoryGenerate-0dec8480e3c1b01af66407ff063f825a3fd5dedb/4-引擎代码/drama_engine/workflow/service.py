@@ -180,6 +180,9 @@ class StoryWorkflowService:
             )
         content = self._normalize_operation_plan(request, source, impact_analysis, content)
         model_trace = list(getattr(getattr(self.plan_generator, "provider", None), "call_history", [])[trace_start:])
+        preferences = self._resolve_plan_duration(content, preferences)
+        if preferences.duration_mode == "auto":
+            auto_fields.append("target_duration_sec")
         self._validate_plan_shape(content, preferences)
         payload = {
             "plan": content.model_dump(mode="json"),
@@ -248,10 +251,11 @@ class StoryWorkflowService:
         model_trace = list(getattr(getattr(self.plan_generator, "provider", None), "call_history", [])[trace_start:])
         if not content.change_summary:
             content = content.model_copy(update={"change_summary": [feedback.strip()]})
-        self._validate_plan_shape(content, current.resolved_preferences)
+        preferences = self._resolve_plan_duration(content, current.resolved_preferences)
+        self._validate_plan_shape(content, preferences)
         payload = {
             "plan": content.model_dump(mode="json"),
-            "preferences": current.resolved_preferences.model_dump(mode="json"),
+            "preferences": preferences.model_dump(mode="json"),
             "characters": [item.model_dump(mode="json") for item in current.character_snapshots],
             "source": current.source_reference.model_dump(mode="json") if current.source_reference else None,
             "template": current.template_snapshot,
@@ -260,6 +264,7 @@ class StoryWorkflowService:
             "rule_versions": current.rule_versions,
         }
         revised = current.model_copy(update={
+            "resolved_preferences": preferences,
             "plan_revision": expected_revision + 1,
             "plan": content,
             "plan_fingerprint": plan_fingerprint(payload),
@@ -525,6 +530,13 @@ class StoryWorkflowService:
                 performer_id=binding.get("performer_id"),
             ))
         return output
+
+    @staticmethod
+    def _resolve_plan_duration(content, preferences):
+        if preferences.duration_mode != "auto":
+            return preferences
+        duration = content.episode_outlines[0].target_duration_sec
+        return CreationPreferences.model_validate({**preferences.model_dump(), "target_duration_sec": duration})
 
     @staticmethod
     def _validate_plan_shape(content, preferences) -> None:

@@ -8,7 +8,7 @@ from .repository import ProductionError
 from .playback import playback_view
 
 
-def register_production_routes(app, repository, artifacts: ArtifactStore, owner, capabilities, reconciler=None):
+def register_production_routes(app, repository, artifacts: ArtifactStore, owner, capabilities, reconciler=None, legacy_stories=None):
     router = APIRouter(prefix="/api/v1")
 
     def translate(operation):
@@ -20,6 +20,8 @@ def register_production_routes(app, repository, artifacts: ArtifactStore, owner,
 
     @router.post("/production-jobs", status_code=202)
     def create(body: ProductionRequest, request: Request):
+        if body.source.kind in ('saved_performance', 'directed_performance'):
+            raise HTTPException(409, 'USE_H5_DELIVERY_ENDPOINT')
         principal = owner(request)
         modules = capabilities().get("modules")
         if modules is not None:
@@ -29,10 +31,40 @@ def register_production_routes(app, repository, artifacts: ArtifactStore, owner,
                 raise HTTPException(409, {"code": "MODULE_NOT_CONFIGURED", "modules": missing})
         return translate(lambda: repository.get(repository.create(principal, body), principal))
 
+    from .contracts import H5DeliveryRequest, DirectingRequest
+    @router.post('/production-jobs/{job_id}/h5-directing-jobs', status_code=202)
+    def create_directing(job_id: str, body: DirectingRequest, request: Request):
+        from .spine_director import prepare_directing_request, DIRECTING_STAGES
+        principal = owner(request)
+        modules = capabilities().get('modules', {})
+        if not all(modules.get(n, {}).get('configured') for n in DIRECTING_STAGES):
+            raise HTTPException(409, 'H5_DIRECTING_NOT_CONFIGURED')
+        def operation():
+            derived = prepare_directing_request(repository, artifacts, principal, job_id, body)
+            return repository.get(repository.create(principal, derived), principal)
+        return translate(operation)
+
+    @router.post('/production-jobs/{job_id}/h5-deliveries', status_code=202)
+    def create_h5(job_id: str, body: H5DeliveryRequest, request: Request):
+        from .performance_delivery import prepare_request
+        principal = owner(request)
+        modules = capabilities().get('modules', {})
+        if not all(modules.get(n, {}).get('configured') for n in ('performance_import', 'performance_package')):
+            raise HTTPException(409, 'H5_IMPORT_NOT_CONFIGURED')
+        def operation():
+            derived = prepare_request(repository, artifacts, principal, job_id, body)
+            return repository.get(repository.create(principal, derived), principal)
+        return translate(operation)
+
+    @router.get('/production-jobs/{job_id}/h5-performance')
+    def h5_performance(job_id: str, request: Request):
+        from .performance_delivery import delivered_preview
+        return translate(lambda: delivered_preview(repository.get(job_id, owner(request)), artifacts))
+
     @router.get("/production-jobs")
     def listing(request: Request, limit: int = Query(default=30, ge=1, le=100),
-                offset: int = Query(default=0, ge=0, le=10000), work_id: str | None = None):
-        return translate(lambda: repository.list_jobs(owner(request), limit=limit, offset=offset, work_id=work_id))
+                offset: int = Query(default=0, ge=0, le=10000), work_id: str | None = None, exclude_flows: bool = False):
+        return translate(lambda: repository.list_jobs(owner(request), limit=limit, offset=offset, work_id=work_id, exclude_flows=exclude_flows))
 
     @router.post("/production-jobs/{job_id}/remake-audio", status_code=202)
     def remake_audio(job_id: str, body: RemakeAudioRequest, request: Request):
@@ -97,4 +129,9 @@ def register_production_routes(app, repository, artifacts: ArtifactStore, owner,
 
     from .spine_preview import register_spine_routes
     register_spine_routes(router, repository, artifacts, owner, translate)
+    from .flows import register_flow_routes
+    register_flow_routes(router, repository, artifacts, owner, translate, capabilities, reconciler)
+    from .flows import FlowService
+    from .works import register_creation_routes
+    register_creation_routes(router,FlowService(repository,artifacts,reconciler),owner,translate,legacy_stories)
     app.include_router(router)

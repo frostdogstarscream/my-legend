@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import BrandLogo from '../../components/BrandLogo.vue'
 import { api } from '../../services/api'
+import {returnAfterLogin} from '../../utils/login-return'
 import { config } from '../../config'
 import { getRememberedAccount, rememberAccount, saveSession } from '../../stores/session'
 import { errorMessage, goTab, showPending } from '../../utils/navigation'
@@ -24,7 +25,7 @@ async function login(demo = false) {
     saveSession(result)
     if (!demo) rememberAccount(account.value.trim(), remember.value)
     password.value = ''
-    goTab('home')
+    returnAfterLogin()
   } catch (error) { formError.value = errorMessage(error) }
   finally { busy.value = false }
 }
@@ -39,10 +40,10 @@ const legal = (kind: string) => showPending(kind, '正式协议内容尚未配�
     <view class="login-panel">
       <view v-if="config.localBackend" class="local-entry">
         <text class="section-title serif">开始我的传说</text>
-        <text class="small-note spaced">当前为本机创作体验。故事与广播剧由真实 AI 服务生成，先交付试听，再根据你的反馈修改。</text>
+        <text class="small-note spaced">选几个喜欢的角色，写下一点灵感。接下来的故事，一起慢慢展开。</text>
         <text v-if="formError" class="form-error" role="alert">{{formError}}</text>
-        <button class="primary-button login-button" :loading="busy" :disabled="busy" @tap="login(true)">进入本机创作</button>
-        <text class="small-note spaced">无需输入模型密钥。正式账号、会员和支付尚未开放。</text>
+        <button class="primary-button login-button" :loading="busy" :disabled="busy" @tap="login(true)">开始创作</button>
+
       </view>
       <template v-else>
       <view class="login-tabs">

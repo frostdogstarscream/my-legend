@@ -57,9 +57,11 @@ def validate_catalog(catalog):
             if part['qa'] != 'pass' or any(raw not in part['animations'] for raw in actor['action_map'].values()):
                 fail(aid, '动作映射不属于实际骨骼')
     for oid, outfit in outfits.items():
-        if outfit['actor_id'] not in actors or outfit['qa'] != 'pass' or set(outfit['parts']) != {'head', 'body', 'foot'}:
+        if outfit['actor_id'] not in actors or outfit['qa'] != 'pass' or set(outfit['parts']) != ({'full'} if actors[outfit['actor_id']]['asset_mode']=='single_skeleton' else {'head', 'body', 'foot'}):
             fail(oid, '服装部件或所属角色无效')
         actor = actors[outfit['actor_id']]
+        if actor['asset_mode']=='single_skeleton' and (outfit['parts']['full']!=actor['asset_id'] or oid not in actor['outfit_ids']):
+            fail(oid, '人形外观必须引用所属演员的原生骨骼')
         for slot, aid in outfit['parts'].items():
             if aid not in assets or assets[aid]['qa'] != 'pass':
                 fail(oid, '服装部件不存在或未通过 QA')
@@ -76,6 +78,26 @@ def validate_catalog(catalog):
                 fail(oid, '服装动作不属于三个部件共同能力')
         if not {'idle', 'walk'} <= set(outfit['allowed_actions']):
             fail(oid, '首批服装必须支持待机和行走')
+    for actor in actors.values():
+        if actor.get('thumbnail') and actor['thumbnail'] != catalog['files'].get(actor['thumbnail'].get('sha256')):
+            fail(actor['actor_id'], '角色缩略图未登记')
+    for outfit in outfits.values():
+        accessory = outfit.get('accessory')
+        if accessory and (accessory.get('image') != catalog['files'].get(accessory.get('image', {}).get('sha256')) or accessory.get('bone') != 'head' or accessory.get('world_at_wait0') != [-61,82,59,182] or accessory.get('hidden_slots') != ['hair','lex1','lex2','lex3']):
+            fail(outfit['outfit_id'], '束发附件资源或校准无效')
+    if catalog.get('actor_model') in ('fixed_commander/1','mixed_life/1'):
+        if (catalog['actor_model']=='fixed_commander/1' and set(actors) != {'commander_male','commander_female'}) or not {'commander_male','commander_female'} <= set(actors):
+            fail('actors', '固定指挥官目录必须包含男女两种基础角色')
+        for actor in actors.values():
+            if actor['asset_mode']=='single_skeleton':continue
+            face = actor.get('face_profile', {})
+            if face.get('schema_version') != 'commander_face/1' or canonical_hash({k:v for k,v in face.items() if k!='profile_sha256'}) != face.get('profile_sha256'):
+                fail(actor['actor_id'], '指挥官面部配置哈希无效')
+            head = assets.get(face.get('head_asset_id'))
+            if not head or face.get('head_sha256') != head['skeleton']['sha256'] or actor.get('normalization_outfit_id') not in actor['outfit_ids']:
+                fail(actor['actor_id'], '固定头部或比例基准无效')
+            if any(outfits[oid]['parts']['head'] != face['head_asset_id'] for oid in actor['outfit_ids']):
+                fail(actor['actor_id'], '指挥官换装不可改变固定头部')
     for asset in assets.values():
         if any(not math.isfinite(a['duration']) or a['duration'] <= 0 for a in asset['animations'].values()):
             fail(asset['asset_id'], '动作时长无效')
@@ -106,9 +128,15 @@ class BodyParams(Contract):
     mode: Literal['once', 'loop', 'hold']
 
 
+class MoveTarget(Contract):
+    kind: Literal['actor', 'object']
+    id: str = Field(min_length=1, max_length=128)
+
+
 class MoveParams(Contract):
     to: list[float] = Field(min_length=2, max_length=2)
     visible_after: bool = True
+    target: MoveTarget | None = None
 
 
 class PlaceParams(Contract):
@@ -212,8 +240,8 @@ def validate_script(value, catalog, expected, source_keys):
         if actor['asset_mode'] == 'commander_tripartite':
             if oid not in outfits or outfits[oid]['actor_id'] != aid:
                 fail(path, '初始服装不属于当前演员')
-        elif oid is not None:
-            fail(path, '单骨骼演员不能设置服装')
+        elif oid is not None and (oid not in actor['outfit_ids'] or oid not in outfits or outfits[oid]['parts']!={'full':actor['asset_id']}):
+            fail(path, '单骨骼演员外观与原生骨骼不匹配')
         if binding['actions'] != action_durations(actor, catalog, oid):
             fail(path, '动作时长或能力被更改')
         if any(not math.isfinite(x) or not 0 <= x <= 1 for x in binding['position']):

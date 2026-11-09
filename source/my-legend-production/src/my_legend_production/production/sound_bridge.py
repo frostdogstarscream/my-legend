@@ -154,7 +154,8 @@ class SoundBridgeStage:
         validate_handoff(delivery,ctx.store.json(refs['RenderManifest']))
         version = delivery['story_version_id']
         slots = slots_for(delivery)
-        if any(s['kind'] not in ('dialogue','narration','sfx','action') for s in slots):
+        supported=('dialogue','narration','sfx','action','music') if ctx.request.audio_delivery_policy=='audio_first' else ('dialogue','narration','sfx','action')
+        if any(s['kind'] not in supported for s in slots):
             raise ProductionError('AUDIO_INPUT_CAPABILITY_MISSING')
         if 'SoundSourceClassificationDraft' not in refs and 'SoundSourceClassification' not in refs:
             schema = classification_schema(slots)
@@ -243,6 +244,22 @@ class SoundBridgeStage:
         refs['SoundSourceClassification'] = ctx.store.put_json('SoundSourceClassification',version,classification)
         refs.update({a.kind:a for a in result.artifacts})
         plan = CompoundArrangement.model_validate(ctx.store.json(refs['AudioArrangement']))
+        # The current native provider has no new-music capability. Preserve the
+        # source and explicit omissions, without pretending to generate music.
+        unsupported=[o.operation_id for e in plan.events if e.kind=='music' for o in e.operations if o.mode in ('one_shot','background')]
+        if unsupported and ctx.request.audio_delivery_policy=='audio_first':
+            from .audio_delivery_policy import omit_sounds, delivery_review
+            from .compound_audio import compound_bytes
+            original=refs['AudioArrangement']
+            plan,omissions=omit_sounds(plan,unsupported,'MUSIC_MEDIA_REQUIRED')
+            evidence={**ctx.store.json(refs['AudioArrangementEvidence'])}
+            evidence.update(delivery_policy='audio_first',original_arrangement_sha256=original.sha256,
+                omissions=[*evidence.get('omissions',[]),*omissions])
+            replacements=[ctx.store.put('AudioArrangement',version,compound_bytes(plan)),
+                ctx.store.put_json('AudioArrangementReview',version,delivery_review(plan).model_dump()),
+                ctx.store.put_json('AudioArrangementEvidence',version,evidence)]
+            result.artifacts=[a for a in result.artifacts if a.kind not in {r.kind for r in replacements}]+replacements
+            refs.update({a.kind:a for a in replacements})
         package = build_package(delivery,refs,plan,select_voices(delivery,ctx.request.voices))
         refs['SoundProductionPackage'] = ctx.store.put_json('SoundProductionPackage',version,package.model_dump())
         validate_package(ctx,refs)

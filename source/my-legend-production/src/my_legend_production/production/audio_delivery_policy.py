@@ -38,7 +38,7 @@ def speech_only_plan(delivery, delivery_sha256, reason):
                     identity_id=line.get('speaker_role_id') or line.get('narrator_id') if spoken else None,
                     operations=[dict(operation_id=oid,mode='speech' if spoken else 'action_note',
                         cue_text=line['text'],reason=reason,start=dict(operation_id=previous,point='end' if previous else 'start',offset_ms=0))])
-                if line['kind']=='sfx':
+                if line['kind'] in ('sfx','music'):
                     event['sound_intent']='omitted_for_delivery'
                     omissions.append(dict(source=source,operation_id=oid,text=line['text'],original_mode='unplanned_sound',
                                           reason=reason,importance='not_human_reviewed'))

@@ -1,3 +1,4 @@
+import type { AssetRef } from '../../../my-legend-stage/src/types'
 export interface User {
   id: string
   displayName: string
@@ -40,6 +41,7 @@ export interface CreateStoryInput { title: string; genre: string; idea: string; 
 export interface HomeSummary { user: User; latestStory: Story | null }
 export interface Character {
   id: string; name: string; description: string; avatarUrl: string; owned: boolean
+  thumbnail?: AssetRef; stageBinding?: {catalog_sha256:string;actor_id:string;outfit_id:string}
   tags?: string[]; biography?: string; voiceDescription?: string
 }
 export interface Product {

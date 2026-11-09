@@ -102,4 +102,12 @@ if __name__ == '__main__':
     settings.validate()
     engine = settings.engine()
     from my_legend_production.production.story_guard import production_worker_class
+    from my_legend_production.production.flow_runtime import mark
+    import threading
+    import time
+    def pulse():
+        while True:
+            mark('story')
+            time.sleep(5)
+    threading.Thread(target=pulse,daemon=True).start()
     production_worker_class(DurableWorker)(engine, settings, provider_factory=provider, executor_factory=MomaStoryExecutor).run()

@@ -36,7 +36,7 @@ def select_voices(delivery, policy):
                 for line in scene["utterances"]:
                     if line["kind"] == "dialogue":
                         rid = line["speaker_role_id"]
-                        bindings[rid] = pool[int(sha256(rid.encode()).hexdigest(), 16) % len(pool)]
+                        bindings[rid] = ('longwan_v3.1' if rid.endswith('-female') else 'longanyang_v3.1') if rid.startswith('wardrobe-') else pool[int(sha256(rid.encode()).hexdigest(), 16) % len(pool)]
                     elif line["kind"] == "narration":
                         bindings[line["narrator_id"]] = "longsanshu_v3.1"
     validate_voices(delivery, bindings)
@@ -61,7 +61,8 @@ class AudioStage:
         delivery = ctx.store.json(refs["StoryDelivery"])
         manifest = ctx.store.json(refs["RenderManifest"])
         lines = [u for ep in delivery["episodes"] for sc in ep["scenes"] for u in sc["utterances"]]
-        if any(u["kind"] not in ("dialogue", "narration", "sfx", "action") for u in lines):
+        supported=("dialogue","narration","sfx","action","music") if ctx.request.sound_workflow and ctx.request.audio_delivery_policy=='audio_first' else ("dialogue","narration","sfx","action")
+        if any(u["kind"] not in supported for u in lines):
             raise ProductionError("AUDIO_INPUT_CAPABILITY_MISSING")
         voices = select_voices(delivery, ctx.request.voices)
         planning_artifacts = []

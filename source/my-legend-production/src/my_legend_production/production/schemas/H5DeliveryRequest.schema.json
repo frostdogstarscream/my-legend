@@ -1,0 +1,36 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "preview_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Preview Sha256",
+      "type": "string"
+    },
+    "idempotency_key": {
+      "maxLength": 128,
+      "minLength": 8,
+      "pattern": "^[A-Za-z0-9_.:-]+$",
+      "title": "Idempotency Key",
+      "type": "string"
+    },
+    "parent_job_id": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9_-]{1,128}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Parent Job Id"
+    }
+  },
+  "required": [
+    "preview_sha256",
+    "idempotency_key"
+  ],
+  "title": "H5DeliveryRequest",
+  "type": "object"
+}

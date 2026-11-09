@@ -6,6 +6,9 @@ def production_guidance(request):
     """Trusted, versioned production contract; never splice creative text into system policy."""
     outputs = set(request.get('outputs', []))
     parts = ['【我的传说独立生产交付补充规则 v1.5】']
+    if request.get('source', {}).get('intent') == 'revise':
+        parts.append('本次为修改剧本。原版本仅是待修改素材，operation_request 中的修改要求与新获批大纲必须落实到正文。'
+                     '需要改变的对白、事件和结局不能照抄原作；仅更改摘要、标题或表演注释不算完成修改。')
     if outputs and 'visual' not in outputs:
         parts.append('逐项保留原始创作要求与禁止项，尤其是旁白、角色、关键事件与结局。'
                      '明确要求旁白时必须实际交付narration，明确禁止时不得新增；不得仅在摘要中声称包含。'
@@ -121,6 +124,9 @@ def production_worker_class(base):
                 if parent['request'].get('review_policy') == 'listen_first':
                     # This flag comes from the bound parent job, never creative text.
                     provider.production_review_policy = 'listen_first'
+                    if parent['request'].get('source', {}).get('intent') == 'revise':
+                        from .revision_guard import RevisionDraftPolicy
+                        provider.production_draft_policy = RevisionDraftPolicy(provider, record)
                     record(dict(review_policy='listen_first', semantic_review='not_checked',
                                 human_approval=False, skipped=['audio_readiness', 'story_quality_judge']))
                 else:

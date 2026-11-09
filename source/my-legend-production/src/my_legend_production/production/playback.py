@@ -125,4 +125,8 @@ def playback_view(job, store):
     view["manifest"] = manifest.model_dump(mode="json", exclude_none=True)
     view["available_outputs"] = [name for name, item in (("script", manifest.script), ("audio", manifest.audio),
                                                         ("visual", manifest.video)) if item is not None]
+    if 'PerformanceManifest' in refs:
+        from .performance_delivery import performance_manifest
+        view['performance_manifest'] = performance_manifest(job, store)
+        view['available_outputs'].append('h5')
     return view

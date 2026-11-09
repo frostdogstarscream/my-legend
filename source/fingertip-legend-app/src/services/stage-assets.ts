@@ -2,8 +2,13 @@ import { config } from '../config'
 import { getToken } from '../stores/session'
 import type { AssetRef } from '../../../my-legend-stage/src/types'
 
+const assetCache=new Map<string,Promise<ArrayBuffer>>()
 export async function stageAsset(ref:AssetRef):Promise<ArrayBuffer> {
-  return verifiedBytes(`${config.apiBaseUrl}/stage-preview/assets/${ref.sha256}`,ref)
+  if(!getToken())throw new Error('请先登录')
+  const key=ref.sha256+':'+ref.size_bytes
+  let pending=assetCache.get(key)
+  if(!pending){pending=verifiedBytes(`${config.apiBaseUrl}/stage-preview/assets/${ref.sha256}`,ref);assetCache.set(key,pending);pending.catch(()=>assetCache.delete(key));if(assetCache.size>80)assetCache.delete(assetCache.keys().next().value!)}
+  return pending
 }
 export async function stageAudio(jobId:string,ref:AssetRef):Promise<string> {
   const bytes=await verifiedBytes(`${config.apiBaseUrl}/production-jobs/${encodeURIComponent(jobId)}/artifacts/${ref.sha256}`,ref)

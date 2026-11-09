@@ -9,7 +9,7 @@ from fastapi import FastAPI, HTTPException
 
 from .api import register_production_routes
 from .artifacts import ArtifactStore
-from .contracts import ProductionRequest, StageResult, RunEvidence, ResumeRequest, ReconcileRequest, RemakeAudioRequest
+from .contracts import ProductionRequest, StageResult, RunEvidence, ResumeRequest, ReconcileRequest, RemakeAudioRequest, H5DeliveryRequest, DirectingRequest
 from .repository import ProductionRepository
 from .settings import ProductionSettings
 from .worker import ProductionWorker
@@ -32,9 +32,17 @@ def services(settings=None):
 
 def capabilities():
     enabled = enabled_modules()
+    from .flow_runtime import readiness
     return {"schema_version": "production_capabilities/1.0", "execution": "background_worker",
             "outputs": (["script"] if "story" in enabled else []) + (["audio"] if {"story", "audio"} <= enabled else [])
                        + (["visual"] if {"story", "audio", "visual_plan", "visual_render", "integrate"} <= enabled else []),
+            "h5_flow": readiness(),
+            "h5_delivery": {"configured": {'performance_import','performance_package'} <= enabled,
+                            "mode": "saved_performance_import", "preview_versions": ['3.0','3.1','3.2']},
+            "h5_directing": {"configured": {'performance_context','spine_direct','spine_compile','performance_package'} <= enabled,
+                             "mode": "fresh_visual_directing", "user_confirmation": "casting_and_outfits_only",
+                             "max_model_calls": 6, "tts_calls": 0, "preview_version": "3.2",
+                             "visual_policy": "asset_stage/1", "interpretation_modes": ["direct", "adapted", "audio_led"]},
             "modes": ["automatic", "reviewed"],
             "review_policies": ["standard", "listen_first"],
             "sound_workflows": ['sound_bridge/1'] if {'story','sound_plan','audio'} <= enabled else [],
@@ -44,7 +52,7 @@ def capabilities():
                                "preserves_arrangement": True,
                                "preserves_original_job": True, "rebuilds_timeline": True},
             "visual_profiles": ["standing_performance/1", "pixel_performance/1", "basic_storyboard/1"],
-            "modules": {name: {"configured": name in enabled} for name in ("story", "sound_plan", "audio", "visual_plan", "visual_render", "integrate")},
+            "modules": {name: {"configured": name in enabled} for name in ("story", "sound_plan", "audio", "visual_plan", "visual_render", "integrate", "performance_import", "performance_package", "performance_context", "spine_direct", "spine_compile")},
             "human_approval_automatic": False, "external_publication": False}
 
 
@@ -68,11 +76,12 @@ def main():
     parser.add_argument("command", choices=["migrate", "serve", "worker", "export-schemas"])
     parser.add_argument("--port", type=int, default=8898)
     parser.add_argument("--output", type=Path)
+    parser.add_argument('--only-configured-stages', action='store_true')
     args = parser.parse_args()
     if args.command == "export-schemas":
         destination = args.output or Path(__file__).parent / "schemas"
         destination.mkdir(parents=True, exist_ok=True)
-        for model in (ProductionRequest, StageResult, RunEvidence, ResumeRequest, ReconcileRequest, RemakeAudioRequest, MeasuredTimeline, ArrangedTimeline, ControlledTimeline, AudioArrangement, SoundArrangementReview, CompoundArrangement, CompoundArrangementReview, CompoundTimeline, VisualContext, PlaybackManifest, SoundProductionPackage):
+        for model in (ProductionRequest, H5DeliveryRequest, DirectingRequest, StageResult, RunEvidence, ResumeRequest, ReconcileRequest, RemakeAudioRequest, MeasuredTimeline, ArrangedTimeline, ControlledTimeline, AudioArrangement, SoundArrangementReview, CompoundArrangement, CompoundArrangementReview, CompoundTimeline, VisualContext, PlaybackManifest, SoundProductionPackage):
             (destination / (model.__name__ + ".schema.json")).write_text(
                 json.dumps(model.model_json_schema(), ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         print("Production contracts exported.")
@@ -85,7 +94,7 @@ def main():
         import uvicorn
         uvicorn.run(make_app(repository, store), host="127.0.0.1", port=args.port)
     else:
-        ProductionWorker(repository, store, handlers(ProductionSettings.environment())).run()
+        ProductionWorker(repository, store, handlers(ProductionSettings.environment()), only_configured_stages=args.only_configured_stages).run()
 
 
 if __name__ == "__main__":

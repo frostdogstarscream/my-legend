@@ -24,8 +24,8 @@ def operation_source(refs, intent):
     return source
 
 
-@pytest.mark.parametrize("intent", ["revise", "continue", "remix"])
-def test_operation_ownership_submission_and_new_version(env, intent):
+@pytest.mark.parametrize("intent,noop", [("revise",False),("continue",False),("remix",False),("revise",True)])
+def test_operation_ownership_submission_and_new_version(env, intent,noop):
     repo, store = env
     client = StoryService()
     base = repo.create("alice", production_request(outputs=["script"]))
@@ -44,10 +44,17 @@ def test_operation_ownership_submission_and_new_version(env, intent):
         client.delivery["story_id"] = "new-remix-story"
     client.manifest = deepcopy(client.manifest)
     client.manifest.update(story_version_id="new-version")
+    if intent=='revise' and not noop:
+        client.delivery['episodes'][0]['scenes'][0]['utterances'][0]['text']='木门被敲响两次。'
+        client.manifest['tasks'][0]['text']='木门被敲响两次。'
     for task in client.manifest["tasks"]:
         task["task_id"] = sha256(f"new-version:{task['episode_id']}:{task['scene_id']}:{task['line_id']}".encode()).hexdigest()
     advance(worker, repo, 4)
     state = repo.get(job, "alice")
+    if noop:
+        assert state['status']=='failed' and state['error_code']=='STORY_REVISION_UNCHANGED'
+        assert not state['artifacts']
+        return
     assert state["status"] == "succeeded", state.get("error_code")
     assert state["source_version_id"] == "new-version"
     body = [body for method, path, body in client.calls if path == "/v1/plans"][-1]

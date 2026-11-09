@@ -27,7 +27,7 @@ CHARACTERS = [
     {"id": "legend-lingmo", "name": "灵墨", "description": "细心聪慧，善于倾听的故事伙伴。", "avatarUrl": "/static/figma/ai-avatar.png", "owned": True,
      "tags": ["温柔", "聪慧", "善倾听"], "biography": "留意被忽略的细节，遇到分歧时愿意沟通。", "voiceDescription": "声音尚未绑定"},
 ]
-USER = {"id": "local-developer", "displayName": "本机创作者", "avatarUrl": "/static/figma/avatar.png", "vipDays": 0, "balance": 0}
+USER = {"id": "local-developer", "displayName": "故事创作者", "avatarUrl": "/static/figma/avatar.png", "vipDays": 0, "balance": 0}
 ACTIVE = {"running", "awaiting_approval"}
 
 
@@ -273,7 +273,18 @@ def create_app(root: Path | str | None = None, upstream=None):
 
     @app.get("/api/v1/characters")
     def characters():
-        return ok(CHARACTERS)
+        from .production.creation_library import creation_library
+        from .production.repository import ProductionError
+        try:extra=creation_library()['characters']
+        except ProductionError:extra=[]
+        return ok(extra)
+
+    @app.get('/api/v1/creation-library')
+    def material_library():
+        from .production.creation_library import creation_library
+        from .production.repository import ProductionError
+        try:return ok(creation_library())
+        except ProductionError as exc:raise HTTPException(503,exc.code) from None
 
     @app.get("/api/v1/shop/products")
     def products():
@@ -425,8 +436,11 @@ def create_app(root: Path | str | None = None, upstream=None):
         from .production.cli import capabilities, services
         production_repo, production_artifacts = services()
         from .production.reconciliation import ProductionReconciler
+        def legacy_stories(principal):
+            if principal!=USER['id']:return []
+            with repo.lock:return repo.stories()
         register_production_routes(app, production_repo, production_artifacts, lambda _request: USER['id'], capabilities,
-                                   ProductionReconciler(production_repo, engine))
+                                   ProductionReconciler(production_repo, engine),legacy_stories=legacy_stories)
         app.state.production_repository = production_repo
     return app
 

@@ -6,6 +6,16 @@ export function playbackArtifacts(view:PlaybackView, jobId:string):ProductionArt
   if(view.schema_version!=='production_playback_view/1.0'||view.job_id!==jobId)throw new Error('作品播放清单不匹配，请刷新')
   const manifest=view.manifest;if(!manifest)return []
   if(manifest.schema_version!=='production_playback/1.0'||manifest.job_id!==jobId)throw new Error('作品播放清单不匹配，请刷新')
+  const h5=view.performance_manifest
+  if(h5){
+    if(h5.schema_version!=='performance_manifest/1.0'||h5.job_id!==jobId||h5.work_id!==manifest.work_id||h5.source_version_id!==manifest.source_version_id||h5.human_review!=='pending')throw new Error('H5 交付版本不匹配，请刷新')
+    for(const key of ['script','audio','timeline'] as const){
+      const a=h5[key],b=manifest[key]
+      if(!b||a.content_path!==b.content_path||(['kind','sha256','source_version_id','media_type','size_bytes'] as const).some(k=>a.artifact[k]!==b.artifact[k]))throw new Error('H5 声音或剧本引用不一致，请刷新')
+    }
+    const ref=h5.preview.artifact
+    if(ref.kind!=='SpineStagePreview'||ref.source_version_id!==h5.source_version_id||!/^[a-f0-9]{64}$/.test(ref.sha256)||h5.preview.content_path!==`/api/v1/production-jobs/${jobId}/artifacts/${ref.sha256}`)throw new Error('H5 预览引用不一致，请刷新')
+  }
   const kinds={script:'StoryDelivery',audio:'AudioMix',timeline:'MeasuredTimeline',video:'Video',poster:'Poster'} as const
   return (Object.keys(kinds) as (keyof typeof kinds)[]).flatMap(key=>{
     const entry=manifest[key];if(!entry)return []

@@ -13,12 +13,13 @@
     { "path": "pages/outline/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/production/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/work/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/flow/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/role-detail/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/performance/index", "style": { "navigationStyle": "custom" } }
   ],
   "globalStyle": {
     "navigationBarTextStyle": "white", "navigationBarTitleText": "我的传说",
     "backgroundColor": "#fffbf2", "backgroundTextStyle": "dark",
-    "rpxCalcMaxDeviceWidth": 460, "rpxCalcBaseDeviceWidth": 393, "rpxCalcIncludeWidth": 393
+    "rpxCalcMaxDeviceWidth": 460, "rpxCalcBaseDeviceWidth": 402, "rpxCalcIncludeWidth": 402
   }
 }

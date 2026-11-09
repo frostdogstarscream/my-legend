@@ -33,6 +33,43 @@ class FurnitureTrack(Contract):
     cues: list[FurnitureCue] = Field(min_length=1, max_length=8)
 
 
+def validate_blocking(value, object_ids):
+    """Optional authoring hints; never grant an object an animation capability."""
+    if (value['schema_version'] != 'legend_scene_blocking/1' or
+            value['purpose'] != 'authored_standing_layout' or
+            value['interaction_status'] != 'standing_targets_only'):
+        raise ValueError('Invalid blocking version or capability')
+    def numbers(v, size):
+        return isinstance(v, list) and len(v) == size and all(type(n) in (int, float) and math.isfinite(n) and 0 <= n <= 1 for n in v)
+    lane = value['walk_lane']
+    if not numbers(lane, 4) or not lane[0] < lane[2] or not lane[1] < lane[3]:
+        raise ValueError('Invalid walk lane')
+    foot = value['foot_y']
+    if type(foot) not in (int, float) or not lane[1] <= foot <= lane[3]:
+        raise ValueError('Invalid foot line')
+    for key, count in (('dialogue_slots', 2), ('ensemble_slots', 3)):
+        slots = value[key]
+        if not isinstance(slots, list) or len(slots) != count:
+            raise ValueError('Invalid dialogue capacity')
+        if any(not numbers(p, 2) or not lane[0] <= p[0] <= lane[2] or p[1] != foot for p in slots):
+            raise ValueError('Invalid standing slot')
+    for key, limit in (('entrances', 2), ('targets', 16)):
+        points = value[key]
+        if not isinstance(points, list) or not 1 <= len(points) <= limit:
+            raise ValueError('Invalid point count')
+        ids = set()
+        for p in points:
+            if not isinstance(p['id'], str) or not re.fullmatch('[a-z0-9_]{1,96}', p['id']) or p['id'] in ids:
+                raise ValueError('Invalid point ID')
+            ids.add(p['id'])
+            pos = p['position']
+            if (not isinstance(p['label'], str) or not 1 <= len(p['label']) <= 64 or
+                    not numbers(pos, 2) or not lane[0] <= pos[0] <= lane[2] or pos[1] != foot):
+                raise ValueError('Invalid blocking point')
+            if key == 'targets' and (p['object_id'] not in object_ids or p['action'] != 'approach'):
+                raise ValueError('Unknown object or uncalibrated interaction')
+
+
 def load_scene_catalog(root, digest=None):
     try:
         digest = digest or json.loads((root / 'scene-current.json').read_text(encoding='utf-8'))['catalog_sha256']
@@ -66,6 +103,8 @@ def load_scene_catalog(root, digest=None):
                     raise ValueError('Invalid transform')
                 if item['width'] <= 0 or item['height'] <= 0 or type(item['repeat']) is not bool:
                     raise ValueError('Invalid size')
+            if 'blocking' in scene:
+                validate_blocking(scene['blocking'], object_ids)
             seats = set()
             for seat in scene['seats']:
                 if seat['seat_id'] in seats or seat['object_id'] not in object_ids or not seat['actor_revision']:

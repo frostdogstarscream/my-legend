@@ -1,4 +1,4 @@
-export type OutputKind = 'script' | 'audio' | 'visual'
+export type OutputKind = 'script' | 'audio' | 'visual' | 'h5'
 export type JobStatus = 'queued' | 'running' | 'needs_input' | 'succeeded' | 'failed' | 'cancelling' | 'cancelled'
 export interface AudioEventRef { episode_id:string; scene_id:string; line_id:string }
 export interface AudioRemakeSelection extends AudioEventRef { operation_id?:string }
@@ -19,9 +19,11 @@ export interface StoryOperationSource {
 export interface IndependentRequest {
   idempotency_key: string
   work_id?: string
-  source: { kind: 'creative'; title: string; idea: string; genre: string; character_ids: string[]; target_duration_seconds: number }
+  source: { kind: 'creative'; title: string; idea: string; genre: string; character_ids: string[]; target_duration_seconds: number | null }
     | { kind: 'delivery'; source_version_id: string; delivery: ProductionArtifact; manifest: ProductionArtifact }
     | StoryOperationSource
+    | {kind:'saved_performance';source_job_id:string;source_version_id:string;preview:ProductionArtifact;parent_job_id:string|null;inputs:ProductionArtifact[]}
+    | {kind:'directed_performance';source_job_id:string;source_version_id:string;parent_job_id:string|null;inputs:ProductionArtifact[];catalog_sha256:string;scene_catalog_sha256:string;bindings:Record<string,string>;initial_outfits:Record<string,string>;casting_confirmed:true}
   outputs: OutputKind[]
   sound_workflow?: 'sound_bridge/1'
   audio_delivery_policy?: 'strict' | 'audio_first'
@@ -39,6 +41,9 @@ export interface IndependentJob {
   error_code: string | null; created_at: string; actual_calls: number; unsettled_calls: number; unknown_calls?: number
 }
 export interface ProductionCapabilities {
+  h5_flow?:{configured:boolean;services:Record<string,boolean>;max_stage_roles:number;catalog_sha256:string|null}
+  h5_directing?: {configured:boolean;mode:string;user_confirmation:string;max_model_calls:number;tts_calls:number;preview_version:string}
+  h5_delivery?: {configured:boolean;mode:'saved_performance_import';preview_versions:string[]}
   outputs: OutputKind[]; modes: ('automatic' | 'reviewed')[]; target_duration_seconds: number[]
   modules: Record<string, { configured: boolean }>
 }
@@ -51,8 +56,17 @@ export interface PlaybackManifest {
   delivery_warnings?: string[]
 }
 export interface PlaybackView {
+  performance_manifest?: PerformanceManifest
   schema_version: 'production_playback_view/1.0'; job_id: string; job_status: JobStatus
   available_outputs: OutputKind[]; manifest: PlaybackManifest | null
+}
+export interface PerformanceManifest {
+  casting_confirmed?:boolean;model_review?:string|null;
+  schema_version:'performance_manifest/1.0';job_id:string;work_id:string;source_version_id:string
+  source_job_id:string;parent_job_id:string|null;title:string;status:'needs_attention'|'preview_ready'
+  preview:PlaybackEntry;script:PlaybackEntry;audio:PlaybackEntry;timeline:PlaybackEntry
+  diagnostics:{code:string;message:string;text?:string}[];delivery_warnings:string[]
+  human_review:'pending';publication:'not_requested'
 }
 export interface StoryDeliveryView {
   title: string; story_version_id: string
