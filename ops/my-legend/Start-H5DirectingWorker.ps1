@@ -1,5 +1,6 @@
 param()
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'Startup.Common.ps1')
 . (Join-Path $PSScriptRoot 'H5DirectingModel.Common.ps1')
 $taskModelDirectory = Get-H5DirectingModelDirectory
 if (Test-Path -LiteralPath (Join-Path $taskModelDirectory 'profile.json')) {
@@ -10,14 +11,12 @@ if (Test-Path -LiteralPath (Join-Path $taskModelDirectory 'profile.json')) {
 }
 $taskRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
 $taskRuntime = Join-Path $taskRoot 'runtime/my-legend-story'
+$taskPython = Join-Path $taskRuntime '.venv/Scripts/python.exe'
 $taskPidPath = Join-Path $taskRuntime 'h5-directing-worker.pid'
-if (Test-Path -LiteralPath $taskPidPath) {
-    $taskExistingId = [int]([IO.File]::ReadAllText($taskPidPath).Trim())
-    $taskExisting = Get-CimInstance Win32_Process -Filter "ProcessId=$taskExistingId" -ErrorAction SilentlyContinue
-    if ($taskExisting -and $taskExisting.CommandLine -like '*my_legend_production.production.cli worker --only-configured-stages*') {
-        Write-Output ('H5 directing worker already running: ' + $taskExistingId)
-        exit 0
-    }
+$taskExisting = Resolve-LegendPidFile $taskPidPath $taskPython 'my_legend_production.production.cli worker --only-configured-stages'
+if ($taskExisting) {
+    Write-Output ('H5 directing worker already running: ' + $taskExisting.ProcessId)
+    exit 0
 }
 $taskProtected = ConvertTo-SecureString ([IO.File]::ReadAllText((Join-Path $taskRuntime 'service-secrets.dpapi')).Trim())
 $taskSecrets = [Net.NetworkCredential]::new('', $taskProtected).Password | ConvertFrom-Json
@@ -40,7 +39,7 @@ $taskInfo.EnvironmentVariables['MY_LEGEND_VISUAL_MODEL_ID'] = $taskModelProfile.
 $taskInfo.EnvironmentVariables['MY_LEGEND_VISUAL_MODEL_KEY'] = Read-StoryModelSecret $taskModelDirectory $taskModelProfile
 try {
     $taskChild = [Diagnostics.Process]::Start($taskInfo)
-    [IO.File]::WriteAllText($taskPidPath,[string]$taskChild.Id)
+    Write-LegendPidFile $taskPidPath $taskChild.Id
     Write-Output ('H5 directing worker started: ' + $taskChild.Id)
 } finally {
     $taskInfo.EnvironmentVariables.Remove('PGPASSWORD')

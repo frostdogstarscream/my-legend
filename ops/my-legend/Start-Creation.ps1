@@ -25,26 +25,24 @@ $creationEnv = @{
 $engineEnv=@{};$soundEnv=@{};$stageEnv=@{}
 function Start-CreationProcess($name, $arguments, $extra, [switch]$Wait) {
     $pidFile=Join-Path $creationRuntime ($name+'.pid')
-    if (!$Wait -and (Test-Path -LiteralPath $pidFile)) {
-        $savedId=[int]([IO.File]::ReadAllText($pidFile).Trim())
-        $existing=Get-CimInstance Win32_Process -Filter "ProcessId=$savedId" -ErrorAction SilentlyContinue
-        if ($existing -and $existing.ExecutablePath -eq $creationPython -and $existing.CommandLine.Contains($arguments)) {
-            Write-Output "$name already running";return
-        }
-        if($existing){throw "$name PID conflict: $savedId belongs to a different process. Inspect $pidFile before restarting."}
-    }
-    if(!$Wait){
-        $matching=@(Get-CimInstance Win32_Process | Where-Object {$_.ExecutablePath -eq $creationPython -and $_.CommandLine -and $_.CommandLine.Contains($arguments)})
+    if (!$Wait) {
+        $existing=Resolve-LegendPidFile $pidFile $creationPython $arguments
+        if($existing){Write-Output "$name already running";return}
+        $matching=@(Get-CimInstance Win32_Process | Where-Object {Test-LegendProcess $_ $creationPython $arguments})
         if($matching.Count -gt 1){throw "$name has multiple matching processes; inspect before starting another."}
-        if($matching.Count -eq 1){[IO.File]::WriteAllText($pidFile,[string]$matching[0].ProcessId);Write-Output "$name reused";return}
+        if($matching.Count -eq 1){Write-LegendPidFile $pidFile $matching[0].ProcessId;Write-Output "$name reused";return}
     }
-    $info=[Diagnostics.ProcessStartInfo]::new();$info.FileName=$creationPython;$info.Arguments=$arguments
-    $info.WorkingDirectory=$creationRoot;$info.UseShellExecute=$false;$info.CreateNoWindow=$true;$info.WindowStyle='Hidden'
-    foreach($entry in $creationEnv.GetEnumerator()){$info.EnvironmentVariables[$entry.Key]=$entry.Value}
-    foreach($entry in $extra.GetEnumerator()){$info.EnvironmentVariables[$entry.Key]=$entry.Value}
-    $child=[Diagnostics.Process]::Start($info)
-    if($Wait){$child.WaitForExit();if($child.ExitCode){throw "$name failed"}}
-    else{[IO.File]::WriteAllText($pidFile,[string]$child.Id);Write-Output "$name started"}
+    $logDirectory=Join-Path $creationRuntime 'logs'
+    New-Item -ItemType Directory -Path $logDirectory -Force | Out-Null
+    $environment=@{}
+    foreach($entry in $creationEnv.GetEnumerator()){$environment[$entry.Key]=[string]$entry.Value}
+    foreach($entry in $extra.GetEnumerator()){$environment[$entry.Key]=[string]$entry.Value}
+    $child=Start-LegendProcess -FilePath $creationPython -Arguments $arguments -WorkingDirectory $creationRoot `
+        -Environment $environment `
+        -StandardOutput (Join-Path $logDirectory ($name+'.out.log')) `
+        -StandardError (Join-Path $logDirectory ($name+'.err.log')) -Wait:$Wait
+    if($Wait){if($child.ExitCode){throw "$name failed; see $logDirectory\$name.err.log"}}
+    else{Write-LegendPidFile $pidFile $child.Id;Write-Output "$name started"}
 }
 try {
     Start-CreationProcess 'flow-migrate' '-m my_legend_production.production.cli migrate' @{} -Wait
@@ -95,9 +93,8 @@ try {
         Start-Sleep -Seconds 1
     }
     if(!$creationReady){$missing=($capabilities.data.h5_flow.services.PSObject.Properties|Where-Object {!$_.Value}|ForEach-Object Name)-join ', ';throw "Creation services not ready: $missing. Inspect runtime/my-legend-production/independent/logs."}
-    $workerId=[int]([IO.File]::ReadAllText((Join-Path $creationRuntime 'creation-story-worker.pid')).Trim())
-    $worker=Get-CimInstance Win32_Process -Filter "ProcessId=$workerId"
-    if(!$worker -or $worker.ExecutablePath -ne $creationPython -or !$worker.CommandLine.Contains('run_story_worker.py')){throw 'Story worker is not running with the expected identity.'}
+    $worker = Resolve-LegendPidFile (Join-Path $creationRuntime 'creation-story-worker.pid') $creationPython 'run_story_worker.py'
+    if(!$worker){throw 'Story worker is not running with the expected identity.'}
     Write-Output 'Creation services verified. Open http://127.0.0.1:5193/#/pages/create/index'
 } finally {
     $creationEnv.Clear();$creationSecrets=$null

@@ -15,8 +15,10 @@ from .contracts import DeliverySource, SavedPerformanceSource, DirectedPerforman
 
 
 class ProductionError(Exception):
-    def __init__(self, code: str):
+    def __init__(self, code: str, detail: dict | None = None):
         self.code = code
+        # Optional public provider detail; never contains prompts or credentials.
+        self.detail = dict(detail or {})
         super().__init__(code)
 
 
@@ -42,6 +44,7 @@ class ProductionRepository:
             db.execute((Path(__file__).parent / "migrations/004_work_archives.sql").read_text(encoding="utf-8"))
             db.execute((Path(__file__).parent / "migrations/005_auto_title.sql").read_text(encoding="utf-8"))
             db.execute((Path(__file__).parent / "migrations/006_flow_recovery.sql").read_text(encoding="utf-8"))
+            db.execute((Path(__file__).parent / "migrations/007_error_detail.sql").read_text(encoding="utf-8"))
 
     @staticmethod
     def event(db, job_id, kind, details):
@@ -99,7 +102,7 @@ class ProductionRepository:
             job = db.execute("SELECT * FROM jobs WHERE id=%s AND owner_id=%s", (job_id, owner_id)).fetchone()
             if not job:
                 raise ProductionError("JOB_NOT_FOUND")
-            job["stages"] = db.execute("""SELECT name,dependencies,status,attempts,error_code,technical_quality,human_review,checkpoint
+            job["stages"] = db.execute("""SELECT name,dependencies,status,attempts,error_code,error_detail,technical_quality,human_review,checkpoint
                 FROM stages WHERE job_id=%s ORDER BY name""", (job_id,)).fetchall()
             for stage in job["stages"]:
                 checkpoint = stage.pop("checkpoint")
@@ -256,9 +259,9 @@ class ProductionRepository:
                 db.execute("""INSERT INTO artifacts VALUES(%s,%s,%s,%s,%s,%s) ON CONFLICT DO NOTHING""",
                            (stage["job_id"], stage["name"], artifact.kind, artifact.sha256, version, Jsonb(artifact.model_dump())))
             status = "cancelled" if job["cancel_requested"] else result.status
-            db.execute("""UPDATE stages SET status=%s,checkpoint=%s,error_code=%s,technical_quality=%s,human_review=%s,
+            db.execute("""UPDATE stages SET status=%s,checkpoint=%s,error_code=%s,error_detail=%s,technical_quality=%s,human_review=%s,
                 lease_token=NULL,lease_owner=NULL,lease_until=NULL,available_at=now()+%s*interval '1 second'
-                WHERE job_id=%s AND name=%s""", (status, Jsonb(result.checkpoint), result.error_code, result.technical_quality,
+                WHERE job_id=%s AND name=%s""", (status, Jsonb(result.checkpoint), result.error_code, Jsonb(result.error_detail), result.technical_quality,
                 result.human_review, result.poll_after_seconds, stage["job_id"], stage["name"]))
             states = [r["status"] for r in db.execute("SELECT status FROM stages WHERE job_id=%s", (stage["job_id"],))]
             runnable = db.execute("""SELECT 1 FROM stages s WHERE s.job_id=%s
@@ -278,12 +281,14 @@ class ProductionRepository:
             else:
                 overall = "succeeded" if all(s == "succeeded" for s in states) else "running"
             error = result.error_code
+            detail = result.error_detail
             if overall in ("failed", "needs_input"):
-                failed = db.execute("SELECT error_code FROM stages WHERE job_id=%s AND status=%s ORDER BY name LIMIT 1",
+                failed = db.execute("SELECT error_code,error_detail FROM stages WHERE job_id=%s AND status=%s ORDER BY name LIMIT 1",
                                     (stage["job_id"], overall)).fetchone()
                 error = failed["error_code"] if failed else error
-            db.execute("UPDATE jobs SET status=%s,source_version_id=%s,error_code=%s,updated_at=now() WHERE id=%s",
-                       (overall, version, error, stage["job_id"]))
+                detail = (failed["error_detail"] if failed else detail) or detail
+            db.execute("UPDATE jobs SET status=%s,source_version_id=%s,error_code=%s,error_detail=%s,updated_at=now() WHERE id=%s",
+                       (overall, version, error, Jsonb(detail or {}), stage["job_id"]))
             self.event(db, stage["job_id"], "stage_result", {"stage": stage["name"], "status": status, "error_code": result.error_code})
 
     def cancel(self, job_id, owner_id):
@@ -299,6 +304,14 @@ class ProductionRepository:
             db.execute("UPDATE stages SET status='cancelled',lease_token=NULL,lease_until=NULL WHERE job_id=%s AND status='running' AND lease_until<now()",(job_id,))
             db.execute("UPDATE jobs SET status='cancelled' WHERE id=%s AND NOT EXISTS(SELECT 1 FROM stages WHERE job_id=%s AND status='running')",(job_id,job_id))
             self.event(db, job_id, "cancel_requested", {})
+
+    def record_error_detail(self, job_id, owner_id, detail):
+        """Persist a public provider cause discovered by a read-only query."""
+        if not detail:
+            return
+        with self.transaction() as db:
+            db.execute("UPDATE jobs SET error_detail=%s,updated_at=now() WHERE id=%s AND owner_id=%s",
+                       (Jsonb(detail), job_id, owner_id))
 
     def resume(self, job_id, owner_id, expected_revision, resolution):
         with self.transaction() as db:
@@ -330,10 +343,10 @@ class ProductionRepository:
                 (job_id, Jsonb({'provider_calls': 0, 'preflight_failed': True}))).fetchall()
             for call in rearmed:
                 self.event(db, job_id, 'zero_call_rearmed', {'call_key': call['call_key'], 'previous_revision': expected_revision})
-            db.execute("""UPDATE jobs SET status='queued',error_code=NULL,revision=revision+1,resolution=%s,
+            db.execute("""UPDATE jobs SET status='queued',error_code=NULL,error_detail='{}'::jsonb,revision=revision+1,resolution=%s,
                 deadline=now()+%s*interval '1 second',updated_at=now() WHERE id=%s""",
                 (Jsonb(resolution), job["request"]["budget"]["max_elapsed_seconds"], job_id))
-            db.execute("""UPDATE stages SET status='queued',error_code=NULL,lease_token=NULL,lease_until=NULL,
+            db.execute("""UPDATE stages SET status='queued',error_code=NULL,error_detail='{}'::jsonb,lease_token=NULL,lease_until=NULL,
                 available_at=now() WHERE job_id=%s AND status IN ('failed','needs_input')""", (job_id,))
             self.event(db, job_id, "resumed", {"revision": expected_revision + 1})
 

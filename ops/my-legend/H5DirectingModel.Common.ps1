@@ -9,7 +9,7 @@ function Read-H5DirectingModelProfile {
     $profile = Get-Content -LiteralPath (Join-Path $Directory 'profile.json') -Raw -Encoding UTF8 | ConvertFrom-Json
     $allowedProvider = ($profile.provider -ceq 'opencode_go' -and
         $profile.base_url -ceq 'https://opencode.ai/inference/go/openai/v1' -and
-        $profile.model -cin @('deepseek-v4-flash', 'deepseek-v4.1-flash')) -or
+        $profile.model -cin @('deepseek-v4.1-flash')) -or
         ($profile.provider -ceq 'moma' -and
         $profile.base_url -ceq 'https://moma.cmecloud.cn/v1' -and
         $profile.model -ceq 'qwen/deepseek-v4-pro')

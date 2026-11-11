@@ -4,6 +4,8 @@
 !/.gitattributes
 !/README.md
 !/agent.md
+!/启动交互式前端.cmd
+!/交互式前端启动说明.md
 !/source/
 /source/*
 !/source/fingertip-legend-app/

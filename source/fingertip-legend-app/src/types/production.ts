@@ -31,14 +31,16 @@ export interface IndependentRequest {
   mode: 'automatic' | 'reviewed'
   visual_profile: 'standing_performance/1' | 'pixel_performance/1' | 'basic_storyboard/1'
 }
+export interface ErrorDetail { code:string; message:string; retryable:boolean; http_status:number|null; provider_message:string|null }
 export interface IndependentStage {
   name: string; status: JobStatus; error_code: string | null; human_review: string
+  error_detail?: ErrorDetail
   input_request?: { plan_id: string; revision: number; fingerprint: string; outline: Record<string, unknown> }
 }
 export interface IndependentJob {
   id: string; work_id: string; source_version_id: string | null; revision: number; status: JobStatus
   request: IndependentRequest; stages: IndependentStage[]; artifacts: ProductionArtifact[]
-  error_code: string | null; created_at: string; actual_calls: number; unsettled_calls: number; unknown_calls?: number
+  error_code: string | null; error_detail?: ErrorDetail; created_at: string; actual_calls: number; unsettled_calls: number; unknown_calls?: number
 }
 export interface ProductionCapabilities {
   h5_flow?:{configured:boolean;services:Record<string,boolean>;max_stage_roles:number;catalog_sha256:string|null}

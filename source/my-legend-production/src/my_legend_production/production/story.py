@@ -5,6 +5,7 @@ import re
 import httpx
 
 from ..core import AdapterError, source_check
+from ..errors import provider_failure
 from .contracts import StoryOperationSource, StageResult
 from .repository import ProductionError
 
@@ -95,7 +96,9 @@ class StoryStage:
             raise ProductionError("STORY_USAGE_MISSING")
         if usage.get("unknown_usage_calls", 0) or usage.get("inflight_usage_unknown", False):
             ctx.repository.observe_call(ctx.stage, "story:" + phase + "-budget", usage["calls"], unknown=True)
-            raise ProductionError("EXTERNAL_RESULT_UNKNOWN")
+            # Keep the unknown-result semantics (reconcile/replay) but carry the
+            # provider cause so the UI can show 401/429 instead of "unknown".
+            raise ProductionError("EXTERNAL_RESULT_UNKNOWN", detail=provider_failure(response))
         ctx.repository.complete_call(ctx.stage, "story:" + phase + "-budget", usage, actual_units=usage["calls"])
 
     def complete(self, ctx, delivery, manifest, decision=None):
@@ -189,4 +192,5 @@ class StoryStage:
             code = response['error_message']
         if not re.fullmatch(r"[A-Z][A-Z0-9_]{0,79}", code):
             code = "STORY_GENERATION_FAILED"
-        return StageResult(status="failed", checkpoint=state, error_code=code)
+        return StageResult(status="failed", checkpoint=state, error_code=code,
+                           error_detail=provider_failure(response) or {})

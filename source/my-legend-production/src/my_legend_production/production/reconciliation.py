@@ -4,6 +4,7 @@ from fastapi import HTTPException
 
 from .contracts import fingerprint
 from .repository import ProductionError
+from ..errors import provider_failure
 
 
 class ProductionReconciler:
@@ -34,6 +35,9 @@ class ProductionReconciler:
                     reason = "UPSTREAM_STILL_ACTIVE"
                 elif not isinstance(units, int) or isinstance(units, bool) or units < 0 or usage.get("unknown_usage_calls", 0) or usage.get("inflight_usage_unknown", False):
                     reason = "EXTERNAL_RESULT_UNKNOWN"
+                    # The query cannot settle usage, but it usually can name the
+                    # provider cause. Record it for the flow page; never retry.
+                    self.repository.record_error_detail(job_id, owner_id, provider_failure(response))
                 else:
                     self.repository.settle_reconciliation(job_id, owner_id, revision, call, usage, units,
                         {"basis": "recorded_upstream_terminal_query", "upstream_id": state[id_key],

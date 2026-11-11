@@ -15,8 +15,8 @@ $frontendLog = ''
 
 Push-Location -LiteralPath $frontendRoot
 try {
-    if ($PSVersionTable.PSVersion.Major -lt 7) {
-        throw '需要 PowerShell 7。请双击项目根目录的“启动交互式前端.cmd”。'
+    if ($PSVersionTable.PSVersion -lt [Version]'7.4') {
+        throw '需要 PowerShell 7.4 或更高版本（启动器用 Start-Process -Environment 写独立日志）。请双击项目根目录的“启动交互式前端.cmd”，或设置 LEGEND_PWSH 指向 pwsh.exe。'
     }
     [Console]::OutputEncoding = [Text.UTF8Encoding]::new($false)
     Write-Host '正在启动“我的传说”交互式前端…' -ForegroundColor Cyan

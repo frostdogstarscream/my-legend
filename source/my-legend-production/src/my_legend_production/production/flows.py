@@ -212,6 +212,7 @@ class FlowService:
         if stage and stage['status']=='succeeded':
             view=playback_view(stage,self.store)
             if view.get('performance_manifest'):result['available_outputs']=list(dict.fromkeys(result['available_outputs']+['h5']))
+        result['error_detail']=next((j.get('error_detail') for j in jobs.values() if j.get('error_detail')), {})
         result['recovery']=self.recovery(row,jobs)
         return result
 

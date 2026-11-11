@@ -73,7 +73,7 @@ function picked(line:string){return selected.value.some(x=>x.line_id===line)}
 <text v-if="error" class="error-copy" role="alert">{{error}}</text><view v-if="!flow" class="paper-panel">正在读取作品…</view>
 <template v-else><view class="paper-panel"><view class="row-between"><text class="section-title serif">{{flow.title}}</text><text class="pill">{{jobStatus[flow.status]}}</text></view>
 <view v-for="phase in (flow.status==='succeeded'?[]:phases)" :key="phase.name" class="phase"><text>{{phase.name}}</text><text>{{phase.status==='queued'?'等待开始':jobStatus[phase.status as keyof typeof jobStatus]||phase.status}}</text></view>
-<text v-if="flow.recovery" class="small-note spaced" role="status">{{flow.recovery.message}}</text>
+<text v-if="flow.error_detail?.message" class="error-copy spaced" role="alert">{{flow.error_detail.message}}</text><text v-if="flow.recovery" class="small-note spaced" role="status">{{flow.recovery.message}}</text>
 <button v-if="workSummary?.play&&workSummary.playable_flow_id!==flow.id&&!ready.includes('h5')" class="outline-button full-button" @tap="openDestination(workSummary.play)">播放上一完成版本</button><text class="small-note spaced">{{versionKind[flow.kind]||'作品版本'}} · {{new Date(flow.created_at).toLocaleString()}}</text><text v-if="flow.error_code&&!flow.recovery" class="error-copy spaced">{{productionError(flow.error_code)}}</text>
 <button v-if="['queued','running'].includes(flow.status)" class="outline-button full-button" :disabled="busy" @tap="control('cancel')">取消制作</button>
 <button v-if="recoveryActions.includes('reconcile')" class="outline-button full-button" :disabled="busy" @tap="control('reconcile')">查询结果</button>

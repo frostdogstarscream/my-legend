@@ -91,7 +91,7 @@ class ProductionWorker:
             if exc.code != "LEASE_LOST":
                 status = "needs_input" if exc.code in ("EXTERNAL_RESULT_UNKNOWN", "MODULE_NOT_CONFIGURED") else "failed"
                 try:
-                    self.repository.finish(stage, StageResult(status=status, checkpoint=stage["checkpoint"], error_code=exc.code))
+                    self.repository.finish(stage, StageResult(status=status, checkpoint=stage["checkpoint"], error_code=exc.code, error_detail=exc.detail))
                 except ProductionError as nested:
                     if nested.code != "LEASE_LOST":
                         raise

@@ -254,6 +254,9 @@ class StageResult(Contract):
     artifacts: list[ArtifactRef] = Field(default_factory=list)
     source_version_id: str | None = None
     error_code: str | None = Field(default=None, pattern=r"^[A-Z][A-Z0-9_]{0,79}$")
+    # Public provider-failure shape from my_legend_production.errors; empty when
+    # the failure is a policy decision rather than a provider problem.
+    error_detail: dict = Field(default_factory=dict)
     technical_quality: Literal["not_checked", "passed", "failed"] = "not_checked"
     human_review: Literal["pending", "not_required"] = "not_required"
     poll_after_seconds: int = Field(default=1, ge=0, le=60)

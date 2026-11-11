@@ -20,6 +20,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Field
 
+from .errors import provider_failure, public_detail
+
 
 CHARACTERS = [
     {"id": "legend-moyu", "name": "墨羽", "description": "勇敢好奇，重视伙伴的故事主角。", "avatarUrl": "/static/figma/avatar.png", "owned": True,
@@ -197,7 +199,7 @@ def create_app(root: Path | str | None = None, upstream=None):
         return {"code": 0, "message": "ok", "data": data}
 
     def public_task(task):
-        return {k: v for k, v in task.items() if k in {"id", "storyId", "status", "progress", "message", "phase", "plan", "errorCode", "storyVersionId"}}
+        return {k: v for k, v in task.items() if k in {"id", "storyId", "status", "progress", "message", "phase", "plan", "errorCode", "errorDetail", "storyVersionId"}}
 
     def synchronize(task):
         if task["status"] not in ACTIVE:
@@ -215,8 +217,10 @@ def create_app(root: Path | str | None = None, upstream=None):
             code = result.get("error_code") or "STORY_GENERATION_FAILED"
             if not re.fullmatch(r"[A-Z0-9_]{1,80}", code):
                 code = "STORY_GENERATION_FAILED"
-            task.update(status="failed" if state == "FAILED" else "cancelled", message=failure_message(result) if state == "FAILED" else "任务已取消", errorCode=code)
+            task.update(status="failed" if state == "FAILED" else "cancelled", message=failure_message(result) if state == "FAILED" else "任务已取消",
+                        errorCode=code, errorDetail=public_detail(provider_failure(result)))
         elif state == "SUCCEEDED":
+            task.pop("errorDetail", None)
             if is_body:
                 version = result["result_story_version_id"]
                 delivery = engine.call("GET", "/v1/story-versions/" + version)
